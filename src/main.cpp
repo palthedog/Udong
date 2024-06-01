@@ -1,18 +1,21 @@
 #include <Arduino.h>
 
-// put function declarations here:
-int myFunction(int, int);
-
 void setup() {
-  // put your setup code here, to run once:
-  int result = myFunction(2, 3);
+  pinMode(25, OUTPUT);
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
-}
+  int i;
+  for (i = 0; i < 256; i ++)
+  {
+    analogWrite(25, i);
+    delay(8);
+  }
 
-// put function definitions here:
-int myFunction(int x, int y) {
-  return x + y;
+  for (i = 0; i < 256; i ++)
+  {
+    analogWrite(25, 255 - i);
+    delay(8);
+  }
+  delay(1000);
 }
