@@ -11,12 +11,12 @@ const uint8_t JOY_Y_PIN = A1;
 // Sample code:
 //     https://github.com/adafruit/Adafruit_TinyUSB_Arduino/blob/master/examples/HID/hid_gamepad/hid_gamepad.ino
 
-// TODO: Update descriptor to set proper number of buttons
-uint8_t const desc_hid_report[] = {
+const uint8_t kHidDescriptor[] = {
     HID_USAGE_PAGE(HID_USAGE_PAGE_DESKTOP),
     HID_USAGE(HID_USAGE_DESKTOP_GAMEPAD),
     HID_COLLECTION(HID_COLLECTION_APPLICATION),
-    /* 10 bit X, Y */
+
+    // 10 bit analog stick (X, Y)
     HID_USAGE_PAGE(HID_USAGE_PAGE_DESKTOP),
     HID_USAGE(HID_USAGE_DESKTOP_X),
     HID_USAGE(HID_USAGE_DESKTOP_Y),
@@ -24,19 +24,18 @@ uint8_t const desc_hid_report[] = {
     HID_LOGICAL_MAX_N(512, 2),
     HID_REPORT_COUNT(2),
     HID_REPORT_SIZE(16),
+    HID_INPUT(HID_DATA | HID_VARIABLE | HID_ABSOLUTE),
 
-    HID_INPUT(
-        HID_DATA | HID_VARIABLE | HID_ABSOLUTE), /* 8 bit DPad/Hat Button Map */
+    // 8 bit DPad/Hat Button Map
     HID_USAGE_PAGE(HID_USAGE_PAGE_DESKTOP),
     HID_USAGE(HID_USAGE_DESKTOP_HAT_SWITCH),
     HID_LOGICAL_MIN(1),
     HID_LOGICAL_MAX(8),
-    HID_PHYSICAL_MIN(0),
-    HID_PHYSICAL_MAX_N(315, 2),
     HID_REPORT_COUNT(1),
     HID_REPORT_SIZE(8),
+    HID_INPUT(HID_DATA | HID_VARIABLE | HID_ABSOLUTE),
 
-    HID_INPUT(HID_DATA | HID_VARIABLE | HID_ABSOLUTE), /* 32 bit Button Map */
+    // 16 buttons
     HID_USAGE_PAGE(HID_USAGE_PAGE_BUTTON),
     HID_USAGE_MIN(1),
     HID_USAGE_MAX(16),
@@ -45,6 +44,8 @@ uint8_t const desc_hid_report[] = {
     HID_REPORT_COUNT(16),
     HID_REPORT_SIZE(1),
     HID_INPUT(HID_DATA | HID_VARIABLE | HID_ABSOLUTE),
+
+    // End
     HID_COLLECTION_END,
 };
 
@@ -73,7 +74,7 @@ void setup() {
   Serial.begin(115200);
 
   usb_hid.setPollInterval(1);  // 1ms
-  usb_hid.setReportDescriptor(desc_hid_report, sizeof(desc_hid_report));
+  usb_hid.setReportDescriptor(kHidDescriptor, sizeof(kHidDescriptor));
 
   usb_hid.begin();
 
