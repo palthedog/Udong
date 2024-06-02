@@ -17,7 +17,7 @@ class Led {
     kHigh,
   };
 
-  uint8_t pin_;
+  Output* output_;
   LedMode mode_;
   PinState current_pin_state_;
 
@@ -26,28 +26,27 @@ class Led {
   uint32_t last_blink_time_in_us_;
 
  public:
-  Led(uint8_t pin)
-      : pin_(pin),
+  Led(Output* output)
+      : output_(output),
         mode_(kToggle),
         current_pin_state_(kLow),
         blink_period_in_us_(0),
         last_blink_time_in_us_(0) {
-    pinMode(pin_, OUTPUT);
   }
 
   void TurnOn() {
     mode_ = kToggle;
-    digitalWrite(pin_, HIGH);
+    output_->DigitalWrite(HIGH);
   }
 
   void TurnOff() {
     mode_ = kToggle;
-    digitalWrite(pin_, LOW);
+    output_->DigitalWrite(LOW);
   }
 
   void StartBlink(uint32_t blink_perio_ms) {
     mode_ = kBlink;
-    digitalWrite(pin_, LOW);
+    output_->DigitalWrite(LOW);
 
     last_blink_time_in_us_ = time_us_32();
     blink_period_in_us_ = blink_perio_ms * 1000;
@@ -74,10 +73,10 @@ class Led {
 
     if (current_pin_state_ == kLow) {
       current_pin_state_ = kHigh;
-      digitalWrite(pin_, HIGH);
+      output_->DigitalWrite(HIGH);
     } else {
       current_pin_state_ = kLow;
-      digitalWrite(pin_, LOW);
+      output_->DigitalWrite(LOW);
     }
   }
 };

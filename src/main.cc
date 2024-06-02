@@ -1,7 +1,10 @@
+#include <Adafruit_TinyUSB.h>
 #include <Arduino.h>
 
-#include "Adafruit_TinyUSB.h"
+#include "gamepad.h"
+#include "io_utils/io.h"
 #include "io_utils/led.h"
+#include "switch.h"
 
 const uint8_t LED_PIN = D25;
 
@@ -60,11 +63,10 @@ Adafruit_USBD_HID usb_hid;
 
 GamepadReport gamepad_report;
 
-Led led(LED_PIN);
+OutputPin ledPin(LED_PIN);
+TictocInput tictoc;
 
 void setup() {
-  led.StartBlink(1000);
-
 #if defined(ARDUINO_ARCH_MBED) && defined(ARDUINO_ARCH_RP2040)
   // Manual begin() is required on core without built-in support for TinyUSB
   // such as mbed rp2040
@@ -98,7 +100,7 @@ void setup() {
 }
 
 void loop() {
-  led.Step();
+  ledPin.AnalogWrite(tictoc.AnalogRead() / 4);
 
   int joy_x = analogRead(JOY_X_PIN);
   int joy_y = analogRead(JOY_Y_PIN);
@@ -119,7 +121,8 @@ void loop() {
 
   usb_hid.sendReport(0, &gamepad_report, sizeof(gamepad_report));
 
-  Serial.printf("rx: %d, ry: %d\n", gamepad_report.x, gamepad_report.y);
+  // Serial.printf("rx: %d, ry: %d\n", gamepad_report.x, gamepad_report.y);
+  // Serial.printf("x: %d\n", joy_x);
 
   return;
 }
