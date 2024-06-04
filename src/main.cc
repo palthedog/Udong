@@ -4,27 +4,29 @@
 #include "gamepad.h"
 #include "io_utils/io.h"
 #include "io_utils/led.h"
+#include "io_utils/multiplexer.h"
 #include "switch.h"
-
-const uint8_t LED_PIN = D25;
-
-const uint8_t JOY_X_PIN = A0;
-const uint8_t JOY_Y_PIN = A1;
 
 // Sample code:
 //     https://github.com/adafruit/Adafruit_TinyUSB_Arduino/blob/master/examples/HID/hid_gamepad/hid_gamepad.ino
+
+const uint32_t kAdcBits = 12;
+const uint32_t kAnalogMin = 0;
+const uint32_t kAnalogMax = (1 << kAdcBits) - 1;
+const int32_t kSignedAnalogMin = kAnalogMin - ((1 << (kAdcBits - 1)) - 1);
+const int32_t kSignedAnalogMax = kAnalogMax - ((1 << (kAdcBits - 1)) - 1);
 
 const uint8_t kHidDescriptor[] = {
     HID_USAGE_PAGE(HID_USAGE_PAGE_DESKTOP),
     HID_USAGE(HID_USAGE_DESKTOP_GAMEPAD),
     HID_COLLECTION(HID_COLLECTION_APPLICATION),
 
-    // 10 bit analog stick (X, Y)
+    // 12 bit analog stick (X, Y)
     HID_USAGE_PAGE(HID_USAGE_PAGE_DESKTOP),
     HID_USAGE(HID_USAGE_DESKTOP_X),
     HID_USAGE(HID_USAGE_DESKTOP_Y),
-    HID_LOGICAL_MIN_N(-511, 2),
-    HID_LOGICAL_MAX_N(512, 2),
+    HID_LOGICAL_MIN_N(kSignedAnalogMin, 2),
+    HID_LOGICAL_MAX_N(kSignedAnalogMax, 2),
     HID_REPORT_COUNT(2),
     HID_REPORT_SIZE(16),
     HID_INPUT(HID_DATA | HID_VARIABLE | HID_ABSOLUTE),
@@ -59,12 +61,34 @@ struct TU_ATTR_PACKED GamepadReport {
   uint16_t buttons;  ///< Buttons mask for currently pressed buttons
 };
 
-Adafruit_USBD_HID usb_hid;
+const uint8_t LED_PIN = D25;
 
+const uint8_t MUX_COM_PIN = A0;
+const uint8_t MUX_A_PIN = D10;
+const uint8_t MUX_B_PIN = D11;
+const uint8_t MUX_C_PIN = D12;
+
+struct Circuit {
+  Multiplexer8 mux;
+  Input* joy_x_in;
+  Input* joy_y_in;
+
+  OutputPin ledPin;
+  TictocInput<0, 255> tictoc;
+
+  Circuit()
+      : mux(new OutputPin(D10), new OutputPin(D11), new OutputPin(D12),
+            new InputPin(A0)),
+        ledPin(D25) {
+    joy_x_in = mux.GetInput(0);
+    joy_y_in = mux.GetInput(1);
+  }
+};
+
+Circuit circuit;
 GamepadReport gamepad_report;
 
-OutputPin ledPin(LED_PIN);
-TictocInput tictoc;
+Adafruit_USBD_HID usb_hid;
 
 void setup() {
 #if defined(ARDUINO_ARCH_MBED) && defined(ARDUINO_ARCH_RP2040)
@@ -72,8 +96,8 @@ void setup() {
   // such as mbed rp2040
   TinyUSB_Device_Init(0);
 #endif
-
   Serial.begin(115200);
+  analogReadResolution(kAdcBits);
 
   usb_hid.setPollInterval(1);  // 1ms
   usb_hid.setReportDescriptor(kHidDescriptor, sizeof(kHidDescriptor));
@@ -84,8 +108,6 @@ void setup() {
   while (!TinyUSBDevice.mounted()) {
     delay(1);
   }
-  pinMode(JOY_X_PIN, INPUT);
-  pinMode(JOY_Y_PIN, INPUT);
 
   if (!usb_hid.ready()) {
     Serial.print("ERRROR: Failed to begin Gamepad device");
@@ -100,14 +122,15 @@ void setup() {
 }
 
 void loop() {
-  ledPin.AnalogWrite(tictoc.AnalogRead() / 4);
+  circuit.ledPin.AnalogWrite(circuit.tictoc.AnalogRead());
 
-  int joy_x = analogRead(JOY_X_PIN);
-  int joy_y = analogRead(JOY_Y_PIN);
+  int joy_x = circuit.joy_x_in->AnalogRead();
+  int joy_y = circuit.joy_y_in->AnalogRead();
 
-  // map [0, 1023] to  [-511, 512]
-  gamepad_report.x = joy_x - 511;
-  gamepad_report.y = joy_y - 511;
+  gamepad_report.x =
+      map(joy_x, kAnalogMin, kAnalogMax, kSignedAnalogMin, kSignedAnalogMax);
+  gamepad_report.y =
+      map(joy_y, kAnalogMin, kAnalogMax, kSignedAnalogMin, kSignedAnalogMax);
 
   // temporal D-pad impl.
   gamepad_report.hat = (time_us_32() / 1000000) % 9;
@@ -120,9 +143,5 @@ void loop() {
   }
 
   usb_hid.sendReport(0, &gamepad_report, sizeof(gamepad_report));
-
-  // Serial.printf("rx: %d, ry: %d\n", gamepad_report.x, gamepad_report.y);
-  // Serial.printf("x: %d\n", joy_x);
-
   return;
 }

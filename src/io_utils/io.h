@@ -14,7 +14,7 @@ class Input {
   virtual int AnalogRead() = 0;
 };
 
-class InputPin : Input {
+class InputPin : public Input {
   uint8_t pin_id_;
 
  public:
@@ -35,7 +35,8 @@ class InputPin : Input {
 };
 
 // For testing
-class TictocInput : Input {
+template <int MIN, int MAX>
+class TictocInput : public Input {
  public:
   virtual ~TictocInput() override {
   }
@@ -60,16 +61,19 @@ class TictocInput : Input {
     uint t = time_us_32() & kMask;
     if (t <= kHalf) {
       // rising
-      return map(t, 0, kHalf, 0, 1023);
+      return map(t, 0, kHalf, MIN, MAX);
     } else {
       // setting
-      return map(t, kHalf + 1, kMask, 1023, 0);
+      return map(t, kHalf + 1, kMask, MAX, MIN);
     }
   };
 };
 
 class Output {
  public:
+  Output() {
+  }
+
   virtual ~Output() {
   }
 
@@ -85,7 +89,7 @@ class Output {
   virtual void AnalogWrite(int value) = 0;
 };
 
-class OutputPin : Output {
+class OutputPin : public Output {
   uint8_t pin_id_;
 
  public:

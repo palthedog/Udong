@@ -26,11 +26,18 @@ class Multiplexer8 {
         comIn_(comIn) {
   }
 
-  Output* GetOutput(uint8_t channel) {
+  Input* GetInput(uint8_t channel) {
     if (channel >= 8) {
+      Serial.printf("ERROR: Invalid channel has been selected: %d", channel);
       return nullptr;
     }
-    // if (inputs_)
+    if (inputs_.size() <= channel) {
+      inputs_.resize(channel + 1);
+    }
+    if (!inputs_[channel]) {
+      inputs_[channel] = std::move(std::make_unique<MInput>(this, channel));
+    }
+    return (Input*)inputs_[channel].get();
   }
 
  private:
@@ -52,7 +59,7 @@ class Multiplexer8 {
     return comIn_;
   }
 
-  class MInput : Input {
+  class MInput : public Input {
     Multiplexer8* parent_;
     uint8_t channel_;
 
@@ -61,12 +68,12 @@ class Multiplexer8 {
         : parent_(parent), channel_(channel) {
     }
 
-    int AnalogRead() {
+    int AnalogRead() override {
       parent_->SelectChannel(channel_);
       return parent_->ComInput()->AnalogRead();
     }
 
-    PinStatus DigitalRead() {
+    PinStatus DigitalRead() override {
       parent_->SelectChannel(channel_);
       return parent_->ComInput()->DigitalRead();
     }
