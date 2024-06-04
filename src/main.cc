@@ -31,6 +31,16 @@ const uint8_t kHidDescriptor[] = {
     HID_REPORT_SIZE(16),
     HID_INPUT(HID_DATA | HID_VARIABLE | HID_ABSOLUTE),
 
+    // Unsigned 12 bit analog button Z (for debugging)
+    HID_USAGE_PAGE(HID_USAGE_PAGE_DESKTOP),
+    HID_USAGE(HID_USAGE_DESKTOP_RX),
+    HID_USAGE(HID_USAGE_DESKTOP_RZ),
+    HID_LOGICAL_MIN_N(kAnalogMin, 2),
+    HID_LOGICAL_MAX_N(kAnalogMax, 2),
+    HID_REPORT_COUNT(2),
+    HID_REPORT_SIZE(16),
+    HID_INPUT(HID_DATA | HID_VARIABLE | HID_ABSOLUTE),
+
     // 8 bit DPad/Hat Button Map
     HID_USAGE_PAGE(HID_USAGE_PAGE_DESKTOP),
     HID_USAGE(HID_USAGE_DESKTOP_HAT_SWITCH),
@@ -55,23 +65,27 @@ const uint8_t kHidDescriptor[] = {
 };
 
 struct TU_ATTR_PACKED GamepadReport {
-  int16_t x;    ///< Delta x  movement of left analog-stick
-  int16_t y;    ///< Delta y  movement of left analog-stick
+  // analog stick
+  int16_t x;
+  int16_t y;
+
+  // debug
+  uint16_t rx;
+  uint16_t ry;
+
   uint8_t hat;  ///< Buttons mask for currently pressed buttons in the DPad/hat
   uint16_t buttons;  ///< Buttons mask for currently pressed buttons
 };
 
 const uint8_t LED_PIN = D25;
 
-const uint8_t MUX_COM_PIN = A0;
-const uint8_t MUX_A_PIN = D10;
-const uint8_t MUX_B_PIN = D11;
-const uint8_t MUX_C_PIN = D12;
-
 struct Circuit {
   Multiplexer8 mux;
   Input* joy_x_in;
   Input* joy_y_in;
+
+  Input* joy_rx_in;
+  Input* joy_ry_in;
 
   OutputPin ledPin;
   TictocInput<0, 255> tictoc;
@@ -82,6 +96,9 @@ struct Circuit {
         ledPin(D25) {
     joy_x_in = mux.GetInput(0);
     joy_y_in = mux.GetInput(1);
+
+    joy_rx_in = mux.GetInput(2);
+    joy_ry_in = mux.GetInput(3);
   }
 };
 
@@ -116,10 +133,14 @@ void setup() {
 
   gamepad_report.x = 0;
   gamepad_report.y = 0;
+  gamepad_report.rx = 0;
+  gamepad_report.ry = 0;
   gamepad_report.hat = GAMEPAD_HAT_CENTERED;
   gamepad_report.buttons = 0;
   usb_hid.sendReport(0, &gamepad_report, sizeof(gamepad_report));
 }
+
+int logt = 0;
 
 void loop() {
   circuit.ledPin.AnalogWrite(circuit.tictoc.AnalogRead());
@@ -132,6 +153,20 @@ void loop() {
   gamepad_report.y =
       map(joy_y, kAnalogMin, kAnalogMax, kSignedAnalogMin, kSignedAnalogMax);
 
+  int rx = circuit.joy_rx_in->AnalogRead();
+  int ry = circuit.joy_ry_in->AnalogRead();
+  gamepad_report.rx = rx;
+  gamepad_report.ry = ry;
+
+  if (millis() > logt) {
+    Serial.printf(
+        "rx: %d, V: %dmV\n", rx, map(rx, kAnalogMin, kAnalogMax, 0, 3300));
+    Serial.printf(
+        "ry: %d, V: %dmV\n", ry, map(ry, kAnalogMin, kAnalogMax, 0, 3300));
+    Serial.println("---");
+    logt = millis() + 1000;
+  }
+
   // temporal D-pad impl.
   gamepad_report.hat = (time_us_32() / 1000000) % 9;
 
@@ -143,5 +178,4 @@ void loop() {
   }
 
   usb_hid.sendReport(0, &gamepad_report, sizeof(gamepad_report));
-  return;
 }
