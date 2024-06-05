@@ -4,4 +4,7 @@
     "editor.formatOnSave": true,
     "C_Cpp.formatting": "clangFormat",
     "C_Cpp.default.cppStandard": "c++17",
+    "files.associations": {
+        "memory": "cpp"
+    },
 }

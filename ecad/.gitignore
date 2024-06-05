@@ -1,0 +1,13 @@
+# KiCad
+fp-info-cache
+sym-lib-table
+
+# KiCad local project settings
+*.kicad_prl
+
+*.bak
+*-backups/
+\#auto_saved_files\#
+
+# KiCad lock files
+*.lck
