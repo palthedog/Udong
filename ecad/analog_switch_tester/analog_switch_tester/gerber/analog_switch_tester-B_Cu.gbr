@@ -1,0 +1,237 @@
+G04 #@! TF.GenerationSoftware,KiCad,Pcbnew,8.0.3*
+G04 #@! TF.CreationDate,2024-06-06T13:15:09+09:00*
+G04 #@! TF.ProjectId,analog_switch_tester,616e616c-6f67-45f7-9377-697463685f74,1*
+G04 #@! TF.SameCoordinates,Original*
+G04 #@! TF.FileFunction,Copper,L2,Bot*
+G04 #@! TF.FilePolarity,Positive*
+%FSLAX46Y46*%
+G04 Gerber Fmt 4.6, Leading zero omitted, Abs format (unit mm)*
+G04 Created by KiCad (PCBNEW 8.0.3) date 2024-06-06 13:15:09*
+%MOMM*%
+%LPD*%
+G01*
+G04 APERTURE LIST*
+G04 #@! TA.AperFunction,ComponentPad*
+%ADD10O,1.700000X1.700000*%
+G04 #@! TD*
+G04 #@! TA.AperFunction,ComponentPad*
+%ADD11R,1.700000X1.700000*%
+G04 #@! TD*
+G04 APERTURE END LIST*
+D10*
+G04 #@! TO.P,J9,3,Pin_3*
+G04 #@! TO.N,GNDA*
+X93274000Y-106603500D03*
+G04 #@! TO.P,J9,2,Pin_2*
+G04 #@! TO.N,V_AREF*
+X95814000Y-106603500D03*
+D11*
+G04 #@! TO.P,J9,1,Pin_1*
+G04 #@! TO.N,OUT*
+X98354000Y-106603500D03*
+G04 #@! TD*
+D10*
+G04 #@! TO.P,Mount9,3,Pin_3*
+G04 #@! TO.N,unconnected-(Mount1-Pin_3-Pad3)*
+X98354000Y-81203500D03*
+G04 #@! TO.P,Mount9,2,Pin_2*
+G04 #@! TO.N,unconnected-(Mount1-Pin_2-Pad2)*
+X95814000Y-81203500D03*
+D11*
+G04 #@! TO.P,Mount9,1,Pin_1*
+G04 #@! TO.N,unconnected-(Mount1-Pin_1-Pad1)*
+X93274000Y-81203500D03*
+G04 #@! TD*
+D10*
+G04 #@! TO.P,J8,3,Pin_3*
+G04 #@! TO.N,GNDA*
+X63274000Y-106603500D03*
+G04 #@! TO.P,J8,2,Pin_2*
+G04 #@! TO.N,V_AREF*
+X65814000Y-106603500D03*
+D11*
+G04 #@! TO.P,J8,1,Pin_1*
+G04 #@! TO.N,OUT*
+X68354000Y-106603500D03*
+G04 #@! TD*
+D10*
+G04 #@! TO.P,Mount8,3,Pin_3*
+G04 #@! TO.N,unconnected-(Mount1-Pin_3-Pad3)*
+X68354000Y-81203500D03*
+G04 #@! TO.P,Mount8,2,Pin_2*
+G04 #@! TO.N,unconnected-(Mount1-Pin_2-Pad2)*
+X65814000Y-81203500D03*
+D11*
+G04 #@! TO.P,Mount8,1,Pin_1*
+G04 #@! TO.N,unconnected-(Mount1-Pin_1-Pad1)*
+X63274000Y-81203500D03*
+G04 #@! TD*
+D10*
+G04 #@! TO.P,J7,3,Pin_3*
+G04 #@! TO.N,GNDA*
+X33274000Y-106603500D03*
+G04 #@! TO.P,J7,2,Pin_2*
+G04 #@! TO.N,V_AREF*
+X35814000Y-106603500D03*
+D11*
+G04 #@! TO.P,J7,1,Pin_1*
+G04 #@! TO.N,OUT*
+X38354000Y-106603500D03*
+G04 #@! TD*
+D10*
+G04 #@! TO.P,Mount7,3,Pin_3*
+G04 #@! TO.N,unconnected-(Mount1-Pin_3-Pad3)*
+X38354000Y-81203500D03*
+G04 #@! TO.P,Mount7,2,Pin_2*
+G04 #@! TO.N,unconnected-(Mount1-Pin_2-Pad2)*
+X35814000Y-81203500D03*
+D11*
+G04 #@! TO.P,Mount7,1,Pin_1*
+G04 #@! TO.N,unconnected-(Mount1-Pin_1-Pad1)*
+X33274000Y-81203500D03*
+G04 #@! TD*
+D10*
+G04 #@! TO.P,J6,3,Pin_3*
+G04 #@! TO.N,GNDA*
+X93274000Y-76603500D03*
+G04 #@! TO.P,J6,2,Pin_2*
+G04 #@! TO.N,V_AREF*
+X95814000Y-76603500D03*
+D11*
+G04 #@! TO.P,J6,1,Pin_1*
+G04 #@! TO.N,OUT*
+X98354000Y-76603500D03*
+G04 #@! TD*
+D10*
+G04 #@! TO.P,Mount6,3,Pin_3*
+G04 #@! TO.N,unconnected-(Mount1-Pin_3-Pad3)*
+X98354000Y-51203500D03*
+G04 #@! TO.P,Mount6,2,Pin_2*
+G04 #@! TO.N,unconnected-(Mount1-Pin_2-Pad2)*
+X95814000Y-51203500D03*
+D11*
+G04 #@! TO.P,Mount6,1,Pin_1*
+G04 #@! TO.N,unconnected-(Mount1-Pin_1-Pad1)*
+X93274000Y-51203500D03*
+G04 #@! TD*
+D10*
+G04 #@! TO.P,J5,3,Pin_3*
+G04 #@! TO.N,GNDA*
+X63274000Y-76603500D03*
+G04 #@! TO.P,J5,2,Pin_2*
+G04 #@! TO.N,V_AREF*
+X65814000Y-76603500D03*
+D11*
+G04 #@! TO.P,J5,1,Pin_1*
+G04 #@! TO.N,OUT*
+X68354000Y-76603500D03*
+G04 #@! TD*
+D10*
+G04 #@! TO.P,Mount5,3,Pin_3*
+G04 #@! TO.N,unconnected-(Mount1-Pin_3-Pad3)*
+X68354000Y-51203500D03*
+G04 #@! TO.P,Mount5,2,Pin_2*
+G04 #@! TO.N,unconnected-(Mount1-Pin_2-Pad2)*
+X65814000Y-51203500D03*
+D11*
+G04 #@! TO.P,Mount5,1,Pin_1*
+G04 #@! TO.N,unconnected-(Mount1-Pin_1-Pad1)*
+X63274000Y-51203500D03*
+G04 #@! TD*
+D10*
+G04 #@! TO.P,J4,3,Pin_3*
+G04 #@! TO.N,GNDA*
+X33274000Y-76603500D03*
+G04 #@! TO.P,J4,2,Pin_2*
+G04 #@! TO.N,V_AREF*
+X35814000Y-76603500D03*
+D11*
+G04 #@! TO.P,J4,1,Pin_1*
+G04 #@! TO.N,OUT*
+X38354000Y-76603500D03*
+G04 #@! TD*
+D10*
+G04 #@! TO.P,Mount4,3,Pin_3*
+G04 #@! TO.N,unconnected-(Mount1-Pin_3-Pad3)*
+X38354000Y-51203500D03*
+G04 #@! TO.P,Mount4,2,Pin_2*
+G04 #@! TO.N,unconnected-(Mount1-Pin_2-Pad2)*
+X35814000Y-51203500D03*
+D11*
+G04 #@! TO.P,Mount4,1,Pin_1*
+G04 #@! TO.N,unconnected-(Mount1-Pin_1-Pad1)*
+X33274000Y-51203500D03*
+G04 #@! TD*
+D10*
+G04 #@! TO.P,J3,3,Pin_3*
+G04 #@! TO.N,GNDA*
+X93274000Y-46603500D03*
+G04 #@! TO.P,J3,2,Pin_2*
+G04 #@! TO.N,V_AREF*
+X95814000Y-46603500D03*
+D11*
+G04 #@! TO.P,J3,1,Pin_1*
+G04 #@! TO.N,OUT*
+X98354000Y-46603500D03*
+G04 #@! TD*
+D10*
+G04 #@! TO.P,Mount3,3,Pin_3*
+G04 #@! TO.N,unconnected-(Mount1-Pin_3-Pad3)*
+X98354000Y-21203500D03*
+G04 #@! TO.P,Mount3,2,Pin_2*
+G04 #@! TO.N,unconnected-(Mount1-Pin_2-Pad2)*
+X95814000Y-21203500D03*
+D11*
+G04 #@! TO.P,Mount3,1,Pin_1*
+G04 #@! TO.N,unconnected-(Mount1-Pin_1-Pad1)*
+X93274000Y-21203500D03*
+G04 #@! TD*
+D10*
+G04 #@! TO.P,J2,3,Pin_3*
+G04 #@! TO.N,GNDA*
+X63274000Y-46603500D03*
+G04 #@! TO.P,J2,2,Pin_2*
+G04 #@! TO.N,V_AREF*
+X65814000Y-46603500D03*
+D11*
+G04 #@! TO.P,J2,1,Pin_1*
+G04 #@! TO.N,OUT*
+X68354000Y-46603500D03*
+G04 #@! TD*
+D10*
+G04 #@! TO.P,Mount2,3,Pin_3*
+G04 #@! TO.N,unconnected-(Mount1-Pin_3-Pad3)*
+X68354000Y-21203500D03*
+G04 #@! TO.P,Mount2,2,Pin_2*
+G04 #@! TO.N,unconnected-(Mount1-Pin_2-Pad2)*
+X65814000Y-21203500D03*
+D11*
+G04 #@! TO.P,Mount2,1,Pin_1*
+G04 #@! TO.N,unconnected-(Mount1-Pin_1-Pad1)*
+X63274000Y-21203500D03*
+G04 #@! TD*
+D10*
+G04 #@! TO.P,Mount1,3,Pin_3*
+G04 #@! TO.N,unconnected-(Mount1-Pin_3-Pad3)*
+X38354000Y-21203500D03*
+G04 #@! TO.P,Mount1,2,Pin_2*
+G04 #@! TO.N,unconnected-(Mount1-Pin_2-Pad2)*
+X35814000Y-21203500D03*
+D11*
+G04 #@! TO.P,Mount1,1,Pin_1*
+G04 #@! TO.N,unconnected-(Mount1-Pin_1-Pad1)*
+X33274000Y-21203500D03*
+G04 #@! TD*
+D10*
+G04 #@! TO.P,J1,3,Pin_3*
+G04 #@! TO.N,GNDA*
+X33274000Y-46603500D03*
+G04 #@! TO.P,J1,2,Pin_2*
+G04 #@! TO.N,V_AREF*
+X35814000Y-46603500D03*
+D11*
+G04 #@! TO.P,J1,1,Pin_1*
+G04 #@! TO.N,OUT*
+X38354000Y-46603500D03*
+G04 #@! TD*
+M02*
