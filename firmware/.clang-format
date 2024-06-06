@@ -6,3 +6,7 @@ BasedOnStyle: Google
 
 AllowShortFunctionsOnASingleLine: false
 AlignAfterOpenBracket: AlwaysBreak
+
+AllowAllArgumentsOnNextLine: true
+BinPackArguments: false
+BinPackParameters: false

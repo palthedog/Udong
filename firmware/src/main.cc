@@ -5,6 +5,8 @@
 #include "io_utils/io.h"
 #include "io_utils/led.h"
 #include "io_utils/multiplexer.h"
+#include "io_utils/soft/hall.h"
+#include "io_utils/soft/triangle.h"
 #include "switch.h"
 
 // Sample code:
@@ -33,11 +35,13 @@ const uint8_t kHidDescriptor[] = {
 
     // Unsigned 12 bit analog button Z (for debugging)
     HID_USAGE_PAGE(HID_USAGE_PAGE_DESKTOP),
+    HID_USAGE(HID_USAGE_DESKTOP_Z),
     HID_USAGE(HID_USAGE_DESKTOP_RX),
+    HID_USAGE(HID_USAGE_DESKTOP_RY),
     HID_USAGE(HID_USAGE_DESKTOP_RZ),
     HID_LOGICAL_MIN_N(kAnalogMin, 2),
     HID_LOGICAL_MAX_N(kAnalogMax, 2),
-    HID_REPORT_COUNT(2),
+    HID_REPORT_COUNT(4),
     HID_REPORT_SIZE(16),
     HID_INPUT(HID_DATA | HID_VARIABLE | HID_ABSOLUTE),
 
@@ -70,8 +74,10 @@ struct TU_ATTR_PACKED GamepadReport {
   int16_t y;
 
   // debug
+  uint16_t z;
   uint16_t rx;
   uint16_t ry;
+  uint16_t rz;
 
   uint8_t hat;  ///< Buttons mask for currently pressed buttons in the DPad/hat
   uint16_t buttons;  ///< Buttons mask for currently pressed buttons
@@ -84,21 +90,45 @@ struct Circuit {
   Input* joy_x_in;
   Input* joy_y_in;
 
-  Input* joy_rx_in;
-  Input* joy_ry_in;
+  Input* key0_in;
+  Input* key1_in;
 
-  OutputPin ledPin;
-  TictocInput<0, 255> tictoc;
+  OutputPin led_pin;
+  TriangleInput<0, 255> triangle_in;
+
+  HallInput<
+      kAnalogMin,
+      kAnalogMax,
+      // min dist
+      2000,
+      // max dist
+      2000 + 4000,
+      // Br
+      10000,
+      // thickness
+      3400,
+      // diameter
+      2900,
+      // sensitivity
+      //   DRV5056A3 @ 3.3V
+      30,
+      // 3.3V
+      3300,
+      // quiescent voltage (mV)
+      600>
+      hall_in;
 
   Circuit()
-      : mux(new OutputPin(D10), new OutputPin(D11), new OutputPin(D12),
+      : mux(new OutputPin(D10),
+            new OutputPin(D11),
+            new OutputPin(D12),
             new InputPin(A0)),
-        ledPin(D25) {
+        led_pin(D25) {
     joy_x_in = mux.GetInput(0);
     joy_y_in = mux.GetInput(1);
 
-    joy_rx_in = mux.GetInput(2);
-    joy_ry_in = mux.GetInput(3);
+    key0_in = mux.GetInput(2);
+    key1_in = mux.GetInput(3);
   }
 };
 
@@ -133,8 +163,10 @@ void setup() {
 
   gamepad_report.x = 0;
   gamepad_report.y = 0;
+  gamepad_report.z = 0;
   gamepad_report.rx = 0;
   gamepad_report.ry = 0;
+  gamepad_report.rz = 0;
   gamepad_report.hat = GAMEPAD_HAT_CENTERED;
   gamepad_report.buttons = 0;
   usb_hid.sendReport(0, &gamepad_report, sizeof(gamepad_report));
@@ -143,28 +175,55 @@ void setup() {
 int logt = 0;
 
 void loop() {
-  circuit.ledPin.AnalogWrite(circuit.tictoc.AnalogRead());
+  circuit.led_pin.AnalogWrite(circuit.triangle_in.AnalogRead());
 
   int joy_x = circuit.joy_x_in->AnalogRead();
   int joy_y = circuit.joy_y_in->AnalogRead();
 
   gamepad_report.x =
-      map(joy_x, kAnalogMin, kAnalogMax, kSignedAnalogMin, kSignedAnalogMax);
+      map(joy_x,
+          kAnalogMin,
+          kAnalogMax + 1,
+          kSignedAnalogMin,
+          kSignedAnalogMax + 1);
   gamepad_report.y =
-      map(joy_y, kAnalogMin, kAnalogMax, kSignedAnalogMin, kSignedAnalogMax);
+      map(joy_y,
+          kAnalogMin,
+          kAnalogMax + 1,
+          kSignedAnalogMin,
+          kSignedAnalogMax + 1);
 
-  int rx = circuit.joy_rx_in->AnalogRead();
-  int ry = circuit.joy_ry_in->AnalogRead();
-  gamepad_report.rx = rx;
-  gamepad_report.ry = ry;
+  int key0 = circuit.key0_in->AnalogRead();
+  int key1 = circuit.key1_in->AnalogRead();
+
+  gamepad_report.z = key0;
+  gamepad_report.rx = key1;
+
+  int hall = circuit.hall_in.AnalogRead();
+  gamepad_report.ry = hall;
 
   if (millis() > logt) {
     Serial.printf(
-        "rx: %d, V: %dmV\n", rx, map(rx, kAnalogMin, kAnalogMax, 0, 3300));
+        "key0: %d, V: %dmV\n",
+        key0,
+        map(key0, kAnalogMin, kAnalogMax + 1, 0, 3300));
     Serial.printf(
-        "ry: %d, V: %dmV\n", ry, map(ry, kAnalogMin, kAnalogMax, 0, 3300));
+        "key1: %d, V: %dmV\n",
+        key1,
+        map(key1, kAnalogMin, kAnalogMax + 1, 0, 3300));
+
+    uint32_t dist_micro = circuit.hall_in.GetDistanceMicros();
+    uint32_t micro_tesla =
+        circuit.hall_in.DistanceMicrosToMicroTesla(dist_micro);
+    Serial.printf(
+        "dist: %.2f mm, mag: %.2f mT\n",
+        dist_micro / 1000.0,
+        micro_tesla / 1000.0);
+    Serial.printf("hall-in: %u\n", hall);
+
     Serial.println("---");
-    logt = millis() + 1000;
+    logt = millis() + 310;
+    delay(1);
   }
 
   // temporal D-pad impl.

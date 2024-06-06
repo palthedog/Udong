@@ -1638,7 +1638,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "5e742517-427a-43a4-ac78-8d376ddd38c3")
-		(property "Reference" "Mount"
+		(property "Reference" "Mount1"
 			(at 56.515 62.23 0)
 			(effects
 				(font
@@ -1693,7 +1693,7 @@
 		(instances
 			(project "analog_switch_tester"
 				(path "/bc912bb6-7985-407f-bcee-658a2bff2f4b"
-					(reference "Mount")
+					(reference "Mount1")
 					(unit 1)
 				)
 			)

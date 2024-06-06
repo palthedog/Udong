@@ -1,0 +1,4 @@
+(fp_lib_table
+  (version 7)
+  (lib (name "Udong")(type "KiCad")(uri "C:/Users/safii/Documents/PlatformIO/Projects/Udong/ecad/Udong.pretty")(options "")(descr ""))
+)
