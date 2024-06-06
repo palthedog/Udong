@@ -927,6 +927,18 @@
 		(color 0 0 0 0)
 		(uuid "f70be477-8e2d-49d9-945b-4527dde60d84")
 	)
+	(no_connect
+		(at 60.96 67.31)
+		(uuid "23dd81e6-a307-4ad3-9247-58eb73626b4d")
+	)
+	(no_connect
+		(at 60.96 72.39)
+		(uuid "36543cac-2270-45d7-9f96-4b42eeae0c26")
+	)
+	(no_connect
+		(at 60.96 69.85)
+		(uuid "aadcf805-c486-426f-a3d1-b1510c60086c")
+	)
 	(wire
 		(pts
 			(xy 26.67 55.88) (xy 35.56 55.88)
@@ -1611,6 +1623,77 @@
 			(project ""
 				(path "/bc912bb6-7985-407f-bcee-658a2bff2f4b"
 					(reference "C2")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Connector:Conn_01x03_Pin")
+		(at 55.88 69.85 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "5e742517-427a-43a4-ac78-8d376ddd38c3")
+		(property "Reference" "Mount"
+			(at 56.515 62.23 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "Conn_01x03_Pin"
+			(at 56.515 64.77 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical"
+			(at 55.88 69.85 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 55.88 69.85 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Generic connector, single row, 01x03, script generated"
+			(at 55.88 69.85 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "6e3bcbfe-a961-4df7-b88f-0c8348d17b27")
+		)
+		(pin "3"
+			(uuid "a5202b4f-338c-4e8a-a1ca-45fe943f800b")
+		)
+		(pin "2"
+			(uuid "6ce8e5ff-0bae-41de-982b-a9d690eff92e")
+		)
+		(instances
+			(project "analog_switch_tester"
+				(path "/bc912bb6-7985-407f-bcee-658a2bff2f4b"
+					(reference "Mount")
 					(unit 1)
 				)
 			)
