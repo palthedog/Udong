@@ -81,6 +81,20 @@ struct TU_ATTR_PACKED GamepadReport {
 
   uint8_t hat;  ///< Buttons mask for currently pressed buttons in the DPad/hat
   uint16_t buttons;  ///< Buttons mask for currently pressed buttons
+
+  inline void UpdateButton(int index, bool is_on) {
+    if (index < 0 || index >= 16) {
+      Serial.printf("ERROR: invalid button index: %d\n", index);
+      return;
+    }
+
+    uint16_t button_bit = 1u << index;
+    if (is_on) {
+      buttons |= button_bit;
+    } else {
+      buttons &= ~button_bit;
+    }
+  }
 };
 
 const uint8_t LED_PIN = D25;
@@ -117,13 +131,15 @@ struct Circuit {
       // quiescent voltage (mV)
       600>
       hall_in;
+  AnalogSwitch analog_switch0;
 
   Circuit()
       : mux(new OutputPin(D10),
             new OutputPin(D11),
             new OutputPin(D12),
             new InputPin(A0)),
-        led_pin(D25) {
+        led_pin(D25),
+        analog_switch0(&hall_in) {
     joy_x_in = mux.GetInput(0);
     joy_y_in = mux.GetInput(1);
 
@@ -202,6 +218,9 @@ void loop() {
   int hall = circuit.hall_in.AnalogRead();
   gamepad_report.ry = hall;
 
+  // button
+  gamepad_report.UpdateButton(0, circuit.analog_switch0.IsOn());
+
   if (millis() > logt) {
     Serial.printf(
         "key0: %d, V: %dmV\n",
@@ -220,21 +239,15 @@ void loop() {
         dist_micro / 1000.0,
         micro_tesla / 1000.0);
     Serial.printf("hall-in: %u\n", hall);
-
     Serial.println("---");
-    logt = millis() + 310;
+    circuit.analog_switch0.Calibrate();
+    Serial.println("---");
+    logt = millis() + 1000;
     delay(1);
   }
 
   // temporal D-pad impl.
   gamepad_report.hat = (time_us_32() / 1000000) % 9;
-
-  uint32_t tmp = (time_us_32() / 1000000) % 17;
-  if (tmp == 0) {
-    gamepad_report.buttons = 0;
-  } else {
-    gamepad_report.buttons = 1 << (tmp - 1);
-  }
 
   usb_hid.sendReport(0, &gamepad_report, sizeof(gamepad_report));
 }
