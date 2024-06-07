@@ -73,6 +73,7 @@ class AnalogSwitch {
 
   double last_mag_flux_;
   double last_press_mm_;
+  int last_analog_;
 
   // array[0] : B @ far_mm + 0.0mm (bottom)
   // array[1] : B @ far_mm + 0.1mm
@@ -109,21 +110,26 @@ class AnalogSwitch {
     return 4.0;
   }
 
+  const double kSensitivity_mV_per_mT = 30.0;
+  const double kQuiescentVoltage_mV = 0.6 * 1000;
+
   // analog: [0, 4096)
   double AnalogToMagnetFlux(int analog) {
-    const double kSensitivity_mV_per_mT = 30.0;
-    const double kQuiescentVoltage_mV = 0.6 * 1000;
-
-    double milli_volt = analog * 3300.0 / 4096.0;
-    double delta_mV = milli_volt - kQuiescentVoltage_mV;
+    double mv = (double)analog * (3300.0 / 4096.0);
+    double delta_mV = mv - kQuiescentVoltage_mV;
     delta_mV = max(0.0, delta_mV);
+
     return delta_mV / kSensitivity_mV_per_mT;
+  }
+
+  double MagnetFluxToMilliVolt(double mag_flux) {
+    return kSensitivity_mV_per_mT * mag_flux + kQuiescentVoltage_mV;
   }
 
   double ReadMagnetFlux() {
     // [0, 4096)
-    int adc_value = input_->AnalogRead();
-    return AnalogToMagnetFlux(adc_value);
+    last_analog_ = input_->AnalogRead();
+    return AnalogToMagnetFlux(last_analog_);
   }
 
  public:
@@ -138,11 +144,33 @@ class AnalogSwitch {
 
   void DumpLookupTable() {
     Serial.println("Dump lookup table");
-    for (int i = 0; i <= 40; i += 10) {
-      double press_mm = i * 0.1;
-      double mag_flux = mag_flux_table_[i];
-      Serial.printf("  %.2lf mm: %.2lf mT\n", press_mm, mag_flux);
+    for (int mm = 0; mm < 4; mm++) {
+      for (int micro = 0; micro < 5; micro++) {
+        int i = mm * 10 + micro;
+        double press_mm = i * 0.1;
+        double mag_flux = mag_flux_table_[i];
+        double mv = MagnetFluxToMilliVolt(mag_flux);
+        Serial.printf(
+            "  %.2lf mm: %.2lf mT, %.2lf mV\n", press_mm, mag_flux, mv);
+      }
     }
+    double mag_flux = mag_flux_table_[40];
+    double mv = MagnetFluxToMilliVolt(mag_flux);
+    Serial.printf("  %.2lf mm: %.2lf mT, %.2lf mV\n", 4.0, mag_flux, mv);
+  }
+
+  void DumpLastState() {
+    Serial.printf(
+        "press: %.2lf mm, "
+        "raw: %d (%.lf mV), "
+        "mag: %.2lf mT, min: %.2lf mt, "
+        "max: %.2lf mT\n",
+        last_press_mm_,
+        last_analog_,
+        last_analog_ * (3300.0 / 4096.0),
+        last_mag_flux_,
+        mag_flux_min_,
+        mag_flux_max_);
   }
 
   bool IsOn() {
@@ -163,15 +191,6 @@ class AnalogSwitch {
 
     last_press_mm_ = LookupPressMmFromMagFlux(last_mag_flux_);
     return last_press_mm_ > 2.0;
-  }
-
-  void DumpLastState() {
-    Serial.printf(
-        "press: %.2lf mm, mag: %.2lf mT, min: %.2lf mT, max:P %.2lf mT\n",
-        last_press_mm_,
-        last_mag_flux_,
-        mag_flux_min_,
-        mag_flux_max_);
   }
 
   double GetLastPressMm() {
@@ -215,6 +234,7 @@ class AnalogSwitch {
     Serial.printf("Solved d_near: %.3lf mm\n", solved_d_near_mm);
     double mag_remanence = CalcRemanence(
         solved_d_near_mm, mag_flux_max_, kR_2, kMagnetThickness_mm);
+
     UpdateMagFluxTable(
         // d_far_mm
         solved_d_near_mm + kKeyStroke_mm,

@@ -191,8 +191,8 @@ void setup() {
   usb_hid.sendReport(0, &gamepad_report, sizeof(gamepad_report));
 
   // wait for
-  delay(5000);
-  Serial.println("Start");
+  // delay(5000);
+  // Serial.println("Start");
 }
 
 int logt = 0;
@@ -216,21 +216,25 @@ void loop() {
           kSignedAnalogMin,
           kSignedAnalogMax + 1);
 
-  gamepad_report.z = circuit.analog_switch_1_raw_in->AnalogRead();
-  gamepad_report.rx =
-      circuit.analog_switch_1.GetLastPressMm() * kAnalogMax / 4.0;
-
   //// analog switch
   // soft switch(for test)
   int hall = circuit.hall_in.AnalogRead();
   double press_mm = circuit.analog_switch_soft.GetLastPressMm();
   bool as0_on = circuit.analog_switch_soft.IsOn();
-  gamepad_report.ry = hall;
-  gamepad_report.rz =
-      press_mm * kAnalogMax / 4.0;  // [0, 4.0] -> [0, kAnalogMax]
   gamepad_report.UpdateButton(0, as0_on);
 
+  // analog switch 0
   gamepad_report.UpdateButton(1, circuit.analog_switch_0.IsOn());
+  gamepad_report.z = circuit.analog_switch_0_raw_in->AnalogRead();
+  gamepad_report.rx =
+      circuit.analog_switch_0.GetLastPressMm() * kAnalogMax / 4.0;
+
+  // analog switch 1
+  gamepad_report.ry = circuit.analog_switch_1_raw_in->AnalogRead();
+
+  gamepad_report.rz =
+      circuit.analog_switch_1.GetLastPressMm() * kAnalogMax / 4.0;
+
   gamepad_report.UpdateButton(2, circuit.analog_switch_1.IsOn());
 
   if (millis() > logt) {
@@ -250,18 +254,21 @@ void loop() {
     circuit.analog_switch_0.Calibrate();
     Serial.println("Calibrate switch-1");
     circuit.analog_switch_1.Calibrate();
-    Serial.println("Dump switch-1");
+
+    Serial.println("* Dump switch-1");
     circuit.analog_switch_1.DumpLookupTable();
-    Serial.println("---");
-    Serial.println("analog-switch0");
     circuit.analog_switch_1.DumpLastState();
-    Serial.println("TODO: Noise updates mag-flux min/max...");
+
+    // Serial.println("* Dump switch-soft");
+    // circuit.analog_switch_soft.DumpLookupTable();
+
+    Serial.println("TODO: Noisy inputs update mag-flux min/max...");
 
     logt = millis() + 1000;
     delay(1);
   }
 
-  circuit.analog_switch_1.DumpLastState();
+  // circuit.analog_switch_1.DumpLastState();
   delay(1);
 
   // temporal D-pad impl.
