@@ -71,6 +71,7 @@ class AnalogSwitch {
   double mag_flux_min_;
   double mag_flux_max_;
 
+  double last_mag_flux_;
   double last_press_mm_;
 
   // array[0] : B @ far_mm + 0.0mm (bottom)
@@ -135,10 +136,24 @@ class AnalogSwitch {
   ~AnalogSwitch() {
   }
 
+  void DumpLookupTable() {
+    Serial.println("Dump lookup table");
+    for (int i = 0; i <= 40; i += 10) {
+      double press_mm = i * 0.1;
+      double mag_flux = mag_flux_table_[i];
+      Serial.printf("  %.2lf mm: %.2lf mT\n", press_mm, mag_flux);
+    }
+  }
+
   bool IsOn() {
-    double current_mag_flux = ReadMagnetFlux();
-    mag_flux_min_ = std::min(mag_flux_min_, current_mag_flux);
-    mag_flux_max_ = std::max(mag_flux_max_, current_mag_flux);
+    last_mag_flux_ = ReadMagnetFlux();
+    if (last_mag_flux_ < mag_flux_min_) {
+      Serial.printf(
+          "min_flux: %.2lf -> %.2lf\n", mag_flux_min_, last_mag_flux_);
+    }
+
+    mag_flux_min_ = std::min(mag_flux_min_, last_mag_flux_);
+    mag_flux_max_ = std::max(mag_flux_max_, last_mag_flux_);
 
     /*
       TODO:
@@ -146,12 +161,25 @@ class AnalogSwitch {
     */
     // return current_mag_flux > (mag_flux_min_ + mag_flux_max_) / 2;
 
-    last_press_mm_ = LookupPressMmFromMagFlux(current_mag_flux);
+    last_press_mm_ = LookupPressMmFromMagFlux(last_mag_flux_);
     return last_press_mm_ > 2.0;
   }
 
-  double GetPressMm() {
+  void DumpLastState() {
+    Serial.printf(
+        "press: %.2lf mm, mag: %.2lf mT, min: %.2lf mT, max:P %.2lf mT\n",
+        last_press_mm_,
+        last_mag_flux_,
+        mag_flux_min_,
+        mag_flux_max_);
+  }
+
+  double GetLastPressMm() {
     return last_press_mm_;
+  }
+
+  double GetLastMagFlux() {
+    return last_mag_flux_;
   }
 
   void Calibrate() {

@@ -104,9 +104,6 @@ struct Circuit {
   Input* joy_x_in;
   Input* joy_y_in;
 
-  Input* key0_in;
-  Input* key1_in;
-
   OutputPin led_pin;
   TriangleInput<0, 255> triangle_in;
 
@@ -131,7 +128,12 @@ struct Circuit {
       // quiescent voltage (mV)
       600>
       hall_in;
-  AnalogSwitch analog_switch0;
+  AnalogSwitch analog_switch_soft;
+
+  Input* analog_switch_0_raw_in;
+  Input* analog_switch_1_raw_in;
+  AnalogSwitch analog_switch_0;
+  AnalogSwitch analog_switch_1;
 
   Circuit()
       : mux(new OutputPin(D10),
@@ -139,12 +141,13 @@ struct Circuit {
             new OutputPin(D12),
             new InputPin(A0)),
         led_pin(D25),
-        analog_switch0(&hall_in) {
+        analog_switch_soft(&hall_in),
+        analog_switch_0_raw_in(mux.GetInput(2)),
+        analog_switch_1_raw_in(mux.GetInput(3)),
+        analog_switch_0(mux.GetInput(2)),
+        analog_switch_1(mux.GetInput(3)) {
     joy_x_in = mux.GetInput(0);
     joy_y_in = mux.GetInput(1);
-
-    key0_in = mux.GetInput(2);
-    key1_in = mux.GetInput(3);
   }
 };
 
@@ -186,6 +189,10 @@ void setup() {
   gamepad_report.hat = GAMEPAD_HAT_CENTERED;
   gamepad_report.buttons = 0;
   usb_hid.sendReport(0, &gamepad_report, sizeof(gamepad_report));
+
+  // wait for
+  delay(5000);
+  Serial.println("Start");
 }
 
 int logt = 0;
@@ -209,31 +216,24 @@ void loop() {
           kSignedAnalogMin,
           kSignedAnalogMax + 1);
 
-  int key0 = circuit.key0_in->AnalogRead();
-  int key1 = circuit.key1_in->AnalogRead();
+  gamepad_report.z = circuit.analog_switch_1_raw_in->AnalogRead();
+  gamepad_report.rx =
+      circuit.analog_switch_1.GetLastPressMm() * kAnalogMax / 4.0;
 
-  gamepad_report.z = key0;
-  gamepad_report.rx = key1;
-
-  // analog switch
+  //// analog switch
+  // soft switch(for test)
   int hall = circuit.hall_in.AnalogRead();
-  double press_mm = circuit.analog_switch0.GetPressMm();
-  double as0_on = circuit.analog_switch0.IsOn();
+  double press_mm = circuit.analog_switch_soft.GetLastPressMm();
+  bool as0_on = circuit.analog_switch_soft.IsOn();
   gamepad_report.ry = hall;
   gamepad_report.rz =
       press_mm * kAnalogMax / 4.0;  // [0, 4.0] -> [0, kAnalogMax]
   gamepad_report.UpdateButton(0, as0_on);
 
-  if (millis() > logt) {
-    Serial.printf(
-        "key0: %d, V: %dmV\n",
-        key0,
-        map(key0, kAnalogMin, kAnalogMax + 1, 0, 3300));
-    Serial.printf(
-        "key1: %d, V: %dmV\n",
-        key1,
-        map(key1, kAnalogMin, kAnalogMax + 1, 0, 3300));
+  gamepad_report.UpdateButton(1, circuit.analog_switch_0.IsOn());
+  gamepad_report.UpdateButton(2, circuit.analog_switch_1.IsOn());
 
+  if (millis() > logt) {
     uint32_t dist_micro = circuit.hall_in.GetDistanceMicros();
     uint32_t micro_tesla =
         circuit.hall_in.DistanceMicrosToMicroTesla(dist_micro);
@@ -243,10 +243,26 @@ void loop() {
         micro_tesla / 1000.0);
     Serial.printf("ESTI: press: %.2f mm, hall-in: %d\n", press_mm, hall);
     Serial.println("---");
-    circuit.analog_switch0.Calibrate();
+    // TODO: Call it by swith itself.
+    Serial.println("Calibrate soft switch");
+    circuit.analog_switch_soft.Calibrate();
+    Serial.println("Calibrate switch-0");
+    circuit.analog_switch_0.Calibrate();
+    Serial.println("Calibrate switch-1");
+    circuit.analog_switch_1.Calibrate();
+    Serial.println("Dump switch-1");
+    circuit.analog_switch_1.DumpLookupTable();
     Serial.println("---");
+    Serial.println("analog-switch0");
+    circuit.analog_switch_1.DumpLastState();
+    Serial.println("TODO: Noise updates mag-flux min/max...");
+
     logt = millis() + 1000;
+    delay(1);
   }
+
+  circuit.analog_switch_1.DumpLastState();
+  delay(1);
 
   // temporal D-pad impl.
   gamepad_report.hat = (time_us_32() / 1000000) % 9;
