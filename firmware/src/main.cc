@@ -215,11 +215,14 @@ void loop() {
   gamepad_report.z = key0;
   gamepad_report.rx = key1;
 
+  // analog switch
   int hall = circuit.hall_in.AnalogRead();
+  double press_mm = circuit.analog_switch0.GetPressMm();
+  double as0_on = circuit.analog_switch0.IsOn();
   gamepad_report.ry = hall;
-
-  // button
-  gamepad_report.UpdateButton(0, circuit.analog_switch0.IsOn());
+  gamepad_report.rz =
+      press_mm * kAnalogMax / 4.0;  // [0, 4.0] -> [0, kAnalogMax]
+  gamepad_report.UpdateButton(0, as0_on);
 
   if (millis() > logt) {
     Serial.printf(
@@ -235,15 +238,14 @@ void loop() {
     uint32_t micro_tesla =
         circuit.hall_in.DistanceMicrosToMicroTesla(dist_micro);
     Serial.printf(
-        "dist: %.2f mm, mag: %.2f mT\n",
+        "TRUE: dist: %.2f mm, mag: %.2f mT\n",
         dist_micro / 1000.0,
         micro_tesla / 1000.0);
-    Serial.printf("hall-in: %u\n", hall);
+    Serial.printf("ESTI: press: %.2f mm, hall-in: %d\n", press_mm, hall);
     Serial.println("---");
     circuit.analog_switch0.Calibrate();
     Serial.println("---");
     logt = millis() + 1000;
-    delay(1);
   }
 
   // temporal D-pad impl.
