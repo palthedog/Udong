@@ -73,7 +73,7 @@ class AnalogSwitch {
 
   double last_mag_flux_;
   double last_press_mm_;
-  int last_analog_;
+  uint16_t last_analog_;
 
   // array[0] : B @ far_mm + 0.0mm (bottom)
   // array[1] : B @ far_mm + 0.1mm
@@ -83,7 +83,7 @@ class AnalogSwitch {
   // array[40]: B @ far_mm + 4.0mm
   double mag_flux_table_[41] = {0.0};
 
-  Input* input_;
+  AnalogInput* input_;
 
   void UpdateMagFluxTable(double d_far_mm, double Br, double R_2, double T) {
     for (int i = 0; i <= 40; i++) {
@@ -101,6 +101,11 @@ class AnalogSwitch {
   }
 
   double LookupPressMmFromMagFlux(double mag_flux) {
+    // TODO:
+    //  - bsearch
+    //  - Linear Interpolation
+    //  - Instead of creating a mag_flux -> mm table
+    //    we can create analog-value -> mm table?
     for (int i = 0; i <= 40; i++) {
       double mag_flux_at = mag_flux_table_[i];
       if (mag_flux_at >= mag_flux) {
@@ -113,12 +118,13 @@ class AnalogSwitch {
   const double kSensitivity_mV_per_mT = 30.0;
   const double kQuiescentVoltage_mV = 0.6 * 1000;
 
-  // analog: [0, 4096)
-  double AnalogToMagnetFlux(int analog) {
-    double mv = (double)analog * (3300.0 / 4096.0);
+  // analog: [0, 65536)
+  double AnalogToMagnetFlux(uint16_t analog) {
+    double mv = analog * (3300.0 / 65536.0);
     double delta_mV = mv - kQuiescentVoltage_mV;
-    delta_mV = max(0.0, delta_mV);
-
+    if (delta_mV <= 0.0) {
+      return 0.0;
+    }
     return delta_mV / kSensitivity_mV_per_mT;
   }
 
@@ -127,14 +133,16 @@ class AnalogSwitch {
   }
 
   double ReadMagnetFlux() {
-    // [0, 4096)
-    last_analog_ = input_->AnalogRead();
+    // [0, 65536)
+    last_analog_ = input_->Read();
     return AnalogToMagnetFlux(last_analog_);
   }
 
+  int id_;
+
  public:
-  AnalogSwitch(Input* input) : input_(input) {
-    mag_flux_min_ = 100000;
+  AnalogSwitch(int id, AnalogInput* input) : id_(id), input_(input) {
+    mag_flux_min_ = INT16_MAX;
     mag_flux_max_ = 0;
     last_press_mm_ = 0.0;
   }
@@ -144,7 +152,7 @@ class AnalogSwitch {
 
   void DumpLookupTable() {
     Serial.println("Dump lookup table");
-    for (int mm = 0; mm < 4; mm++) {
+    for (int mm = 0; mm < 4; mm += 2) {
       for (int micro = 0; micro < 5; micro++) {
         int i = mm * 10 + micro;
         double press_mm = i * 0.1;
@@ -163,33 +171,45 @@ class AnalogSwitch {
     Serial.printf(
         "press: %.2lf mm, "
         "raw: %d (%.lf mV), "
-        "mag: %.2lf mT, min: %.2lf mt, "
+        "mag: %.2lf mT, "
+        "min: %.2lf mT, "
         "max: %.2lf mT\n",
         last_press_mm_,
         last_analog_,
-        last_analog_ * (3300.0 / 4096.0),
+        last_analog_ * (3300.0 / 65536.0),
         last_mag_flux_,
         mag_flux_min_,
         mag_flux_max_);
   }
 
+  // Calibrate the mag-flux value at the farest point.
+  // It should be called when the switch is NOT pressed.
+  void CalibrateZeroPoint() {
+    uint32_t sum = 0;
+    int count = 0;
+    uint32_t start_t = time_us_32();
+    // TODO: Run all switchs' calibrations parallery so that we can collect
+    // data that is spread out over longer time.
+    // 100 ms
+    while (time_us_32() - start_t < 100 * 1000) {
+      sum += input_->Read();
+      count++;
+    }
+    mag_flux_min_ = AnalogToMagnetFlux(sum / count);
+  }
+
   bool IsOn() {
     last_mag_flux_ = ReadMagnetFlux();
-    if (last_mag_flux_ < mag_flux_min_) {
-      Serial.printf(
-          "min_flux: %.2lf -> %.2lf\n", mag_flux_min_, last_mag_flux_);
-    }
 
-    mag_flux_min_ = std::min(mag_flux_min_, last_mag_flux_);
+    // mag_flux_min_ = std::min(mag_flux_min_, last_mag_flux_);
     mag_flux_max_ = std::max(mag_flux_max_, last_mag_flux_);
 
-    /*
-      TODO:
-        Now we can calibrate all parameters let calculate distance next
-    */
-    // return current_mag_flux > (mag_flux_min_ + mag_flux_max_) / 2;
-
     last_press_mm_ = LookupPressMmFromMagFlux(last_mag_flux_);
+
+#if TELEPLOT
+    Serial.printf(">asw%d-mV:%lf\n", id_, last_analog_ / 65536.0 * 3300.0);
+    Serial.printf(">asw%d-mm:%lf\n", id_, last_press_mm_);
+#endif
     return last_press_mm_ > 2.0;
   }
 
@@ -230,11 +250,10 @@ class AnalogSwitch {
         "b_near: %.3lf mT, b_far: %.3lf mT\n", mag_flux_max_, mag_flux_min_);
     Serial.printf(
         "    note: b_MAX: %.3lf mT for this sensor\n",
-        AnalogToMagnetFlux((1 << 12) - 1));
+        AnalogToMagnetFlux(UINT16_MAX));
     Serial.printf("Solved d_near: %.3lf mm\n", solved_d_near_mm);
     double mag_remanence = CalcRemanence(
         solved_d_near_mm, mag_flux_max_, kR_2, kMagnetThickness_mm);
-
     UpdateMagFluxTable(
         // d_far_mm
         solved_d_near_mm + kKeyStroke_mm,

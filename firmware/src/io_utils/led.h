@@ -5,6 +5,8 @@
 
 #include <cstdint>
 
+#include "io.h"
+
 class Led {
   enum LedMode {
     kToggle,
@@ -17,7 +19,7 @@ class Led {
     kHigh,
   };
 
-  Output* output_;
+  AnalogOutput* output_;
   LedMode mode_;
   PinState current_pin_state_;
 
@@ -26,7 +28,7 @@ class Led {
   uint32_t last_blink_time_in_us_;
 
  public:
-  Led(Output* output)
+  Led(AnalogOutput* output)
       : output_(output),
         mode_(kToggle),
         current_pin_state_(kLow),
@@ -36,17 +38,17 @@ class Led {
 
   void TurnOn() {
     mode_ = kToggle;
-    output_->DigitalWrite(HIGH);
+    output_->Write(65535);
   }
 
   void TurnOff() {
     mode_ = kToggle;
-    output_->DigitalWrite(LOW);
+    output_->Write(0);
   }
 
   void StartBlink(uint32_t blink_perio_ms) {
     mode_ = kBlink;
-    output_->DigitalWrite(LOW);
+    output_->Write(0);
 
     last_blink_time_in_us_ = time_us_32();
     blink_period_in_us_ = blink_perio_ms * 1000;
@@ -73,10 +75,10 @@ class Led {
 
     if (current_pin_state_ == kLow) {
       current_pin_state_ = kHigh;
-      output_->DigitalWrite(HIGH);
+      output_->Write(HIGH);
     } else {
       current_pin_state_ = kLow;
-      output_->DigitalWrite(LOW);
+      output_->Write(LOW);
     }
   }
 };

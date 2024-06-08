@@ -6,38 +6,29 @@
 #include "../io.h"
 
 // For testing
-template <int MIN, int MAX>
-class TriangleInput : public Input {
+class TriangleInput : public AnalogInput {
  public:
   virtual ~TriangleInput() override {
   }
 
-  // Repeat LOW for 1 second, HIGH for 1 second
-  virtual PinStatus DigitalRead() override {
-    const int kOneSecond = 1024 * 1024;
-    if (time_us_32() & kOneSecond == 0) {
-      return LOW;
-    } else {
-      return HIGH;
-    }
-  };
-
-  // Returns [0, 1023]
+  // Returns [0, 65536)
   // Increases the number from 0 to 1023 over 1 second then
   // Decreasess the number from 1023 to 0 over 1 second then
-  virtual int AnalogRead() override {
-    const uint32_t kTwoSecond = 2 * 1024 * 1024;
-    const uint32_t kHalf = kTwoSecond / 2;
-    const uint32_t kMask = kTwoSecond - 1;
-    uint32_t t = time_us_32() & kMask;
-    if (t <= kHalf) {
+  virtual uint16_t Read() override {
+    const uint32_t kSecondMask = (1 << 20) - 1;
+    const uint32_t kRisingMask = (1 << 20);
+    uint32_t t = time_us_32();
+    if (kRisingMask & t) {
       // rising
-      return map(t, 0, kHalf, MIN, MAX);
+      // 20 bits to 16 bits
+      return (t & kSecondMask) >> 4;
     } else {
       // setting
-      return map(t, kHalf + 1, kMask, MAX, MIN);
+      // 20 bits to 16 bits
+      return ((1 << 16) - 1) - ((t & kSecondMask) >> 4);
     }
-  };
+    return t & kSecondMask;
+  }
 };
 
 #endif

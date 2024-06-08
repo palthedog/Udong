@@ -5,35 +5,35 @@
 
 #include <cstdint>
 
+template <typename T>
 class Input {
  public:
   virtual ~Input() {
   }
 
-  virtual PinStatus DigitalRead() = 0;
-  virtual int AnalogRead() = 0;
+  virtual T Read() = 0;
 };
 
-class InputPin : public Input {
+typedef Input<uint16_t> AnalogInput;
+
+class AnalogInputPin : public AnalogInput {
   uint8_t pin_id_;
 
  public:
-  InputPin(uint8_t pin_id) : pin_id_(pin_id) {
+  AnalogInputPin(uint8_t pin_id) : pin_id_(pin_id) {
     pinMode(pin_id_, INPUT);
   }
 
-  virtual ~InputPin() override {
+  virtual ~AnalogInputPin() override {
   }
 
-  virtual PinStatus DigitalRead() override {
-    return digitalRead(pin_id_);
-  };
-
-  virtual int AnalogRead() override {
-    return analogRead(pin_id_);
+  virtual uint16_t Read() override {
+    // convert 12bits analog input into uint16_t
+    return ((uint16_t)analogRead(pin_id_)) << 4;
   };
 };
 
+template <typename T>
 class Output {
  public:
   Output() {
@@ -42,35 +42,44 @@ class Output {
   virtual ~Output() {
   }
 
-  void DigitalWrite(uint8_t value) {
-    if (value) {
-      DigitalWrite(HIGH);
-    } else {
-      DigitalWrite(LOW);
-    }
-  };
-
-  virtual void DigitalWrite(PinStatus status) = 0;
-  virtual void AnalogWrite(int value) = 0;
+  /// virtual void DigitalWrite(PinStatus status) = 0;
+  virtual void Write(T value) = 0;
 };
 
-class OutputPin : public Output {
+typedef Output<uint16_t> AnalogOutput;
+typedef Output<PinStatus> DigitalOutput;
+
+class AnalogOutputPin : public AnalogOutput {
   uint8_t pin_id_;
 
  public:
-  OutputPin(uint8_t pin_id) : pin_id_(pin_id) {
+  AnalogOutputPin(uint8_t pin_id) : pin_id_(pin_id) {
     pinMode(pin_id_, OUTPUT);
   }
 
-  virtual ~OutputPin() override {
+  virtual ~AnalogOutputPin() override {
   }
 
-  virtual void DigitalWrite(PinStatus status) override {
-    digitalWrite(pin_id_, status);
+  virtual void Write(uint16_t value) override {
+    // convert uint16_t into 8bits
+    // NOTE: analogWrite always takes 0-255
+    analogWrite(pin_id_, value >> 8);
   };
+};
 
-  virtual void AnalogWrite(int value) override {
-    analogWrite(pin_id_, value);
+class DigitalOutputPin : public DigitalOutput {
+  uint8_t pin_id_;
+
+ public:
+  DigitalOutputPin(uint8_t pin_id) : pin_id_(pin_id) {
+    pinMode(pin_id_, OUTPUT);
+  }
+
+  virtual ~DigitalOutputPin() override {
+  }
+
+  virtual void Write(PinStatus value) override {
+    digitalWrite(pin_id_, value);
   };
 };
 

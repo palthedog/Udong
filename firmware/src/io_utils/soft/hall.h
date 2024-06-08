@@ -20,22 +20,12 @@ template <
     uint32_t kSensitivity_mV_mT,
     uint32_t kVcc_mV,
     uint32_t kQuiescentVoltage_mV>
-class HallInput : public Input {
+class HallInput : public AnalogInput {
  public:
   HallInput() {
   }
 
-  // Repeat LOW for 1 second, HIGH for 1 second
-  virtual PinStatus DigitalRead() override {
-    const int kOneSecond = 1024 * 1024;
-    if (time_us_32() & kOneSecond == 0) {
-      return LOW;
-    } else {
-      return HIGH;
-    }
-  };
-
-  virtual int AnalogRead() override {
+  virtual uint16_t Read() override {
     uint32_t dist_micro = GetDistanceMicros();
     uint32_t micro_tesla = DistanceMicrosToMicroTesla(dist_micro);
     uint32_t milli_volt =
