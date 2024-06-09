@@ -3,6 +3,7 @@
 
 #include <cmath>
 
+#include "calibration_store.h"
 #include "io_utils/io.h"
 #include "solver.h"
 
@@ -67,9 +68,11 @@ inline double CalcMagFlux(double d, double Br, double R_2, double T) {
 }
 
 class AnalogSwitch {
+  int id_;
+  AnalogInput* input_;
+
   // For calibration
-  double mag_flux_min_;
-  double mag_flux_max_;
+  AnalogSwitchCalibrationStore* calibration_;
 
   double last_mag_flux_;
   double last_press_mm_;
@@ -82,9 +85,6 @@ class AnalogSwitch {
   // array[39]: B @ far_mm + 3.9mm
   // array[40]: B @ far_mm + 4.0mm
   double mag_flux_table_[41] = {0.0};
-
-  int id_;
-  AnalogInput* input_;
 
   void UpdateMagFluxTable(double d_far_mm, double Br, double R_2, double T) {
     for (int i = 0; i <= 40; i++) {
@@ -134,9 +134,9 @@ class AnalogSwitch {
   }
 
  public:
-  AnalogSwitch(int id, AnalogInput* input) : id_(id), input_(input) {
-    mag_flux_min_ = INT16_MAX;
-    mag_flux_max_ = 0;
+  AnalogSwitch(
+      int id, AnalogInput* input, AnalogSwitchCalibrationStore* calibration)
+      : id_(id), input_(input), calibration_(calibration) {
     last_press_mm_ = 0.0;
   }
 
@@ -154,7 +154,9 @@ class AnalogSwitch {
     // On the other hand, we must calibrate the zero-point(mag_flux_min_)
     // because the mag-flux at the farest point is much much lower (e.g. 700mV
     // at 0.0mm, 705mV at 0.1mm).
-    mag_flux_max_ = std::max(mag_flux_max_, last_mag_flux_);
+    if (calibration_->GetMagFluxAtNearest() < last_mag_flux_) {
+      calibration_->SetMagFluxAtNearest(last_mag_flux_);
+    }
 
     last_press_mm_ = LookupPressMmFromMagFlux(last_mag_flux_);
 
@@ -186,7 +188,7 @@ class AnalogSwitch {
       sum += input_->Read();
       count++;
     }
-    mag_flux_min_ = AnalogToMagnetFlux(sum / count);
+    calibration_->SetMagFluxAtFarest(AnalogToMagnetFlux(sum / count));
   }
 
   void Calibrate() {
@@ -201,28 +203,33 @@ class AnalogSwitch {
     const double kDistanceRangeMax_mm = 5.0;
     const double kEps_mm = 0.01;
 
+    double mag_flux_nearest = calibration_->GetMagFluxAtNearest();
+    double mag_flux_farest = calibration_->GetMagFluxAtFarest();
+
     BSearch<double> bsearch([=](double x) {
       double d_near = x;
       double d_far = d_near + kKeyStroke_mm;
 
       double mag_flux_near =
-          CalcRemanence_2(d_near, mag_flux_max_, kR_2, kMagnetThickness_mm);
+          CalcRemanence_2(d_near, mag_flux_nearest, kR_2, kMagnetThickness_mm);
       double mag_flux_far =
-          CalcRemanence_2(d_far, mag_flux_min_, kR_2, kMagnetThickness_mm);
+          CalcRemanence_2(d_far, mag_flux_farest, kR_2, kMagnetThickness_mm);
       return mag_flux_near - mag_flux_far;
     });
     double solved_d_near_mm =
         bsearch.Solve(0.0, kDistanceRangeMin_mm, kDistanceRangeMax_mm, kEps_mm);
 
     Serial.printf(
-        "b_near: %.3lf mT, b_far: %.3lf mT\n", mag_flux_max_, mag_flux_min_);
+        "b_near: %.3lf mT, b_far: %.3lf mT\n",
+        mag_flux_nearest,
+        mag_flux_farest);
     Serial.printf(
         "    note: b_MAX: %.3lf mT for this sensor\n",
         AnalogToMagnetFlux(UINT16_MAX));
     Serial.printf("Solved d_near: %.3lf mm\n", solved_d_near_mm);
 
     double mag_remanence = CalcRemanence(
-        solved_d_near_mm, mag_flux_max_, kR_2, kMagnetThickness_mm);
+        solved_d_near_mm, mag_flux_nearest, kR_2, kMagnetThickness_mm);
     UpdateMagFluxTable(
         solved_d_near_mm + kKeyStroke_mm,
         mag_remanence,
@@ -265,8 +272,8 @@ class AnalogSwitch {
         last_analog_,
         last_analog_ * (3300.0 / 65536.0),
         last_mag_flux_,
-        mag_flux_min_,
-        mag_flux_max_);
+        calibration_->GetMagFluxAtFarest(),
+        calibration_->GetMagFluxAtNearest());
   }
 };
 

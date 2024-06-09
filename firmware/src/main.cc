@@ -1,15 +1,14 @@
 #include <Adafruit_TinyUSB.h>
 #include <Arduino.h>
 
-#define TELEPLOT 1
+#define TELEPLOT 0
 
-#include "gamepad.h"
 #include "io_utils/io.h"
 #include "io_utils/multiplexer.h"
 #include "io_utils/noise_filter.h"
 #include "io_utils/soft/hall.h"
 #include "io_utils/soft/triangle.h"
-#include "switch.h"
+#include "switch/analog_switch.h"
 
 // Sample code:
 //     https://github.com/adafruit/Adafruit_TinyUSB_Arduino/blob/master/examples/HID/hid_gamepad/hid_gamepad.ino
@@ -98,39 +97,45 @@ struct TU_ATTR_PACKED GamepadReport {
 
 const uint8_t LED_PIN = D25;
 
+/*
+  HallInput<
+      0,
+      (1 << 16) - 1,
+      // min dist
+      2000,
+      // max dist
+      2000 + 4000,
+      // Br
+      10000,
+      // thickness
+      3400,
+      // diameter
+      2900,
+      // sensitivity
+      //   DRV5056A3 @ 3.3V
+      30,
+      // 3.3V
+      3300,
+      // quiescent voltage (mV)
+      600>
+      hall_in;
+  AnalogSwitch analog_switch_soft;
+*/
+
 struct Circuit {
+  CalibrationStore calibration_store;
+
   Multiplexer8 mux;
   AnalogInput* joy_x_in;
   AnalogInput* joy_y_in;
 
   AnalogOutputPin led_pin;
   TriangleInput triangle_in;
-  /*
-    HallInput<
-        0,
-        (1 << 16) - 1,
-        // min dist
-        2000,
-        // max dist
-        2000 + 4000,
-        // Br
-        10000,
-        // thickness
-        3400,
-        // diameter
-        2900,
-        // sensitivity
-        //   DRV5056A3 @ 3.3V
-        30,
-        // 3.3V
-        3300,
-        // quiescent voltage (mV)
-        600>
-        hall_in;
-    AnalogSwitch analog_switch_soft;
-  */
+
   AnalogInput* analog_switch_0_raw_in;
   AnalogInput* analog_switch_1_raw_in;
+  NoiseFilter<8, 1, 1> analog_switch_0_multi_sampling_in;
+  NoiseFilter<8, 1, 1> analog_switch_1_multi_sampling_in;
   AnalogSwitch analog_switch_0;
   AnalogSwitch analog_switch_1;
 
@@ -143,10 +148,18 @@ struct Circuit {
             new AnalogInputPin(A0)),
         led_pin(D25),
         // analog_switch_soft(99, &hall_in),
-        analog_switch_0_raw_in(mux.GetInput(3)),
+        analog_switch_0_raw_in(mux.GetInput(2)),
         analog_switch_1_raw_in(mux.GetInput(3)),
-        analog_switch_0(0, mux.GetInput(3)),
-        analog_switch_1(1, new NoiseFilter<8, 1, 1>(mux.GetInput(3))),
+        analog_switch_0_multi_sampling_in(analog_switch_0_raw_in),
+        analog_switch_1_multi_sampling_in(analog_switch_1_raw_in),
+        analog_switch_0(
+            0,
+            &analog_switch_0_multi_sampling_in,
+            calibration_store.GetSwitchRef(0)),
+        analog_switch_1(
+            1,
+            &analog_switch_1_multi_sampling_in,
+            calibration_store.GetSwitchRef(1)),
         adc_600mv_input(A2) {
     joy_x_in = mux.GetInput(0);
     joy_y_in = mux.GetInput(1);
@@ -186,7 +199,9 @@ void setup() {
   usb_hid.setPollInterval(1);  // 1ms
   usb_hid.setReportDescriptor(kHidDescriptor, sizeof(kHidDescriptor));
 
-  usb_hid.begin();
+  if (!usb_hid.begin()) {
+    Serial.println("Failed to begin USB_HID");
+  }
 
   // Wait for the USB device to be mounted
   while (!TinyUSBDevice.mounted()) {
@@ -208,11 +223,28 @@ void setup() {
   gamepad_report.buttons = 0;
   usb_hid.sendReport(0, &gamepad_report, sizeof(gamepad_report));
 
-  circuit.CalibrateAllZeroPoint();
-
   // wait for
-  // delay(5000);
-  // Serial.println("Start");
+  /*
+  circuit.led_pin.Write(UINT16_MAX);
+  delay(5000);
+  circuit.led_pin.Write(0);
+  Serial.println("*** Start ***");
+  Serial.println("*** Start ***");
+  Serial.println("*** Start ***");
+  */
+
+  if (!LittleFS.begin()) {
+    Serial.println("Failed to initialize LittleFS");
+  }
+  circuit.calibration_store.LoadFromFile();
+  circuit.CalibrateAllZeroPoint();
+  // We need to call Calibrate after loading calibration data to update all
+  // related data (e.g. lookup-table)
+  circuit.analog_switch_0.Calibrate();
+  circuit.analog_switch_1.Calibrate();
+
+  circuit.analog_switch_0.DumpLastState();
+  circuit.analog_switch_1.DumpLastState();
 }
 
 unsigned long logt = 0;
@@ -273,6 +305,7 @@ void loop() {
     circuit.analog_switch_0.Calibrate();
     Serial.println("Calibrate switch-1");
     circuit.analog_switch_1.Calibrate();
+    circuit.calibration_store.SaveIntoFile();
 
     Serial.println("* Dump switch-1");
     circuit.analog_switch_1.DumpLookupTable();
