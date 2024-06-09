@@ -78,7 +78,7 @@ class CalibrationStore {
       return &f->second;
     }
 
-    Serial.printf("Not found in the saved data. Creating a new one.");
+    Serial.printf("Not found in the saved data. Creating a new one: %id\n", id);
     // TODO: Read from factory data?
     return &analog_switches_
                 .insert(std::make_pair(
@@ -96,6 +96,7 @@ class CalibrationStore {
     String jsonString = file.readString();
     Serial.println("Loaded JSON");
     Serial.println(jsonString);
+
     JsonDocument doc;
     DeserializationError error = deserializeJson(doc, jsonString);
     if (error) {
@@ -111,7 +112,9 @@ class CalibrationStore {
     for (size_t i = 0; i < as_size; i++) {
       JsonVariant var = doc["analog_switches"][i];
       AnalogSwitchCalibrationStore v(var);
-      analog_switches_.insert_or_assign(v.GetId(), v);
+      Serial.printf("loaded analog switch: %d\n", v.GetId());
+      Serial.printf("analog switches.size(): %d\n", analog_switches_.size());
+      analog_switches_[v.GetId()] = v;
     }
     file.close();
     Serial.println("Calibration data loaded successfully");
@@ -130,8 +133,9 @@ class CalibrationStore {
 
     // doc["analog_switches"];
     Serial.printf("# of analog_switches: %d\n", analog_switches_.size());
-    for (size_t i = 0; i < analog_switches_.size(); i++) {
-      doc["analog_switches"][i] = analog_switches_[i];
+    int index = 0;
+    for (auto& it : analog_switches_) {
+      doc["analog_switches"][index++] = it.second;
     }
 
     size_t size = serializeJsonPretty(doc, file);

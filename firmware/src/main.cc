@@ -1,7 +1,7 @@
 #include <Adafruit_TinyUSB.h>
 #include <Arduino.h>
 
-#define TELEPLOT 0
+#define TELEPLOT 1
 
 #include "io_utils/io.h"
 #include "io_utils/multiplexer.h"
@@ -132,12 +132,17 @@ struct Circuit {
   AnalogOutputPin led_pin;
   TriangleInput triangle_in;
 
-  AnalogInput* analog_switch_0_raw_in;
-  AnalogInput* analog_switch_1_raw_in;
-  NoiseFilter<8, 1, 1> analog_switch_0_multi_sampling_in;
-  NoiseFilter<8, 1, 1> analog_switch_1_multi_sampling_in;
-  AnalogSwitch analog_switch_0;
-  AnalogSwitch analog_switch_1;
+  std::vector<AnalogInput*> analog_switch_raw_ins;
+  std::vector<AnalogInput*> analog_switch_multi_sampled_ins;
+  // AnalogInput* analog_switch_0_raw_in;
+  // AnalogInput* analog_switch_1_raw_in;
+  // NoiseFilter<8, 1, 1> analog_switch_0_multi_sampling_in;
+  // NoiseFilter<8, 1, 1> analog_switch_1_multi_sampling_in;
+  // AnalogSwitch analog_switch_0;
+  // AnalogSwitch analog_switch_1;
+  std::vector<AnalogSwitch> analog_switches;
+
+  // AnalogSwitch analog_switch_1_no_mp;
 
   AnalogInputPin adc_600mv_input;
 
@@ -147,27 +152,31 @@ struct Circuit {
             new DigitalOutputPin(D12),
             new AnalogInputPin(A0)),
         led_pin(D25),
-        // analog_switch_soft(99, &hall_in),
-        analog_switch_0_raw_in(mux.GetInput(2)),
-        analog_switch_1_raw_in(mux.GetInput(3)),
-        analog_switch_0_multi_sampling_in(analog_switch_0_raw_in),
-        analog_switch_1_multi_sampling_in(analog_switch_1_raw_in),
-        analog_switch_0(
-            0,
-            &analog_switch_0_multi_sampling_in,
-            calibration_store.GetSwitchRef(0)),
-        analog_switch_1(
-            1,
-            &analog_switch_1_multi_sampling_in,
-            calibration_store.GetSwitchRef(1)),
         adc_600mv_input(A2) {
+    analog_switch_raw_ins.push_back(mux.GetInput(2));
+    analog_switch_raw_ins.push_back(mux.GetInput(3));
+
+    for (int id = 0; id < 2; id++) {
+      analog_switch_multi_sampled_ins.push_back(
+          new NoiseFilter<8, 0, 0>(analog_switch_raw_ins[id]));
+      analog_switches.push_back(AnalogSwitch(
+          id,
+          analog_switch_multi_sampled_ins[id],
+          calibration_store.GetSwitchRef(id)));
+    }
+
+    // Dummy switch for logging
+    analog_switches.push_back(AnalogSwitch(
+        11, analog_switch_raw_ins[1], calibration_store.GetSwitchRef(11)));
+
     joy_x_in = mux.GetInput(0);
     joy_y_in = mux.GetInput(1);
   }
 
   void CalibrateAllZeroPoint() {
-    analog_switch_0.CalibrateZeroPoint();
-    analog_switch_1.CalibrateZeroPoint();
+    for (auto& analog_switch : analog_switches) {
+      analog_switch.CalibrateZeroPoint();
+    }
   }
 };
 
@@ -224,14 +233,13 @@ void setup() {
   usb_hid.sendReport(0, &gamepad_report, sizeof(gamepad_report));
 
   // wait for
-  /*
+
   circuit.led_pin.Write(UINT16_MAX);
   delay(5000);
   circuit.led_pin.Write(0);
   Serial.println("*** Start ***");
   Serial.println("*** Start ***");
   Serial.println("*** Start ***");
-  */
 
   if (!LittleFS.begin()) {
     Serial.println("Failed to initialize LittleFS");
@@ -240,14 +248,14 @@ void setup() {
   circuit.CalibrateAllZeroPoint();
   // We need to call Calibrate after loading calibration data to update all
   // related data (e.g. lookup-table)
-  circuit.analog_switch_0.Calibrate();
-  circuit.analog_switch_1.Calibrate();
-
-  circuit.analog_switch_0.DumpLastState();
-  circuit.analog_switch_1.DumpLastState();
+  for (auto& analog_switch : circuit.analog_switches) {
+    analog_switch.Calibrate();
+    analog_switch.DumpLastState();
+  }
 }
 
 unsigned long logt = 0;
+uint32_t last_t = 0;
 int cnt = 0;
 
 inline int16_t map_u16_s16(uint16_t v) {
@@ -275,16 +283,18 @@ void loop() {
   gamepad_report.UpdateButton(0, as0_on);
   */
 
-  // analog switch 0
-  gamepad_report.UpdateButton(1, circuit.analog_switch_0.IsOn());
-  gamepad_report.z = circuit.analog_switch_0_raw_in->Read() / 2;
+  // Debug info
+  gamepad_report.z = circuit.analog_switch_raw_ins[0]->Read() / 2;
   gamepad_report.rx =
-      circuit.analog_switch_0.GetLastPressMm() / 4.0 * UINT16_MAX / 2;
-  // analog switch 1
-  gamepad_report.ry = circuit.analog_switch_1_raw_in->Read() / 2;
+      circuit.analog_switches[0].GetLastPressMm() / 4.0 * UINT16_MAX / 2;
+  gamepad_report.ry = circuit.analog_switch_raw_ins[1]->Read() / 2;
   gamepad_report.rz =
-      circuit.analog_switch_1.GetLastPressMm() / 4.0 * UINT16_MAX / 2;
-  gamepad_report.UpdateButton(2, circuit.analog_switch_1.IsOn());
+      circuit.analog_switches[1].GetLastPressMm() / 4.0 * UINT16_MAX / 2;
+
+  // analog switch 0
+  for (auto& analog_switch : circuit.analog_switches) {
+    gamepad_report.UpdateButton(analog_switch.GetId(), analog_switch.IsOn());
+  }
 
   if (millis() > logt) {
     /*
@@ -301,15 +311,18 @@ void loop() {
       // circuit.analog_switch_soft.Calibrate();
       */
     // TODO: Call it by swith itself.
-    Serial.println("Calibrate switch-0");
-    circuit.analog_switch_0.Calibrate();
-    Serial.println("Calibrate switch-1");
-    circuit.analog_switch_1.Calibrate();
+    for (auto& analog_switch : circuit.analog_switches) {
+      Serial.printf("Calibrate switch-%d\n", analog_switch.GetId());
+      analog_switch.Calibrate();
+    }
+    unsigned long from = time_us_32();
     circuit.calibration_store.SaveIntoFile();
+    unsigned long to = time_us_32();
+    Serial.printf(">save(us): %lu\n", to - from);
 
     Serial.println("* Dump switch-1");
-    circuit.analog_switch_1.DumpLookupTable();
-    circuit.analog_switch_1.DumpLastState();
+    circuit.analog_switches[1].DumpLookupTable();
+    circuit.analog_switches[1].DumpLastState();
 
     // Serial.println("* Dump switch-soft");
     // circuit.analog_switch_soft.DumpLookupTable();
@@ -331,11 +344,19 @@ void loop() {
   Serial.printf(
       ">ADC-600-mV: %lf\n", circuit.adc_600mv_input.Read() * 3300.0 / 65536.0);
   // circuit.analog_switch_1.DumpLastState();
+  uint32_t t = time_us_32();
+  Serial.printf(">FPS: %lu\n", 1000000 / (t - last_t));
+  last_t = t;
+
+  // In case we sent too much Serial.print, usb_hid hangs without delay(1) for
+  // unknown reason...
   delay(1);  // for safety. it should be removed in prod
 #endif
 
   // temporal D-pad impl.
   gamepad_report.hat = (time_us_32() / 1000000) % 9;
 
-  usb_hid.sendReport(0, &gamepad_report, sizeof(gamepad_report));
+  if (!usb_hid.sendReport(0, &gamepad_report, sizeof(gamepad_report))) {
+    Serial.println("failed to send report");
+  }
 }

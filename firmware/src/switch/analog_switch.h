@@ -167,6 +167,14 @@ class AnalogSwitch {
     return last_press_mm_ > 2.0;
   }
 
+  int GetId() {
+    return id_;
+  }
+
+  uint16_t GetLastAnalog() {
+    return last_analog_;
+  }
+
   double GetLastPressMm() {
     return last_press_mm_;
   }
