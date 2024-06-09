@@ -215,7 +215,7 @@ void setup() {
   // Serial.println("Start");
 }
 
-int logt = 0;
+unsigned long logt = 0;
 int cnt = 0;
 
 inline int16_t map_u16_s16(uint16_t v) {
@@ -237,11 +237,11 @@ void loop() {
   double press_mm = circuit.analog_switch_soft.GetLastPressMm();
   bool as0_on = circuit.analog_switch_soft.IsOn();
   gamepad_report.UpdateButton(0, as0_on);
-  */
   uint16_t hall = 0;
   double press_mm = 0.0;
   bool as0_on = false;
   gamepad_report.UpdateButton(0, as0_on);
+  */
 
   // analog switch 0
   gamepad_report.UpdateButton(1, circuit.analog_switch_0.IsOn());

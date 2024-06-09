@@ -83,6 +83,7 @@ class AnalogSwitch {
   // array[40]: B @ far_mm + 4.0mm
   double mag_flux_table_[41] = {0.0};
 
+  int id_;
   AnalogInput* input_;
 
   void UpdateMagFluxTable(double d_far_mm, double Br, double R_2, double T) {
@@ -132,8 +133,6 @@ class AnalogSwitch {
     return AnalogToMagnetFlux(last_analog_);
   }
 
-  int id_;
-
  public:
   AnalogSwitch(int id, AnalogInput* input) : id_(id), input_(input) {
     mag_flux_min_ = INT16_MAX;
@@ -150,7 +149,7 @@ class AnalogSwitch {
     // Record the maximum value for later calibration.
     // It may take noisy inputs a lot but it might be OK since mag-flux is
     // poropotional to the squre of the magnet distance.
-    // (e.g. 700mV at 0.0mm, 705mV at 0.1mm)
+    // (e.g. 1200mV at 3.9mm, 1240mV at 4.0mm)
     // Thus we don't care about a few mV errors for the nearest side.
     // On the other hand, we must calibrate the zero-point(mag_flux_min_)
     // because the mag-flux at the farest point is much much lower (e.g. 700mV

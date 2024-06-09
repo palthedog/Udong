@@ -65,7 +65,7 @@ class NoiseFilter : public AnalogInput {
         buffer_.begin(), buffer_.end(), sorted_.begin(), sorted_.end());
 
     uint32_t sum = 0;
-    for (int i = DropMinNum; i < sorted_.size() - DropMaxNum; i++) {
+    for (size_t i = DropMinNum; i < sorted_.size() - DropMaxNum; i++) {
       sum += sorted_[i];
     }
 
