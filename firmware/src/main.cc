@@ -258,7 +258,7 @@ void setup() {
   if (!LittleFS.begin()) {
     Serial.println("Failed to initialize LittleFS");
   }
-  // circuit.calibration_store.LoadFromFile();
+  circuit.calibration_store.LoadFromFile();
   circuit.CalibrateAllZeroPoint();
   // We need to call Calibrate after loading calibration data to update all
   // related data (e.g. lookup-table)
@@ -311,7 +311,7 @@ void loop() {
   circuit.analog_switches[3].TelePrint();
 #endif
 
-  if (millis() > logt && Serial.availableForWrite()) {
+  if (millis() > logt) {
     // TODO: Call it by swith itself.
     for (auto& analog_switch : circuit.analog_switches) {
       Serial.printf("Calibrate switch-%d\n", analog_switch.GetId());
