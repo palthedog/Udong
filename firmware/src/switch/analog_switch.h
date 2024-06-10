@@ -102,8 +102,6 @@ class AnalogSwitch {
 
   double LookupPressMmFromMagFlux(double mag_flux) {
     // TODO:
-    //  - bsearch
-    //  - Linear Interpolation
     //  - Instead of creating a mag_flux -> mm table
     //    we can create analog-value -> mm table?
     if (mag_flux <= mag_flux_table_[0]) {

@@ -276,13 +276,21 @@ inline int16_t map_u16_s16(uint16_t v) {
 }
 
 String serial_buffer;
-
 void handleCmd() {
   if (serial_buffer == "dump") {
     for (auto& analog_switch : circuit.analog_switches) {
       Serial.printf("* Dump switch-%d\n", analog_switch.GetId());
       analog_switch.DumpLastState();
       analog_switch.DumpLookupTable();
+    }
+    return;
+  }
+  if (serial_buffer == "reset") {
+    Serial.println("Reset all calibration data");
+    circuit.calibration_store.Reset();
+    circuit.CalibrateAllZeroPoint();
+    for (auto& analog_switch : circuit.analog_switches) {
+      analog_switch.Calibrate();
     }
   }
 }
@@ -315,7 +323,7 @@ Throttling teleplot_runner(1, []() {
 });
 
 bool need_to_save_calibration_store = false;
-Throttling calibration_runner(4 * 1000, []() {
+Throttling calibration_runner(100, []() {
   bool calibratin_has_run = false;
   for (auto& analog_switch : circuit.analog_switches) {
     if (analog_switch.NeedRecalibration()) {
@@ -331,6 +339,9 @@ Throttling calibration_runner(4 * 1000, []() {
     }
   }
 
+  // TODO: It's much much slower routine.
+  //       Run it only when the game pad is fully idle
+  //       (e.g. all keys are not pressed for 10 seconds)
   if (need_to_save_calibration_store && !calibratin_has_run) {
     need_to_save_calibration_store = false;
 
