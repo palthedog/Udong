@@ -28,8 +28,12 @@ class AnalogSwitchCalibrationStore {
         mag_flux_at_nearest_(mag_flux_at_nearest) {
   }
 
-  inline bool Updated() const {
+  inline bool IsUpdated() const {
     return updated_;
+  }
+
+  inline void ClearUpdatedFlag() {
+    updated_ = false;
   }
 
   inline int GetId() const {
@@ -89,6 +93,21 @@ class CalibrationStore {
                 .insert(std::make_pair(
                     id, AnalogSwitchCalibrationStore(id, UINT16_MAX, 0)))
                 .first->second;
+  }
+
+  inline bool IsUpdated() const {
+    for (const auto& it : analog_switches_) {
+      if (it.second.IsUpdated()) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  inline void ClearUpdatedFlag() {
+    for (auto& it : analog_switches_) {
+      it.second.ClearUpdatedFlag();
+    }
   }
 
   bool LoadFromFile() {

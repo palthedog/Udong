@@ -9,6 +9,7 @@
 #include "io_utils/soft/hall.h"
 #include "io_utils/soft/triangle.h"
 #include "switch/analog_switch.h"
+#include "throttling.h"
 
 // Sample code:
 //     https://github.com/adafruit/Adafruit_TinyUSB_Arduino/blob/master/examples/HID/hid_gamepad/hid_gamepad.ino
@@ -166,7 +167,7 @@ struct Circuit {
 
     for (int id = 0; id < kButtonCount; id++) {
       analog_switch_multi_sampled_ins.push_back(
-          new NoiseFilter<8, 0, 0>(analog_switch_raw_ins[id]));
+          new NoiseFilter<4, 0, 0>(analog_switch_raw_ins[id]));
 
       analog_switches.push_back(AnalogSwitch(
 
@@ -205,6 +206,8 @@ void setup() {
   TinyUSB_Device_Init(0);
 #endif
   Serial.begin(921600);
+  Serial.setTimeout(100);
+
   analogReadResolution(kAdcBits);
 
   // Set HIGH to GPIO23 to reduce switching noise
@@ -268,16 +271,87 @@ void setup() {
   }
 }
 
-unsigned long logt = 0;
-uint32_t last_t = 0;
-int cnt = 0;
-uint32_t last_report_t = 1000;
-
 inline int16_t map_u16_s16(uint16_t v) {
   return (uint32_t)v - (1 << 15);
 }
 
+String serial_buffer;
+
+void handleCmd() {
+  if (serial_buffer == "dump") {
+    for (auto& analog_switch : circuit.analog_switches) {
+      Serial.printf("* Dump switch-%d\n", analog_switch.GetId());
+      analog_switch.DumpLastState();
+      analog_switch.DumpLookupTable();
+    }
+  }
+}
+
+void handleSerial() {
+  while (Serial.available()) {
+    char ch = Serial.read();
+    if (ch == '\n') {
+      handleCmd();
+      serial_buffer = "";
+    } else {
+      serial_buffer += ch;
+    }
+  }
+}
+
+// every 1ms
+Throttling teleplot_runner(1, []() {
+#if TELEPLOT
+  // delay(1);  // for safety. it should be removed in prod
+  circuit.analog_switches[0].TelePrint();
+  circuit.analog_switches[3].TelePrint();
+  Serial.printf(
+      ">ADC-600-mV: %lf\n", circuit.adc_600mv_input.Read() * 3300.0 / 65536.0);
+  // In case we sent too much Serial.print, usb_hid hangs without delay(1) for
+  // unknown reason...
+  Serial.flush();
+  delay(1);  // for safety. it should be removed in prod
+#endif
+});
+
+bool need_to_save_calibration_store = false;
+Throttling calibration_runner(4 * 1000, []() {
+  bool calibratin_has_run = false;
+  for (auto& analog_switch : circuit.analog_switches) {
+    if (analog_switch.NeedRecalibration()) {
+      Serial.printf("Calibrate switch-%d\n", analog_switch.GetId());
+      analog_switch.Calibrate();
+      calibratin_has_run = true;
+
+      need_to_save_calibration_store = true;
+
+      // Do NOT calibrate multiple switches at once since it is a bit heavy
+      // routine.
+      break;
+    }
+  }
+
+  if (need_to_save_calibration_store && !calibratin_has_run) {
+    need_to_save_calibration_store = false;
+
+    unsigned long from = time_us_32();
+    circuit.calibration_store.SaveIntoFile();
+    circuit.calibration_store.ClearUpdatedFlag();
+    unsigned long to = time_us_32();
+    Serial.printf(">save(us): %lu\n", to - from);
+  }
+});
+
+uint32_t last_report_t = 1000;
+
 void loop() {
+  handleSerial();
+
+  uint32_t now = time_us_32();
+
+  calibration_runner.MaybeRun(now);
+  teleplot_runner.MaybeRun(now);
+
   circuit.led_pin.Write(circuit.triangle_in.Read());
 
   //// analog switch
@@ -306,56 +380,8 @@ void loop() {
     gamepad_report.UpdateButton(analog_switch.GetId(), analog_switch.IsOn());
   }
 
-#if TELEPLOT
-  circuit.analog_switches[0].TelePrint();
-  circuit.analog_switches[3].TelePrint();
-#endif
-
-  if (millis() > logt) {
-    // TODO: Call it by swith itself.
-    for (auto& analog_switch : circuit.analog_switches) {
-      Serial.printf("Calibrate switch-%d\n", analog_switch.GetId());
-      analog_switch.Calibrate();
-    }
-#if TELEPLOT
-    delay(1);
-#endif
-
-    unsigned long from = time_us_32();
-    circuit.calibration_store.SaveIntoFile();
-    unsigned long to = time_us_32();
-    Serial.printf(">save(us): %lu\n", to - from);
-
-    Serial.println("* Dump switch-0");
-    circuit.analog_switches[0].DumpLookupTable();
-    circuit.analog_switches[1].DumpLastState();
-    /*
-    Serial.println("* Dump switch-1");
-    circuit.analog_switches[1].DumpLookupTable();
-    circuit.analog_switches[1].DumpLastState();
-    */
-    const double kLogPeriod_sec = 2.0;
-    Serial.printf("%.1lf loop/sec\n", cnt / kLogPeriod_sec);
-
-#if TELEPLOT
-    delay(1);
-#endif
-
-    logt = millis() + kLogPeriod_sec * 1000;
-    cnt = 0;
-  }
-  cnt++;
-
   gamepad_report.x = INT16_MAX * cos(M_PI * 2 * time_us_32() / 1000 / 1000.0);
   gamepad_report.y = INT16_MAX * sin(M_PI * 2 * time_us_32() / 1000 / 1000.0);
-
-#if TELEPLOT
-  Serial.printf(
-      ">ADC-600-mV: %lf\n", circuit.adc_600mv_input.Read() * 3300.0 / 65536.0);
-  // In case we sent too much Serial.print, usb_hid hangs without delay(1) for
-  // unknown reason...
-  delay(1);  // for safety. it should be removed in prod
-#endif
 
   // temporal D-pad impl.
   gamepad_report.hat = (time_us_32() / 1000000) % 9;
@@ -365,7 +391,6 @@ void loop() {
     uint32_t now = time_us_32();
     Serial.printf(">report-dt(ms): %lf\n", (now - last_report_t) / 1000.0);
     last_report_t = now;
-//    delay(1);
 #endif
     if (!usb_hid.sendReport(0, &gamepad_report, sizeof(gamepad_report))) {
       Serial.println("Failed to send report");

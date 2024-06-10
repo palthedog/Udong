@@ -209,7 +209,13 @@ class AnalogSwitch {
     calibration_->SetMagFluxAtFarest(AnalogToMagnetFlux(sum / count));
   }
 
+  inline bool NeedRecalibration() const {
+    return calibration_->IsUpdated();
+  }
+
   void Calibrate() {
+    calibration_->ClearUpdatedFlag();
+
     // known constants
     const double kKeyStroke_mm = 4.0;
     const double kMagnetRadius_mm = 2.9 / 2.0;
@@ -275,17 +281,18 @@ class AnalogSwitch {
       double press_mm = i * 0.1;
       double mag_flux = mag_flux_table_[i];
       double mv = MagnetFluxToMilliVolt(mag_flux);
-      Serial.printf("  %.2lf mm: %.2lf mT, %.2lf mV\n", press_mm, mag_flux, mv);
+      Serial.printf(
+          "  %.2lf mm: %3.2lf mT, %.2lf mV\n", press_mm, mag_flux, mv);
     }
   }
 
   void DumpLastState() {
     Serial.printf(
         "press: %.2lf mm, "
-        "raw: %d (%.lf mV), "
-        "mag: %.2lf mT, "
-        "min: %.2lf mT, "
-        "max: %.2lf mT\n",
+        "raw: %d (%.3lf mV), "
+        "mag: %3.2lf mT, "
+        "min: %3.2lf mT, "
+        "max: %3.2lf mT\n",
         last_press_mm_,
         last_analog_,
         last_analog_ * (3300.0 / 65536.0),
