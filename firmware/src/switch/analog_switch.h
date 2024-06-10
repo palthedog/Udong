@@ -2,6 +2,7 @@
 #define SWITCH_H
 
 #include <cmath>
+#include <vector>
 
 #include "calibration_store.h"
 #include "io_utils/io.h"
@@ -88,7 +89,7 @@ class AnalogSwitch {
   //  ...
   // array[39]: B @ far_mm + 3.9mm
   // array[40]: B @ far_mm + 4.0mm
-  double mag_flux_table_[41] = {0.0};
+  std::vector<double> mag_flux_table_;
 
   void UpdateMagFluxTable(double d_far_mm, double Br, double R_2, double T) {
     for (int i = 0; i <= 40; i++) {
@@ -105,13 +106,40 @@ class AnalogSwitch {
     //  - Linear Interpolation
     //  - Instead of creating a mag_flux -> mm table
     //    we can create analog-value -> mm table?
-    for (int i = 0; i <= 40; i++) {
-      double mag_flux_at = mag_flux_table_[i];
-      if (mag_flux_at >= mag_flux) {
-        return i * 0.1;
-      }
+    if (mag_flux <= mag_flux_table_[0]) {
+      return 0.0;
     }
-    return 4.0;
+    if (mag_flux >= mag_flux_table_.back()) {
+      return 4.0;
+    }
+
+    auto it = std::lower_bound(
+        mag_flux_table_.begin(), mag_flux_table_.end(), mag_flux);
+    int index = it - mag_flux_table_.begin();
+
+    // Linear interpolation
+    int lower_index = index - 1;
+    int upper_index = index;
+    double lower = mag_flux_table_[lower_index];
+    double upper = mag_flux_table_[upper_index];
+    if (mag_flux < lower) {
+      DumpLookupTable();
+      Serial.printf(
+          "ERROR: mag_flux is smaller than lower: index: %d, mag_flux: %.4lf, "
+          "lower: %.4lf\n",
+          lower_index,
+          mag_flux,
+          lower);
+    }
+    if (mag_flux > upper) {
+      Serial.println("ERROR: mag_flux is larger than upper");
+    }
+
+    double diff = upper - lower;
+    double rate = (mag_flux - lower) / diff;
+    double lower_mm = lower_index / 10.0;
+    const double diff_mm = 0.1;
+    return lower_mm + diff_mm * rate;
   }
 
   // analog: [0, 65536)
@@ -145,6 +173,7 @@ class AnalogSwitch {
         calibration_(calibration),
         sensitivity_mV_per_mT_(sensitivity_mV_per_mT) {
     last_press_mm_ = 0.0;
+    mag_flux_table_.resize(41);
   }
 
   ~AnalogSwitch() {
