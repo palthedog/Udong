@@ -73,7 +73,7 @@ class HallInput : public AnalogInput {
       // rising
       return kDistMinMicro + t * (kDistMaxMicro - kDistMinMicro) / 1000;
     } else {
-      // setting
+      // falling
       return kDistMinMicro +
              (2000 - t) * (kDistMaxMicro - kDistMinMicro) / 1000;
     }

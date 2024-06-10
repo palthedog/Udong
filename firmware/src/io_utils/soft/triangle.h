@@ -18,16 +18,15 @@ class TriangleInput : public AnalogInput {
     const uint32_t kSecondMask = (1 << 20) - 1;
     const uint32_t kRisingMask = (1 << 20);
     uint32_t t = time_us_32();
+    // 20 bits to 16 bits
+    uint16_t value = ((t & kSecondMask) >> 4);
     if (kRisingMask & t) {
       // rising
-      // 20 bits to 16 bits
-      return (t & kSecondMask) >> 4;
-    } else {
-      // setting
-      // 20 bits to 16 bits
-      return ((1 << 16) - 1) - ((t & kSecondMask) >> 4);
+      return value;
     }
-    return t & kSecondMask;
+    // falling
+    // 20 bits to 16 bits
+    return UINT16_MAX - value;
   }
 };
 

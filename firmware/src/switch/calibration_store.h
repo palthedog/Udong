@@ -11,15 +11,14 @@ class AnalogSwitchCalibrationStore {
   double mag_flux_at_farest_;
   double mag_flux_at_nearest_;
 
+  bool updated_;
+
  public:
   AnalogSwitchCalibrationStore()
-      : id_(0), mag_flux_at_farest_(UINT16_MAX), mag_flux_at_nearest_(0) {
-  }
-
-  AnalogSwitchCalibrationStore(const JsonVariant& json) {
-    id_ = json["id"];
-    mag_flux_at_nearest_ = json["mag_flux_at_nearest"];
-    mag_flux_at_farest_ = json["mag_flux_at_farest"];
+      : id_(0),
+        mag_flux_at_farest_(UINT16_MAX),
+        mag_flux_at_nearest_(0),
+        updated_(false) {
   }
 
   AnalogSwitchCalibrationStore(
@@ -58,6 +57,14 @@ inline bool convertToJson(
   return true;
 }
 
+AnalogSwitchCalibrationStore convertFromJson(const JsonVariant& json) {
+  int id = json["id"];
+  double mag_flux_at_nearest = json["mag_flux_at_nearest"];
+  double mag_flux_at_farest = json["mag_flux_at_farest"];
+  return AnalogSwitchCalibrationStore(
+      id, mag_flux_at_farest, mag_flux_at_nearest);
+}
+
 class CalibrationStore {
   const char* kFilePath = "/data/calibration.json";
   std::map<int, AnalogSwitchCalibrationStore> analog_switches_;
@@ -65,14 +72,6 @@ class CalibrationStore {
  public:
   AnalogSwitchCalibrationStore* GetSwitchRef(int id) {
     Serial.printf("Getting switch-calibration store. Id: %d\n", id);
-    /*
-    for (AnalogSwitchCalibrationStore& analog_switch : analog_switches_) {
-      if (analog_switch.GetId() == id) {
-        Serial.printf("Found in saved data");
-        return &analog_switch;
-      }
-    }
-    */
     auto f = analog_switches_.find(id);
     if (f != analog_switches_.end()) {
       return &f->second;
@@ -111,7 +110,7 @@ class CalibrationStore {
     size_t as_size = doc["analog_switches"].size();
     for (size_t i = 0; i < as_size; i++) {
       JsonVariant var = doc["analog_switches"][i];
-      AnalogSwitchCalibrationStore v(var);
+      AnalogSwitchCalibrationStore v = convertFromJson(var);
       Serial.printf("loaded analog switch: %d\n", v.GetId());
       Serial.printf("analog switches.size(): %d\n", analog_switches_.size());
       analog_switches_[v.GetId()] = v;
