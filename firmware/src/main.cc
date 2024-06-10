@@ -1,4 +1,5 @@
 #include <Adafruit_TinyUSB.h>
+#include <Adafruit_USBD_CDC.h>
 #include <Arduino.h>
 
 #define TELEPLOT 1
@@ -196,7 +197,6 @@ struct Circuit {
 
 Circuit circuit;
 GamepadReport gamepad_report;
-
 Adafruit_USBD_HID usb_hid;
 
 void setup() {
@@ -205,6 +205,18 @@ void setup() {
   // such as mbed rp2040
   TinyUSB_Device_Init(0);
 #endif
+
+  TinyUSBDevice.clearConfiguration();
+
+  // https://github.com/obdev/v-usb/blob/master/usbdrv/USB-IDs-for-free.txt
+  const uint16_t PID = 0x27dc;
+  const uint16_t VID = 0x16c0;
+  TinyUSBDevice.setID(VID, PID);
+  TinyUSBDevice.setManufacturerDescriptor("niwasaki");
+  TinyUSBDevice.setProductDescriptor("Udong");
+  TinyUSBDevice.setSerialDescriptor("Udong Serial CDC");
+  TinyUSBDevice.addInterface(Serial);
+
   Serial.begin(921600);
   Serial.setTimeout(100);
 
