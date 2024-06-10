@@ -68,11 +68,15 @@ inline double CalcMagFlux(double d, double Br, double R_2, double T) {
 }
 
 class AnalogSwitch {
+  const double kQuiescentVoltage_mV = 0.6 * 1000;
+
   int id_;
   AnalogInput* input_;
 
   // For calibration
   AnalogSwitchCalibrationStore* calibration_;
+
+  double sensitivity_mV_per_mT_;
 
   double last_mag_flux_;
   double last_press_mm_;
@@ -110,9 +114,6 @@ class AnalogSwitch {
     return 4.0;
   }
 
-  const double kSensitivity_mV_per_mT = 30.0;
-  const double kQuiescentVoltage_mV = 0.6 * 1000;
-
   // analog: [0, 65536)
   double AnalogToMagnetFlux(uint16_t analog) {
     double mv = analog * (3300.0 / 65536.0);
@@ -120,11 +121,11 @@ class AnalogSwitch {
     if (delta_mV <= 0.0) {
       return 0.0;
     }
-    return delta_mV / kSensitivity_mV_per_mT;
+    return delta_mV / sensitivity_mV_per_mT_;
   }
 
   double MagnetFluxToMilliVolt(double mag_flux) {
-    return kSensitivity_mV_per_mT * mag_flux + kQuiescentVoltage_mV;
+    return sensitivity_mV_per_mT_ * mag_flux + kQuiescentVoltage_mV;
   }
 
   double ReadMagnetFlux() {
@@ -135,8 +136,14 @@ class AnalogSwitch {
 
  public:
   AnalogSwitch(
-      int id, AnalogInput* input, AnalogSwitchCalibrationStore* calibration)
-      : id_(id), input_(input), calibration_(calibration) {
+      int id,
+      AnalogInput* input,
+      AnalogSwitchCalibrationStore* calibration,
+      double sensitivity_mV_per_mT)
+      : id_(id),
+        input_(input),
+        calibration_(calibration),
+        sensitivity_mV_per_mT_(sensitivity_mV_per_mT) {
     last_press_mm_ = 0.0;
   }
 
@@ -160,11 +167,14 @@ class AnalogSwitch {
 
     last_press_mm_ = LookupPressMmFromMagFlux(last_mag_flux_);
 
-#if TELEPLOT
-    Serial.printf(">asw%d-mV:%lf\n", id_, last_analog_ / 65536.0 * 3300.0);
-    Serial.printf(">asw%d-mm:%lf\n", id_, last_press_mm_);
-#endif
     return last_press_mm_ > 2.0;
+  }
+
+  void TelePrint() {
+#if TELEPLOT
+    Serial.printf(">asw%02d-mV:%lf\n", id_, last_analog_ / 65536.0 * 3300.0);
+    Serial.printf(">asw%02d-mm:%lf\n", id_, last_press_mm_);
+#endif
   }
 
   int GetId() {

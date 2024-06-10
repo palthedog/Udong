@@ -25,16 +25,14 @@ class Multiplexer8 {
       : selectorOutA_(selectorOutA),
         selectorOutB_(selectorOutB),
         selectorOutC_(selectorOutC),
-        comIn_(comIn) {
+        comIn_(comIn),
+        inputs_(8) {
   }
 
   AnalogInput* GetInput(uint8_t channel) {
     if (channel >= 8) {
       Serial.printf("ERROR: Invalid channel has been selected: %d", channel);
       return nullptr;
-    }
-    if (inputs_.size() <= channel) {
-      inputs_.resize(channel + 1);
     }
     if (!inputs_[channel]) {
       inputs_[channel] = std::move(std::make_unique<MInput>(this, channel));
@@ -49,6 +47,7 @@ class Multiplexer8 {
       return;
     }
 
+    // Serial.printf("Select ch: %d\n", channel);
     selectorOutA_->Write(((channel >> 0) & 1) ? HIGH : LOW);
     selectorOutB_->Write(((channel >> 1) & 1) ? HIGH : LOW);
     selectorOutC_->Write(((channel >> 2) & 1) ? HIGH : LOW);

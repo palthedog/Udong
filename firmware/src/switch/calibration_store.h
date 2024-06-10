@@ -28,6 +28,10 @@ class AnalogSwitchCalibrationStore {
         mag_flux_at_nearest_(mag_flux_at_nearest) {
   }
 
+  inline bool Updated() const {
+    return updated_;
+  }
+
   inline int GetId() const {
     return id_;
   }
@@ -37,6 +41,7 @@ class AnalogSwitchCalibrationStore {
   }
 
   inline void SetMagFluxAtNearest(double v) {
+    updated_ = true;
     mag_flux_at_nearest_ = v;
   }
 
@@ -45,6 +50,7 @@ class AnalogSwitchCalibrationStore {
   }
 
   inline void SetMagFluxAtFarest(double v) {
+    updated_ = true;
     mag_flux_at_farest_ = v;
   }
 };

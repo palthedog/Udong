@@ -46,7 +46,7 @@ const uint8_t kHidDescriptor[] = {
     // 8 bit DPad/Hat Button Map
     HID_USAGE_PAGE(HID_USAGE_PAGE_DESKTOP),
     HID_USAGE(HID_USAGE_DESKTOP_HAT_SWITCH),
-    HID_LOGICAL_MIN(1),
+    HID_LOGICAL_MIN(0),
     HID_LOGICAL_MAX(8),
     HID_REPORT_COUNT(1),
     HID_REPORT_SIZE(8),
@@ -126,8 +126,6 @@ struct Circuit {
   CalibrationStore calibration_store;
 
   Multiplexer8 mux;
-  AnalogInput* joy_x_in;
-  AnalogInput* joy_y_in;
 
   AnalogOutputPin led_pin;
   TriangleInput triangle_in;
@@ -153,24 +151,39 @@ struct Circuit {
             new AnalogInputPin(A0)),
         led_pin(D25),
         adc_600mv_input(A2) {
-    analog_switch_raw_ins.push_back(mux.GetInput(2));
-    analog_switch_raw_ins.push_back(mux.GetInput(3));
+    analog_switch_raw_ins.push_back(mux.GetInput(0));
+    analog_switch_raw_ins.push_back(mux.GetInput(1));
+    analog_switch_raw_ins.push_back(new AnalogInputPin(A1));
 
-    for (int id = 0; id < 2; id++) {
+    const int kButtonCount = 3;
+    const double kA2 = 60;
+    const double kA3 = 30;
+    double kHallIcSensitivities_[kButtonCount] = {
+        kA3,
+        kA3,
+        kA3,
+    };
+
+    for (int id = 0; id < kButtonCount; id++) {
       analog_switch_multi_sampled_ins.push_back(
           new NoiseFilter<8, 0, 0>(analog_switch_raw_ins[id]));
+
       analog_switches.push_back(AnalogSwitch(
+
           id,
           analog_switch_multi_sampled_ins[id],
-          calibration_store.GetSwitchRef(id)));
+          calibration_store.GetSwitchRef(id),
+          kHallIcSensitivities_[id]));
     }
 
     // Dummy switch for logging
-    analog_switches.push_back(AnalogSwitch(
-        11, analog_switch_raw_ins[1], calibration_store.GetSwitchRef(11)));
-
-    joy_x_in = mux.GetInput(0);
-    joy_y_in = mux.GetInput(1);
+    for (int id = 0; id < kButtonCount; id++) {
+      analog_switches.push_back(AnalogSwitch(
+          id + 10,
+          analog_switch_raw_ins[id],
+          calibration_store.GetSwitchRef(id + 10),
+          kHallIcSensitivities_[id]));
+    }
   }
 
   void CalibrateAllZeroPoint() {
@@ -191,17 +204,17 @@ void setup() {
   // such as mbed rp2040
   TinyUSB_Device_Init(0);
 #endif
-  Serial.begin(115200);
+  Serial.begin(921600);
   analogReadResolution(kAdcBits);
 
   // Set HIGH to GPIO23 to reduce switching noise
   // https://datasheets.raspberrypi.com/pico/pico-datasheet.pdf
-  // Driving high the SMPS mode pin (GPIO23), to force the power supply into PWM
-  // mode, can greatly reduce the inherent
-  // ripple of the SMPS at light load, and therefore the ripple on the ADC
-  // supply. This does reduce the power efficiency of the board at light load,
-  // so the low-power PFM mode can be re-enabled between infrequent ADC
-  // measurements by driving GPIO23 low once more. See Section 4.4.
+  // Driving high the SMPS mode pin (GPIO23), to force the power supply into
+  // PWM mode, can greatly reduce the inherent ripple of the SMPS at light
+  // load, and therefore the ripple on the ADC supply. This does reduce the
+  // power efficiency of the board at light load, so the low-power PFM mode
+  // can be re-enabled between infrequent ADC measurements by driving GPIO23
+  // low once more. See Section 4.4.
   pinMode(23, OUTPUT);
   digitalWrite(23, HIGH);
 
@@ -232,19 +245,20 @@ void setup() {
   gamepad_report.buttons = 0;
   usb_hid.sendReport(0, &gamepad_report, sizeof(gamepad_report));
 
+  /*
   // wait for
-
   circuit.led_pin.Write(UINT16_MAX);
   delay(5000);
   circuit.led_pin.Write(0);
   Serial.println("*** Start ***");
   Serial.println("*** Start ***");
   Serial.println("*** Start ***");
+  */
 
   if (!LittleFS.begin()) {
     Serial.println("Failed to initialize LittleFS");
   }
-  circuit.calibration_store.LoadFromFile();
+  // circuit.calibration_store.LoadFromFile();
   circuit.CalibrateAllZeroPoint();
   // We need to call Calibrate after loading calibration data to update all
   // related data (e.g. lookup-table)
@@ -257,6 +271,7 @@ void setup() {
 unsigned long logt = 0;
 uint32_t last_t = 0;
 int cnt = 0;
+uint32_t last_report_t = 1000;
 
 inline int16_t map_u16_s16(uint16_t v) {
   return (uint32_t)v - (1 << 15);
@@ -264,11 +279,6 @@ inline int16_t map_u16_s16(uint16_t v) {
 
 void loop() {
   circuit.led_pin.Write(circuit.triangle_in.Read());
-
-  uint16_t joy_x = circuit.joy_x_in->Read();
-  uint16_t joy_y = circuit.joy_y_in->Read();
-  gamepad_report.x = map_u16_s16(joy_x);
-  gamepad_report.y = map_u16_s16(joy_y);
 
   //// analog switch
   // soft switch(for test)
@@ -291,63 +301,57 @@ void loop() {
   gamepad_report.rz =
       circuit.analog_switches[1].GetLastPressMm() / 4.0 * UINT16_MAX / 2;
 
-  // analog switch 0
+  // analog switches
   for (auto& analog_switch : circuit.analog_switches) {
     gamepad_report.UpdateButton(analog_switch.GetId(), analog_switch.IsOn());
   }
 
-  if (millis() > logt) {
-    /*
-      uint32_t dist_micro = circuit.hall_in.GetDistanceMicros();
-      uint32_t micro_tesla =
-          circuit.hall_in.DistanceMicrosToMicroTesla(dist_micro);
-      Serial.printf(
-          "TRUE: dist: %.2f mm, mag: %.2f mT\n",
-          dist_micro / 1000.0,
-          micro_tesla / 1000.0);
-      Serial.printf("ESTI: press: %.2f mm, hall-in: %d\n", press_mm, hall);
-      Serial.println("---");
-      // Serial.println("Calibrate soft switch");
-      // circuit.analog_switch_soft.Calibrate();
-      */
+#if TELEPLOT
+  circuit.analog_switches[0].TelePrint();
+  circuit.analog_switches[3].TelePrint();
+#endif
+
+  if (millis() > logt && Serial.availableForWrite()) {
     // TODO: Call it by swith itself.
     for (auto& analog_switch : circuit.analog_switches) {
       Serial.printf("Calibrate switch-%d\n", analog_switch.GetId());
       analog_switch.Calibrate();
     }
+#if TELEPLOT
+    delay(1);
+#endif
+
     unsigned long from = time_us_32();
     circuit.calibration_store.SaveIntoFile();
     unsigned long to = time_us_32();
     Serial.printf(">save(us): %lu\n", to - from);
 
+    Serial.println("* Dump switch-0");
+    circuit.analog_switches[0].DumpLookupTable();
+    circuit.analog_switches[1].DumpLastState();
+    /*
     Serial.println("* Dump switch-1");
     circuit.analog_switches[1].DumpLookupTable();
     circuit.analog_switches[1].DumpLastState();
-
-    // Serial.println("* Dump switch-soft");
-    // circuit.analog_switch_soft.DumpLookupTable();
-
-    int adc_const = circuit.adc_600mv_input.Read();
-    Serial.printf(
-        "ADC-600mV: %d (%.1lf mV)\n", adc_const, adc_const * 3300.0 / 65536.0);
-
-    const double kLogPeriod_sec = 0.7;
+    */
+    const double kLogPeriod_sec = 2.0;
     Serial.printf("%.1lf loop/sec\n", cnt / kLogPeriod_sec);
+
+#if TELEPLOT
     delay(1);
+#endif
 
     logt = millis() + kLogPeriod_sec * 1000;
     cnt = 0;
   }
   cnt++;
 
+  gamepad_report.x = INT16_MAX * cos(M_PI * 2 * time_us_32() / 1000 / 1000.0);
+  gamepad_report.y = INT16_MAX * sin(M_PI * 2 * time_us_32() / 1000 / 1000.0);
+
 #if TELEPLOT
   Serial.printf(
       ">ADC-600-mV: %lf\n", circuit.adc_600mv_input.Read() * 3300.0 / 65536.0);
-  // circuit.analog_switch_1.DumpLastState();
-  uint32_t t = time_us_32();
-  Serial.printf(">FPS: %lu\n", 1000000 / (t - last_t));
-  last_t = t;
-
   // In case we sent too much Serial.print, usb_hid hangs without delay(1) for
   // unknown reason...
   delay(1);  // for safety. it should be removed in prod
@@ -356,7 +360,15 @@ void loop() {
   // temporal D-pad impl.
   gamepad_report.hat = (time_us_32() / 1000000) % 9;
 
-  if (!usb_hid.sendReport(0, &gamepad_report, sizeof(gamepad_report))) {
-    Serial.println("failed to send report");
+  if (usb_hid.ready()) {
+#if TELEPLOT
+    uint32_t now = time_us_32();
+    Serial.printf(">report-dt(ms): %lf\n", (now - last_report_t) / 1000.0);
+    last_report_t = now;
+//    delay(1);
+#endif
+    if (!usb_hid.sendReport(0, &gamepad_report, sizeof(gamepad_report))) {
+      Serial.println("Failed to send report");
+    }
   }
 }
