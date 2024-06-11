@@ -2,14 +2,18 @@
 #include <Adafruit_USBD_CDC.h>
 #include <Arduino.h>
 
+#include <memory>
+
 #define TELEPLOT 1
 
 #include "io_utils/io.h"
+#include "io_utils/multi_sampling.h"
 #include "io_utils/multiplexer.h"
-#include "io_utils/noise_filter.h"
 #include "io_utils/soft/hall.h"
 #include "io_utils/soft/triangle.h"
 #include "switch/analog_switch.h"
+#include "switch/triggers/rapid_trigger.h"
+#include "switch/triggers/static_trigger.h"
 #include "throttling.h"
 
 // Sample code:
@@ -134,7 +138,7 @@ struct Circuit {
 
   std::vector<AnalogInput*> analog_switch_raw_ins;
   std::vector<AnalogInput*> analog_switch_multi_sampled_ins;
-  std::vector<AnalogSwitch> analog_switches;
+  std::vector<AnalogSwitch*> analog_switches;
 
   AnalogInputPin adc_600mv_input;
 
@@ -150,39 +154,32 @@ struct Circuit {
     analog_switch_raw_ins.push_back(new AnalogInputPin(A1));
 
     const int kButtonCount = 3;
-    const double kA2 = 60;
-    const double kA3 = 30;
-    double kHallIcSensitivities_[kButtonCount] = {
-        kA3,
-        kA3,
-        kA3,
-    };
 
     for (int id = 0; id < kButtonCount; id++) {
       analog_switch_multi_sampled_ins.push_back(
           new MultiSampling<4, 0, 0>(analog_switch_raw_ins[id]));
 
-      analog_switches.push_back(AnalogSwitch(
-
+      analog_switches.push_back(new AnalogSwitch(
           id,
           analog_switch_multi_sampled_ins[id],
           calibration_store.GetSwitchRef(id),
-          kHallIcSensitivities_[id]));
+          std::move(
+              std::unique_ptr<Trigger>(new RapidTrigger(0.2, 3.8, 0.6, 0.3)))));
     }
 
     // Dummy switch for logging
     for (int id = 0; id < kButtonCount; id++) {
-      analog_switches.push_back(AnalogSwitch(
+      analog_switches.push_back(new AnalogSwitch(
           id + 10,
           analog_switch_raw_ins[id],
           calibration_store.GetSwitchRef(id + 10),
-          kHallIcSensitivities_[id]));
+          std::move(std::unique_ptr<Trigger>(new StaticTrigger(1.4, 1.2)))));
     }
   }
 
   void CalibrateAllZeroPoint() {
     for (auto& analog_switch : analog_switches) {
-      analog_switch.CalibrateZeroPoint();
+      analog_switch->CalibrateZeroPoint();
     }
   }
 };
@@ -204,8 +201,8 @@ void setup() {
   const uint16_t VID = 0x16c0;
   const uint16_t PID = 0x27dc;
   TinyUSBDevice.setID(VID, PID);
+  TinyUSBDevice.setVersion(0x0200);             // USB2.0
   TinyUSBDevice.setLanguageDescriptor(0x0409);  // English/US
-  TinyUSBDevice.setManufacturerDescriptor("Udong");
   TinyUSBDevice.setProductDescriptor("Udong");
   // TODO: We may need to append a unique serial number after colon.
   TinyUSBDevice.setSerialDescriptor("f13g.com:");
@@ -272,8 +269,8 @@ void setup() {
   // We need to call Calibrate after loading calibration data to update all
   // related data (e.g. lookup-table)
   for (auto& analog_switch : circuit.analog_switches) {
-    analog_switch.Calibrate();
-    analog_switch.DumpLastState();
+    analog_switch->Calibrate();
+    analog_switch->DumpLastState();
   }
 }
 
@@ -285,9 +282,9 @@ String serial_buffer;
 void handleCmd() {
   if (serial_buffer == "dump") {
     for (auto& analog_switch : circuit.analog_switches) {
-      Serial.printf("* Dump switch-%d\n", analog_switch.GetId());
-      analog_switch.DumpLastState();
-      analog_switch.DumpLookupTable();
+      Serial.printf("* Dump switch-%d\n", analog_switch->GetId());
+      analog_switch->DumpLastState();
+      analog_switch->DumpLookupTable();
     }
     return;
   }
@@ -296,7 +293,7 @@ void handleCmd() {
     circuit.calibration_store.Reset();
     circuit.CalibrateAllZeroPoint();
     for (auto& analog_switch : circuit.analog_switches) {
-      analog_switch.Calibrate();
+      analog_switch->Calibrate();
     }
   }
 }
@@ -317,8 +314,8 @@ void handleSerial() {
 Throttling teleplot_runner(1, []() {
 #if TELEPLOT
   // delay(1);  // for safety. it should be removed in prod
-  circuit.analog_switches[0].TelePrint();
-  circuit.analog_switches[3].TelePrint();
+  circuit.analog_switches[0]->TelePrint();
+  circuit.analog_switches[3]->TelePrint();
   Serial.printf(
       ">ADC-600-mV: %lf\n", circuit.adc_600mv_input.Read() * 3300.0 / 65536.0);
   // In case we sent too much Serial.print, usb_hid hangs without delay(1) for
@@ -332,9 +329,9 @@ bool need_to_save_calibration_store = false;
 Throttling calibration_runner(100, []() {
   bool calibratin_has_run = false;
   for (auto& analog_switch : circuit.analog_switches) {
-    if (analog_switch.NeedRecalibration()) {
-      Serial.printf("Calibrate switch-%d\n", analog_switch.GetId());
-      analog_switch.Calibrate();
+    if (analog_switch->NeedRecalibration()) {
+      Serial.printf("Calibrate switch-%d\n", analog_switch->GetId());
+      analog_switch->Calibrate();
       calibratin_has_run = true;
 
       need_to_save_calibration_store = true;
@@ -374,14 +371,14 @@ void loop() {
   // Debug info
   gamepad_report.z = circuit.analog_switch_raw_ins[0]->Read() / 2;
   gamepad_report.rx =
-      circuit.analog_switches[0].GetLastPressMm() / 4.0 * UINT16_MAX / 2;
+      circuit.analog_switches[0]->GetLastPressMm() / 4.0 * UINT16_MAX / 2;
   gamepad_report.ry = circuit.analog_switch_raw_ins[1]->Read() / 2;
   gamepad_report.rz =
-      circuit.analog_switches[1].GetLastPressMm() / 4.0 * UINT16_MAX / 2;
+      circuit.analog_switches[1]->GetLastPressMm() / 4.0 * UINT16_MAX / 2;
 
   // analog switches
   for (auto& analog_switch : circuit.analog_switches) {
-    gamepad_report.UpdateButton(analog_switch.GetId(), analog_switch.IsOn());
+    gamepad_report.UpdateButton(analog_switch->GetId(), analog_switch->IsOn());
   }
 
   gamepad_report.x = INT16_MAX * cos(M_PI * 2 * time_us_32() / 1000 / 1000.0);
@@ -395,6 +392,7 @@ void loop() {
     uint32_t now = time_us_32();
     Serial.printf(">report-dt(ms): %lf\n", (now - last_report_t) / 1000.0);
     last_report_t = now;
+    delay(1);
 #endif
     if (!usb_hid.sendReport(0, &gamepad_report, sizeof(gamepad_report))) {
       Serial.println("Failed to send report");

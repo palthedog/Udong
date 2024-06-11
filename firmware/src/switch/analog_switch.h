@@ -7,6 +7,7 @@
 #include "calibration_store.h"
 #include "io_utils/io.h"
 #include "solver.h"
+#include "triggers/trigger.h"
 
 // let
 //   term0 = (D + T) / sqrt(R^2 + (D + T)^2)
@@ -70,6 +71,7 @@ inline double CalcMagFlux(double d, double Br, double R_2, double T) {
 
 class AnalogSwitch {
   const double kQuiescentVoltage_mV = 0.6 * 1000;
+  const double kSensitivity_mV_per_mT = 30;
 
   int id_;
   AnalogInput* input_;
@@ -90,6 +92,8 @@ class AnalogSwitch {
   // array[39]: B @ far_mm + 3.9mm
   // array[40]: B @ far_mm + 4.0mm
   std::vector<double> mag_flux_table_;
+
+  std::unique_ptr<Trigger> trigger_;
 
   void UpdateMagFluxTable(double d_far_mm, double Br, double R_2, double T) {
     for (int i = 0; i <= 40; i++) {
@@ -165,11 +169,12 @@ class AnalogSwitch {
       int id,
       AnalogInput* input,
       AnalogSwitchCalibrationStore* calibration,
-      double sensitivity_mV_per_mT)
+      std::unique_ptr<Trigger> trigger)
       : id_(id),
         input_(input),
         calibration_(calibration),
-        sensitivity_mV_per_mT_(sensitivity_mV_per_mT) {
+        sensitivity_mV_per_mT_(kSensitivity_mV_per_mT),
+        trigger_(std::move(trigger)) {
     last_press_mm_ = 0.0;
     mag_flux_table_.resize(41);
   }
@@ -194,13 +199,14 @@ class AnalogSwitch {
 
     last_press_mm_ = LookupPressMmFromMagFlux(last_mag_flux_);
 
-    return last_press_mm_ > 2.0;
+    return trigger_->Triggered(last_press_mm_);
   }
 
   void TelePrint() {
 #if TELEPLOT
     Serial.printf(">asw%02d-mV:%lf\n", id_, last_analog_ / 65536.0 * 3300.0);
     Serial.printf(">asw%02d-mm:%lf\n", id_, last_press_mm_);
+    trigger_->TelePrint(GetId());
 #endif
   }
 
