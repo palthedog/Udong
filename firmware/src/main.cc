@@ -157,7 +157,7 @@ struct Circuit {
 
     for (int id = 0; id < kButtonCount; id++) {
       analog_switch_multi_sampled_ins.push_back(
-          new MultiSampling<4, 0, 0>(analog_switch_raw_ins[id]));
+          new MultiSampling<1, 0, 0>(analog_switch_raw_ins[id]));
 
       analog_switches.push_back(new AnalogSwitch(
           id,
