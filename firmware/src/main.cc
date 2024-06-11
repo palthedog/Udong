@@ -134,15 +134,7 @@ struct Circuit {
 
   std::vector<AnalogInput*> analog_switch_raw_ins;
   std::vector<AnalogInput*> analog_switch_multi_sampled_ins;
-  // AnalogInput* analog_switch_0_raw_in;
-  // AnalogInput* analog_switch_1_raw_in;
-  // NoiseFilter<8, 1, 1> analog_switch_0_multi_sampling_in;
-  // NoiseFilter<8, 1, 1> analog_switch_1_multi_sampling_in;
-  // AnalogSwitch analog_switch_0;
-  // AnalogSwitch analog_switch_1;
   std::vector<AnalogSwitch> analog_switches;
-
-  // AnalogSwitch analog_switch_1_no_mp;
 
   AnalogInputPin adc_600mv_input;
 
@@ -209,12 +201,14 @@ void setup() {
   TinyUSBDevice.clearConfiguration();
 
   // https://github.com/obdev/v-usb/blob/master/usbdrv/USB-IDs-for-free.txt
-  const uint16_t PID = 0x27dc;
   const uint16_t VID = 0x16c0;
+  const uint16_t PID = 0x27dc;
   TinyUSBDevice.setID(VID, PID);
-  TinyUSBDevice.setManufacturerDescriptor("niwasaki");
+  TinyUSBDevice.setLanguageDescriptor(0x0409);  // English/US
+  TinyUSBDevice.setManufacturerDescriptor("Udong");
   TinyUSBDevice.setProductDescriptor("Udong");
-  TinyUSBDevice.setSerialDescriptor("Udong Serial CDC");
+  // TODO: We may need to append a unique serial number after colon.
+  TinyUSBDevice.setSerialDescriptor("f13g.com:");
   TinyUSBDevice.addInterface(Serial);
 
   Serial.begin(921600);
@@ -376,19 +370,6 @@ void loop() {
   teleplot_runner.MaybeRun(now);
 
   circuit.led_pin.Write(circuit.triangle_in.Read());
-
-  //// analog switch
-  // soft switch(for test)
-  /*
-  uint16_t hall = circuit.hall_in.Read();
-  double press_mm = circuit.analog_switch_soft.GetLastPressMm();
-  bool as0_on = circuit.analog_switch_soft.IsOn();
-  gamepad_report.UpdateButton(0, as0_on);
-  uint16_t hall = 0;
-  double press_mm = 0.0;
-  bool as0_on = false;
-  gamepad_report.UpdateButton(0, as0_on);
-  */
 
   // Debug info
   gamepad_report.z = circuit.analog_switch_raw_ins[0]->Read() / 2;
