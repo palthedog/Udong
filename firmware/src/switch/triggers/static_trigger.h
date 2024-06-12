@@ -19,6 +19,14 @@ class StaticTrigger : public Trigger {
   virtual ~StaticTrigger() {
   }
 
+  virtual JsonDocument ToConfig() override {
+    JsonDocument var;
+    var["type"] = "static-trigger";
+    var["rel"] = release_point_mm_;
+    var["act"] = actuation_point_mm_;
+    return var;
+  }
+
   virtual bool Triggered(double pressed_distance_mm) override {
     if (pressed_distance_mm >= actuation_point_mm_) {
       current_state_ = true;

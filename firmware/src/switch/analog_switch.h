@@ -182,6 +182,10 @@ class AnalogSwitch {
   ~AnalogSwitch() {
   }
 
+  std::unique_ptr<Trigger>& GetTrigger() {
+    return trigger_;
+  }
+
   bool IsOn() {
     last_mag_flux_ = ReadMagnetFlux();
 

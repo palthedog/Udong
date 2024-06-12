@@ -1,0 +1,10 @@
+.slider-label-container {
+    display: flex;
+    justify-content: space-between;
+    margin: 20px 10px 0;
+    max-width: 284px;
+}
+
+mat-slider {
+    width: 300px;
+}

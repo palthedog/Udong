@@ -1,0 +1,16 @@
+<h1>{{title}}</h1>
+
+<div [hidden]="connected | async">
+    <app-serial-connector>
+    </app-serial-connector>
+
+</div>
+
+<div [hidden]=" !(connected | async)">
+    <app-text-commander></app-text-commander>
+
+    <app-configurator>
+    </app-configurator>
+</div>
+
+<router-outlet />

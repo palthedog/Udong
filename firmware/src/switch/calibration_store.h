@@ -73,7 +73,7 @@ inline bool convertToJson(
   return true;
 }
 
-AnalogSwitchCalibrationStore convertFromJson(const JsonVariant& json) {
+inline AnalogSwitchCalibrationStore convertFromJson(const JsonVariant& json) {
   int id = json["id"];
   double mag_flux_at_nearest = json["mag_flux_at_nearest"];
   double mag_flux_at_farest = json["mag_flux_at_farest"];
@@ -174,6 +174,8 @@ class CalibrationStore {
       doc["analog_switches"][index++] = it.second;
     }
 
+    // TODO: Use buffererd stream for better performance
+    // (e.g. WriteBufferingStream )
     size_t size = serializeJsonPretty(doc, file);
     Serial.printf("Calibration data saved successfully: %d bytes\n", size);
     file.close();

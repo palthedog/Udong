@@ -8,6 +8,7 @@ class Trigger {
 
   virtual bool Triggered(double travel_distance_mm) = 0;
   virtual void TelePrint(int switch_id) = 0;
+  virtual JsonDocument ToConfig() = 0;
 };
 
 #endif
