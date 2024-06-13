@@ -1,0 +1,14 @@
+<div>
+    <button (click)="Save()" mat-flat-button color="warn">
+        Save
+    </button>
+</div>
+
+<mat-card>
+    <mat-card-content *ngIf="config">
+        <div id="switches-flex-container">
+            <app-analog-switch-config class="switch-item" *ngFor="let item of config?.analog_switches" [config]="item">
+            </app-analog-switch-config>
+        </div>
+    </mat-card-content>
+</mat-card>

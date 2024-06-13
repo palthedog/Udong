@@ -1,0 +1,11 @@
+#switches-flex-container {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.switch-item {
+    margin: {
+        right: 16px;
+        bottom: 16px;
+    }
+}
