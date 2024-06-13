@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, QueryList, ViewChildren, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { SerialService } from '../serial.service';
@@ -20,6 +20,9 @@ export class ConfiguratorComponent {
 
   config?: UdongConfig = undefined;
 
+  @ViewChildren(AnalogSwitchConfigComponent)
+  analog_switches!: QueryList<AnalogSwitchConfigComponent>;
+
   constructor() {
     console.log('configurator init');
     this.serial_service.ConnectionChanges().subscribe((connected) => {
@@ -40,6 +43,7 @@ export class ConfiguratorComponent {
 
   Save() {
     console.log('save:', this.config);
+    console.log('save:', this.analog_switches.first.rapid_trigger?.act);
   }
 }
 
