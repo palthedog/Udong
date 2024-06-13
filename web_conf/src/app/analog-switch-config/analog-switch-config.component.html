@@ -1,7 +1,8 @@
 <mat-card appearance="outlined">
     <mat-card-header>Switch-{{config.id}}</mat-card-header>
     <mat-card-content *ngIf="rapid_trigger">
-        <app-depth-slider label="Actuation Distance" [value]="rapid_trigger!.act" [min]="0.1"></app-depth-slider>
+        <app-depth-slider label="Actuation Distance" [value]="config.trigger.act" (valueChange)="actChange($event)"
+            [min]="0.1"></app-depth-slider>
         <br />
         <app-depth-slider label="Release Distance" [min]="0.1" [value]="rapid_trigger!.rel"></app-depth-slider>
         <br />

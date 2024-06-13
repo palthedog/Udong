@@ -24,8 +24,15 @@ export class DepthSliderComponent {
   @Input()
   label!: string;
 
+  private _value!: number;
+  public get value(): number {
+    return this._value;
+  }
   @Input()
-  value!: number;
+  public set value(value: number) {
+    this._value = value;
+    console.log('set value', value);
+  }
 
   @Input()
   min: number = 0.0;
