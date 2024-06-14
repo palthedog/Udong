@@ -22,17 +22,15 @@
             </mat-card-subtitle>
         </mat-card-header>
 
-        <div>
-            <mat-card-content class="switches-container">
-                <app-group-selector
-                    *ngFor="let assignment of config!.analog_switch_assignments"
-                    [assignment]="assignment"
-                    [group_ids]="group_ids"
-                    (selectorClosed)="setActiveGroupId($event)"
-                >
-                </app-group-selector>
-            </mat-card-content>
-        </div>
+        <mat-card-content class="switches-container">
+            <app-group-selector
+                *ngFor="let assignment of config!.analog_switch_assignments"
+                [assignment]="assignment"
+                [group_ids]="group_ids"
+                (selectorClosed)="setActiveGroupId($event)"
+            >
+            </app-group-selector>
+        </mat-card-content>
     </mat-card>
 
     <app-analog-switch-config

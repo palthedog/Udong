@@ -1,16 +1,15 @@
 import { inject, Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
-import { SerialConnectorComponent } from './serial-connector/serial-connector.component'
-import { SerialService } from './serial.service';
-
-import { TextCommanderComponent } from './text-commander/text-commander.component';
-import { Observer } from 'rxjs';
 import { CommonModule } from '@angular/common';
-import { AnalogSwitchConfigComponent } from "./analog-switch-config/analog-switch-config.component";
+import { RouterOutlet } from '@angular/router';
 
 import { MatSlideToggleModule } from '@angular/material/slide-toggle'
 
+import { SerialService } from './serial.service';
+
+import { AnalogSwitchConfigComponent } from "./analog-switch-config/analog-switch-config.component";
 import { ConfiguratorComponent } from "./configurator/configurator.component"
+import { SerialConnectorComponent } from './serial-connector/serial-connector.component'
+import { TextCommanderComponent } from './text-commander/text-commander.component';
 
 @Component({
   selector: 'app-root',

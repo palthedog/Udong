@@ -37,10 +37,6 @@ export class AnalogSwitchConfigComponent {
     this.configChange.next(this._config);
   }
 
-  actChange(event: any) {
-    console.log('actChange', event);
-  }
-
   @ViewChild(MatRipple)
   ripple?: MatRipple = undefined;
 

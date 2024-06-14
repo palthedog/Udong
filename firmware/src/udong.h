@@ -96,31 +96,6 @@ struct TU_ATTR_PACKED GamepadReport {
 
 const uint8_t LED_PIN = D25;
 
-/*
-  HallInput<
-      0,
-      (1 << 16) - 1,
-      // min dist
-      2000,
-      // max dist
-      2000 + 4000,
-      // Br
-      10000,
-      // thickness
-      3400,
-      // diameter
-      2900,
-      // sensitivity
-      //   DRV5056A3 @ 3.3V
-      30,
-      // 3.3V
-      3300,
-      // quiescent voltage (mV)
-      600>
-      hall_in;
-  AnalogSwitch analog_switch_soft;
-*/
-
 struct Circuit {
   CalibrationStore calibration_store;
 

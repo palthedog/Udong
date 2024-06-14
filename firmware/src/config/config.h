@@ -12,6 +12,10 @@ struct RapidTriggerConfig {
   double rel;
   double f_act;
   double f_rel;
+
+  // Default config
+  RapidTriggerConfig() : act(0.8), rel(0.4), f_act(3.8), f_rel(0.2) {
+  }
 };
 
 inline bool convertToJson(const RapidTriggerConfig& config, JsonVariant dst) {
@@ -25,6 +29,8 @@ inline bool convertToJson(const RapidTriggerConfig& config, JsonVariant dst) {
 struct StaticTriggerConfig {
   double act;
   double rel;
+  StaticTriggerConfig() : act(1.2), rel(0.8) {
+  }
 };
 
 inline bool convertToJson(const StaticTriggerConfig& config, JsonVariant dst) {
@@ -85,35 +91,28 @@ inline bool convertToJson(const UdongConfig& config, JsonVariant dst) {
   return true;
 }
 
-inline UdongConfig loadUdonConfig() {
+inline UdongConfig defaultUdongConfig() {
   UdongConfig config;
 
-  // dummy
   for (int i = 0; i < 16; i++) {
     AnalogSwitchAssignment assignment;
     assignment.analog_switch_id = i;
 
-    assignment.analog_switch_group_id = i % 4;
+    assignment.analog_switch_group_id = i < 8 ? 0 : 4;
     config.analog_switch_assignments.push_back(assignment);
   }
 
-  // Rapid triggers
   for (int i = 0; i < 8; i++) {
     AnalogSwitchGroup group;
     group.analog_switch_group_id = i;
-    group.trigger_type = i < 2 ? "rapid-trigger" : "static-trigger";
-
-    group.rappid_trigger.act = 0.6;
-    group.rappid_trigger.rel = 0.3;
-    group.rappid_trigger.f_act = 3.8;
-    group.rappid_trigger.f_rel = 0.2;
-
-    group.static_trigger.act = 1.2;
-    group.static_trigger.rel = 0.8;
-
+    group.trigger_type = i < 4 ? "rapid-trigger" : "static-trigger";
     config.analog_switch_groups.push_back(group);
   }
   return config;
+}
+
+inline UdongConfig loadUdonConfig() {
+  return defaultUdongConfig();
 }
 
 #endif
