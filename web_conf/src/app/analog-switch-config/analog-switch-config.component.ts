@@ -5,11 +5,12 @@ import { MatSliderModule } from '@angular/material/slider'
 import { DepthSliderComponent } from '../depth-slider/depth-slider.component';
 import { MatRipple, MatRippleModule } from '@angular/material/core';
 import { AnalogSwitchGroup } from '../config';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle'
 
 @Component({
   selector: 'app-analog-switch-config',
   standalone: true,
-  imports: [MatRippleModule, MatCardModule, MatSliderModule, DepthSliderComponent, CommonModule],
+  imports: [MatSlideToggleModule, MatRippleModule, MatCardModule, MatSliderModule, DepthSliderComponent, CommonModule],
   templateUrl: './analog-switch-config.component.html',
   styleUrl: './analog-switch-config.component.scss'
 })
@@ -27,18 +28,23 @@ export class AnalogSwitchConfigComponent {
     this._config = value;
   }
 
-  @ViewChild(MatRipple)
-  ripple?: MatRipple = undefined;
-
-  launchRipple() {
-    this.ripple?.launch({ centered: true });
+  enableRapidTrigger(enable: boolean) {
+    if (enable) {
+      this._config.trigger_type = 'rapid-trigger';
+    } else {
+      this._config.trigger_type = 'static-trigger';
+    }
+    this.configChange.next(this._config);
   }
 
   actChange(event: any) {
     console.log('actChange', event);
   }
 
-  ngOnInit() {
+  @ViewChild(MatRipple)
+  ripple?: MatRipple = undefined;
 
+  launchRipple() {
+    this.ripple?.launch({ centered: true });
   }
 }

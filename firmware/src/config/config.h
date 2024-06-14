@@ -50,24 +50,18 @@ struct AnalogSwitchGroup {
 
   String trigger_type;
 
-  union {
-    RapidTriggerConfig rappid_trigger;
-    StaticTriggerConfig static_trigger;
-  };
+  // Keep configurations for all trigger type so that the user can keep
+  // their setting after switch trigger mode.
+  RapidTriggerConfig rappid_trigger;
+  StaticTriggerConfig static_trigger;
 };
 
 inline bool convertToJson(const AnalogSwitchGroup& config, JsonVariant dst) {
   dst["analog_switch_group_id"] = config.analog_switch_group_id;
   dst["trigger_type"] = config.trigger_type;
 
-  if (config.trigger_type == "rapid-trigger") {
-    convertToJson(config.rappid_trigger, dst["rapid_trigger"].to<JsonObject>());
-  } else if (config.trigger_type == "static-trigger") {
-    convertToJson(
-        config.static_trigger, dst["static_trigger"].to<JsonObject>());
-  } else {
-    return false;
-  }
+  convertToJson(config.rappid_trigger, dst["rapid_trigger"].to<JsonObject>());
+  convertToJson(config.static_trigger, dst["static_trigger"].to<JsonObject>());
   return true;
 }
 
@@ -104,27 +98,21 @@ inline UdongConfig loadUdonConfig() {
   }
 
   // Rapid triggers
-  for (int i = 0; i < 2; i++) {
+  for (int i = 0; i < 8; i++) {
     AnalogSwitchGroup group;
     group.analog_switch_group_id = i;
-    group.trigger_type = "rapid-trigger";
+    group.trigger_type = i < 2 ? "rapid-trigger" : "static-trigger";
+
     group.rappid_trigger.act = 0.6;
     group.rappid_trigger.rel = 0.3;
     group.rappid_trigger.f_act = 3.8;
     group.rappid_trigger.f_rel = 0.2;
-    config.analog_switch_groups.push_back(group);
-  }
-  // Static triggers
-  for (int i = 2; i < 4; i++) {
-    AnalogSwitchGroup group;
-    group.analog_switch_group_id = i;
-    group.trigger_type = "static-trigger";
+
     group.static_trigger.act = 1.2;
     group.static_trigger.rel = 0.8;
 
     config.analog_switch_groups.push_back(group);
   }
-
   return config;
 }
 

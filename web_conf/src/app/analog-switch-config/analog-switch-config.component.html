@@ -8,42 +8,53 @@
             Group {{config.analog_switch_group_id}}
         </mat-card-title>
     </mat-card-header>
+    <mat-card-content>
+        <section class="activate-rapid-trigger-slide-section">
+            <mat-slide-toggle
+                class="activate-rapid-trigger-slide"
+                [checked]="config.trigger_type == 'rapid-trigger'"
+                (change)="enableRapidTrigger($event.checked)"
+            >
+                Enable Rapid Trigger
+            </mat-slide-toggle>
+        </section>
 
-    <mat-card-content *ngIf="config.trigger_type == 'rapid-trigger'">
-        <app-depth-slider
-            label="Actuation Distance"
-            [min]="0.1"
-            [(value)]="config.rapid_trigger!.act"
-        ></app-depth-slider>
-        <br />
-        <app-depth-slider
-            label="Release Distance"
-            [min]="0.1"
-            [(value)]="config.rapid_trigger!.rel"
-        ></app-depth-slider>
-        <br />
-        <app-depth-slider
-            label="Force actuation point"
-            [(value)]="config.rapid_trigger!.f_act"
-        ></app-depth-slider>
-        <br />
-        <app-depth-slider
-            label="Force release point"
-            [(value)]="config.rapid_trigger!.f_rel"
-        ></app-depth-slider>
-    </mat-card-content>
+        <ng-container *ngIf="config.trigger_type == 'rapid-trigger'">
+            <app-depth-slider
+                label="Actuation Distance"
+                [min]="0.1"
+                [(value)]="config.rapid_trigger!.act"
+            ></app-depth-slider>
+            <br />
+            <app-depth-slider
+                label="Release Distance"
+                [min]="0.1"
+                [(value)]="config.rapid_trigger!.rel"
+            ></app-depth-slider>
+            <br />
+            <app-depth-slider
+                label="Force actuation point"
+                [(value)]="config.rapid_trigger!.f_act"
+            ></app-depth-slider>
+            <br />
+            <app-depth-slider
+                label="Force release point"
+                [(value)]="config.rapid_trigger!.f_rel"
+            ></app-depth-slider>
+        </ng-container>
 
-    <mat-card-content *ngIf="config.trigger_type == 'static-trigger'">
-        <app-depth-slider
-            label="Actuation Point"
-            [min]="0.1"
-            [(value)]="config.static_trigger!.act"
-        ></app-depth-slider>
-        <br />
-        <app-depth-slider
-            label="Release Point"
-            [min]="0.1"
-            [(value)]="config.static_trigger!.rel"
-        ></app-depth-slider>
+        <ng-container *ngIf="config.trigger_type == 'static-trigger'">
+            <app-depth-slider
+                label="Actuation Point"
+                [min]="0.1"
+                [(value)]="config.static_trigger!.act"
+            ></app-depth-slider>
+            <br />
+            <app-depth-slider
+                label="Release Point"
+                [min]="0.1"
+                [(value)]="config.static_trigger!.rel"
+            ></app-depth-slider>
+        </ng-container>
     </mat-card-content>
 </mat-card>
