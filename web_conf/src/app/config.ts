@@ -1,14 +1,25 @@
 export interface UdongConfig {
-    analog_switches: Array<AnalogSwitchConfig>
+    analog_switch_assignments: Array<AnalogSwitchAssignment>,
+
+    analog_switch_groups: Array<AnalogSwitchGroup>,
 }
 
-export interface AnalogSwitchConfig {
-    id: number,
-    trigger: RapidTrigger | StaticTrigger,
+export interface AnalogSwitchAssignment {
+    analog_switch_id: number,
+    analog_switch_group_id: number,
+}
+
+export interface AnalogSwitchGroup {
+    analog_switch_group_id: number,
+
+    trigger_type: string,
+
+    // One (and only one) of *_trigger would be not undefined
+    rapid_trigger?: RapidTrigger,
+    static_trigger?: StaticTrigger,
 }
 
 export interface RapidTrigger {
-    type: string;
     act: number;
     rel: number;
     f_act: number;
@@ -16,7 +27,6 @@ export interface RapidTrigger {
 }
 
 export interface StaticTrigger {
-    type: string;
     act: number;
     rel: number;
 }

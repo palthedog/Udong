@@ -31,12 +31,17 @@ void HandleGetConfig(
     Udong& context, const String& cmd, const JsonDocument& arg) {
   JsonDocument json_response;
 
-  JsonArray analog_switches = json_response["analog_switches"].to<JsonArray>();
-  for (auto& analog_switch : context.circuit.analog_switches) {
-    JsonVariant var = analog_switches.add<JsonVariant>();
-    var["id"] = analog_switch->GetId();
-    var["trigger"] = analog_switch->GetTrigger()->ToConfig();
-  }
+  /*
+    JsonArray analog_switches =
+    json_response["analog_switches"].to<JsonArray>(); for (auto& analog_switch :
+    context.circuit.analog_switches) { JsonVariant var =
+    analog_switches.add<JsonVariant>(); var["id"] = analog_switch->GetId();
+      var["trigger"] = analog_switch->GetTrigger()->ToConfig();
+    }
+    */
+
+  // convertToJson(context.circuit.config, json_response);
+  convertToJson(context.circuit.config, json_response.to<JsonObject>());
 
   SendResponse(cmd, json_response);
 }

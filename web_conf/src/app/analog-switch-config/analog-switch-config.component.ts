@@ -1,9 +1,9 @@
-import { Component, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common'
 import { MatCardModule } from '@angular/material/card'
 import { MatSliderModule } from '@angular/material/slider'
 import { DepthSliderComponent } from '../depth-slider/depth-slider.component';
-import { AnalogSwitchConfig, RapidTrigger, StaticTrigger } from '../config';
+import { AnalogSwitchAssignment, AnalogSwitchGroup, RapidTrigger, StaticTrigger } from '../config';
 
 @Component({
   selector: 'app-analog-switch-config',
@@ -13,26 +13,17 @@ import { AnalogSwitchConfig, RapidTrigger, StaticTrigger } from '../config';
   styleUrl: './analog-switch-config.component.scss'
 })
 export class AnalogSwitchConfigComponent {
-  rapid_trigger?: RapidTrigger;
-  static_trigger?: StaticTrigger;
+  @Output()
+  configChange = new EventEmitter<AnalogSwitchGroup>();
 
-  private _config!: AnalogSwitchConfig;
-  public get config(): AnalogSwitchConfig {
+  private _config!: AnalogSwitchGroup;
+  public get config(): AnalogSwitchGroup {
     return this._config;
   }
   @Input()
-  public set config(value: AnalogSwitchConfig) {
+  public set config(value: AnalogSwitchGroup) {
+    console.log('set cfg', value);
     this._config = value;
-
-    this.rapid_trigger = undefined;
-    this.static_trigger = undefined;
-
-    console.log('config value: ', value);
-    if (value.trigger.type == 'rapid-trigger') {
-      this.rapid_trigger = value.trigger as RapidTrigger;
-    } else if (value.trigger.type == 'static-trigger') {
-      this.static_trigger = value.trigger as StaticTrigger;
-    }
   }
 
   actChange(event: any) {

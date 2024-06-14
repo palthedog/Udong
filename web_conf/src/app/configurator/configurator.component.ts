@@ -3,14 +3,17 @@ import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { SerialService } from '../serial.service';
 import { interval } from 'rxjs';
-import { AnalogSwitchConfig, UdongConfig } from '../config';
+import { AnalogSwitchAssignment, UdongConfig } from '../config';
 import { AnalogSwitchConfigComponent } from '../analog-switch-config/analog-switch-config.component';
 import { MatButtonModule } from '@angular/material/button'
+import { GroupSelectorComponent } from '../group-selector/group-selector.component';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-configurator',
   standalone: true,
-  imports: [MatCardModule, CommonModule, AnalogSwitchConfigComponent, MatButtonModule],
+  imports: [MatFormFieldModule, MatCardModule, CommonModule, AnalogSwitchConfigComponent, MatButtonModule, GroupSelectorComponent, FormsModule],
   templateUrl: './configurator.component.html',
   styleUrl: './configurator.component.scss'
 })
@@ -22,6 +25,8 @@ export class ConfiguratorComponent {
 
   @ViewChildren(AnalogSwitchConfigComponent)
   analog_switches!: QueryList<AnalogSwitchConfigComponent>;
+
+  group_ids: Array<number> = [];
 
   constructor() {
     console.log('configurator init');
@@ -38,6 +43,13 @@ export class ConfiguratorComponent {
 
       console.log('config');
       console.log(this.config);
+      if (this.config) {
+        this.group_ids = this.config.analog_switch_groups.map((group) => {
+          return group.analog_switch_group_id;
+        });
+      } else {
+        this.group_ids = [];
+      }
     });
   }
 

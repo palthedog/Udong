@@ -5,6 +5,7 @@
 #include <Adafruit_USBD_CDC.h>
 #include <Arduino.h>
 
+#include "config/config.h"
 #include "io_utils/io.h"
 #include "io_utils/multi_sampling.h"
 #include "io_utils/multiplexer.h"
@@ -134,13 +135,16 @@ struct Circuit {
 
   AnalogInputPin adc_600mv_input;
 
+  UdongConfig config;
+
   Circuit()
       : mux(new DigitalOutputPin(D10),
             new DigitalOutputPin(D11),
             new DigitalOutputPin(D12),
             new AnalogInputPin(A0)),
         led_pin(D25),
-        adc_600mv_input(A2) {
+        adc_600mv_input(A2),
+        config(loadUdonConfig()) {
     analog_switch_raw_ins.push_back(mux.GetInput(0));
     analog_switch_raw_ins.push_back(mux.GetInput(1));
     analog_switch_raw_ins.push_back(new AnalogInputPin(A1));

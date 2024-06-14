@@ -1,11 +1,19 @@
-#switches-flex-container {
-    display: flex;
-    flex-wrap: wrap;
+#save-button-container {
+    margin-bottom: 8px;
 }
 
-.switch-item {
-    margin: {
-        right: 16px;
-        bottom: 16px;
-    }
+.config-panel {
+    flex: 1;
+}
+
+.configulator-container {
+    display: flex;
+}
+
+.switches-container {
+    //display: grid;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-around;
 }

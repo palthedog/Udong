@@ -1,4 +1,4 @@
-<div>
+<div id="save-button-container">
     <button
         (click)="Save()"
         mat-flat-button
@@ -8,11 +8,36 @@
     </button>
 </div>
 
-<div id="switches-flex-container">
+<div
+    *ngIf="config"
+    class="configulator-container"
+>
+    <mat-card
+        class="group-selector-card config-panel"
+        appearance="outlined"
+    >
+        <mat-card-header>
+            <mat-card-subtitle>
+                Assign Button Group
+            </mat-card-subtitle>
+        </mat-card-header>
+
+        <div>
+            <mat-card-content class="switches-container">
+                <app-group-selector
+                    *ngFor="let assignment of config!.analog_switch_assignments"
+                    [assignment]="assignment"
+                    [group_ids]="group_ids"
+                >
+                </app-group-selector>
+            </mat-card-content>
+        </div>
+    </mat-card>
+
     <app-analog-switch-config
-        class="switch-item"
-        *ngFor="let item of config?.analog_switches"
-        [config]="item"
+        *ngIf="config!.analog_switch_groups[0] != undefined"
+        class="switch-item config-panel"
+        [config]="config!.analog_switch_groups[0]"
     >
     </app-analog-switch-config>
 </div>

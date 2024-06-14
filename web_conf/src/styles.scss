@@ -4,9 +4,9 @@
 @include mat.core();
 
 :root {
-    @include mat.all-component-themes(m3-theme.$dark-theme);
+    @include mat.all-component-themes(m3-theme.$light-theme);
 }
 
 body {
-    background-color: #19120c;
+    // background-color: #19120c;
 }
