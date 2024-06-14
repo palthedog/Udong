@@ -28,6 +28,7 @@
                     *ngFor="let assignment of config!.analog_switch_assignments"
                     [assignment]="assignment"
                     [group_ids]="group_ids"
+                    (assignmentChange)="setActiveGroupId($event.analog_switch_group_id)"
                 >
                 </app-group-selector>
             </mat-card-content>
@@ -35,9 +36,8 @@
     </mat-card>
 
     <app-analog-switch-config
-        *ngIf="config!.analog_switch_groups[0] != undefined"
         class="switch-item config-panel"
-        [config]="config!.analog_switch_groups[0]"
+        [config]="config!.analog_switch_groups[active_group_id]"
     >
     </app-analog-switch-config>
 </div>

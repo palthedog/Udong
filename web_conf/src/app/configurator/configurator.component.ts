@@ -1,19 +1,19 @@
-import { Component, QueryList, ViewChildren, inject } from '@angular/core';
+import { Component, QueryList, ViewChild, ViewChildren, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { SerialService } from '../serial.service';
-import { interval } from 'rxjs';
-import { AnalogSwitchAssignment, UdongConfig } from '../config';
 import { AnalogSwitchConfigComponent } from '../analog-switch-config/analog-switch-config.component';
 import { MatButtonModule } from '@angular/material/button'
 import { GroupSelectorComponent } from '../group-selector/group-selector.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule } from '@angular/forms';
+import { MatRippleModule } from '@angular/material/core';
+import { UdongConfig } from '../config';
 
 @Component({
   selector: 'app-configurator',
   standalone: true,
-  imports: [MatFormFieldModule, MatCardModule, CommonModule, AnalogSwitchConfigComponent, MatButtonModule, GroupSelectorComponent, FormsModule],
+  imports: [MatRippleModule, MatFormFieldModule, MatCardModule, CommonModule, AnalogSwitchConfigComponent, MatButtonModule, GroupSelectorComponent, FormsModule],
   templateUrl: './configurator.component.html',
   styleUrl: './configurator.component.scss'
 })
@@ -52,6 +52,18 @@ export class ConfiguratorComponent {
       }
     });
   }
+
+  @ViewChild(AnalogSwitchConfigComponent)
+  analog_switch_config_?: AnalogSwitchConfigComponent;
+
+  setActiveGroupId(group_id: number) {
+    console.log('active group changed', group_id);
+    this.active_group_id = group_id;
+
+    this.analog_switch_config_?.launchRipple();
+  }
+
+  active_group_id: number = 0;
 
   Save() {
     console.log('save:', this.config);

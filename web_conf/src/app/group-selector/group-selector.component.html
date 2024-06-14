@@ -1,7 +1,10 @@
 <div class="group-selector-card">
     <mat-form-field>
         <mat-label>Switch {{assignment.analog_switch_id}}</mat-label>
-        <mat-select [(value)]="assignment.analog_switch_group_id">
+        <mat-select
+            [value]="assignment.analog_switch_group_id"
+            (valueChange)="setGroupId($event)"
+        >
             @for (group_id of group_ids; track group_id) {
             <mat-option [value]="group_id">Group
                 {{group_id}}</mat-option>

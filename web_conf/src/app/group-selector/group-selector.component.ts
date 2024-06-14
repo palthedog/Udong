@@ -20,6 +20,12 @@ export class GroupSelectorComponent {
   @Output()
   assignmentChange = new EventEmitter<AnalogSwitchAssignment>();
 
+  setGroupId(group_id: number) {
+    console.log('set group id', group_id);
+    this.assignment.analog_switch_group_id = group_id;
+    this.assignmentChange.next(this.assignment);
+  }
+
   assignment_!: AnalogSwitchAssignment;
 
   get assignment() {
@@ -29,6 +35,5 @@ export class GroupSelectorComponent {
   @Input()
   set assignment(assignment: AnalogSwitchAssignment) {
     this.assignment_ = assignment;
-    this.assignmentChange.next(assignment);
   }
 }

@@ -8,12 +8,11 @@
 
 .configulator-container {
     display: flex;
+    gap: 8px;
 }
 
 .switches-container {
-    //display: grid;
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: space-around;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 8px;
 }
