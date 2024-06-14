@@ -29,7 +29,7 @@ export class AppComponent {
 
   constructor() {
     this.serial_service.ConnectionChanges().subscribe(connected => {
-      this.title = connected ? 'Udong Connected' : 'Udong Not Connected';
+      this.title = connected ? 'Udong is Connected' : 'Udong is Not Connected';
     });
   }
 

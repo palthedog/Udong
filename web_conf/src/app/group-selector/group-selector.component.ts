@@ -17,13 +17,21 @@ export class GroupSelectorComponent {
   @Input()
   group_ids!: Array<number>;
 
+  // emit current group ID
   @Output()
-  assignmentChange = new EventEmitter<AnalogSwitchAssignment>();
+  selectorClosed = new EventEmitter<number>();
 
   setGroupId(group_id: number) {
     console.log('set group id', group_id);
     this.assignment.analog_switch_group_id = group_id;
-    this.assignmentChange.next(this.assignment);
+  }
+
+  openedChange(opened: boolean) {
+    console.log('opened change', opened);
+
+    if (!opened) {
+      this.selectorClosed.next(this.assignment.analog_switch_group_id);
+    }
   }
 
   assignment_!: AnalogSwitchAssignment;

@@ -4,6 +4,7 @@
         <mat-select
             [value]="assignment.analog_switch_group_id"
             (valueChange)="setGroupId($event)"
+            (openedChange)="openedChange($event)"
         >
             @for (group_id of group_ids; track group_id) {
             <mat-option [value]="group_id">Group

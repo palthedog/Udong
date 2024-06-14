@@ -28,7 +28,7 @@
                     *ngFor="let assignment of config!.analog_switch_assignments"
                     [assignment]="assignment"
                     [group_ids]="group_ids"
-                    (assignmentChange)="setActiveGroupId($event.analog_switch_group_id)"
+                    (selectorClosed)="setActiveGroupId($event)"
                 >
                 </app-group-selector>
             </mat-card-content>
