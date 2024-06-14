@@ -1,10 +1,18 @@
 <div>
-    <button (click)="Save()" mat-flat-button color="secondary">
-        Save
+    <button
+        (click)="Save()"
+        mat-flat-button
+        color="secondary"
+    >
+        Save to your Udong
     </button>
 </div>
 
 <div id="switches-flex-container">
-    <app-analog-switch-config class="switch-item" *ngFor="let item of config?.analog_switches" [config]="item">
+    <app-analog-switch-config
+        class="switch-item"
+        *ngFor="let item of config?.analog_switches"
+        [config]="item"
+    >
     </app-analog-switch-config>
 </div>

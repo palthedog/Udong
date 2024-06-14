@@ -7,7 +7,7 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "serve:ssr:web_conf2": "node dist/web_conf2/server/server.mjs"
+    "serve:ssr:web_conf": "node dist/web_conf/server/server.mjs"
   },
   "private": true,
   "dependencies": {

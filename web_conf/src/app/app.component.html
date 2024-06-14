@@ -7,10 +7,10 @@
 </div>
 
 <div [hidden]=" !(connected | async)">
-    <!--app-text-commander></app-text-commander-->
-
     <app-configurator>
     </app-configurator>
+
+    <!--app-text-commander></app-text-commander-->
 </div>
 
 <router-outlet />

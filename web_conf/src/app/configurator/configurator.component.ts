@@ -43,7 +43,6 @@ export class ConfiguratorComponent {
 
   Save() {
     console.log('save:', this.config);
-    console.log('save:', this.analog_switches.first.rapid_trigger?.act);
   }
 
 }

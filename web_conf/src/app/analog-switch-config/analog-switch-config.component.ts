@@ -36,7 +36,7 @@ export class AnalogSwitchConfigComponent {
   }
 
   actChange(event: any) {
-    console.log(event);
+    console.log('actChange', event);
   }
 
   ngOnInit() {

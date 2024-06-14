@@ -25,13 +25,17 @@ export class DepthSliderComponent {
   label!: string;
 
   private _value!: number;
+  @Output()
+  valueChange = new EventEmitter<number>();
+
   public get value(): number {
     return this._value;
   }
+
   @Input()
   public set value(value: number) {
     this._value = value;
-    console.log('set value', value);
+    this.valueChange.next(value);
   }
 
   @Input()
