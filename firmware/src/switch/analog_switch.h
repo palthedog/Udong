@@ -74,7 +74,7 @@ class AnalogSwitch {
   const double kSensitivity_mV_per_mT = 30;
 
   int id_;
-  AnalogInput* input_;
+  std::shared_ptr<AnalogInput> input_;
 
   // For calibration
   AnalogSwitchCalibrationStore* calibration_;
@@ -167,7 +167,7 @@ class AnalogSwitch {
  public:
   AnalogSwitch(
       int id,
-      AnalogInput* input,
+      std::shared_ptr<AnalogInput> input,
       AnalogSwitchCalibrationStore* calibration,
       std::unique_ptr<Trigger> trigger)
       : id_(id),

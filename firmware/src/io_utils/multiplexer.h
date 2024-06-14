@@ -11,33 +11,34 @@
 class Multiplexer8 {
   class MInput;
 
-  DigitalOutput *selectorOutA_, *selectorOutB_, *selectorOutC_;
-  AnalogInput* comIn_;
+  std::shared_ptr<DigitalOutput> selector_out_a_, selector_out_b_,
+      selector_out_c_;
+  std::shared_ptr<AnalogInput> com_in_;
 
-  std::vector<std::unique_ptr<MInput>> inputs_;
+  std::vector<std::shared_ptr<MInput>> inputs_;
 
  public:
   Multiplexer8(
-      DigitalOutput* selectorOutA,
-      DigitalOutput* selectorOutB,
-      DigitalOutput* selectorOutC,
-      AnalogInput* comIn)
-      : selectorOutA_(selectorOutA),
-        selectorOutB_(selectorOutB),
-        selectorOutC_(selectorOutC),
-        comIn_(comIn),
+      std::shared_ptr<DigitalOutput> selectorOutA,
+      std::shared_ptr<DigitalOutput> selectorOutB,
+      std::shared_ptr<DigitalOutput> selectorOutC,
+      std::shared_ptr<AnalogInput> comIn)
+      : selector_out_a_(selectorOutA),
+        selector_out_b_(selectorOutB),
+        selector_out_c_(selectorOutC),
+        com_in_(comIn),
         inputs_(8) {
   }
 
-  AnalogInput* GetInput(uint8_t channel) {
+  std::shared_ptr<AnalogInput> GetInput(uint8_t channel) {
     if (channel >= 8) {
       Serial.printf("ERROR: Invalid channel has been selected: %d", channel);
       return nullptr;
     }
     if (!inputs_[channel]) {
-      inputs_[channel] = std::move(std::make_unique<MInput>(this, channel));
+      inputs_[channel] = std::make_shared<MInput>(this, channel);
     }
-    return (AnalogInput*)inputs_[channel].get();
+    return inputs_[channel];
   }
 
  private:
@@ -48,16 +49,16 @@ class Multiplexer8 {
     }
 
     // Serial.printf("Select ch: %d\n", channel);
-    selectorOutA_->Write(((channel >> 0) & 1) ? HIGH : LOW);
-    selectorOutB_->Write(((channel >> 1) & 1) ? HIGH : LOW);
-    selectorOutC_->Write(((channel >> 2) & 1) ? HIGH : LOW);
+    selector_out_a_->Write(((channel >> 0) & 1) ? HIGH : LOW);
+    selector_out_b_->Write(((channel >> 1) & 1) ? HIGH : LOW);
+    selector_out_c_->Write(((channel >> 2) & 1) ? HIGH : LOW);
 
     // TODO: Consider adding delayMicroseconds(1) here if needed.
     // TC4051B would take 0.5 micro seconds to update output pin in worst case.
   }
 
-  AnalogInput* ComInput() const {
-    return comIn_;
+  std::shared_ptr<AnalogInput> ComInput() const {
+    return com_in_;
   }
 
   class MInput : public AnalogInput {

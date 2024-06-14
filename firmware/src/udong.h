@@ -5,6 +5,8 @@
 #include <Adafruit_USBD_CDC.h>
 #include <Arduino.h>
 
+#include <memory>
+
 #include "config/config.h"
 #include "io_utils/io.h"
 #include "io_utils/multi_sampling.h"
@@ -104,32 +106,33 @@ struct Circuit {
   AnalogOutputPin led_pin;
   TriangleInput triangle_in;
 
-  std::vector<AnalogInput*> analog_switch_raw_ins;
-  std::vector<AnalogInput*> analog_switch_multi_sampled_ins;
-  std::vector<AnalogSwitch*> analog_switches;
+  std::vector<std::shared_ptr<AnalogInput>> analog_switch_raw_ins;
+  std::vector<std::shared_ptr<AnalogInput>> analog_switch_multi_sampled_ins;
+  std::vector<std::shared_ptr<AnalogSwitch>> analog_switches;
 
   AnalogInputPin adc_600mv_input;
 
   UdongConfig config;
 
   Circuit()
-      : mux(new DigitalOutputPin(D10),
-            new DigitalOutputPin(D11),
-            new DigitalOutputPin(D12),
-            new AnalogInputPin(A0)),
+      : mux(std::make_shared<DigitalOutputPin>(D10),
+            std::make_shared<DigitalOutputPin>(D11),
+            std::make_shared<DigitalOutputPin>(D12),
+            std::make_shared<AnalogInputPin>(A0)),
         led_pin(D25),
         adc_600mv_input(A2),
         config(loadUdonConfig()) {
     analog_switch_raw_ins.push_back(mux.GetInput(0));
     analog_switch_raw_ins.push_back(mux.GetInput(1));
     // 3rd button used for testing cell-switch.
-    analog_switch_raw_ins.push_back(new AnalogInputPin(A1));
+    analog_switch_raw_ins.push_back(std::make_shared<AnalogInputPin>(A1));
 
     const int kButtonCount = 3;
 
     for (int switch_id = 0; switch_id < kButtonCount; switch_id++) {
       analog_switch_multi_sampled_ins.push_back(
-          new MultiSampling<1, 0, 0>(analog_switch_raw_ins[switch_id]));
+          std::make_shared<MultiSampling<1, 0, 0>>(
+              analog_switch_raw_ins[switch_id]));
 
       const AnalogSwitchGroup& switch_config =
           config.getConfigFromSwitchId(switch_id);
@@ -142,7 +145,7 @@ struct Circuit {
         const StaticTriggerConfig& st_conf = switch_config.static_trigger;
         trigger.reset(new StaticTrigger(st_conf.act, st_conf.rel));
       }
-      analog_switches.push_back(new AnalogSwitch(
+      analog_switches.push_back(std::make_shared<AnalogSwitch>(
           switch_id,
           analog_switch_multi_sampled_ins[switch_id],
           calibration_store.GetSwitchRef(switch_id),
@@ -166,7 +169,7 @@ struct Circuit {
         trigger.reset(new StaticTrigger(st_conf.act, st_conf.rel));
       }
 
-      analog_switches.push_back(new AnalogSwitch(
+      analog_switches.push_back(std::make_shared<AnalogSwitch>(
           switch_id,
           analog_switch_raw_ins[source_id],
           calibration_store.GetSwitchRef(switch_id),

@@ -39,12 +39,13 @@ class RingBuffer {
 
 template <int BufferSize, int DropMinNum, int DropMaxNum>
 class MultiSampling : public AnalogInput {
-  AnalogInput* source_input_;
+  std::shared_ptr<AnalogInput> source_input_;
   RingBuffer<BufferSize> buffer_;
   std::vector<uint16_t> sorted_;
 
  public:
-  MultiSampling(AnalogInput* source_input) : source_input_(source_input) {
+  MultiSampling(std::shared_ptr<AnalogInput> source_input)
+      : source_input_(source_input) {
   }
 
   uint16_t Read() override {
