@@ -72,9 +72,33 @@ inline bool convertToJson(const AnalogSwitchGroup& config, JsonVariant dst) {
 }
 
 struct UdongConfig {
+ private:
+  const AnalogSwitchGroup& getConfigFromGroupId(
+      uint8_t analog_switch_group_id) const {
+    for (const AnalogSwitchGroup& conf : analog_switch_groups) {
+      if (conf.analog_switch_group_id == analog_switch_group_id) {
+        return conf;
+      }
+    }
+
+    // Not found.
+    // TODO: Choose a solid/better solution
+    return analog_switch_groups[0];
+  }
+
+ public:
   std::vector<AnalogSwitchAssignment> analog_switch_assignments;
 
   std::vector<AnalogSwitchGroup> analog_switch_groups;
+
+  const AnalogSwitchGroup& getConfigFromSwitchId(uint8_t analog_switch_id) {
+    for (const AnalogSwitchAssignment& conf : analog_switch_assignments) {
+      if (conf.analog_switch_id == analog_switch_id) {
+        return getConfigFromGroupId(conf.analog_switch_group_id);
+      }
+    }
+    return analog_switch_groups[0];
+  }
 };
 
 inline bool convertToJson(const UdongConfig& config, JsonVariant dst) {

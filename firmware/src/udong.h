@@ -122,29 +122,55 @@ struct Circuit {
         config(loadUdonConfig()) {
     analog_switch_raw_ins.push_back(mux.GetInput(0));
     analog_switch_raw_ins.push_back(mux.GetInput(1));
+    // 3rd button used for testing cell-switch.
     analog_switch_raw_ins.push_back(new AnalogInputPin(A1));
 
     const int kButtonCount = 3;
 
-    for (int id = 0; id < kButtonCount; id++) {
+    for (int switch_id = 0; switch_id < kButtonCount; switch_id++) {
       analog_switch_multi_sampled_ins.push_back(
-          new MultiSampling<1, 0, 0>(analog_switch_raw_ins[id]));
+          new MultiSampling<1, 0, 0>(analog_switch_raw_ins[switch_id]));
 
+      const AnalogSwitchGroup& switch_config =
+          config.getConfigFromSwitchId(switch_id);
+      std::unique_ptr<Trigger> trigger;
+      if (switch_config.trigger_type == "rapid-trigger") {
+        const RapidTriggerConfig& rt_conf = switch_config.rappid_trigger;
+        trigger.reset(new RapidTrigger(
+            rt_conf.act, rt_conf.rel, rt_conf.f_act, rt_conf.f_rel));
+      } else {
+        const StaticTriggerConfig& st_conf = switch_config.static_trigger;
+        trigger.reset(new StaticTrigger(st_conf.act, st_conf.rel));
+      }
       analog_switches.push_back(new AnalogSwitch(
-          id,
-          analog_switch_multi_sampled_ins[id],
-          calibration_store.GetSwitchRef(id),
-          std::move(
-              std::unique_ptr<Trigger>(new RapidTrigger(0.2, 3.8, 0.6, 0.3)))));
+          switch_id,
+          analog_switch_multi_sampled_ins[switch_id],
+          calibration_store.GetSwitchRef(switch_id),
+          std::move(trigger)));
     }
 
     // Dummy switch for logging
-    for (int id = 0; id < kButtonCount; id++) {
+    for (int i = 0; i < kButtonCount; i++) {
+      uint8_t switch_id = i + 10;
+      uint8_t source_id = i;
+
+      const AnalogSwitchGroup& switch_config =
+          config.getConfigFromSwitchId(switch_id);
+      std::unique_ptr<Trigger> trigger;
+      if (switch_config.trigger_type == "rapid-trigger") {
+        const RapidTriggerConfig& rt_conf = switch_config.rappid_trigger;
+        trigger.reset(new RapidTrigger(
+            rt_conf.act, rt_conf.rel, rt_conf.f_act, rt_conf.f_rel));
+      } else {
+        const StaticTriggerConfig& st_conf = switch_config.static_trigger;
+        trigger.reset(new StaticTrigger(st_conf.act, st_conf.rel));
+      }
+
       analog_switches.push_back(new AnalogSwitch(
-          id + 10,
-          analog_switch_raw_ins[id],
-          calibration_store.GetSwitchRef(id + 10),
-          std::move(std::unique_ptr<Trigger>(new StaticTrigger(1.4, 1.2)))));
+          switch_id,
+          analog_switch_raw_ins[source_id],
+          calibration_store.GetSwitchRef(switch_id),
+          std::move(trigger)));
     }
   }
 

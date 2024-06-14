@@ -6,11 +6,11 @@
 #include "trigger.h"
 
 class RapidTrigger : public Trigger {
-  double dead_point_depth_mm_;
-  double force_activation_point_depth_mm_;
-
   double actuation_distance_mm_;
   double release_distance_mm_;
+
+  double force_activation_point_depth_mm_;
+  double force_release_point_depth_mm_;
 
   double deep_point_mm_;
   double shallow_point_mm_;
@@ -19,14 +19,14 @@ class RapidTrigger : public Trigger {
 
  public:
   RapidTrigger(
-      double dead_point_depth_mm,
-      double force_activation_point_depth_mm,
       double actuation_distance_mm,
-      double release_distance_mm)
-      : dead_point_depth_mm_(dead_point_depth_mm),
-        force_activation_point_depth_mm_(force_activation_point_depth_mm),
-        actuation_distance_mm_(actuation_distance_mm),
+      double release_distance_mm,
+      double force_activation_point_depth_mm,
+      double force_release_point_depth_mm)
+      : actuation_distance_mm_(actuation_distance_mm),
         release_distance_mm_(release_distance_mm),
+        force_activation_point_depth_mm_(force_activation_point_depth_mm),
+        force_release_point_depth_mm_(force_release_point_depth_mm),
         deep_point_mm_(0.0),
         shallow_point_mm_(0.0),
         current_state_(false) {
@@ -44,7 +44,7 @@ class RapidTrigger : public Trigger {
       } else {
         double release_point_mm = deep_point_mm_ - release_distance_mm_;
         if (pressed_distance_mm < release_point_mm ||
-            pressed_distance_mm < dead_point_depth_mm_) {
+            pressed_distance_mm < force_release_point_depth_mm_) {
           // The user released more than `release_distance_mm`
           current_state_ = false;
           shallow_point_mm_ = pressed_distance_mm;
@@ -89,7 +89,7 @@ class RapidTrigger : public Trigger {
     var["rel"] = release_distance_mm_;
     var["act"] = actuation_distance_mm_;
     var["f_act"] = force_activation_point_depth_mm_;
-    var["f_rel"] = dead_point_depth_mm_;
+    var["f_rel"] = force_release_point_depth_mm_;
     return var;
   }
 
@@ -107,7 +107,7 @@ class RapidTrigger : public Trigger {
 
     Serial.printf(
         ">fact%02d:%lf\n", switch_id, force_activation_point_depth_mm_);
-    Serial.printf(">dead%02d:%lf\n", switch_id, dead_point_depth_mm_);
+    Serial.printf(">dead%02d:%lf\n", switch_id, force_release_point_depth_mm_);
     Serial.printf(">state%02d:%d\n", switch_id, current_state_ ? 4 : 0);
 #endif
   }
