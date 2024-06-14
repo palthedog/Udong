@@ -79,11 +79,9 @@ void setup() {
   udong.usb_hid.sendReport(
       0, &udong.gamepad_report, sizeof(udong.gamepad_report));
 
-  /*
   // wait for
-  circuit.led_pin.Write(UINT16_MAX);
+  /*
   delay(5000);
-  circuit.led_pin.Write(0);
   Serial.println("*** Start ***");
   Serial.println("*** Start ***");
   Serial.println("*** Start ***");
@@ -92,14 +90,8 @@ void setup() {
   if (!LittleFS.begin()) {
     Serial.println("Failed to initialize LittleFS");
   }
-  udong.circuit.calibration_store.LoadFromFile();
-  udong.circuit.CalibrateAllZeroPoint();
-  // We need to call Calibrate after loading calibration data to update all
-  // related data (e.g. lookup-table)
-  for (auto& analog_switch : udong.circuit.analog_switches) {
-    analog_switch->Calibrate();
-    analog_switch->DumpLastState();
-  }
+
+  udong.Setup();
 }
 
 inline int16_t map_u16_s16(uint16_t v) {
@@ -123,7 +115,7 @@ Throttling teleplot_runner(100, []() {
 bool need_to_save_calibration_store = false;
 Throttling calibration_runner(100, []() {
   bool calibratin_has_run = false;
-  for (auto& analog_switch : udong.circuit.analog_switches) {
+  for (auto& analog_switch : udong.circuit->analog_switches) {
     if (analog_switch->NeedRecalibration()) {
       Serial.printf("Calibrate switch-%d\n", analog_switch->GetId());
       analog_switch->Calibrate();
@@ -144,8 +136,8 @@ Throttling calibration_runner(100, []() {
     need_to_save_calibration_store = false;
 
     unsigned long from = time_us_32();
-    udong.circuit.calibration_store.SaveIntoFile();
-    udong.circuit.calibration_store.ClearUpdatedFlag();
+    udong.circuit->calibration_store.SaveIntoFile();
+    udong.circuit->calibration_store.ClearUpdatedFlag();
     unsigned long to = time_us_32();
     Serial.printf(">save(us): %lu\n", to - from);
   }
@@ -157,7 +149,7 @@ void loop() {
   serial_handler.HandleSerial(udong);
 
   // TODO: Refactoring...
-  Circuit& circuit = udong.circuit;
+  Circuit& circuit = *udong.circuit;
   GamepadReport& gamepad_report = udong.gamepad_report;
   Adafruit_USBD_HID& usb_hid = udong.usb_hid;
 

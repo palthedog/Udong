@@ -114,14 +114,14 @@ struct Circuit {
 
   UdongConfig config;
 
-  Circuit()
+  Circuit(UdongConfig _config)
       : mux(std::make_shared<DigitalOutputPin>(D10),
             std::make_shared<DigitalOutputPin>(D11),
             std::make_shared<DigitalOutputPin>(D12),
             std::make_shared<AnalogInputPin>(A0)),
         led_pin(D25),
         adc_600mv_input(A2),
-        config(loadUdonConfig()) {
+        config(_config) {
     analog_switch_raw_ins.push_back(mux.GetInput(0));
     analog_switch_raw_ins.push_back(mux.GetInput(1));
     // 3rd button used for testing cell-switch.
@@ -138,7 +138,7 @@ struct Circuit {
           config.getConfigFromSwitchId(switch_id);
       std::unique_ptr<Trigger> trigger;
       if (switch_config.trigger_type == "rapid-trigger") {
-        const RapidTriggerConfig& rt_conf = switch_config.rappid_trigger;
+        const RapidTriggerConfig& rt_conf = switch_config.rapid_trigger;
         trigger.reset(new RapidTrigger(
             rt_conf.act, rt_conf.rel, rt_conf.f_act, rt_conf.f_rel));
       } else {
@@ -161,7 +161,7 @@ struct Circuit {
           config.getConfigFromSwitchId(switch_id);
       std::unique_ptr<Trigger> trigger;
       if (switch_config.trigger_type == "rapid-trigger") {
-        const RapidTriggerConfig& rt_conf = switch_config.rappid_trigger;
+        const RapidTriggerConfig& rt_conf = switch_config.rapid_trigger;
         trigger.reset(new RapidTrigger(
             rt_conf.act, rt_conf.rel, rt_conf.f_act, rt_conf.f_rel));
       } else {
@@ -186,7 +186,7 @@ struct Circuit {
 
 // context
 struct Udong {
-  Circuit circuit;
+  std::unique_ptr<Circuit> circuit;
   GamepadReport gamepad_report;
   Adafruit_USBD_HID usb_hid;
 
@@ -199,6 +199,23 @@ struct Udong {
     gamepad_report.rz = 0;
     gamepad_report.hat = GAMEPAD_HAT_CENTERED;
     gamepad_report.buttons = 0;
+  }
+
+  void Setup() {
+    UdongConfig config = loadUdonConfig();
+    circuit = std::make_unique<Circuit>(config);
+    circuit->calibration_store.LoadFromFile();
+    circuit->CalibrateAllZeroPoint();
+    // We need to call Calibrate after loading calibration data to update all
+    // related data (e.g. lookup-table)
+    for (auto& analog_switch : circuit->analog_switches) {
+      analog_switch->Calibrate();
+      analog_switch->DumpLastState();
+    }
+  }
+
+  void ReloadConfig() {
+    Setup();
   }
 };
 

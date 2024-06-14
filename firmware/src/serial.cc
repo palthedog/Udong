@@ -18,7 +18,7 @@ void HandleGet(Udong& context, const String& cmd, const JsonDocument& arg) {
   JsonDocument json_response;
 
   JsonArray analog_switches = json_response["analog_switches"].to<JsonArray>();
-  for (auto& analog_switch : context.circuit.analog_switches) {
+  for (auto& analog_switch : context.circuit->analog_switches) {
     JsonVariant var = analog_switches.add<JsonVariant>();
     var["id"] = analog_switch->GetId();
     var["press_mm"] = analog_switch->GetLastPressMm();
@@ -30,20 +30,22 @@ void HandleGet(Udong& context, const String& cmd, const JsonDocument& arg) {
 void HandleGetConfig(
     Udong& context, const String& cmd, const JsonDocument& arg) {
   JsonDocument json_response;
-
-  /*
-    JsonArray analog_switches =
-    json_response["analog_switches"].to<JsonArray>(); for (auto& analog_switch :
-    context.circuit.analog_switches) { JsonVariant var =
-    analog_switches.add<JsonVariant>(); var["id"] = analog_switch->GetId();
-      var["trigger"] = analog_switch->GetTrigger()->ToConfig();
-    }
-    */
-
-  // convertToJson(context.circuit.config, json_response);
-  convertToJson(context.circuit.config, json_response.to<JsonObject>());
-
+  convertToJson(context.circuit->config, json_response.to<JsonObject>());
   SendResponse(cmd, json_response);
+}
+
+void HandleSaveConfig(
+    Udong& context, const String& cmd, const JsonDocument& arg) {
+  JsonDocument json_response;
+  convertToJson(context.circuit->config, json_response.to<JsonObject>());
+
+  // Save the received UdongConfig
+  UdongConfig config;
+  convertFromJson(arg, config);
+  saveUdonConfig(config);
+
+  // Then reload the config and reconstruct Circuit
+  context.ReloadConfig();
 }
 
 }  // namespace
@@ -70,7 +72,7 @@ void SerialHandler::HandleSerial(Udong& context) {
 // String serial_buffer;
 void SerialHandler::HandleCmd(
     Udong& context, const String& cmd, const JsonDocument& arg) {
-  Circuit& circuit = context.circuit;
+  Circuit& circuit = *context.circuit;
   if (cmd == "") {
     // Do nothing
   } else if (cmd == "dump") {
@@ -91,6 +93,8 @@ void SerialHandler::HandleCmd(
     HandleGet(context, cmd, arg);
   } else if (cmd == "get-config") {
     HandleGetConfig(context, cmd, arg);
+  } else if (cmd == "save-config") {
+    HandleSaveConfig(context, cmd, arg);
   } else {
     Serial.print("unknown-cmd:");
     Serial.printf("%s\n", cmd.c_str());

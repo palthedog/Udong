@@ -66,9 +66,10 @@ export class ConfiguratorComponent {
   active_group_id: number = 0;
 
   Save() {
+    let str_config = JSON.stringify(this.config);
     console.log('save:', this.config);
+    console.log('str:', str_config);
+    this.serial_service.Send('save-config:' + str_config);
   }
 
 }
-
-

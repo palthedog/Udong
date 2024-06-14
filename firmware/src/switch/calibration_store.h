@@ -28,6 +28,13 @@ class AnalogSwitchCalibrationStore {
         mag_flux_at_nearest_(mag_flux_at_nearest) {
   }
 
+  AnalogSwitchCalibrationStore(const JsonVariant json)
+      : AnalogSwitchCalibrationStore(
+            json["id"],
+            json["mag_flux_at_farest"],
+            json["mag_flux_at_nearest"]) {
+  }
+
   inline void Reset() {
     mag_flux_at_farest_ = UINT16_MAX;
     mag_flux_at_nearest_ = 0;
@@ -73,16 +80,8 @@ inline bool convertToJson(
   return true;
 }
 
-inline AnalogSwitchCalibrationStore convertFromJson(const JsonVariant& json) {
-  int id = json["id"];
-  double mag_flux_at_nearest = json["mag_flux_at_nearest"];
-  double mag_flux_at_farest = json["mag_flux_at_farest"];
-  return AnalogSwitchCalibrationStore(
-      id, mag_flux_at_farest, mag_flux_at_nearest);
-}
-
 class CalibrationStore {
-  const char* kFilePath = "/data/calibration.json";
+  const char* kCalibrationFilePath = "/user/hidden/calibration.json";
   std::map<int, AnalogSwitchCalibrationStore> analog_switches_;
 
  public:
@@ -123,62 +122,32 @@ class CalibrationStore {
   }
 
   bool LoadFromFile() {
-    File file = LittleFS.open(F(kFilePath), "r");
-    if (!file) {
-      Serial.println("calibration data doesn't exist");
-      return false;
-    }
-
-    String jsonString = file.readString();
-    Serial.println("Loaded JSON");
-    Serial.println(jsonString);
-
     JsonDocument doc;
-    DeserializationError error = deserializeJson(doc, jsonString);
-    if (error) {
-      Serial.println("Failed to deserialize jsonString:");
-      Serial.println(jsonString);
-      Serial.println("Error:");
-      Serial.print(error.c_str());
-      return false;
-    }
+    LoadJson(kCalibrationFilePath, doc);
 
     // doc["analog_switches"];
     size_t as_size = doc["analog_switches"].size();
     for (size_t i = 0; i < as_size; i++) {
       JsonVariant var = doc["analog_switches"][i];
-      AnalogSwitchCalibrationStore v = convertFromJson(var);
+      AnalogSwitchCalibrationStore v(var);
       Serial.printf("loaded analog switch: %d\n", v.GetId());
       Serial.printf("analog switches.size(): %d\n", analog_switches_.size());
       analog_switches_[v.GetId()] = v;
     }
-    file.close();
     Serial.println("Calibration data loaded successfully");
 
     return true;
   }
 
   void SaveIntoFile() {
-    File file = LittleFS.open(F(kFilePath), "w");
-    if (!file) {
-      Serial.println("Failed to open calibration data file in writable mode.");
-      return;
-    }
-
     JsonDocument doc;
-
     // doc["analog_switches"];
     Serial.printf("# of analog_switches: %d\n", analog_switches_.size());
     int index = 0;
     for (auto& it : analog_switches_) {
       doc["analog_switches"][index++] = it.second;
     }
-
-    // TODO: Use buffererd stream for better performance
-    // (e.g. WriteBufferingStream )
-    size_t size = serializeJsonPretty(doc, file);
-    Serial.printf("Calibration data saved successfully: %d bytes\n", size);
-    file.close();
+    SaveJson(kCalibrationFilePath, doc);
   }
 };
 
