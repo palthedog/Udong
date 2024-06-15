@@ -4,7 +4,7 @@
 
 #include <memory>
 
-#define TELEPLOT 0
+#define TELEPLOT 1
 
 #include "io_utils/io.h"
 #include "io_utils/multi_sampling.h"
@@ -101,12 +101,12 @@ inline int16_t map_u16_s16(uint16_t v) {
 // every 100ms
 Throttling teleplot_runner(100, []() {
 #if TELEPLOT
-  udong.circuit.analog_switches[0]->TelePrint();
+  udong.circuit->analog_switches[0]->TelePrint();
   Serial.flush();
-  udong.circuit.analog_switches[3]->TelePrint();
+  udong.circuit->analog_switches[3]->TelePrint();
   Serial.printf(
       ">ADC-600-mV: %lf\n",
-      udong.circuit.adc_600mv_input.Read() * 3300.0 / 65536.0);
+      udong.circuit->adc_600mv_input.Read() * 3300.0 / 65536.0);
   Serial.flush();
   delay(1);
 #endif
@@ -164,9 +164,9 @@ void loop() {
   gamepad_report.z = circuit.analog_switch_raw_ins[0]->Read() / 2;
   gamepad_report.rx =
       circuit.analog_switches[0]->GetLastPressMm() / 4.0 * UINT16_MAX / 2;
-  gamepad_report.ry = circuit.analog_switch_raw_ins[1]->Read() / 2;
+  gamepad_report.ry = circuit.analog_switch_raw_ins[2]->Read() / 2;
   gamepad_report.rz =
-      circuit.analog_switches[1]->GetLastPressMm() / 4.0 * UINT16_MAX / 2;
+      circuit.analog_switches[2]->GetLastPressMm() / 4.0 * UINT16_MAX / 2;
 
   // analog switches
   for (auto& analog_switch : circuit.analog_switches) {

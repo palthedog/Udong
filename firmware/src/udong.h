@@ -101,7 +101,8 @@ const uint8_t LED_PIN = D25;
 struct Circuit {
   CalibrationStore calibration_store;
 
-  Multiplexer8 mux;
+  Multiplexer8 mux0;
+  Multiplexer8 mux1;
 
   AnalogOutputPin led_pin;
   TriangleInput triangle_in;
@@ -115,19 +116,29 @@ struct Circuit {
   UdongConfig config;
 
   Circuit(UdongConfig _config)
-      : mux(std::make_shared<DigitalOutputPin>(D10),
+      : mux0(
+            std::make_shared<DigitalOutputPin>(D10),
             std::make_shared<DigitalOutputPin>(D11),
             std::make_shared<DigitalOutputPin>(D12),
             std::make_shared<AnalogInputPin>(A0)),
+        mux1(
+            std::make_shared<DigitalOutputPin>(D13),
+            std::make_shared<DigitalOutputPin>(D14),
+            std::make_shared<DigitalOutputPin>(D15),
+            std::make_shared<AnalogInputPin>(A1)),
         led_pin(D25),
         adc_600mv_input(A2),
         config(_config) {
-    analog_switch_raw_ins.push_back(mux.GetInput(0));
-    analog_switch_raw_ins.push_back(mux.GetInput(1));
-    // 3rd button used for testing cell-switch.
-    analog_switch_raw_ins.push_back(std::make_shared<AnalogInputPin>(A1));
+    // Switch 0-5 connected to mux0
+    for (int i = 0; i < 6; i++) {
+      analog_switch_raw_ins.push_back(mux0.GetInput(i));
+    }
+    // Switch 6-7 connected to mux1
+    for (int i = 0; i < 2; i++) {
+      analog_switch_raw_ins.push_back(mux1.GetInput(i));
+    }
 
-    const int kButtonCount = 3;
+    const int kButtonCount = 8;
 
     for (int switch_id = 0; switch_id < kButtonCount; switch_id++) {
       analog_switch_multi_sampled_ins.push_back(
@@ -154,7 +165,7 @@ struct Circuit {
 
     // Dummy switch for logging
     for (int i = 0; i < kButtonCount; i++) {
-      uint8_t switch_id = i + 10;
+      uint8_t switch_id = i + 8;
       uint8_t source_id = i;
 
       const AnalogSwitchGroup& switch_config =
