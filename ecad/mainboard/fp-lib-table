@@ -1,0 +1,4 @@
+(fp_lib_table
+  (version 7)
+  (lib (name "geek_rabb1t")(type "KiCad")(uri "C:/Users/safii/Documents/PlatformIO/Projects/Udong/ecad/third_party/keyboard_footprint/keyboard.pretty")(options "")(descr ""))
+)
