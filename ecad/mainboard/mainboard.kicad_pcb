@@ -32474,7 +32474,7 @@
 	(footprint "Connector_JST:JST_SH_BM03B-SRSS-TB_1x03-1MP_P1.00mm_Vertical"
 		(layer "F.Cu")
 		(uuid "ffdf2f22-dfa7-4d57-b6b0-a0813409b6cc")
-		(at 174.312 23.447)
+		(at 174.312 23.175)
 		(descr "JST SH series connector, BM03B-SRSS-TB (http://www.jst-mfg.com/product/pdf/eng/eSH.pdf), generated with kicad-footprint-generator")
 		(tags "connector JST SH vertical")
 		(property "Reference" "J2"
@@ -32907,6 +32907,17 @@
 		(layer "F.Cu")
 		(net 4)
 		(uuid "9673c612-c943-4f80-9a20-4d8984984db1")
+	)
+	(gr_rect
+		(start 40 20)
+		(end 380 240)
+		(stroke
+			(width 0.05)
+			(type default)
+		)
+		(fill none)
+		(layer "Edge.Cuts")
+		(uuid "39959c4a-207d-43aa-98df-6638906ab73d")
 	)
 	(gr_line
 		(start 270 47.5)
