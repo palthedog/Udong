@@ -32900,18 +32900,6 @@
 		(start 40 20)
 		(end 380 240)
 		(stroke
-			(width 0.2)
-			(type default)
-		)
-		(fill none)
-		(layer "F.Cu")
-		(net 4)
-		(uuid "9673c612-c943-4f80-9a20-4d8984984db1")
-	)
-	(gr_rect
-		(start 40 20)
-		(end 380 240)
-		(stroke
 			(width 0.05)
 			(type default)
 		)
