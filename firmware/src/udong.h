@@ -22,6 +22,7 @@ const uint8_t kHidDescriptor[] = {
     HID_COLLECTION(HID_COLLECTION_APPLICATION),
 
     // 16 bit analog stick (X, Y)
+    /*
     HID_USAGE_PAGE(HID_USAGE_PAGE_DESKTOP),
     HID_USAGE(HID_USAGE_DESKTOP_X),
     HID_USAGE(HID_USAGE_DESKTOP_Y),
@@ -52,7 +53,7 @@ const uint8_t kHidDescriptor[] = {
     HID_REPORT_COUNT(1),
     HID_REPORT_SIZE(8),
     HID_INPUT(HID_DATA | HID_VARIABLE | HID_ABSOLUTE),
-
+*/
     // 16 buttons
     HID_USAGE_PAGE(HID_USAGE_PAGE_BUTTON),
     HID_USAGE_MIN(1),
@@ -68,6 +69,7 @@ const uint8_t kHidDescriptor[] = {
 };
 
 struct TU_ATTR_PACKED GamepadReport {
+  /*
   // analog stick
   int16_t x;
   int16_t y;
@@ -79,6 +81,8 @@ struct TU_ATTR_PACKED GamepadReport {
   uint16_t rz;
 
   uint8_t hat;  ///< Buttons mask for currently pressed buttons in the DPad/hat
+
+  */
   uint16_t buttons;  ///< Buttons mask for currently pressed buttons
 
   inline void UpdateButton(int index, bool is_on) {
@@ -164,6 +168,8 @@ struct Circuit {
     }
 
     // Dummy switch for logging
+
+    /*
     for (int i = 0; i < kButtonCount; i++) {
       uint8_t switch_id = i + 8;
       uint8_t source_id = i;
@@ -186,6 +192,8 @@ struct Circuit {
           calibration_store.GetSwitchRef(switch_id),
           std::move(trigger)));
     }
+
+    */
   }
 
   void CalibrateAllZeroPoint() {
@@ -202,6 +210,7 @@ struct Udong {
   Adafruit_USBD_HID usb_hid;
 
   Udong() {
+    /*
     gamepad_report.x = 0;
     gamepad_report.y = 0;
     gamepad_report.z = 0;
@@ -209,6 +218,7 @@ struct Udong {
     gamepad_report.ry = 0;
     gamepad_report.rz = 0;
     gamepad_report.hat = GAMEPAD_HAT_CENTERED;
+    */
     gamepad_report.buttons = 0;
   }
 

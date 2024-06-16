@@ -4,7 +4,7 @@
 
 #include <memory>
 
-#define TELEPLOT 1
+#define TELEPLOT 0
 
 #include "io_utils/io.h"
 #include "io_utils/multi_sampling.h"
@@ -161,23 +161,24 @@ void loop() {
   circuit.led_pin.Write(circuit.triangle_in.Read());
 
   // Debug info
+  /*
   gamepad_report.z = circuit.analog_switch_raw_ins[0]->Read() / 2;
   gamepad_report.rx =
       circuit.analog_switches[0]->GetLastPressMm() / 4.0 * UINT16_MAX / 2;
   gamepad_report.ry = circuit.analog_switch_raw_ins[2]->Read() / 2;
   gamepad_report.rz =
       circuit.analog_switches[2]->GetLastPressMm() / 4.0 * UINT16_MAX / 2;
-
+*/
   // analog switches
   for (auto& analog_switch : circuit.analog_switches) {
     gamepad_report.UpdateButton(analog_switch->GetId(), analog_switch->IsOn());
   }
 
-  gamepad_report.x = INT16_MAX * cos(M_PI * 2 * time_us_32() / 1000 / 1000.0);
-  gamepad_report.y = INT16_MAX * sin(M_PI * 2 * time_us_32() / 1000 / 1000.0);
-
   // temporal D-pad impl.
-  gamepad_report.hat = (time_us_32() / 1000000) % 9;
+  // gamepad_report.hat = (time_us_32() / 1000000) % 9;
+  // gamepad_report.x = INT16_MAX * cos(M_PI * 2 * time_us_32() / 1000 /
+  // 1000.0); gamepad_report.y = INT16_MAX * sin(M_PI * 2 * time_us_32() / 1000
+  // / 1000.0);
 
   if (usb_hid.ready()) {
     if (!usb_hid.sendReport(0, &gamepad_report, sizeof(gamepad_report))) {
