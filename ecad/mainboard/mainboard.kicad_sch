@@ -6992,16 +6992,6 @@
 	)
 	(wire
 		(pts
-			(xy 39.37 149.86) (xy 39.37 160.02)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "35de8b07-cd42-4e2d-b7a6-b309c42935f4")
-	)
-	(wire
-		(pts
 			(xy 337.82 207.01) (xy 337.82 209.55)
 		)
 		(stroke
@@ -7982,6 +7972,16 @@
 	)
 	(wire
 		(pts
+			(xy 39.37 139.7) (xy 39.37 160.02)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "a50dd2f6-71ca-4df7-86e0-d829c33c9681")
+	)
+	(wire
+		(pts
 			(xy 44.45 72.39) (xy 34.29 72.39)
 		)
 		(stroke
@@ -8899,16 +8899,6 @@
 			(type default)
 		)
 		(uuid "fa76f757-c64e-46df-81a2-106c4ff23530")
-	)
-	(wire
-		(pts
-			(xy 39.37 142.24) (xy 39.37 139.7)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "fa98eca9-82ba-4f5d-b484-817d4366b9e2")
 	)
 	(wire
 		(pts
@@ -10709,81 +10699,6 @@
 			(project ""
 				(path "/b1313647-8d60-4294-add7-71c03651cfe3"
 					(reference "U3")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Device:R")
-		(at 39.37 146.05 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "00000000-0000-0000-0000-00005edac067")
-		(property "Reference" "R2"
-			(at 41.148 144.8816 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "DNF"
-			(at 41.148 147.193 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
-			(at 37.592 146.05 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 39.37 146.05 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" ""
-			(at 39.37 146.05 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "ff81f0bb-a638-4c96-bd52-09f3d0dbe10c")
-		)
-		(pin "2"
-			(uuid "2516d6fa-aeb0-43a9-a505-d23ff78a2c30")
-		)
-		(instances
-			(project "RP2040_minimal_r2"
-				(path "/8c0b3d8b-46d3-4173-ab1e-a61765f77d61"
-					(reference "R2")
-					(unit 1)
-				)
-			)
-			(project ""
-				(path "/b1313647-8d60-4294-add7-71c03651cfe3"
-					(reference "R9")
 					(unit 1)
 				)
 			)
@@ -13193,7 +13108,7 @@
 			)
 		)
 		(pin "1"
-			(uuid "6afa259e-e8e1-4baf-aa23-93437ccda4ac")
+			(uuid "6afa259e-e8e1-4baf-aa23-93437ccda4ad")
 		)
 		(instances
 			(project ""
@@ -13355,7 +13270,7 @@
 				)
 			)
 		)
-		(property "Value" "RUN"
+		(property "Value" "TS-1187A-B-A-B"
 			(at 350.52 62.23 0)
 			(effects
 				(font
@@ -13382,6 +13297,24 @@
 			)
 		)
 		(property "Description" "Push button switch, generic, two pins"
+			(at 350.52 67.31 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "JLCPCB" "C318884"
+			(at 350.52 67.31 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド6" "TS-1187A-B-A-B"
 			(at 350.52 67.31 0)
 			(effects
 				(font
@@ -13950,6 +13883,15 @@
 			)
 		)
 		(property "Description" "Generic connectable mounting pin connector, single row, 01x03, script generated (kicad-library-utils/schlib/autogen/connector/)"
+			(at 349.25 97.79 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "JLCPCB" "C160403"
 			(at 349.25 97.79 0)
 			(effects
 				(font
@@ -15656,7 +15598,7 @@
 				)
 			)
 		)
-		(property "Footprint" "LED_SMD:LED_0603_1608Metric"
+		(property "Footprint" "LED_SMD:LED_0805_2012Metric"
 			(at 353.06 127 0)
 			(effects
 				(font
@@ -15675,6 +15617,15 @@
 			)
 		)
 		(property "Description" "Light emitting diode"
+			(at 353.06 127 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "JLCPCB" "C2297"
 			(at 353.06 127 0)
 			(effects
 				(font
@@ -16474,7 +16425,7 @@
 			)
 		)
 		(pin "1"
-			(uuid "6afa259e-e8e1-4baf-aa23-93437ccda4ac")
+			(uuid "6afa259e-e8e1-4baf-aa23-93437ccda4ae")
 		)
 		(instances
 			(project ""
@@ -16573,7 +16524,7 @@
 				)
 			)
 		)
-		(property "Value" "BOOTSEL"
+		(property "Value" "TS-1187A-B-A-B"
 			(at 350.52 50.8 0)
 			(effects
 				(font
@@ -16600,6 +16551,24 @@
 			)
 		)
 		(property "Description" "Push button switch, generic, two pins"
+			(at 350.52 55.88 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "JLCPCB" "C318884"
+			(at 350.52 55.88 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド6" "TS-1187A-B-A-B"
 			(at 350.52 55.88 0)
 			(effects
 				(font
@@ -17594,7 +17563,7 @@
 				)
 			)
 		)
-		(property "Value" "NCP1117-3.3_SOT223"
+		(property "Value" "NCP1117ST33T3G"
 			(at 168.91 33.02 0)
 			(effects
 				(font
