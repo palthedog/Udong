@@ -8525,6 +8525,16 @@
 		)
 		(uuid "5cef06b9-9396-47fe-9ab5-e3ca199894bb")
 	)
+	(text "DNF\n"
+		(exclude_from_sim no)
+		(at 52.07 139.7 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+		(uuid "60c7924e-a832-4829-b1a2-db04c8b951b2")
+	)
 	(text "It is good practice to include many grounds on I/O connectors.\nThis helps to maintain a low impedance ground, and also to provide plenty of\npotential return paths for currents travelling to and from the I/O connections.\nThis is important to minimise electromagnetic interference which can be caused \nby the return currents of quickly switching signals taking long, looping\npaths to complete the circuit.\n"
 		(exclude_from_sim no)
 		(at 148.59 273.05 0)
@@ -12124,74 +12134,6 @@
 			(project ""
 				(path "/b1313647-8d60-4294-add7-71c03651cfe3"
 					(reference "#PWR0104")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Device:R")
-		(at 52.07 139.7 90)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "104ef75a-19d2-4d1a-9b2c-d4e0b98af583")
-		(property "Reference" "R9"
-			(at 52.07 133.35 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "0"
-			(at 52.07 135.89 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
-			(at 52.07 141.478 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 52.07 139.7 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Resistor"
-			(at 52.07 139.7 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "2"
-			(uuid "2102ad13-afa8-42f1-be8d-ebcaadc7bf19")
-		)
-		(pin "1"
-			(uuid "23f88b7f-9210-4ecf-913c-0bcc995eb41e")
-		)
-		(instances
-			(project ""
-				(path "/b1313647-8d60-4294-add7-71c03651cfe3"
-					(reference "R9")
 					(unit 1)
 				)
 			)
