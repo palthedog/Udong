@@ -6150,6 +6150,16 @@
 	)
 	(wire
 		(pts
+			(xy 210.82 41.91) (xy 210.82 38.1)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "0aa8e0b4-ef22-47bd-ab75-6d67036410ca")
+	)
+	(wire
+		(pts
 			(xy 191.77 137.16) (xy 195.58 137.16)
 		)
 		(stroke
@@ -8357,16 +8367,6 @@
 			(type default)
 		)
 		(uuid "f7d86088-b4ff-4d86-a96d-2b36689d0615")
-	)
-	(wire
-		(pts
-			(xy 210.82 41.91) (xy 210.82 38.1)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "f7ef868d-d13f-4ba6-ad7d-e1f16af944d9")
 	)
 	(wire
 		(pts
@@ -12073,6 +12073,76 @@
 		)
 	)
 	(symbol
+		(lib_id "Device:R")
+		(at 210.82 45.72 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "0bb080e2-9ebf-48f9-ace0-f89d0f1bcec5")
+		(property "Reference" "R6"
+			(at 213.36 44.4499 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "20k"
+			(at 213.36 46.9899 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
+			(at 209.042 45.72 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 210.82 45.72 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Resistor"
+			(at 210.82 45.72 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "85e8adfd-951b-4625-962a-3c4cd244efb8")
+		)
+		(pin "1"
+			(uuid "ca038427-5b4c-432d-83c4-984f0952b71d")
+		)
+		(instances
+			(project "mainboard"
+				(path "/b1313647-8d60-4294-add7-71c03651cfe3"
+					(reference "R6")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "power:GND")
 		(at 223.52 205.74 90)
 		(unit 1)
@@ -13842,7 +13912,7 @@
 				)
 			)
 		)
-		(property "Value" "SK6812MINI"
+		(property "Value" "SK6812MINI-E"
 			(at 328.93 217.2014 0)
 			(effects
 				(font
@@ -13871,6 +13941,15 @@
 			)
 		)
 		(property "Description" "RGB LED with integrated controller"
+			(at 316.23 220.98 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "JLCPCB" " C5149201"
 			(at 316.23 220.98 0)
 			(effects
 				(font
@@ -14355,6 +14434,15 @@
 				(hide yes)
 			)
 		)
+		(property "JLCPCB" "C5156480"
+			(at 375.92 199.39 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "8b2e1658-b35b-4367-8e55-8ef5c1dd405c")
 		)
@@ -14577,6 +14665,15 @@
 			)
 		)
 		(property "Description" "Push button switch, generic, two pins"
+			(at 321.31 200.66 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "JLCPCB" "C5156480"
 			(at 321.31 200.66 0)
 			(effects
 				(font
@@ -15466,6 +15563,15 @@
 				(hide yes)
 			)
 		)
+		(property "JLCPCB" " C5149201"
+			(at 368.3 220.98 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "2"
 			(uuid "732a7ddd-49e8-4e5e-9061-3acd843c1593")
 		)
@@ -16213,7 +16319,7 @@
 	)
 	(symbol
 		(lib_id "Device:R")
-		(at 210.82 45.72 0)
+		(at 210.82 53.34 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -16222,7 +16328,7 @@
 		(fields_autoplaced yes)
 		(uuid "bb3d6260-2032-48cb-82ca-553fc8c09b1a")
 		(property "Reference" "R4"
-			(at 213.36 44.4499 0)
+			(at 213.36 52.0699 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -16230,8 +16336,8 @@
 				(justify left)
 			)
 		)
-		(property "Value" "40k"
-			(at 213.36 46.9899 0)
+		(property "Value" "20k"
+			(at 213.36 54.6099 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -16240,7 +16346,7 @@
 			)
 		)
 		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
-			(at 209.042 45.72 90)
+			(at 209.042 53.34 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -16249,7 +16355,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 210.82 45.72 0)
+			(at 210.82 53.34 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -16258,7 +16364,7 @@
 			)
 		)
 		(property "Description" "Resistor"
-			(at 210.82 45.72 0)
+			(at 210.82 53.34 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -17514,7 +17620,7 @@
 	(symbol
 		(lib_name "GND_5")
 		(lib_id "power:GND")
-		(at 210.82 49.53 0)
+		(at 210.82 57.15 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -17523,7 +17629,7 @@
 		(fields_autoplaced yes)
 		(uuid "f45506c6-1c3d-468c-b06d-480da9f1fee0")
 		(property "Reference" "#PWR010"
-			(at 210.82 55.88 0)
+			(at 210.82 63.5 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -17532,7 +17638,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 210.82 54.61 0)
+			(at 210.82 62.23 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -17540,7 +17646,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 210.82 49.53 0)
+			(at 210.82 57.15 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -17549,7 +17655,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 210.82 49.53 0)
+			(at 210.82 57.15 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -17558,7 +17664,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 210.82 49.53 0)
+			(at 210.82 57.15 0)
 			(effects
 				(font
 					(size 1.27 1.27)
