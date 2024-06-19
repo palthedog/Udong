@@ -258,7 +258,7 @@
       "plot": "gerber/",
       "pos_files": "",
       "specctra_dsn": "",
-      "step": "",
+      "step": "mainboard_top_plate.step",
       "svg": "",
       "vrml": ""
     },

@@ -5445,7 +5445,7 @@
 		(descr "Resistor SMD 0402 (1005 Metric), square (rectangular) end terminal, IPC_7351 nominal, (Body size source: IPC-SM-782 page 72, https://www.pcb-3d.com/wordpress/wp-content/uploads/ipc-sm-782a_amendment_1_and_2.pdf), generated with kicad-footprint-generator")
 		(tags "resistor")
 		(property "Reference" "R6"
-			(at 0 -1.17 360)
+			(at 0 -1.17 0)
 			(layer "F.SilkS")
 			(uuid "f343e8b6-7923-4dd6-b449-7109b340d07c")
 			(effects
@@ -5456,7 +5456,7 @@
 			)
 		)
 		(property "Value" "20k"
-			(at -0.11 -2.15 360)
+			(at -0.11 -2.15 0)
 			(layer "F.Fab")
 			(uuid "707b07e8-a290-4284-a359-1bf589d9cd78")
 			(effects
@@ -5611,7 +5611,7 @@
 			(uuid "c26005e3-0e73-4517-87f1-ca2604142907")
 		)
 		(fp_text user "${REFERENCE}"
-			(at 0 0 360)
+			(at 0 0 0)
 			(layer "F.Fab")
 			(uuid "1bd7d77b-8e73-4f6b-927f-0621709a7970")
 			(effects
@@ -35641,6 +35641,72 @@
 			)
 			(justify left bottom mirror)
 		)
+	)
+	(dimension
+		(type aligned)
+		(layer "F.Cu")
+		(uuid "7173764a-827a-420c-a0eb-2572fefdb177")
+		(pts
+			(xy 380 20) (xy 40 20)
+		)
+		(height 5.841999)
+		(gr_text "340.0000 mm"
+			(at 210 12.358001 0)
+			(layer "F.Cu")
+			(uuid "7173764a-827a-420c-a0eb-2572fefdb177")
+			(effects
+				(font
+					(size 1.5 1.5)
+					(thickness 0.3)
+				)
+			)
+		)
+		(format
+			(prefix "")
+			(suffix "")
+			(units 3)
+			(units_format 1)
+			(precision 4)
+		)
+		(style
+			(thickness 0.2)
+			(arrow_length 1.27)
+			(text_position_mode 0)
+			(extension_height 0.58642)
+			(extension_offset 0.5) keep_text_aligned)
+	)
+	(dimension
+		(type aligned)
+		(layer "F.Cu")
+		(uuid "9330a449-2abb-4eba-b384-ec988193cbd6")
+		(pts
+			(xy 380 240) (xy 380 20)
+		)
+		(height 14.658)
+		(gr_text "220.0000 mm"
+			(at 392.858 130 90)
+			(layer "F.Cu")
+			(uuid "9330a449-2abb-4eba-b384-ec988193cbd6")
+			(effects
+				(font
+					(size 1.5 1.5)
+					(thickness 0.3)
+				)
+			)
+		)
+		(format
+			(prefix "")
+			(suffix "")
+			(units 3)
+			(units_format 1)
+			(precision 4)
+		)
+		(style
+			(thickness 0.2)
+			(arrow_length 1.27)
+			(text_position_mode 0)
+			(extension_height 0.58642)
+			(extension_offset 0.5) keep_text_aligned)
 	)
 	(segment
 		(start 337.036 41.754)

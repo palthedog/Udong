@@ -544,7 +544,7 @@
       "plot": "gerber/",
       "pos_files": "",
       "specctra_dsn": "freerouting.dsn",
-      "step": "",
+      "step": "mainboard.step",
       "svg": "",
       "vrml": ""
     },
