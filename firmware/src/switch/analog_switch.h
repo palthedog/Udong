@@ -254,7 +254,7 @@ class AnalogSwitch {
     calibration_->ClearUpdatedFlag();
 
     // known constants
-    const double kKeyStroke_mm = 4.0;
+    const double kKeyStroke_mm = 4.1;  // Gateron KS-20
     const double kMagnetRadius_mm = 2.9 / 2.0;
     const double kR_2 = kMagnetRadius_mm * kMagnetRadius_mm;
     const double kMagnetThickness_mm = 3.4;

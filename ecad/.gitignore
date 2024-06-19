@@ -11,3 +11,5 @@ sym-lib-table
 
 # KiCad lock files
 *.lck
+
+**/production/*.zip

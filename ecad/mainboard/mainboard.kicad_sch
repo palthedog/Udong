@@ -11107,7 +11107,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "1u"
+		(property "Value" "1uF"
 			(at 156.591 138.303 0)
 			(effects
 				(font
@@ -11183,7 +11183,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "1u"
+		(property "Value" "1uF"
 			(at 211.201 138.303 0)
 			(effects
 				(font
@@ -12863,7 +12863,7 @@
 				(hide yes)
 			)
 		)
-		(property "JLCPCB" "C318884"
+		(property "JCSC" "C318884"
 			(at 350.52 67.31 0)
 			(effects
 				(font
@@ -13422,7 +13422,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Connector_JST:JST_SH_BM03B-SRSS-TB_1x03-1MP_P1.00mm_Vertical"
+		(property "Footprint" "Udong:JST_SH_BM03B-SRSS-TB_1x03-1MP_P1.00mm_Vertical"
 			(at 349.25 97.79 0)
 			(effects
 				(font
@@ -13449,7 +13449,7 @@
 				(hide yes)
 			)
 		)
-		(property "JLCPCB" "C160403"
+		(property "JCSC" "C160403"
 			(at 349.25 97.79 0)
 			(effects
 				(font
@@ -13905,15 +13905,15 @@
 		(fields_autoplaced yes)
 		(uuid "668cf134-8697-4ad3-9cd3-5072007c7010")
 		(property "Reference" "D2"
-			(at 328.93 214.6614 0)
+			(at 330.2 214.6614 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
 			)
 		)
-		(property "Value" "SK6812MINI-E"
-			(at 328.93 217.2014 0)
+		(property "Value" "SK6812MINI-EA"
+			(at 330.2 217.2014 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -13949,7 +13949,7 @@
 				(hide yes)
 			)
 		)
-		(property "JLCPCB" " C5149201"
+		(property "JCSC" "C5378731"
 			(at 316.23 220.98 0)
 			(effects
 				(font
@@ -14584,7 +14584,7 @@
 				(hide yes)
 			)
 		)
-		(property "JLCPCB" "C2827654"
+		(property "JCSC" "C2827654"
 			(at 81.28 49.53 0)
 			(effects
 				(font
@@ -15421,7 +15421,7 @@
 				(hide yes)
 			)
 		)
-		(property "JLCPCB" "C2297"
+		(property "JCSC" "C2297"
 			(at 353.06 127 0)
 			(effects
 				(font
@@ -15519,15 +15519,15 @@
 		(fields_autoplaced yes)
 		(uuid "9f2b0bae-9f09-4987-a6ce-a4d2a18a3d87")
 		(property "Reference" "D3"
-			(at 381 214.6614 0)
+			(at 382.27 214.6614 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
 			)
 		)
-		(property "Value" "SK6812MINI"
-			(at 381 217.2014 0)
+		(property "Value" "SK6812MINI-EA"
+			(at 382.27 217.2014 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -15563,7 +15563,7 @@
 				(hide yes)
 			)
 		)
-		(property "JLCPCB" " C5149201"
+		(property "JCSC" "C5378731"
 			(at 368.3 220.98 0)
 			(effects
 				(font
@@ -15619,7 +15619,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Connector_USB:USB_C_Receptacle_HRO_TYPE-C-31-M-12"
+		(property "Footprint" "Udong:USB_C_Receptacle_HRO_TYPE-C-31-M-12"
 			(at 38.1 49.53 0)
 			(effects
 				(font
@@ -15646,7 +15646,7 @@
 				(hide yes)
 			)
 		)
-		(property "JLCPCB" "C165948"
+		(property "JCSC" "C165948"
 			(at 34.29 49.53 0)
 			(effects
 				(font
@@ -16440,7 +16440,7 @@
 				(hide yes)
 			)
 		)
-		(property "JLCPCB" "C318884"
+		(property "JCSC" "C318884"
 			(at 350.52 55.88 0)
 			(effects
 				(font
@@ -17157,7 +17157,7 @@
 				(hide yes)
 			)
 		)
-		(property "JLCPCB" "C2676173"
+		(property "JCSC" "C2676173"
 			(at 302.26 184.15 0)
 			(effects
 				(font
@@ -17317,7 +17317,7 @@
 				(hide yes)
 			)
 		)
-		(property "JLCPCB" "C26537"
+		(property "JCSC" "C26537"
 			(at 168.91 36.83 0)
 			(effects
 				(font
