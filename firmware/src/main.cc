@@ -4,7 +4,7 @@
 
 #include <memory>
 
-#define TELEPLOT 0
+#define TELEPLOT 1
 
 #include "io_utils/io.h"
 #include "io_utils/multi_sampling.h"
@@ -105,7 +105,7 @@ Throttling teleplot_runner(100, []() {
 #if TELEPLOT
   udong.circuit->analog_switches[0]->TelePrint();
   Serial.flush();
-  udong.circuit->analog_switches[2]->TelePrint();
+  udong.circuit->analog_switches[1]->TelePrint();
   /*
   Serial.printf(
       ">ADC-600-mV: %lf\n",
