@@ -82,12 +82,10 @@ void setup() {
       0, &udong.gamepad_report, sizeof(udong.gamepad_report));
 
   // wait for
-  /*
-  delay(5000);
-  Serial.println("*** Start ***");
-  Serial.println("*** Start ***");
-  Serial.println("*** Start ***");
-  */
+  for (int i = 0; i < 5; i++) {
+    Serial.println("*** Start ***");
+    delay(1000);
+  }
 
   if (!LittleFS.begin()) {
     Serial.println("Failed to initialize LittleFS");

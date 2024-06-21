@@ -83,4 +83,20 @@ class DigitalOutputPin : public DigitalOutput {
   };
 };
 
+template <uint16_t kValue>
+class AnalogConstantInput : public AnalogInput {
+ public:
+  AnalogConstantInput() {
+  }
+
+  virtual ~AnalogConstantInput() override {
+  }
+
+  virtual uint16_t Read() override {
+    return kValue;
+  };
+};
+
+typedef AnalogConstantInput<0> AnalogGroundInput;
+
 #endif

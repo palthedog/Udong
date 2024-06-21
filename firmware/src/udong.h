@@ -101,7 +101,6 @@ struct TU_ATTR_PACKED GamepadReport {
 };
 
 const uint8_t LED_PIN = D25;
-
 struct Circuit {
   CalibrationStore calibration_store;
 
@@ -118,6 +117,7 @@ struct Circuit {
   // DO NOT USE IT until we fix a hardware bug!!!
   // TODO: refrence 0.6V must be connected to an ANALOG input not Digital Input
   // AnalogInputPin adc_600mv_input;
+  std::vector<bool> enabled_switchs;
 
   UdongConfig config;
 
@@ -135,16 +135,36 @@ struct Circuit {
         led_pin(D25),
         // adc_600mv_input(A2),
         config(_config) {
-    // Switch 0-5 connected to mux0
-    for (int i = 0; i < 6; i++) {
-      analog_switch_raw_ins.push_back(mux0.GetInput(i));
-    }
-    // Switch 6-7 connected to mux1
-    for (int i = 0; i < 2; i++) {
-      analog_switch_raw_ins.push_back(mux1.GetInput(i));
-    }
+    // The analog sensors are located to optimize wiring on the PCB.
+    // In contrast to that, switch_id is based on HID button ID
+    // See
+    //   https://learn.microsoft.com/windows/win32/xinput/directinput-and-xusb-devices
+    // for more details about HID button IDs.
+    // {hardware_id, switch_id}
+    enabled_switchs.resize(16, false);
 
-    const int kButtonCount = 8;
+    // For my dev board
+    enabled_switchs[0] = true;
+    enabled_switchs[1] = true;
+    enabled_switchs[2] = true;
+    enabled_switchs[3] = true;
+    enabled_switchs[4] = true;
+
+    enabled_switchs[8] = true;
+    enabled_switchs[9] = true;
+
+    for (uint8_t switch_id = 0; switch_id < 16; switch_id++) {
+      if (enabled_switchs[switch_id]) {
+        if (switch_id < 8) {
+          analog_switch_raw_ins.push_back(mux0.GetInput(switch_id));
+        } else {
+          analog_switch_raw_ins.push_back(mux1.GetInput(switch_id - 8));
+        }
+      } else {
+        analog_switch_raw_ins.push_back(std::make_shared<AnalogGroundInput>());
+      }
+    }
+    const int kButtonCount = 16;
 
     for (int switch_id = 0; switch_id < kButtonCount; switch_id++) {
       analog_switch_multi_sampled_ins.push_back(
