@@ -13,3 +13,5 @@ sym-lib-table
 *.lck
 
 **/production/*.zip
+
+**/_autosave-*
