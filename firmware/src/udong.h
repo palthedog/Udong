@@ -115,23 +115,25 @@ struct Circuit {
   std::vector<std::shared_ptr<AnalogInput>> analog_switch_multi_sampled_ins;
   std::vector<std::shared_ptr<AnalogSwitch>> analog_switches;
 
-  AnalogInputPin adc_600mv_input;
+  // DO NOT USE IT until we fix a hardware bug!!!
+  // TODO: refrence 0.6V must be connected to an ANALOG input not Digital Input
+  // AnalogInputPin adc_600mv_input;
 
   UdongConfig config;
 
   Circuit(UdongConfig _config)
       : mux0(
-            std::make_shared<DigitalOutputPin>(D10),
-            std::make_shared<DigitalOutputPin>(D11),
-            std::make_shared<DigitalOutputPin>(D12),
+            std::make_shared<DigitalOutputPin>(D16),
+            std::make_shared<DigitalOutputPin>(D17),
+            std::make_shared<DigitalOutputPin>(D18),
             std::make_shared<AnalogInputPin>(A0)),
         mux1(
-            std::make_shared<DigitalOutputPin>(D13),
-            std::make_shared<DigitalOutputPin>(D14),
-            std::make_shared<DigitalOutputPin>(D15),
+            std::make_shared<DigitalOutputPin>(D19),
+            std::make_shared<DigitalOutputPin>(D20),
+            std::make_shared<DigitalOutputPin>(D21),
             std::make_shared<AnalogInputPin>(A1)),
         led_pin(D25),
-        adc_600mv_input(A2),
+        // adc_600mv_input(A2),
         config(_config) {
     // Switch 0-5 connected to mux0
     for (int i = 0; i < 6; i++) {

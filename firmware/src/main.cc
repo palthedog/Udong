@@ -56,8 +56,10 @@ void setup() {
   // power efficiency of the board at light load, so the low-power PFM mode
   // can be re-enabled between infrequent ADC measurements by driving GPIO23
   // low once more. See Section 4.4.
+  /*
   pinMode(23, OUTPUT);
   digitalWrite(23, HIGH);
+  */
 
   udong.usb_hid.setPollInterval(1);  // 1ms
   udong.usb_hid.setReportDescriptor(kHidDescriptor, sizeof(kHidDescriptor));
@@ -103,10 +105,12 @@ Throttling teleplot_runner(100, []() {
 #if TELEPLOT
   udong.circuit->analog_switches[0]->TelePrint();
   Serial.flush();
-  udong.circuit->analog_switches[3]->TelePrint();
+  udong.circuit->analog_switches[2]->TelePrint();
+  /*
   Serial.printf(
       ">ADC-600-mV: %lf\n",
       udong.circuit->adc_600mv_input.Read() * 3300.0 / 65536.0);
+  */
   Serial.flush();
   delay(1);
 #endif

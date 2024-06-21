@@ -49,9 +49,15 @@ class Multiplexer8 {
     }
 
     // Serial.printf("Select ch: %d\n", channel);
+    //*
     selector_out_a_->Write(((channel >> 0) & 1) ? HIGH : LOW);
     selector_out_b_->Write(((channel >> 1) & 1) ? HIGH : LOW);
     selector_out_c_->Write(((channel >> 2) & 1) ? HIGH : LOW);
+    /*/
+    selector_out_a_->Write(LOW);
+    selector_out_b_->Write(HIGH);
+    selector_out_c_->Write(LOW);
+    //*/
 
     // TODO: Consider adding delayMicroseconds(1) here if needed.
     // TC4051B would take 0.5 micro seconds to update output pin in worst case.
