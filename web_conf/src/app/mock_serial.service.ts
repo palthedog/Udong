@@ -37,14 +37,22 @@ export class MockSerialService extends SerialServiceInterface {
     private HandleGetConfig() {
         let assignments: AnalogSwitchAssignment[] = [];
         for (let i = 0; i < 16; i++) {
-            let group_id = i < 8 ? 0 : 4;
+            let group_id;
+            if (i >= 12 && i <= 15) {
+                // D-pad
+                group_id = 0;
+            } else if (i == 2 || i == 4) {
+                // for little fingers
+                group_id = 1;
+            } else {
+                group_id = 4;
+            }
             assignments.push(
                 {
                     analog_switch_id: i,
                     analog_switch_group_id: group_id
                 });
         };
-
         let groups: AnalogSwitchGroup[] = [];
         for (let i = 0; i < 8; i++) {
             let group: AnalogSwitchGroup;

@@ -8,41 +8,54 @@
     </button>
 </div>
 
-<app-board-buttons
-    *ngIf="config"
-    class="board-container"
-    [config]="config!"
->
-</app-board-buttons>
-
-<div
-    *ngIf="config"
-    class="configulator-container"
->
-    <mat-card
-        class="group-selector-card config-panel"
-        appearance="outlined"
+<ng-container *ngIf="config">
+    <app-board-buttons
+        class="board-container"
+        [config]="config!"
+        [active_switch_id]="active_switch_id"
+        (activeSwitchIdChanged)="setActiveSwitchId($event)"
     >
-        <mat-card-header>
-            <mat-card-subtitle>
-                Assign Button Group
-            </mat-card-subtitle>
-        </mat-card-header>
+    </app-board-buttons>
 
-        <mat-card-content class="switches-container">
-            <app-group-selector
-                *ngFor="let assignment of config!.analog_switch_assignments"
-                [assignment]="assignment"
-                [group_ids]="group_ids"
-                (selectorClosed)="setActiveGroupId($event)"
-            >
-            </app-group-selector>
-        </mat-card-content>
-    </mat-card>
+    <div class="configulator-container">
+        <mat-card
+            class="group-selector-card config-panel"
+            appearance="outlined"
+        >
+            <mat-card-header>
+                <mat-card-subtitle>
+                    Analog Switch {{active_switch_id}}
+                </mat-card-subtitle>
+            </mat-card-header>
 
-    <app-analog-switch-config
-        class="switch-item config-panel"
-        [config]="config!.analog_switch_groups[active_group_id]"
-    >
-    </app-analog-switch-config>
-</div>
+            <mat-card-content class="switches-container">
+                <app-group-selector
+                    [assignment]="activeSwitchAssignment()"
+                    [group_ids]="group_ids"
+                    (selectorClosed)="onGroupSelected()"
+                >
+                </app-group-selector>
+
+                <mat-form-field>
+                    <mat-label>Button Mapping</mat-label>
+                    <mat-select
+                        [value]="0"
+                        (valueChange)="changeButtonMapping($event)"
+                    >
+                        @for (button_id of consts.button_ids; track button_id) {
+                        <mat-option [value]="button_id">
+                            {{consts.button_names[button_id]}}
+                        </mat-option>
+                        }
+                    </mat-select>
+                </mat-form-field>
+            </mat-card-content>
+        </mat-card>
+
+        <app-analog-switch-config
+            class="switch-item config-panel"
+            [config]="activeSwitchGroup()"
+        >
+        </app-analog-switch-config>
+    </div>
+</ng-container>

@@ -1,3 +1,5 @@
+// TODO: Is there any chance to use ProtoBuf on Rasberry Pi????
+
 export interface UdongConfig {
     analog_switch_assignments: Array<AnalogSwitchAssignment>,
 

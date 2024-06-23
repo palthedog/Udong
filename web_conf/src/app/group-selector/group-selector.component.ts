@@ -36,12 +36,11 @@ export class GroupSelectorComponent {
 
   assignment_!: AnalogSwitchAssignment;
 
-  get assignment() {
-    return this.assignment_;
-  }
-
   @Input()
   set assignment(assignment: AnalogSwitchAssignment) {
     this.assignment_ = assignment;
+  }
+  get assignment(): AnalogSwitchAssignment {
+    return this.assignment_;
   }
 }

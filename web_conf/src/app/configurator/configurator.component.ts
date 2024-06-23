@@ -8,24 +8,32 @@ import { GroupSelectorComponent } from '../group-selector/group-selector.compone
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule } from '@angular/forms';
 import { MatRippleModule } from '@angular/material/core';
-import { UdongConfig } from '../config';
+import { AnalogSwitchAssignment, AnalogSwitchGroup, SwitchIdToGroupId, UdongConfig } from '../config';
 import { BoardButtonsComponent } from '../board-buttons/board-buttons.component';
+import { MatSelectModule } from '@angular/material/select';
+import { AppConsts } from '../consts';
 
 @Component({
   selector: 'app-configurator',
   standalone: true,
-  imports: [BoardButtonsComponent, MatRippleModule, MatFormFieldModule, MatCardModule, CommonModule, AnalogSwitchConfigComponent, MatButtonModule, GroupSelectorComponent, FormsModule],
+  imports: [MatSelectModule, BoardButtonsComponent, MatRippleModule, MatFormFieldModule, MatCardModule, CommonModule, AnalogSwitchConfigComponent, MatButtonModule, GroupSelectorComponent, FormsModule],
   templateUrl: './configurator.component.html',
   styleUrl: './configurator.component.scss'
 })
 export class ConfiguratorComponent {
-
   serial_service = inject(SerialServiceInterface);
+  consts = inject(AppConsts);
+
+  active_switch_id: number = 0;
+  active_group_id: number = 0;
 
   config?: UdongConfig = undefined;
 
   @ViewChildren(AnalogSwitchConfigComponent)
   analog_switches!: QueryList<AnalogSwitchConfigComponent>;
+
+  @ViewChild(AnalogSwitchConfigComponent)
+  analog_switch_config_?: AnalogSwitchConfigComponent;
 
   group_ids: Array<number> = [];
 
@@ -54,8 +62,16 @@ export class ConfiguratorComponent {
     });
   }
 
-  @ViewChild(AnalogSwitchConfigComponent)
-  analog_switch_config_?: AnalogSwitchConfigComponent;
+  setActiveSwitchId(switch_id: number) {
+    console.log('active switch changed', switch_id);
+    this.active_switch_id = switch_id;
+    this.setActiveGroupId(SwitchIdToGroupId(this.config!, this.active_switch_id));
+  }
+
+  onGroupSelected() {
+    console.log('onGroupSelected');
+    this.setActiveGroupId(SwitchIdToGroupId(this.config!, this.active_switch_id));
+  }
 
   setActiveGroupId(group_id: number) {
     console.log('active group changed', group_id);
@@ -64,7 +80,22 @@ export class ConfiguratorComponent {
     this.analog_switch_config_?.launchRipple();
   }
 
-  active_group_id: number = 0;
+  activeSwitchAssignment(): AnalogSwitchAssignment {
+    return this.config!.analog_switch_assignments.find((assignment) => {
+      return assignment.analog_switch_id == this.active_switch_id;
+    })!;
+  }
+
+
+  activeSwitchGroup(): AnalogSwitchGroup {
+    return this.config!.analog_switch_groups.find((group) => {
+      return group.analog_switch_group_id == this.active_group_id;
+    })!;
+  }
+
+  changeButtonMapping(button_id: number) {
+    console.log('button mapping:', button_id);
+  }
 
   Save() {
     let str_config = JSON.stringify(this.config);
@@ -72,5 +103,4 @@ export class ConfiguratorComponent {
     console.log('str:', str_config);
     this.serial_service.Send('save-config:' + str_config);
   }
-
 }
