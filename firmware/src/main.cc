@@ -23,6 +23,8 @@ SerialHandler serial_handler;
 Udong udong;
 
 void setup() {
+  analogReadResolution(kAdcBits);
+
 #if defined(ARDUINO_ARCH_MBED) && defined(ARDUINO_ARCH_RP2040)
   // Manual begin() is required on core without built-in support for TinyUSB
   // such as mbed rp2040
@@ -46,52 +48,13 @@ void setup() {
   Serial.setTimeout(100);
   Serial.setStringDescriptor("Udong");
 
-  analogReadResolution(kAdcBits);
-
-  // Set HIGH to GPIO23 to reduce switching noise
-  // https://datasheets.raspberrypi.com/pico/pico-datasheet.pdf
-  // Driving high the SMPS mode pin (GPIO23), to force the power supply into
-  // PWM mode, can greatly reduce the inherent ripple of the SMPS at light
-  // load, and therefore the ripple on the ADC supply. This does reduce the
-  // power efficiency of the board at light load, so the low-power PFM mode
-  // can be re-enabled between infrequent ADC measurements by driving GPIO23
-  // low once more. See Section 4.4.
-  /*
-  pinMode(23, OUTPUT);
-  digitalWrite(23, HIGH);
-  */
-
-  udong.usb_hid.setPollInterval(1);  // 1ms
-  udong.usb_hid.setReportDescriptor(kHidDescriptor, sizeof(kHidDescriptor));
-
-  if (!udong.usb_hid.begin()) {
-    Serial.println("Failed to begin USB_HID");
-  }
-
-  // Wait for the USB device to be mounted
-  while (!TinyUSBDevice.mounted()) {
-    delay(1);
-  }
-
-  if (!udong.usb_hid.ready()) {
-    Serial.print("ERRROR: Failed to begin Gamepad device");
-    return;
-  }
-
-  udong.usb_hid.sendReport(
-      0, &udong.gamepad_report, sizeof(udong.gamepad_report));
+  udong.Setup();
 
   // wait for
   for (int i = 0; i < 5; i++) {
     Serial.println("*** Start ***");
     delay(1000);
   }
-
-  if (!LittleFS.begin()) {
-    Serial.println("Failed to initialize LittleFS");
-  }
-
-  udong.Setup();
 }
 
 inline int16_t map_u16_s16(uint16_t v) {
@@ -177,7 +140,7 @@ void loop() {
   }
 
   // temporal D-pad impl.
-  // gamepad_report.hat = (time_us_32() / 1000000) % 9;
+  gamepad_report.hat = (time_us_32() / 1000000) % 9;
   // gamepad_report.x = INT16_MAX * cos(M_PI * 2 * time_us_32() / 1000 /
   // 1000.0); gamepad_report.y = INT16_MAX * sin(M_PI * 2 * time_us_32() / 1000
   // / 1000.0);

@@ -44,16 +44,18 @@ const uint8_t kHidDescriptor[] = {
     HID_REPORT_COUNT(4),
     HID_REPORT_SIZE(16),
     HID_INPUT(HID_DATA | HID_VARIABLE | HID_ABSOLUTE),
+*/
 
     // 8 bit DPad/Hat Button Map
     HID_USAGE_PAGE(HID_USAGE_PAGE_DESKTOP),
     HID_USAGE(HID_USAGE_DESKTOP_HAT_SWITCH),
-    HID_LOGICAL_MIN(0),
+    HID_LOGICAL_MIN(1),
     HID_LOGICAL_MAX(8),
+    HID_PHYSICAL_MIN(0),
+    HID_PHYSICAL_MAX_N(315, 2),
     HID_REPORT_COUNT(1),
     HID_REPORT_SIZE(8),
     HID_INPUT(HID_DATA | HID_VARIABLE | HID_ABSOLUTE),
-*/
     // 16 buttons
     HID_USAGE_PAGE(HID_USAGE_PAGE_BUTTON),
     HID_USAGE_MIN(1),
@@ -79,10 +81,10 @@ struct TU_ATTR_PACKED GamepadReport {
   uint16_t rx;
   uint16_t ry;
   uint16_t rz;
+  */
 
   uint8_t hat;  ///< Buttons mask for currently pressed buttons in the DPad/hat
 
-  */
   uint16_t buttons;  ///< Buttons mask for currently pressed buttons
 
   inline void UpdateButton(int index, bool is_on) {
@@ -227,11 +229,18 @@ struct Circuit {
 
 // context
 struct Udong {
+ private:
+  bool usb_hids_setup_completed;
+
+ public:
   std::unique_ptr<Circuit> circuit;
   GamepadReport gamepad_report;
   Adafruit_USBD_HID usb_hid;
+  Adafruit_USBD_HID usb_hid_generic_inout;
 
   Udong() {
+    usb_hids_setup_completed = false;
+
     /*
     gamepad_report.x = 0;
     gamepad_report.y = 0;
@@ -239,12 +248,51 @@ struct Udong {
     gamepad_report.rx = 0;
     gamepad_report.ry = 0;
     gamepad_report.rz = 0;
-    gamepad_report.hat = GAMEPAD_HAT_CENTERED;
     */
+    gamepad_report.hat = GAMEPAD_HAT_CENTERED;
     gamepad_report.buttons = 0;
   }
 
+  bool SetupHidDevices() {
+    // Make sure that this method is called only once.
+    if (usb_hids_setup_completed) {
+      return false;
+    }
+    usb_hids_setup_completed = true;
+
+    usb_hid.setPollInterval(1);  // 1ms
+    usb_hid.setReportDescriptor(kHidDescriptor, sizeof(kHidDescriptor));
+
+    if (!usb_hid.begin()) {
+      Serial.println("Failed to begin USB_HID");
+      return false;
+    }
+
+    // Wait for the USB device to be mounted
+    while (!TinyUSBDevice.mounted()) {
+      delay(1);
+    }
+
+    if (!usb_hid.ready()) {
+      Serial.print("ERRROR: Failed to begin Gamepad device");
+      return false;
+    }
+
+    // Send very initial report
+    usb_hid.sendReport(0, &gamepad_report, sizeof(gamepad_report));
+
+    return true;
+  }
+
   void Setup() {
+    if (!SetupHidDevices()) {
+      Serial.println("Failed to setup HID devices");
+    }
+
+    // Note that it's safe to call LittleFS.begin() multiple times.
+    if (!LittleFS.begin()) {
+      Serial.println("Failed to initialize LittleFS");
+    }
     UdongConfig config = loadUdonConfig();
     circuit = std::make_unique<Circuit>(config);
     circuit->calibration_store.LoadFromFile();
