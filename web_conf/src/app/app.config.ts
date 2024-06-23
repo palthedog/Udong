@@ -6,6 +6,10 @@ import { provideClientHydration } from '@angular/platform-browser';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideAnimations } from '@angular/platform-browser/animations';
 
+import { SerialService, SerialServiceInterface } from './serial.service';
+import { MockSerialService } from './mock_serial.service';
+
+
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
@@ -13,5 +17,9 @@ export const appConfig: ApplicationConfig = {
     provideClientHydration(),
     provideAnimationsAsync(),
     provideAnimations(), provideAnimationsAsync(), provideAnimationsAsync(),
+
+
+    //{ provide: SerialServiceInterface, useClass: SerialService },
+    { provide: SerialServiceInterface, useClass: MockSerialService },
   ]
 };

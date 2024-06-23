@@ -4,7 +4,7 @@ import { RouterOutlet } from '@angular/router';
 
 import { MatSlideToggleModule } from '@angular/material/slide-toggle'
 
-import { SerialService } from './serial.service';
+import { SerialServiceInterface } from './serial.service';
 
 import { AnalogSwitchConfigComponent } from "./analog-switch-config/analog-switch-config.component";
 import { ConfiguratorComponent } from "./configurator/configurator.component"
@@ -23,7 +23,7 @@ import { TextCommanderComponent } from './text-commander/text-commander.componen
 export class AppComponent {
   title: string = '';
 
-  serial_service = inject(SerialService);
+  serial_service = inject(SerialServiceInterface);
   connected = this.serial_service.ConnectionChanges();
 
   constructor() {

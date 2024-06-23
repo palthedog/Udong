@@ -1,7 +1,7 @@
 import { Component, QueryList, ViewChild, ViewChildren, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
-import { SerialService } from '../serial.service';
+import { SerialServiceInterface } from '../serial.service';
 import { AnalogSwitchConfigComponent } from '../analog-switch-config/analog-switch-config.component';
 import { MatButtonModule } from '@angular/material/button'
 import { GroupSelectorComponent } from '../group-selector/group-selector.component';
@@ -19,7 +19,7 @@ import { UdongConfig } from '../config';
 })
 export class ConfiguratorComponent {
 
-  serial_service = inject(SerialService);
+  serial_service = inject(SerialServiceInterface);
 
   config?: UdongConfig = undefined;
 

@@ -1,6 +1,6 @@
 import { inject, Input, Component, Output, EventEmitter } from '@angular/core';
 
-import { SerialService } from '../serial.service';
+import { SerialServiceInterface } from '../serial.service';
 
 import { MatButtonModule } from '@angular/material/button'
 
@@ -16,7 +16,7 @@ export class SerialConnectorComponent {
   @Input()
   button_name!: string;
 
-  serial_service = inject(SerialService);
+  serial_service = inject(SerialServiceInterface);
 
   constructor() {
 

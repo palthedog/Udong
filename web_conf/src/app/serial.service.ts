@@ -4,10 +4,24 @@ import { Injectable } from '@angular/core';
 
 import { BehaviorSubject, Observable, Subject, defer, filter } from 'rxjs';
 
-@Injectable({
-  providedIn: 'root'
-})
-export class SerialService {
+export abstract class SerialServiceInterface {
+  abstract ConnectionChanges(): Observable<boolean>;
+
+  abstract MessageArrives(): Observable<[string, string]>;
+
+  abstract Connect(): Promise<void>;
+
+  abstract Send(message: string): Promise<void>;
+
+  MessageReceiveFor(response_type: string): Observable<[string, string]> {
+    return this.MessageArrives().pipe(filter((pair) => {
+      return pair[0] == response_type;
+    }));
+  }
+}
+
+@Injectable()
+export class SerialService extends SerialServiceInterface {
 
   private port?: SerialPort;
 
@@ -15,6 +29,7 @@ export class SerialService {
   private connection_subject = new BehaviorSubject<boolean>(false);
 
   public constructor() {
+    super();
   }
 
   public ConnectionChanges(): Observable<boolean> {
@@ -23,12 +38,6 @@ export class SerialService {
 
   public MessageArrives(): Observable<[string, string]> {
     return this.message_subject;
-  }
-
-  public MessageReceiveFor(response_type: string): Observable<[string, string]> {
-    return this.message_subject.asObservable().pipe(filter((pair) => {
-      return pair[0] == response_type;
-    }));
   }
 
   public async Connect() {
