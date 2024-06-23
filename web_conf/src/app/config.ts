@@ -4,6 +4,16 @@ export interface UdongConfig {
     analog_switch_groups: Array<AnalogSwitchGroup>,
 }
 
+export function SwitchIdToGroupId(config: UdongConfig, switch_id: number) {
+    for (let key in config.analog_switch_assignments) {
+        let assignment = config.analog_switch_assignments[key];
+        if (switch_id == assignment.analog_switch_id) {
+            return assignment.analog_switch_group_id;
+        }
+    }
+    return 0;
+}
+
 export interface AnalogSwitchAssignment {
     analog_switch_id: number,
     analog_switch_group_id: number,

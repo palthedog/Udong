@@ -9,11 +9,12 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule } from '@angular/forms';
 import { MatRippleModule } from '@angular/material/core';
 import { UdongConfig } from '../config';
+import { BoardButtonsComponent } from '../board-buttons/board-buttons.component';
 
 @Component({
   selector: 'app-configurator',
   standalone: true,
-  imports: [MatRippleModule, MatFormFieldModule, MatCardModule, CommonModule, AnalogSwitchConfigComponent, MatButtonModule, GroupSelectorComponent, FormsModule],
+  imports: [BoardButtonsComponent, MatRippleModule, MatFormFieldModule, MatCardModule, CommonModule, AnalogSwitchConfigComponent, MatButtonModule, GroupSelectorComponent, FormsModule],
   templateUrl: './configurator.component.html',
   styleUrl: './configurator.component.scss'
 })

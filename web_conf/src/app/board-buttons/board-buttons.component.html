@@ -1,0 +1,17 @@
+<div>
+    <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 340 160"
+        style="max-height: 300px;"
+    >
+        <svg:circle
+            *ngFor="let switch_id of switch_ids"
+            [attr.cx]="switch_positions[switch_id][0]"
+            [attr.cy]="switch_positions[switch_id][1]"
+            style="stroke: gray; stroke-width: 1;"
+            [style.fill]="getButtonColor(switch_id)"
+            (click)="onClickButton(switch_id)"
+            r="12"
+        />
+    </svg>
+</div>

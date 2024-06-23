@@ -8,6 +8,13 @@
     </button>
 </div>
 
+<app-board-buttons
+    *ngIf="config"
+    class="board-container"
+    [config]="config!"
+>
+</app-board-buttons>
+
 <div
     *ngIf="config"
     class="configulator-container"

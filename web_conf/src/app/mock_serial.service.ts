@@ -53,7 +53,7 @@ export class MockSerialService extends SerialServiceInterface {
                     analog_switch_group_id: i,
                     trigger_type: 'rapid-trigger',
                     rapid_trigger: {
-                        act: 1.2, rel: 0.4,
+                        act: 0.6, rel: 0.4,
                         f_act: 3.0, f_rel: 0.2,
                     }
                 }
