@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["src/app/configurator/configurator.component.scss"],
-  "sourcesContent": ["#save-button-container {\n    margin-bottom: 8px;\n}\n\n.config-panel {\n    // flex: 1;\n}\n\n.configulator-container {\n    display: flex;\n    gap: 8px;\n}\n\n.switches-container {\n    display: grid;\n    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));\n    gap: 8px;\n}"],
-  "mappings": "AAAA,CAAA,sBACI,cAAA,IAOJ,CAAA,uBACI,QAAA,KACA,IAAA,IAGJ,CAAA,mBACI,QAAA,KACA,sBAAA,OAAA,QAAA,CAAA,OAAA,KAAA,CAAA,MACA,IAAA",
-  "names": []
-}
