@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { SerialServiceInterface } from '../serial.service';
+import { SerialServiceInterface } from '../serial/serial.service';
 
 @Component({
   selector: 'app-text-commander',

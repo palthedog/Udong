@@ -6,13 +6,14 @@ import { AnalogSwitchAssignment } from '../config';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatOptionModule } from '@angular/material/core';
 import { AppConsts } from '../consts';
+import { GroupIconComponent } from "../group-icon/group-icon.component";
 
 @Component({
   selector: 'app-group-selector',
   standalone: true,
-  imports: [MatFormFieldModule, MatOptionModule, MatCardModule, MatSelectModule],
   templateUrl: './group-selector.component.html',
-  styleUrl: './group-selector.component.scss'
+  styleUrl: './group-selector.component.scss',
+  imports: [MatFormFieldModule, MatOptionModule, MatCardModule, MatSelectModule, GroupIconComponent]
 })
 export class GroupSelectorComponent {
   @Input()

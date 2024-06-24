@@ -8,7 +8,9 @@
         >
             @for (group_id of group_ids; track group_id) {
             <mat-option [value]="group_id">
-                Group {{group_id}}
+                <app-group-icon [group_id]="group_id">
+                    Group {{group_id}}
+                </app-group-icon>
             </mat-option>
             }
         </mat-select>

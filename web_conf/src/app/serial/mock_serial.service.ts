@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { SerialServiceInterface } from './serial.service';
 
 import { BehaviorSubject, Observable, Subject, defer, filter } from 'rxjs';
-import { AnalogSwitchAssignment, AnalogSwitchGroup, ButtonAssignment, UdongConfig } from './config';
+import { AnalogSwitchAssignment, AnalogSwitchGroup, ButtonAssignment, UdongConfig } from '../config';
+import { SerialServiceInterface } from './serial.service';
 
 @Injectable()
 export class MockSerialService extends SerialServiceInterface {

@@ -4,7 +4,7 @@ import { RouterOutlet } from '@angular/router';
 
 import { MatSlideToggleModule } from '@angular/material/slide-toggle'
 
-import { SerialServiceInterface } from './serial.service';
+import { SerialServiceInterface } from './serial/serial.service';
 
 import { AnalogSwitchConfigComponent } from "./analog-switch-config/analog-switch-config.component";
 import { ConfiguratorComponent } from "./configurator/configurator.component"

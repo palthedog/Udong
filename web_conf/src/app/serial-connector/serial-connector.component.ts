@@ -1,6 +1,6 @@
 import { inject, Input, Component, Output, EventEmitter } from '@angular/core';
 
-import { SerialServiceInterface } from '../serial.service';
+import { SerialServiceInterface } from '../serial/serial.service';
 
 import { MatButtonModule } from '@angular/material/button'
 

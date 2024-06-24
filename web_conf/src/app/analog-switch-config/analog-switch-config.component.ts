@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, Output, ViewChild, inject } from '@angular/core';
 import { CommonModule } from '@angular/common'
 import { MatCardModule } from '@angular/material/card'
 import { MatSliderModule } from '@angular/material/slider'
@@ -6,15 +6,19 @@ import { DepthSliderComponent } from '../depth-slider/depth-slider.component';
 import { MatRipple, MatRippleModule } from '@angular/material/core';
 import { AnalogSwitchGroup } from '../config';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle'
+import { AppConsts } from '../consts';
+import { GroupIconComponent } from '../group-icon/group-icon.component';
 
 @Component({
   selector: 'app-analog-switch-config',
   standalone: true,
-  imports: [MatSlideToggleModule, MatRippleModule, MatCardModule, MatSliderModule, DepthSliderComponent, CommonModule],
+  imports: [GroupIconComponent, MatSlideToggleModule, MatRippleModule, MatCardModule, MatSliderModule, DepthSliderComponent, CommonModule],
   templateUrl: './analog-switch-config.component.html',
   styleUrl: './analog-switch-config.component.scss'
 })
 export class AnalogSwitchConfigComponent {
+  app_consts = inject(AppConsts);
+
   @Output()
   configChange = new EventEmitter<AnalogSwitchGroup>();
 
@@ -22,6 +26,7 @@ export class AnalogSwitchConfigComponent {
   public get config(): AnalogSwitchGroup {
     return this._config;
   }
+
   @Input()
   public set config(value: AnalogSwitchGroup) {
     console.log('set cfg', value);

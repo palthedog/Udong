@@ -6,7 +6,3 @@
 :root {
     @include mat.all-component-themes(m3-theme.$light-theme);
 }
-
-body {
-    // background-color: #19120c;
-}

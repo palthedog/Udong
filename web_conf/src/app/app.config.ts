@@ -6,9 +6,8 @@ import { provideClientHydration } from '@angular/platform-browser';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideAnimations } from '@angular/platform-browser/animations';
 
-import { SerialService, SerialServiceInterface } from './serial.service';
-import { MockSerialService } from './mock_serial.service';
-
+import { SerialService, SerialServiceInterface } from './serial/serial.service';
+import { environment } from '../environments/environment';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -17,9 +16,6 @@ export const appConfig: ApplicationConfig = {
     provideClientHydration(),
     provideAnimationsAsync(),
     provideAnimations(), provideAnimationsAsync(), provideAnimationsAsync(),
-
-
-    //{ provide: SerialServiceInterface, useClass: SerialService },
-    { provide: SerialServiceInterface, useClass: MockSerialService },
+    { provide: SerialServiceInterface, useClass: environment.serialService },
   ]
 };

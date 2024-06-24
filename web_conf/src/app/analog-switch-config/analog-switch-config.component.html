@@ -5,7 +5,9 @@
 >
     <mat-card-header>
         <mat-card-title>
-            Config Group {{config.analog_switch_group_id}}
+            <app-group-icon [group_id]="config.analog_switch_group_id">
+                Config Group {{config.analog_switch_group_id}}
+            </app-group-icon>
         </mat-card-title>
     </mat-card-header>
     <mat-card-content>
