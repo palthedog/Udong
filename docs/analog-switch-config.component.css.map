@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/app/analog-switch-config/analog-switch-config.component.scss"],
+  "sourcesContent": [".activate-rapid-trigger-slide-section {\n    display: flex;\n    align-content: center;\n    align-items: center;\n    height: 60px;\n}"],
+  "mappings": ";AAAA,CAAA;AACI,WAAA;AACA,iBAAA;AACA,eAAA;AACA,UAAA;;",
+  "names": []
+}

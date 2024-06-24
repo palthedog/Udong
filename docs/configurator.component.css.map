@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/app/configurator/configurator.component.scss"],
+  "sourcesContent": ["#save-button-container {\n    margin-bottom: 8px;\n}\n\n.config-panel {\n    // flex: 1;\n}\n\n.configulator-container {\n    display: flex;\n    gap: 8px;\n}\n\n.switches-container {\n    display: grid;\n    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));\n    gap: 8px;\n}"],
+  "mappings": ";AAAA,CAAA;AACI,iBAAA;;AAOJ,CAAA;AACI,WAAA;AACA,OAAA;;AAGJ,CAAA;AACI,WAAA;AACA,yBAAA,OAAA,QAAA,EAAA,OAAA,KAAA,EAAA;AACA,OAAA;;",
+  "names": []
+}
