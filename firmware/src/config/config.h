@@ -53,6 +53,22 @@ inline bool convertToJson(const StaticTriggerConfig& config, JsonVariant dst) {
   return true;
 }
 
+struct ButtonAssignment {
+  uint8_t switch_id;
+  uint8_t button_id;
+};
+
+inline void convertFromJson(JsonVariantConst var, ButtonAssignment& dst) {
+  dst.switch_id = var["switch_id"];
+  dst.button_id = var["button_id"];
+}
+
+inline bool convertToJson(const ButtonAssignment& src, JsonVariant dst) {
+  dst["switch_id"] = src.switch_id;
+  dst["button_id"] = src.button_id;
+  return true;
+}
+
 struct AnalogSwitchAssignment {
   uint8_t analog_switch_id;
   uint8_t analog_switch_group_id;
@@ -123,6 +139,7 @@ struct UdongConfig {
  public:
   std::vector<AnalogSwitchAssignment> analog_switch_assignments;
   std::vector<AnalogSwitchGroup> analog_switch_groups;
+  std::vector<ButtonAssignment> button_assignments;
 
   UdongConfig() {
   }
@@ -161,6 +178,11 @@ inline bool convertToJson(const UdongConfig& config, JsonVariant dst) {
         config.analog_switch_groups[i],
         dst["analog_switch_groups"][i].to<JsonObject>());
   }
+  for (size_t i = 0; i < config.button_assignments.size(); i++) {
+    convertToJson(
+        config.button_assignments[i],
+        dst["button_assignments"][i].to<JsonObject>());
+  }
   return true;
 }
 
@@ -168,10 +190,20 @@ inline UdongConfig defaultUdongConfig() {
   UdongConfig config;
 
   for (int i = 0; i < 16; i++) {
+    uint8_t group_id;
+    if (i >= 12 && i <= 15) {
+      // D-pad
+      group_id = 0;
+    } else if (i == 2 || i == 4) {
+      // for little fingers
+      group_id = 1;
+    } else {
+      group_id = 4;
+    }
+
     AnalogSwitchAssignment assignment;
     assignment.analog_switch_id = i;
-
-    assignment.analog_switch_group_id = i < 8 ? 0 : 4;
+    assignment.analog_switch_group_id = group_id;
     config.analog_switch_assignments.push_back(assignment);
   }
 
@@ -181,10 +213,32 @@ inline UdongConfig defaultUdongConfig() {
     group.trigger_type = i < 4 ? "rapid-trigger" : "static-trigger";
     config.analog_switch_groups.push_back(group);
   }
+
+  for (int i = 0; i < 16; i++) {
+    ButtonAssignment button_assignment;
+    button_assignment.button_id = i;
+    button_assignment.switch_id = i;
+    config.button_assignments.push_back(button_assignment);
+  }
   return config;
 }
 
 const String kUdongConfigPath = "/user/config.json";
+
+template <typename T>
+inline void complementVector(std::vector<T>& dst, const std::vector<T>& def) {
+  while (dst.size() < def.size()) {
+    dst.push_back(def[dst.size()]);
+  }
+}
+
+inline void complementWithDefaultValues(UdongConfig& config) {
+  UdongConfig def = defaultUdongConfig();
+  complementVector(
+      config.analog_switch_assignments, def.analog_switch_assignments);
+  complementVector(config.analog_switch_groups, def.analog_switch_groups);
+  complementVector(config.button_assignments, def.button_assignments);
+}
 
 inline UdongConfig loadUdonConfig() {
   Serial.println("Load UdongConfig");
@@ -195,6 +249,7 @@ inline UdongConfig loadUdonConfig() {
   }
   UdongConfig config;
   convertFromJson(doc, config);
+  complementWithDefaultValues(config);
   return config;
 }
 

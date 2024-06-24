@@ -4,7 +4,7 @@
 
 #include <memory>
 
-#define TELEPLOT 1
+#define TELEPLOT 0
 
 #include "io_utils/io.h"
 #include "io_utils/multi_sampling.h"
@@ -51,10 +51,12 @@ void setup() {
   udong.Setup();
 
   // wait for
+  /*
   for (int i = 0; i < 5; i++) {
     Serial.println("*** Start ***");
     delay(1000);
   }
+  */
 }
 
 inline int16_t map_u16_s16(uint16_t v) {
