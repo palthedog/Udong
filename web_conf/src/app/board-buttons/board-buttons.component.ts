@@ -55,7 +55,7 @@ export class BoardButtonsComponent {
 
   getButtonName(switch_id: number): string {
     let button_id = SwitchIdToButtonId(this.config, switch_id);
-    return this.app_consts.button_names[button_id];
+    return this.app_consts.buttonName(button_id);
   }
 
   onClickButton(switch_id: number) {

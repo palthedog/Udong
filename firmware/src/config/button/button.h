@@ -108,7 +108,7 @@ struct ButtonId {
 const std::vector<ButtonId>& getAllButtonIds();
 
 inline void convertFromJson(JsonVariantConst var, ButtonId& dst) {
-  dst.type = var["switch_id"];
+  dst.type = var["type"];
   switch (dst.type) {
     case PushButton:
       dst.selector.push_button = var["push_button"];
@@ -120,12 +120,13 @@ inline void convertFromJson(JsonVariantConst var, ButtonId& dst) {
 }
 
 inline bool convertToJson(const ButtonId& src, JsonVariant dst) {
-  dst["switch_id"] = src.type;
   switch (src.type) {
     case PushButton:
+      dst["type"] = "push";
       dst["push_button"] = src.selector.push_button;
       break;
     case DPadButton:
+      dst["type"] = "d-pad";
       dst["d_pad"] = src.selector.d_pad;
       break;
   }

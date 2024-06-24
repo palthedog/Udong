@@ -38,10 +38,13 @@
                 <!-- Button Selector -->
                 <mat-form-field>
                     <mat-label>Button Mapping</mat-label>
-                    <mat-select [(value)]="activeButtonAssignment().button_id">
+                    <mat-select
+                        [(value)]="activeButtonAssignment().button_id"
+                        [compareWith]="compareValue"
+                    >
                         @for (button_id of consts.button_ids; track button_id) {
                         <mat-option [value]="button_id">
-                            {{consts.button_names[button_id]}}
+                            {{consts.buttonName(button_id)}}
                         </mat-option>
                         }
                     </mat-select>

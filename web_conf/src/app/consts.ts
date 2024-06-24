@@ -1,11 +1,43 @@
 import { Injectable } from "@angular/core";
-import { UdongConfig } from "./config";
+import { ButtonId, UdongConfig } from "./config";
 
 @Injectable(
     { providedIn: 'root' }
 )
 export class AppConsts {
-    button_ids: number[] = new Array(18).fill(0).map((_v, index) => index);
+    _button_ids: ButtonId[] = [];
+
+    get button_ids(): ButtonId[] {
+        if (this._button_ids.length != 0) {
+            return this._button_ids;
+        }
+        for (let i = 0; i < 16; i++) {
+            this._button_ids.push({
+                type: 'push',
+                push_button: {
+                    push_button_id: i,
+                }
+            });
+        }
+        this._button_ids.push({
+            type: 'd-pad',
+            d_pad: { direction: 'up' }
+        });
+        this._button_ids.push({
+            type: 'd-pad',
+            d_pad: { direction: 'right' }
+        });
+        this._button_ids.push({
+            type: 'd-pad',
+            d_pad: { direction: 'down' }
+        });
+        this._button_ids.push({
+            type: 'd-pad',
+            d_pad: { direction: 'left' }
+        });
+        return this._button_ids;
+    }
+    /*
     button_names: string[] = [
         'B1',
         'B2',
@@ -29,6 +61,26 @@ export class AppConsts {
         'Z5',
         'Z6',
     ];
+    */
+
+    buttonName(button_id: ButtonId): string {
+        switch (button_id.type) {
+            case 'push':
+                return 'B' + button_id.push_button?.push_button_id;
+            case 'd-pad':
+                switch (button_id.d_pad?.direction) {
+                    case 'up':
+                        return '↑';
+                    case 'right':
+                        return '→';
+                    case 'down':
+                        return '↓';
+                    case 'left':
+                        return '←';
+                }
+        }
+        return "??";
+    }
 
     configGroupColor(group_id: number) {
         let hue = group_id * (360.0 / 8);

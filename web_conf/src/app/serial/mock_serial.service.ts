@@ -74,7 +74,12 @@ export class MockSerialService extends SerialServiceInterface {
         let button_assignments: ButtonAssignment[] = [];
         for (let i = 0; i < 16; i++) {
             button_assignments.push({
-                button_id: i,
+                button_id: {
+                    type: 'push',
+                    push_button: {
+                        push_button_id: i
+                    }
+                },
                 switch_id: i,
             });
         }

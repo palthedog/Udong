@@ -8,7 +8,7 @@ import { GroupSelectorComponent } from '../group-selector/group-selector.compone
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule } from '@angular/forms';
 import { MatRipple, MatRippleModule } from '@angular/material/core';
-import { AnalogSwitchAssignment, AnalogSwitchGroup, ButtonAssignment, SwitchIdToGroupId, UdongConfig } from '../config';
+import { AnalogSwitchAssignment, AnalogSwitchGroup, ButtonAssignment, ButtonId, SwitchIdToGroupId, UdongConfig, compareButtonIds } from '../config';
 import { BoardButtonsComponent } from '../board-buttons/board-buttons.component';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDividerModule } from '@angular/material/divider';
@@ -37,7 +37,7 @@ export class ConfiguratorComponent {
   analog_switch_config_?: AnalogSwitchConfigComponent;
 
   @ViewChild(MatRipple)
-  ripple!: MatRipple;
+  ripple?: MatRipple;
 
   group_ids: Array<number> = [];
 
@@ -70,7 +70,9 @@ export class ConfiguratorComponent {
     console.log('active switch changed', switch_id);
     this.active_switch_id = switch_id;
     this.setActiveGroupId(SwitchIdToGroupId(this.config!, this.active_switch_id));
-    this.ripple.launch({ centered: true });
+    if (this.ripple) {
+      this.ripple.launch({ centered: true });
+    }
   }
 
   onGroupSelected() {
@@ -103,6 +105,11 @@ export class ConfiguratorComponent {
 
   changeButtonMapping(button_id: number) {
     console.log('button mapping:', button_id);
+  }
+
+  compareValue(a: ButtonId, b: ButtonId): boolean {
+    console.log('compare: ', a, b);
+    return compareButtonIds(a, b);
   }
 
   Save() {
