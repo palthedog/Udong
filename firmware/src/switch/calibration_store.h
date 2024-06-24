@@ -80,8 +80,9 @@ inline bool convertToJson(
   return true;
 }
 
+const String kCalibrationFilePath = "/user/hidden/calibration.json";
+
 class CalibrationStore {
-  const char* kCalibrationFilePath = "/user/hidden/calibration.json";
   std::map<int, AnalogSwitchCalibrationStore> analog_switches_;
 
  public:

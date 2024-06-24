@@ -48,15 +48,16 @@ void setup() {
   Serial.setTimeout(100);
   Serial.setStringDescriptor("Udong");
 
-  udong.Setup();
+  if (!udong.SetupHidDevices()) {
+    Serial.println("Failed to setup HID devices");
+  }
 
   // wait for
-  /*
   for (int i = 0; i < 5; i++) {
-    Serial.println("*** Start ***");
     delay(1000);
   }
-  */
+
+  udong.Setup();
 }
 
 inline int16_t map_u16_s16(uint16_t v) {
@@ -116,50 +117,8 @@ void loop() {
   serial_handler.HandleSerial(udong);
 
   // TODO: Refactoring...
-  Circuit& circuit = *udong.circuit;
-  GamepadReport& gamepad_report = udong.gamepad_report;
-  Adafruit_USBD_HID& usb_hid = udong.usb_hid;
-
   uint32_t now = time_us_32();
-
   calibration_runner.MaybeRun(now);
   teleplot_runner.MaybeRun(now);
-
-  circuit.led_pin.Write(circuit.triangle_in.Read());
-
-  // Debug info
-  /*
-  gamepad_report.z = circuit.analog_switch_raw_ins[0]->Read() / 2;
-  gamepad_report.rx =
-      circuit.analog_switches[0]->GetLastPressMm() / 4.0 * UINT16_MAX / 2;
-  gamepad_report.ry = circuit.analog_switch_raw_ins[2]->Read() / 2;
-  gamepad_report.rz =
-      circuit.analog_switches[2]->GetLastPressMm() / 4.0 * UINT16_MAX / 2;
-*/
-  // analog switches
-  for (auto& analog_switch : circuit.analog_switches) {
-    gamepad_report.UpdateButton(analog_switch->GetId(), analog_switch->IsOn());
-  }
-
-  // temporal D-pad impl.
-  gamepad_report.hat = (time_us_32() / 1000000) % 9;
-  // gamepad_report.x = INT16_MAX * cos(M_PI * 2 * time_us_32() / 1000 /
-  // 1000.0); gamepad_report.y = INT16_MAX * sin(M_PI * 2 * time_us_32() / 1000
-  // / 1000.0);
-
-  if (usb_hid.ready()) {
-    if (!usb_hid.sendReport(0, &gamepad_report, sizeof(gamepad_report))) {
-      Serial.println("Failed to send report");
-    }
-
-#if TELEPLOT
-    uint32_t now = time_us_32();
-    Serial.printf(">report-dt(ms): %lf\n", (now - last_report_t) / 1000.0);
-    last_report_t = now;
-#endif
-    // Consider using sleep_until? (with performance measurement of loop())
-    delayMicroseconds(500);
-  } else {
-    delayMicroseconds(50);
-  }
+  udong.Loop();
 }

@@ -7,7 +7,10 @@
 
 #include <vector>
 
+#include "button/button.h"
 #include "json_file.h"
+
+const String kUdongConfigPath = "/user/config.json";
 
 struct RapidTriggerConfig {
   double act;
@@ -50,22 +53,6 @@ inline void convertFromJson(JsonVariantConst var, StaticTriggerConfig& dst) {
 inline bool convertToJson(const StaticTriggerConfig& config, JsonVariant dst) {
   dst["act"] = config.act;
   dst["rel"] = config.rel;
-  return true;
-}
-
-struct ButtonAssignment {
-  uint8_t switch_id;
-  uint8_t button_id;
-};
-
-inline void convertFromJson(JsonVariantConst var, ButtonAssignment& dst) {
-  dst.switch_id = var["switch_id"];
-  dst.button_id = var["button_id"];
-}
-
-inline bool convertToJson(const ButtonAssignment& src, JsonVariant dst) {
-  dst["switch_id"] = src.switch_id;
-  dst["button_id"] = src.button_id;
   return true;
 }
 
@@ -165,6 +152,11 @@ inline void convertFromJson(JsonVariantConst var, UdongConfig& dst) {
     dst.analog_switch_groups.push_back(
         AnalogSwitchGroup(var["analog_switch_groups"][i]));
   }
+  size = var["button_assignments"].size();
+  for (size_t i = 0; i < size; i++) {
+    dst.button_assignments.push_back(
+        ButtonAssignment(var["button_assignments"][i]));
+  }
 }
 
 inline bool convertToJson(const UdongConfig& config, JsonVariant dst) {
@@ -214,16 +206,33 @@ inline UdongConfig defaultUdongConfig() {
     config.analog_switch_groups.push_back(group);
   }
 
+  // TODO: Assign human friendly button
+  const std::vector<ButtonId>& button_ids = getAllButtonIds();
+  Serial.println("all button IDs");
+  for (int i = 0; i < button_ids.size(); i++) {
+    const ButtonId& bid = button_ids[i];
+    if (bid.type == ButtonType::PushButton) {
+      Serial.printf(
+          "i: %d, type: push, sel: %d\n",
+          i,
+          bid.selector.push_button.push_button_id);
+    } else if (bid.type == ButtonType::DPadButton) {
+      Serial.printf(
+          "i: %d, type: d-pad, sel: %d\n", i, bid.selector.d_pad.direction);
+    }
+  }
+
   for (int i = 0; i < 16; i++) {
     ButtonAssignment button_assignment;
-    button_assignment.button_id = i;
     button_assignment.switch_id = i;
+    button_assignment.button_id = button_ids[i];
+    Serial.printf(
+        "sel: %d\n",
+        button_assignment.button_id.selector.push_button.push_button_id);
     config.button_assignments.push_back(button_assignment);
   }
   return config;
 }
-
-const String kUdongConfigPath = "/user/config.json";
 
 template <typename T>
 inline void complementVector(std::vector<T>& dst, const std::vector<T>& def) {

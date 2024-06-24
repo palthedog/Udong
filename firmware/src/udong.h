@@ -83,22 +83,24 @@ struct TU_ATTR_PACKED GamepadReport {
   uint16_t rz;
   */
 
-  uint8_t hat;  ///< Buttons mask for currently pressed buttons in the DPad/hat
+  // Buttons mask for currently pressed buttons in the DPad/hat
+  uint8_t d_pad;
+  // Buttons mask for currently pressed buttons
+  uint16_t buttons;
 
-  uint16_t buttons;  ///< Buttons mask for currently pressed buttons
+  inline void Clear() {
+    d_pad = 0;
+    buttons = 0;
+  }
 
-  inline void UpdateButton(int index, bool is_on) {
+  inline void PressButton(int index) {
     if (index < 0 || index >= 16) {
       Serial.printf("ERROR: invalid button index: %d\n", index);
       return;
     }
 
     uint16_t button_bit = 1u << index;
-    if (is_on) {
-      buttons |= button_bit;
-    } else {
-      buttons &= ~button_bit;
-    }
+    buttons |= button_bit;
   }
 };
 
@@ -117,8 +119,8 @@ struct Circuit {
   std::vector<std::shared_ptr<AnalogSwitch>> analog_switches;
 
   // DO NOT USE IT until we fix a hardware bug!!!
-  // TODO: refrence 0.6V must be connected to an ANALOG input not Digital Input
-  // AnalogInputPin adc_600mv_input;
+  // TODO: refrence 0.6V must be connected to an ANALOG input not Digital
+  // Input AnalogInputPin adc_600mv_input;
   std::vector<bool> enabled_switchs;
 
   UdongConfig config;
@@ -190,34 +192,6 @@ struct Circuit {
           calibration_store.GetSwitchRef(switch_id),
           std::move(trigger)));
     }
-
-    // Dummy switch for logging
-
-    /*
-    for (int i = 0; i < kButtonCount; i++) {
-      uint8_t switch_id = i + 8;
-      uint8_t source_id = i;
-
-      const AnalogSwitchGroup& switch_config =
-          config.getConfigFromSwitchId(switch_id);
-      std::unique_ptr<Trigger> trigger;
-      if (switch_config.trigger_type == "rapid-trigger") {
-        const RapidTriggerConfig& rt_conf = switch_config.rapid_trigger;
-        trigger.reset(new RapidTrigger(
-            rt_conf.act, rt_conf.rel, rt_conf.f_act, rt_conf.f_rel));
-      } else {
-        const StaticTriggerConfig& st_conf = switch_config.static_trigger;
-        trigger.reset(new StaticTrigger(st_conf.act, st_conf.rel));
-      }
-
-      analog_switches.push_back(std::make_shared<AnalogSwitch>(
-          switch_id,
-          analog_switch_raw_ins[source_id],
-          calibration_store.GetSwitchRef(switch_id),
-          std::move(trigger)));
-    }
-
-    */
   }
 
   void CalibrateAllZeroPoint() {
@@ -228,29 +202,114 @@ struct Circuit {
 };
 
 // context
-struct Udong {
- private:
+class Udong {
   bool usb_hids_setup_completed;
 
- public:
-  std::unique_ptr<Circuit> circuit;
+  // Key: Switch-ID
+  std::map<uint8_t, ButtonAssignment> button_assignments;
+
   GamepadReport gamepad_report;
   Adafruit_USBD_HID usb_hid;
-  Adafruit_USBD_HID usb_hid_generic_inout;
+
+  void FillGamepadReport() {
+    // Debug info
+    /*
+    gamepad_report.z = circuit.analog_switch_raw_ins[0]->Read() / 2;
+    gamepad_report.rx =
+        circuit.analog_switches[0]->GetLastPressMm() / 4.0 * UINT16_MAX / 2;
+    gamepad_report.ry = circuit.analog_switch_raw_ins[2]->Read() / 2;
+    gamepad_report.rz =
+        circuit.analog_switches[2]->GetLastPressMm() / 4.0 * UINT16_MAX / 2;
+  */
+    // analog switches
+    gamepad_report.Clear();
+    for (auto& analog_switch : circuit->analog_switches) {
+      if (!analog_switch->IsOn()) {
+        continue;
+      }
+
+      auto f = this->button_assignments.find(analog_switch->GetId());
+      if (f == this->button_assignments.end()) {
+        // Nothing is assigned to this switch
+        Serial.printf(
+            "Nothing is assigned to switch %d\n", analog_switch->GetId());
+        continue;
+      }
+
+      const ButtonId& button_id = f->second.button_id;
+      if (button_id.type == PushButton) {
+        gamepad_report.PressButton(
+            button_id.selector.push_button.push_button_id);
+      } else {
+        Serial.printf("unknown type: %d\n", button_id.type);
+      }
+    }
+
+    // temporal D-pad impl.
+    gamepad_report.d_pad = (time_us_32() / 1000000) % 9;
+  }
+
+  bool MaybeSendReport() {
+    if (!usb_hid.ready()) {
+      delayMicroseconds(50);
+      return false;
+    }
+
+    FillGamepadReport();
+    if (!usb_hid.sendReport(0, &gamepad_report, sizeof(gamepad_report))) {
+      Serial.println("Failed to send report");
+    }
+
+#if TELEPLOT
+    uint32_t now = time_us_32();
+    Serial.printf(">report-dt(ms): %lf\n", (now - last_report_t) / 1000.0);
+    last_report_t = now;
+#endif
+    // Consider using sleep_until? (with performance measurement of loop())
+    delayMicroseconds(500);
+    return true;
+  }
+
+  void LoadConfig() {
+    UdongConfig config = loadUdonConfig();
+    Serial.println("Loaded button assignments");
+    for (auto b : config.button_assignments) {
+      Serial.println(b.button_id.selector.push_button.push_button_id);
+    }
+
+    // Configure circuit
+    circuit = std::make_unique<Circuit>(config);
+    circuit->calibration_store.LoadFromFile();
+    circuit->CalibrateAllZeroPoint();
+    // We need to call Calibrate after loading calibration data to update all
+    // related data (e.g. lookup-table)
+    for (auto& analog_switch : circuit->analog_switches) {
+      analog_switch->Calibrate();
+      analog_switch->DumpLastState();
+    }
+
+    // Button assignment
+    button_assignments.clear();
+    for (auto it : config.button_assignments) {
+      button_assignments.insert(std::make_pair(it.switch_id, it));
+    }
+  }
+
+ public:
+  // TODO: Move it to private.
+  std::unique_ptr<Circuit> circuit;
 
   Udong() {
     usb_hids_setup_completed = false;
 
-    /*
-    gamepad_report.x = 0;
-    gamepad_report.y = 0;
-    gamepad_report.z = 0;
-    gamepad_report.rx = 0;
-    gamepad_report.ry = 0;
-    gamepad_report.rz = 0;
-    */
-    gamepad_report.hat = GAMEPAD_HAT_CENTERED;
+    gamepad_report.d_pad = GAMEPAD_HAT_CENTERED;
     gamepad_report.buttons = 0;
+  }
+
+  void Loop() {
+    circuit->led_pin.Write(circuit->triangle_in.Read());
+
+    MaybeSendReport();
   }
 
   bool SetupHidDevices() {
@@ -274,7 +333,7 @@ struct Udong {
     }
 
     if (!usb_hid.ready()) {
-      Serial.print("ERRROR: Failed to begin Gamepad device");
+      Serial.println("ERRROR: Failed to begin Gamepad device");
       return false;
     }
 
@@ -285,28 +344,15 @@ struct Udong {
   }
 
   void Setup() {
-    if (!SetupHidDevices()) {
-      Serial.println("Failed to setup HID devices");
-    }
-
     // Note that it's safe to call LittleFS.begin() multiple times.
     if (!LittleFS.begin()) {
       Serial.println("Failed to initialize LittleFS");
     }
-    UdongConfig config = loadUdonConfig();
-    circuit = std::make_unique<Circuit>(config);
-    circuit->calibration_store.LoadFromFile();
-    circuit->CalibrateAllZeroPoint();
-    // We need to call Calibrate after loading calibration data to update all
-    // related data (e.g. lookup-table)
-    for (auto& analog_switch : circuit->analog_switches) {
-      analog_switch->Calibrate();
-      analog_switch->DumpLastState();
-    }
+    LoadConfig();
   }
 
   void ReloadConfig() {
-    Setup();
+    LoadConfig();
   }
 };
 

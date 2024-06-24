@@ -36,9 +36,6 @@ void HandleGetConfig(
 
 void HandleSaveConfig(
     Udong& context, const String& cmd, const JsonDocument& arg) {
-  JsonDocument json_response;
-  convertToJson(context.circuit->config, json_response.to<JsonObject>());
-
   // Save the received UdongConfig
   UdongConfig config;
   convertFromJson(arg, config);
@@ -84,11 +81,11 @@ void SerialHandler::HandleCmd(
     return;
   } else if (cmd == "reset") {
     Serial.println("Reset all calibration data");
-    circuit.calibration_store.Reset();
-    circuit.CalibrateAllZeroPoint();
-    for (auto& analog_switch : circuit.analog_switches) {
-      analog_switch->Calibrate();
-    }
+
+    LittleFS.remove(kUdongConfigPath);
+    LittleFS.remove(kCalibrationFilePath);
+
+    context.ReloadConfig();
   } else if (cmd == "get") {
     HandleGet(context, cmd, arg);
   } else if (cmd == "get-config") {
