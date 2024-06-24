@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["src/app/depth-slider/depth-slider.component.scss"],
-  "sourcesContent": [".slider-label-container {\n    display: flex;\n    justify-content: space-between;\n    margin: 20px 10px 0;\n    max-width: 284px;\n}\n\nmat-slider {\n    width: 300px;\n}"],
-  "mappings": "AAAA,CAAA,uBACI,QAAA,KACA,gBAAA,cAFJ,OAGI,KAAA,KAAA,EACA,UAAA,MAGJ,WACI,MAAA",
-  "names": []
-}
