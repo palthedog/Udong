@@ -17,7 +17,13 @@
     >
     </app-board-buttons>
 
-    <div class="configulator-container">
+    <mat-divider style="margin-bottom: 8px"></mat-divider>
+
+    <div
+        class="configulator-container"
+        matRipple
+        [matRippleDisabled]="true"
+    >
         <mat-card
             class="group-selector-card config-panel"
             appearance="outlined"
@@ -29,19 +35,10 @@
             </mat-card-header>
 
             <mat-card-content class="switches-container">
-                <app-group-selector
-                    [assignment]="activeSwitchAssignment()"
-                    [group_ids]="group_ids"
-                    (selectorClosed)="onGroupSelected()"
-                >
-                </app-group-selector>
-
+                <!-- Button Selector -->
                 <mat-form-field>
                     <mat-label>Button Mapping</mat-label>
-                    <mat-select
-                        [value]="0"
-                        (valueChange)="changeButtonMapping($event)"
-                    >
+                    <mat-select [(value)]="activeButtonAssignment().button_id">
                         @for (button_id of consts.button_ids; track button_id) {
                         <mat-option [value]="button_id">
                             {{consts.button_names[button_id]}}
@@ -49,6 +46,15 @@
                         }
                     </mat-select>
                 </mat-form-field>
+
+                <!-- Config Group -->
+                <app-group-selector
+                    [assignment]="activeSwitchAssignment()"
+                    [group_ids]="group_ids"
+                    (selectorClosed)="onGroupSelected()"
+                >
+                </app-group-selector>
+
             </mat-card-content>
         </mat-card>
 

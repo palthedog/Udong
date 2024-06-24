@@ -7,8 +7,9 @@
             (openedChange)="openedChange($event)"
         >
             @for (group_id of group_ids; track group_id) {
-            <mat-option [value]="group_id">Group
-                {{group_id}}</mat-option>
+            <mat-option [value]="group_id">
+                Group {{group_id}}
+            </mat-option>
             }
         </mat-select>
     </mat-form-field>

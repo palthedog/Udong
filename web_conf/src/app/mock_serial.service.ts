@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { SerialServiceInterface } from './serial.service';
 
 import { BehaviorSubject, Observable, Subject, defer, filter } from 'rxjs';
-import { AnalogSwitchAssignment, AnalogSwitchGroup, UdongConfig } from './config';
+import { AnalogSwitchAssignment, AnalogSwitchGroup, ButtonAssignment, UdongConfig } from './config';
 
 @Injectable()
 export class MockSerialService extends SerialServiceInterface {
@@ -55,31 +55,34 @@ export class MockSerialService extends SerialServiceInterface {
         };
         let groups: AnalogSwitchGroup[] = [];
         for (let i = 0; i < 8; i++) {
-            let group: AnalogSwitchGroup;
-            if (i < 4) {
-                group = {
-                    analog_switch_group_id: i,
-                    trigger_type: 'rapid-trigger',
-                    rapid_trigger: {
-                        act: 0.6, rel: 0.4,
-                        f_act: 3.0, f_rel: 0.2,
-                    }
+            let trigger_type = i < 4 ? 'rapid-trigger' : 'static-trigger';
+
+            let group: AnalogSwitchGroup = {
+                analog_switch_group_id: i,
+                trigger_type: trigger_type,
+                rapid_trigger: {
+                    act: 0.6, rel: 0.4,
+                    f_act: 3.0, f_rel: 0.2,
+                },
+                static_trigger: {
+                    act: 1.2, rel: 0.8,
                 }
-            } else {
-                group = {
-                    analog_switch_group_id: i,
-                    trigger_type: 'static-trigger',
-                    static_trigger: {
-                        act: 1.2, rel: 0.8,
-                    }
-                }
-            }
+            };
             groups.push(group);
         };
 
+        let button_assignments: ButtonAssignment[] = [];
+        for (let i = 0; i < 16; i++) {
+            button_assignments.push({
+                button_id: i,
+                switch_id: i,
+            });
+        }
+
         let udong_config: UdongConfig = {
             analog_switch_assignments: assignments,
-            analog_switch_groups: groups
+            analog_switch_groups: groups,
+            button_assignments: button_assignments
         };
 
         // Mock response

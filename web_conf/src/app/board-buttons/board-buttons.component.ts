@@ -1,5 +1,5 @@
 import { Component, Input, Output, inject } from '@angular/core';
-import { SwitchIdToGroupId, UdongConfig } from '../config';
+import { SwitchIdToButtonId, SwitchIdToGroupId, UdongConfig } from '../config';
 import { CommonModule } from '@angular/common';
 import { BehaviorSubject } from 'rxjs';
 import { AppConsts } from '../consts';
@@ -50,8 +50,12 @@ export class BoardButtonsComponent {
 
   getButtonColor(switch_id: number): string {
     let group_id = SwitchIdToGroupId(this.config, switch_id);
-    let hue = group_id * (360.0 / this.config.analog_switch_groups.length);
-    return 'hsl(' + hue + ' 80% 60%)';
+    return this.app_consts.configGroupColor(group_id);
+  }
+
+  getButtonName(switch_id: number): string {
+    let button_id = SwitchIdToButtonId(this.config, switch_id);
+    return this.app_consts.button_names[button_id];
   }
 
   onClickButton(switch_id: number) {

@@ -7,16 +7,17 @@ import { MatButtonModule } from '@angular/material/button'
 import { GroupSelectorComponent } from '../group-selector/group-selector.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule } from '@angular/forms';
-import { MatRippleModule } from '@angular/material/core';
-import { AnalogSwitchAssignment, AnalogSwitchGroup, SwitchIdToGroupId, UdongConfig } from '../config';
+import { MatRipple, MatRippleModule } from '@angular/material/core';
+import { AnalogSwitchAssignment, AnalogSwitchGroup, ButtonAssignment, SwitchIdToGroupId, UdongConfig } from '../config';
 import { BoardButtonsComponent } from '../board-buttons/board-buttons.component';
 import { MatSelectModule } from '@angular/material/select';
+import { MatDividerModule } from '@angular/material/divider';
 import { AppConsts } from '../consts';
 
 @Component({
   selector: 'app-configurator',
   standalone: true,
-  imports: [MatSelectModule, BoardButtonsComponent, MatRippleModule, MatFormFieldModule, MatCardModule, CommonModule, AnalogSwitchConfigComponent, MatButtonModule, GroupSelectorComponent, FormsModule],
+  imports: [MatDividerModule, MatSelectModule, BoardButtonsComponent, MatRippleModule, MatFormFieldModule, MatCardModule, CommonModule, AnalogSwitchConfigComponent, MatButtonModule, GroupSelectorComponent, FormsModule],
   templateUrl: './configurator.component.html',
   styleUrl: './configurator.component.scss'
 })
@@ -34,6 +35,9 @@ export class ConfiguratorComponent {
 
   @ViewChild(AnalogSwitchConfigComponent)
   analog_switch_config_?: AnalogSwitchConfigComponent;
+
+  @ViewChild(MatRipple)
+  ripple!: MatRipple;
 
   group_ids: Array<number> = [];
 
@@ -66,6 +70,7 @@ export class ConfiguratorComponent {
     console.log('active switch changed', switch_id);
     this.active_switch_id = switch_id;
     this.setActiveGroupId(SwitchIdToGroupId(this.config!, this.active_switch_id));
+    this.ripple.launch({ centered: true });
   }
 
   onGroupSelected() {
@@ -76,8 +81,6 @@ export class ConfiguratorComponent {
   setActiveGroupId(group_id: number) {
     console.log('active group changed', group_id);
     this.active_group_id = group_id;
-
-    this.analog_switch_config_?.launchRipple();
   }
 
   activeSwitchAssignment(): AnalogSwitchAssignment {
@@ -86,10 +89,15 @@ export class ConfiguratorComponent {
     })!;
   }
 
-
   activeSwitchGroup(): AnalogSwitchGroup {
     return this.config!.analog_switch_groups.find((group) => {
       return group.analog_switch_group_id == this.active_group_id;
+    })!;
+  }
+
+  activeButtonAssignment(): ButtonAssignment {
+    return this.config!.button_assignments.find((button_assignment) => {
+      return button_assignment.switch_id == this.active_switch_id;
     })!;
   }
 

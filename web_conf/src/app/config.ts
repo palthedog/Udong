@@ -4,6 +4,8 @@ export interface UdongConfig {
     analog_switch_assignments: Array<AnalogSwitchAssignment>,
 
     analog_switch_groups: Array<AnalogSwitchGroup>,
+
+    button_assignments: Array<ButtonAssignment>,
 }
 
 export function SwitchIdToGroupId(config: UdongConfig, switch_id: number) {
@@ -11,6 +13,16 @@ export function SwitchIdToGroupId(config: UdongConfig, switch_id: number) {
         let assignment = config.analog_switch_assignments[key];
         if (switch_id == assignment.analog_switch_id) {
             return assignment.analog_switch_group_id;
+        }
+    }
+    return 0;
+}
+
+export function SwitchIdToButtonId(config: UdongConfig, switch_id: number) {
+    for (let key in config.button_assignments) {
+        let assignment = config.button_assignments[key];
+        if (switch_id == assignment.switch_id) {
+            return assignment.button_id;
         }
     }
     return 0;
@@ -41,4 +53,9 @@ export interface RapidTrigger {
 export interface StaticTrigger {
     act: number;
     rel: number;
+}
+
+export interface ButtonAssignment {
+    switch_id: number,
+    button_id: number,
 }

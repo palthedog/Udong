@@ -4,14 +4,17 @@
         viewBox="0 0 340 160"
         style="max-height: 200px;"
     >
-        <ng-container *ngFor="let switch_id of switch_ids">
+        <svg:g
+            *ngFor="let switch_id of switch_ids"
+            (click)="onClickButton(switch_id)"
+            style="cursor: pointer;"
+        >
             <svg:circle
                 [attr.cx]="switch_positions[switch_id][0]"
                 [attr.cy]="switch_positions[switch_id][1]"
                 [style.stroke]="active_switch_id == switch_id ? 'coral' : '#aaa'"
                 [style.stroke-width]="active_switch_id == switch_id ? '3px' : '1px'"
                 [style.fill]="getButtonColor(switch_id)"
-                (click)="onClickButton(switch_id)"
                 r="12"
             />
             <text
@@ -21,8 +24,8 @@
                 text-anchor="middle"
                 alignment-baseline="central"
             >
-                {{app_consts.button_names[0]}}
+                {{getButtonName(switch_id)}}
             </text>
-        </ng-container>
+        </svg:g>
     </svg>
 </div>

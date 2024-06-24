@@ -1,10 +1,11 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
 
 import { MatCardModule } from '@angular/material/card';
 import { MatSelectModule } from '@angular/material/select';
 import { AnalogSwitchAssignment } from '../config';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatOptionModule } from '@angular/material/core';
+import { AppConsts } from '../consts';
 
 @Component({
   selector: 'app-group-selector',
@@ -20,6 +21,8 @@ export class GroupSelectorComponent {
   // emit current group ID
   @Output()
   selectorClosed = new EventEmitter<number>();
+
+  app_consts = inject(AppConsts);
 
   setGroupId(group_id: number) {
     console.log('set group id', group_id);
