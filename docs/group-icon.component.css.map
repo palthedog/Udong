@@ -2,6 +2,6 @@
   "version": 3,
   "sources": ["group-icon.component.ts"],
   "sourcesContent": ["\n    .group-icon {\n      display: inline-block;\n      width: 1em;\n      height: 1em;\n      margin-right: 4px;\n      vertical-align: middle;\n      border-radius: 50%;\n      border: 1px solid;\n      border-color: #999;\n    }\n    .group-icon-content {\n      vertical-align: middle;\n    }\n    "],
-  "mappings": ";AACI,CAAA;AACE,WAAA;AACA,SAAA;AACA,UAAA;AACA,gBAAA;AACA,kBAAA;AACA,iBAAA;AACA,UAAA,IAAA;AACA,gBAAA;;AAEF,CAAA;AACE,kBAAA;;",
+  "mappings": "AACI,CAAA,WACE,QAAA,aACA,MAAA,IACA,OAAA,IACA,aAAA,IACA,eAAA,OALF,cAME,IACA,OAAA,IAAA,MACA,aAAA,KAEF,CAAA,mBACE,eAAA",
   "names": []
 }
