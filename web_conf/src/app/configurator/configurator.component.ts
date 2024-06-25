@@ -1,18 +1,18 @@
-import { Component, QueryList, ViewChild, ViewChildren, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatCardModule } from '@angular/material/card';
-import { SerialServiceInterface } from '../serial/serial.service';
-import { AnalogSwitchConfigComponent } from '../analog-switch-config/analog-switch-config.component';
-import { MatButtonModule } from '@angular/material/button'
-import { GroupSelectorComponent } from '../group-selector/group-selector.component';
-import { MatFormFieldModule } from '@angular/material/form-field';
+import { Component, QueryList, ViewChild, ViewChildren, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
 import { MatRipple, MatRippleModule } from '@angular/material/core';
-import { AnalogSwitchAssignment, AnalogSwitchGroup, ButtonAssignment, ButtonId, SwitchIdToGroupId, UdongConfig, compareButtonIds } from '../config';
-import { BoardButtonsComponent } from '../board-buttons/board-buttons.component';
-import { MatSelectModule } from '@angular/material/select';
 import { MatDividerModule } from '@angular/material/divider';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
+import { AnalogSwitchConfigComponent } from '../analog-switch-config/analog-switch-config.component';
+import { BoardButtonsComponent } from '../board-buttons/board-buttons.component';
+import { AnalogSwitchAssignment, AnalogSwitchGroup, ButtonAssignment, ButtonId, SwitchIdToGroupId, UdongConfig, compareButtonIds } from '../config';
 import { AppConsts } from '../consts';
+import { GroupSelectorComponent } from '../group-selector/group-selector.component';
+import { SerialServiceInterface } from '../serial/serial.service';
 
 @Component({
   selector: 'app-configurator',
