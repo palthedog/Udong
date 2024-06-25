@@ -128,24 +128,12 @@ class Udong {
   Adafruit_USBD_HID usb_hid;
 
   void FillGamepadReport() {
-    // Debug info
-    /*
-    gamepad_report.z = circuit.analog_switch_raw_ins[0]->Read() / 2;
-    gamepad_report.rx =
-        circuit.analog_switches[0]->GetLastPressMm() / 4.0 * UINT16_MAX / 2;
-    gamepad_report.ry = circuit.analog_switch_raw_ins[2]->Read() / 2;
-    gamepad_report.rz =
-        circuit.analog_switches[2]->GetLastPressMm() / 4.0 * UINT16_MAX / 2;
-  */
     // analog switches
     gamepad_report.Clear();
     for (auto& button : buttons_) {
       button->UpdateGamepadReport(gamepad_report);
     }
     d_pad_.UpdateGamepadReport(gamepad_report);
-
-    // temporal D-pad impl.
-    // gamepad_report.d_pad = (time_us_32() / 1000000) % 9;
   }
 
   bool MaybeSendReport() {
@@ -191,23 +179,25 @@ class Udong {
     buttons_.clear();
     d_pad_.Clear();
     for (auto& it : config.button_assignments) {
+      std::shared_ptr<AnalogSwitch>& analog_switch =
+          circuit->analog_switches[it.switch_id];
+
       if (it.button_id.type == PushButton) {
         buttons_.push_back(std::make_shared<PressButton>(
-            circuit->analog_switches[it.switch_id],
-            it.button_id.selector.push_button.push_button_id));
+            analog_switch, it.button_id.selector.push_button.push_button_id));
       } else if (it.button_id.type == DPadButton) {
         switch (it.button_id.selector.d_pad.direction) {
           case DPadDirection::Up:
-            d_pad_.AddUpSwitch(circuit->analog_switches[it.switch_id]);
+            d_pad_.AddUpSwitch(analog_switch);
             break;
           case DPadDirection::Down:
-            d_pad_.AddDownSwitch(circuit->analog_switches[it.switch_id]);
+            d_pad_.AddDownSwitch(analog_switch);
             break;
           case DPadDirection::Left:
-            d_pad_.AddLeftSwitch(circuit->analog_switches[it.switch_id]);
+            d_pad_.AddLeftSwitch(analog_switch);
             break;
           case DPadDirection::Right:
-            d_pad_.AddRightSwitch(circuit->analog_switches[it.switch_id]);
+            d_pad_.AddRightSwitch(analog_switch);
             break;
         }
       }

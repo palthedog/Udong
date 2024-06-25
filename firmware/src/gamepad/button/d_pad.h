@@ -8,14 +8,6 @@
 #include "../../switch/switch.h"
 #include "button.h"
 
-enum DPadUDState {
-  UDNeutral,   // Nothing is presssed
-  OnlyUp,      // Only Up is pressed
-  OnlyDown,    // Only Down is pressed
-  UpThenDown,  // Up pressed first then Down pressed later
-  DownThenUp,  // Down pressed first then Down pressed later
-};
-
 enum DPadLRState {
   LRNeutral,      // Nothing is presssed
   OnlyLeft,       // Only Left is pressed
@@ -24,25 +16,33 @@ enum DPadLRState {
   RightThenLeft,  // Right pressed first then Left pressed later
 };
 
+enum DPadUDState {
+  UDNeutral,   // Nothing is presssed
+  OnlyUp,      // Only Up is pressed
+  OnlyDown,    // Only Down is pressed
+  UpThenDown,  // Up pressed first then Down pressed later
+  DownThenUp,  // Down pressed first then Down pressed later
+};
+
 class DPad {
-  std::vector<std::shared_ptr<Switch>> up_switches_;
-  std::vector<std::shared_ptr<Switch>> down_switches_;
   std::vector<std::shared_ptr<Switch>> left_switches_;
   std::vector<std::shared_ptr<Switch>> right_switches_;
+  std::vector<std::shared_ptr<Switch>> up_switches_;
+  std::vector<std::shared_ptr<Switch>> down_switches_;
 
-  DPadUDState ud_state_ = UDNeutral;
   DPadLRState lr_state_ = LRNeutral;
+  DPadUDState ud_state_ = UDNeutral;
 
-  void UpdateUDStates();
   void UpdateLRStates();
+  void UpdateUDStates();
 
  public:
   DPad() {
   }
 
   void UpdateGamepadReport(GamepadReport& gamepad_report) {
-    UpdateUDStates();
     UpdateLRStates();
+    UpdateUDStates();
 
     int x = 1;
     switch (lr_state_) {
@@ -56,9 +56,11 @@ class DPad {
         x = 2;
         break;
       case DPadLRState::LeftThenRight:
+        // TODO: Make it configurabale.
+        x = 2;
       case DPadLRState::RightThenLeft:
         // TODO: Make it configurabale.
-        x = 1;
+        x = 0;
         break;
     }
 
@@ -74,9 +76,11 @@ class DPad {
         y = 2;
         break;
       case DPadUDState::UpThenDown:
+        // TODO: Make it configurabale.
+        y = 2;
       case DPadUDState::DownThenUp:
         // TODO: Make it configurabale.
-        y = 1;
+        y = 0;
         break;
     }
 
@@ -88,14 +92,6 @@ class DPad {
     gamepad_report.d_pad = kDpadTable[y][x];
   }
 
-  void AddUpSwitch(std::shared_ptr<Switch> up_switch) {
-    up_switches_.push_back(up_switch);
-  }
-
-  void AddDownSwitch(std::shared_ptr<Switch> down_switch) {
-    down_switches_.push_back(down_switch);
-  }
-
   void AddLeftSwitch(std::shared_ptr<Switch> left_switch) {
     left_switches_.push_back(left_switch);
   }
@@ -104,11 +100,19 @@ class DPad {
     right_switches_.push_back(right_switch);
   }
 
+  void AddUpSwitch(std::shared_ptr<Switch> up_switch) {
+    up_switches_.push_back(up_switch);
+  }
+
+  void AddDownSwitch(std::shared_ptr<Switch> down_switch) {
+    down_switches_.push_back(down_switch);
+  }
+
   void Clear() {
-    up_switches_.clear();
-    down_switches_.clear();
     left_switches_.clear();
     right_switches_.clear();
+    up_switches_.clear();
+    down_switches_.clear();
   }
 
  private:
