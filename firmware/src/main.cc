@@ -53,9 +53,11 @@ void setup() {
   }
 
   // wait for
+  /*
   for (int i = 0; i < 5; i++) {
     delay(1000);
   }
+  */
 
   udong.Setup();
 }

@@ -9,6 +9,7 @@
 
 #include "config/config.h"
 #include "gamepad/button/button.h"
+#include "gamepad/button/d_pad.h"
 #include "gamepad/button/press_button.h"
 #include "gamepad/gamepad.h"
 #include "io_utils/io.h"
@@ -121,6 +122,7 @@ class Udong {
   bool usb_hids_setup_completed;
 
   std::vector<std::shared_ptr<Button>> buttons_;
+  DPad d_pad_;
 
   GamepadReport gamepad_report;
   Adafruit_USBD_HID usb_hid;
@@ -140,9 +142,10 @@ class Udong {
     for (auto& button : buttons_) {
       button->UpdateGamepadReport(gamepad_report);
     }
+    d_pad_.UpdateGamepadReport(gamepad_report);
 
     // temporal D-pad impl.
-    gamepad_report.d_pad = (time_us_32() / 1000000) % 9;
+    // gamepad_report.d_pad = (time_us_32() / 1000000) % 9;
   }
 
   bool MaybeSendReport() {
@@ -185,18 +188,28 @@ class Udong {
     }
 
     // Button assignment
-    /*
-    button_assignments.clear();
-    for (auto it : config.button_assignments) {
-      button_assignments.insert(std::make_pair(it.switch_id, it));
-    }
-    */
     buttons_.clear();
+    d_pad_.Clear();
     for (auto& it : config.button_assignments) {
       if (it.button_id.type == PushButton) {
         buttons_.push_back(std::make_shared<PressButton>(
             circuit->analog_switches[it.switch_id],
             it.button_id.selector.push_button.push_button_id));
+      } else if (it.button_id.type == DPadButton) {
+        switch (it.button_id.selector.d_pad.direction) {
+          case DPadDirection::Up:
+            d_pad_.AddUpSwitch(circuit->analog_switches[it.switch_id]);
+            break;
+          case DPadDirection::Down:
+            d_pad_.AddDownSwitch(circuit->analog_switches[it.switch_id]);
+            break;
+          case DPadDirection::Left:
+            d_pad_.AddLeftSwitch(circuit->analog_switches[it.switch_id]);
+            break;
+          case DPadDirection::Right:
+            d_pad_.AddRightSwitch(circuit->analog_switches[it.switch_id]);
+            break;
+        }
       }
     }
   }

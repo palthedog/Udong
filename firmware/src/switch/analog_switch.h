@@ -1,5 +1,5 @@
-#ifndef SWITCH_H
-#define SWITCH_H
+#ifndef ANALOG_SWITCH_H
+#define ANALOG_SWITCH_H
 
 #include <cmath>
 #include <vector>
@@ -7,6 +7,7 @@
 #include "calibration_store.h"
 #include "io_utils/io.h"
 #include "solver.h"
+#include "switch.h"
 #include "triggers/trigger.h"
 
 // let
@@ -69,7 +70,7 @@ inline double CalcMagFlux(double d, double Br, double R_2, double T) {
   return (Br / 2.0) * (term0 - term1);
 }
 
-class AnalogSwitch {
+class AnalogSwitch : public Switch {
   const double kQuiescentVoltage_mV = 0.6 * 1000;
   const double kSensitivity_mV_per_mT = 30;
 
@@ -179,14 +180,14 @@ class AnalogSwitch {
     mag_flux_table_.resize(41);
   }
 
-  ~AnalogSwitch() {
+  virtual ~AnalogSwitch() {
   }
 
   std::unique_ptr<Trigger>& GetTrigger() {
     return trigger_;
   }
 
-  bool IsOn() {
+  bool IsOn() override {
     last_mag_flux_ = ReadMagnetFlux();
 
     // Record the maximum value for later calibration.
