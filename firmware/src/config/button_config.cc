@@ -1,4 +1,4 @@
-#include "button.h"
+#include "button_config.h"
 
 std::vector<ButtonId> allButtonIds;
 

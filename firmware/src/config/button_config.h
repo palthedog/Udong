@@ -1,5 +1,5 @@
-#ifndef BUTTON_H
-#define BUTTON_H
+#ifndef BUTTON_CONFIG_H
+#define BUTTON_CONFIG_H
 
 #include <ArduinoJson.h>
 

@@ -8,6 +8,9 @@
 #include <memory>
 
 #include "config/config.h"
+#include "gamepad/button/button.h"
+#include "gamepad/button/press_button.h"
+#include "gamepad/gamepad.h"
 #include "io_utils/io.h"
 #include "io_utils/multi_sampling.h"
 #include "io_utils/multiplexer.h"
@@ -15,94 +18,6 @@
 #include "switch/analog_switch.h"
 #include "switch/triggers/rapid_trigger.h"
 #include "switch/triggers/static_trigger.h"
-
-const uint8_t kHidDescriptor[] = {
-    HID_USAGE_PAGE(HID_USAGE_PAGE_DESKTOP),
-    HID_USAGE(HID_USAGE_DESKTOP_GAMEPAD),
-    HID_COLLECTION(HID_COLLECTION_APPLICATION),
-
-    // 16 bit analog stick (X, Y)
-    /*
-    HID_USAGE_PAGE(HID_USAGE_PAGE_DESKTOP),
-    HID_USAGE(HID_USAGE_DESKTOP_X),
-    HID_USAGE(HID_USAGE_DESKTOP_Y),
-    HID_LOGICAL_MIN_N(INT16_MIN, 2),
-    HID_LOGICAL_MAX_N(INT16_MAX, 2),
-    HID_REPORT_COUNT(2),
-    HID_REPORT_SIZE(16),
-    HID_INPUT(HID_DATA | HID_VARIABLE | HID_ABSOLUTE),
-
-    // Unsigned 16 bit analog button Z (for debugging)
-    HID_USAGE_PAGE(HID_USAGE_PAGE_DESKTOP),
-    HID_USAGE(HID_USAGE_DESKTOP_Z),
-    HID_USAGE(HID_USAGE_DESKTOP_RX),
-    HID_USAGE(HID_USAGE_DESKTOP_RY),
-    HID_USAGE(HID_USAGE_DESKTOP_RZ),
-    HID_LOGICAL_MIN_N(0, 2),
-    // We can't use UINT16_MAX here because it's always treated as signed value.
-    HID_LOGICAL_MAX_N(INT16_MAX, 2),
-    HID_REPORT_COUNT(4),
-    HID_REPORT_SIZE(16),
-    HID_INPUT(HID_DATA | HID_VARIABLE | HID_ABSOLUTE),
-*/
-
-    // 8 bit DPad/Hat Button Map
-    HID_USAGE_PAGE(HID_USAGE_PAGE_DESKTOP),
-    HID_USAGE(HID_USAGE_DESKTOP_HAT_SWITCH),
-    HID_LOGICAL_MIN(1),
-    HID_LOGICAL_MAX(8),
-    HID_PHYSICAL_MIN(0),
-    HID_PHYSICAL_MAX_N(315, 2),
-    HID_REPORT_COUNT(1),
-    HID_REPORT_SIZE(8),
-    HID_INPUT(HID_DATA | HID_VARIABLE | HID_ABSOLUTE),
-    // 16 buttons
-    HID_USAGE_PAGE(HID_USAGE_PAGE_BUTTON),
-    HID_USAGE_MIN(1),
-    HID_USAGE_MAX(16),
-    HID_LOGICAL_MIN(0),
-    HID_LOGICAL_MAX(1),
-    HID_REPORT_COUNT(16),
-    HID_REPORT_SIZE(1),
-    HID_INPUT(HID_DATA | HID_VARIABLE | HID_ABSOLUTE),
-
-    // End
-    HID_COLLECTION_END,
-};
-
-struct TU_ATTR_PACKED GamepadReport {
-  /*
-  // analog stick
-  int16_t x;
-  int16_t y;
-
-  // debug
-  uint16_t z;
-  uint16_t rx;
-  uint16_t ry;
-  uint16_t rz;
-  */
-
-  // Buttons mask for currently pressed buttons in the DPad/hat
-  uint8_t d_pad;
-  // Buttons mask for currently pressed buttons
-  uint16_t buttons;
-
-  inline void Clear() {
-    d_pad = 0;
-    buttons = 0;
-  }
-
-  inline void PressButton(int index) {
-    if (index < 0 || index >= 16) {
-      Serial.printf("ERROR: invalid button index: %d\n", index);
-      return;
-    }
-
-    uint16_t button_bit = 1u << index;
-    buttons |= button_bit;
-  }
-};
 
 const uint8_t LED_PIN = D25;
 struct Circuit {
@@ -205,8 +120,7 @@ struct Circuit {
 class Udong {
   bool usb_hids_setup_completed;
 
-  // Key: Switch-ID
-  std::map<uint8_t, ButtonAssignment> button_assignments;
+  std::vector<std::shared_ptr<Button>> buttons_;
 
   GamepadReport gamepad_report;
   Adafruit_USBD_HID usb_hid;
@@ -223,26 +137,8 @@ class Udong {
   */
     // analog switches
     gamepad_report.Clear();
-    for (auto& analog_switch : circuit->analog_switches) {
-      if (!analog_switch->IsOn()) {
-        continue;
-      }
-
-      auto f = this->button_assignments.find(analog_switch->GetId());
-      if (f == this->button_assignments.end()) {
-        // Nothing is assigned to this switch
-        Serial.printf(
-            "Nothing is assigned to switch %d\n", analog_switch->GetId());
-        continue;
-      }
-
-      const ButtonId& button_id = f->second.button_id;
-      if (button_id.type == PushButton) {
-        gamepad_report.PressButton(
-            button_id.selector.push_button.push_button_id);
-      } else {
-        Serial.printf("unknown type: %d\n", button_id.type);
-      }
+    for (auto& button : buttons_) {
+      button->UpdateGamepadReport(gamepad_report);
     }
 
     // temporal D-pad impl.
@@ -289,9 +185,19 @@ class Udong {
     }
 
     // Button assignment
+    /*
     button_assignments.clear();
     for (auto it : config.button_assignments) {
       button_assignments.insert(std::make_pair(it.switch_id, it));
+    }
+    */
+    buttons_.clear();
+    for (auto& it : config.button_assignments) {
+      if (it.button_id.type == PushButton) {
+        buttons_.push_back(std::make_shared<PressButton>(
+            circuit->analog_switches[it.switch_id],
+            it.button_id.selector.push_button.push_button_id));
+      }
     }
   }
 
@@ -303,7 +209,7 @@ class Udong {
     usb_hids_setup_completed = false;
 
     gamepad_report.d_pad = GAMEPAD_HAT_CENTERED;
-    gamepad_report.buttons = 0;
+    gamepad_report.press_buttons = 0;
   }
 
   void Loop() {

@@ -7,7 +7,7 @@
 
 #include <vector>
 
-#include "button/button.h"
+#include "button_config.h"
 #include "json_file.h"
 
 const String kUdongConfigPath = "/user/config.json";
@@ -206,22 +206,8 @@ inline UdongConfig defaultUdongConfig() {
     config.analog_switch_groups.push_back(group);
   }
 
-  // TODO: Assign human friendly button
+  // TODO: Assign human friendly button like assigning Down button to Switch-12
   const std::vector<ButtonId>& button_ids = getAllButtonIds();
-  Serial.println("all button IDs");
-  for (int i = 0; i < button_ids.size(); i++) {
-    const ButtonId& bid = button_ids[i];
-    if (bid.type == ButtonType::PushButton) {
-      Serial.printf(
-          "i: %d, type: push, sel: %d\n",
-          i,
-          bid.selector.push_button.push_button_id);
-    } else if (bid.type == ButtonType::DPadButton) {
-      Serial.printf(
-          "i: %d, type: d-pad, sel: %d\n", i, bid.selector.d_pad.direction);
-    }
-  }
-
   for (int i = 0; i < 16; i++) {
     ButtonAssignment button_assignment;
     button_assignment.switch_id = i;
