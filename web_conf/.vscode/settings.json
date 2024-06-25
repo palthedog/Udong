@@ -1,6 +1,14 @@
 {
     "editor.formatOnSave": true,
+    "[typescript]": {
+        "editor.codeActionsOnSave": {
+            "source.organizeImports": true
+        }
+    },
     "html.format.indentHandlebars": true,
     "html.format.indentInnerHtml": true,
-    "html.format.wrapAttributes": "force-expand-multiline"
+    "html.format.wrapAttributes": "force-expand-multiline",
+    "typescript.format.semicolons": "insert",
+    "typescript.preferences.quoteStyle": "single",
+    "typescript.experimental.updateImportsOnPaste": true
 }
