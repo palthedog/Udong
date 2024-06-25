@@ -1,13 +1,13 @@
 import { Component, EventEmitter, Input, Output, ViewChild, inject } from '@angular/core';
-import { CommonModule } from '@angular/common'
-import { MatCardModule } from '@angular/material/card'
-import { MatSliderModule } from '@angular/material/slider'
+import { CommonModule } from '@angular/common';
+import { MatCardModule } from '@angular/material/card';
+import { MatSliderModule } from '@angular/material/slider';
 import { DepthSliderComponent } from '../depth-slider/depth-slider.component';
 import { MatRipple, MatRippleModule } from '@angular/material/core';
-import { AnalogSwitchGroup } from '../config';
-import { MatSlideToggleModule } from '@angular/material/slide-toggle'
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { AppConsts } from '../consts';
 import { GroupIconComponent } from '../group-icon/group-icon.component';
+import { AnalogSwitchGroup, TriggerType } from '../../proto/config';
 
 @Component({
   selector: 'app-analog-switch-config',
@@ -18,6 +18,9 @@ import { GroupIconComponent } from '../group-icon/group-icon.component';
 })
 export class AnalogSwitchConfigComponent {
   app_consts = inject(AppConsts);
+
+  // Make its template accesible to TriggerType enum
+  public TT = TriggerType;
 
   @Output()
   configChange = new EventEmitter<AnalogSwitchGroup>();
@@ -35,9 +38,9 @@ export class AnalogSwitchConfigComponent {
 
   enableRapidTrigger(enable: boolean) {
     if (enable) {
-      this._config.trigger_type = 'rapid-trigger';
+      this._config.trigger_type = TriggerType.RAPID_TRIGGER;
     } else {
-      this._config.trigger_type = 'static-trigger';
+      this._config.trigger_type = TriggerType.STATIC_TRIGGER;
     }
     this.configChange.next(this._config);
   }

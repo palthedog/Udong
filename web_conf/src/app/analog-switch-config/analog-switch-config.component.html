@@ -14,14 +14,14 @@
         <section class="activate-rapid-trigger-slide-section">
             <mat-slide-toggle
                 class="activate-rapid-trigger-slide"
-                [checked]="config.trigger_type == 'rapid-trigger'"
+                [checked]="config.trigger_type == TT.RAPID_TRIGGER"
                 (change)="enableRapidTrigger($event.checked)"
             >
                 Enable Rapid Trigger
             </mat-slide-toggle>
         </section>
 
-        <ng-container *ngIf="config.trigger_type == 'rapid-trigger'">
+        <ng-container *ngIf="config.trigger_type == TT.RAPID_TRIGGER">
             <app-depth-slider
                 label="Actuation Distance"
                 [min]="0.1"
@@ -45,7 +45,7 @@
             ></app-depth-slider>
         </ng-container>
 
-        <ng-container *ngIf="config.trigger_type == 'static-trigger'">
+        <ng-container *ngIf="config.trigger_type == TT.STATIC_TRIGGER">
             <app-depth-slider
                 label="Actuation Point"
                 [min]="0.1"

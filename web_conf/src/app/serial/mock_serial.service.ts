@@ -1,9 +1,10 @@
 import { Injectable, inject } from '@angular/core';
 
 import { BehaviorSubject, Observable, Subject, defer, filter } from 'rxjs';
-import { AnalogSwitchAssignment, AnalogSwitchGroup, ButtonAssignment, UdongConfig } from '../config';
 import { SerialServiceInterface } from './serial.service';
 import { Logger } from '../logger';
+
+import { AnalogSwitchAssignment, AnalogSwitchGroup, ButtonAssignment, ButtonId, ButtonType, PushButtonSelector, RapidTrigger, StaticTrigger, TriggerType, UdongConfig } from '../../proto/config';
 
 @Injectable()
 export class MockSerialService extends SerialServiceInterface {
@@ -51,50 +52,50 @@ export class MockSerialService extends SerialServiceInterface {
             } else {
                 group_id = 4;
             }
-            assignments.push(
-                {
-                    analog_switch_id: i,
-                    analog_switch_group_id: group_id
-                });
+            assignments.push(new AnalogSwitchAssignment({
+                analog_switch_id: i,
+                analog_switch_group_id: group_id
+            }));
         };
         let groups: AnalogSwitchGroup[] = [];
         for (let i = 0; i < 8; i++) {
-            let trigger_type = i < 4 ? 'rapid-trigger' : 'static-trigger';
+            let trigger_type = i < 4 ? TriggerType.RAPID_TRIGGER : TriggerType.STATIC_TRIGGER;
 
-            let group: AnalogSwitchGroup = {
+            let group: AnalogSwitchGroup = new AnalogSwitchGroup({
                 analog_switch_group_id: i,
                 trigger_type: trigger_type,
-                rapid_trigger: {
+                rapid_trigger: new RapidTrigger({
                     act: 0.6, rel: 0.4,
                     f_act: 3.0, f_rel: 0.2,
-                },
-                static_trigger: {
+                }),
+                static_trigger: new StaticTrigger({
                     act: 1.2, rel: 0.8,
-                }
-            };
+                })
+            });
             groups.push(group);
         };
 
+        // TODO: Choose human friendly button assignments(e.g. D-pad for left hand)
         let button_assignments: ButtonAssignment[] = [];
         for (let i = 0; i < 16; i++) {
-            button_assignments.push({
-                button_id: {
-                    type: 'push',
-                    push_button: {
+            button_assignments.push(new ButtonAssignment({
+                button_id: new ButtonId({
+                    type: ButtonType.PUSH,
+                    push_button: new PushButtonSelector({
                         push_button_id: i
-                    }
-                },
+                    })
+                }),
                 switch_id: i,
-            });
+            }));
         }
 
-        let udong_config: UdongConfig = {
+        let udong_config: UdongConfig = new UdongConfig({
             analog_switch_assignments: assignments,
             analog_switch_groups: groups,
             button_assignments: button_assignments
-        };
+        });
 
         // Mock response
-        this.MockResponse('get-config', udong_config);
+        this.MockResponse('get-config', udong_config.toObject());
     }
 }

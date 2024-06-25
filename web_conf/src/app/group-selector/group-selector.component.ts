@@ -2,11 +2,11 @@ import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
 
 import { MatCardModule } from '@angular/material/card';
 import { MatSelectModule } from '@angular/material/select';
-import { AnalogSwitchAssignment } from '../config';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatOptionModule } from '@angular/material/core';
 import { AppConsts } from '../consts';
 import { GroupIconComponent } from "../group-icon/group-icon.component";
+import { AnalogSwitchAssignment } from '../../proto/config';
 
 @Component({
   selector: 'app-group-selector',

@@ -1,9 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, Output, inject } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { SwitchIdToButtonId, SwitchIdToGroupId, UdongConfig } from '../config';
 import { AppConsts } from '../consts';
 import { Logger } from '../logger';
+import { UdongConfig } from '../../proto/config';
+import { SwitchIdToButtonId, SwitchIdToGroupId } from '../config_util';
 
 @Component({
   selector: 'app-board-buttons',

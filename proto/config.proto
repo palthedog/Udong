@@ -1,0 +1,85 @@
+syntax = "proto3";
+
+// Represents the overall configuration for Udong
+message UdongConfig {
+  repeated AnalogSwitchAssignment analog_switch_assignments = 1;
+  repeated AnalogSwitchGroup analog_switch_groups = 2;
+  repeated ButtonAssignment button_assignments = 3;
+}
+
+// Maps an analog switch to a group
+// Switches in the same group share the same configuration
+message AnalogSwitchAssignment {
+  uint32 analog_switch_id = 1;
+  uint32 analog_switch_group_id = 2;
+}
+
+enum TriggerType {
+  RAPID_TRIGGER = 0;
+  STATIC_TRIGGER = 1;
+}
+
+// Configurations for a group of analog switches
+message AnalogSwitchGroup {
+
+  uint32 analog_switch_group_id = 1;
+
+  TriggerType trigger_type = 2;
+
+  // Do NOT use oneof here so that we can keep the configuration for both trigger types
+  RapidTrigger rapid_trigger = 3;
+  StaticTrigger static_trigger = 4;
+}
+
+// Represents a rapid trigger configuration
+message RapidTrigger {
+  float act = 1;
+  float rel = 2;
+  float f_act = 3;
+  float f_rel = 4;
+}
+
+// Represents a static trigger configuration
+message StaticTrigger {
+  float act = 1;
+  float rel = 2;
+}
+
+enum ButtonType {
+  PUSH = 0;
+  D_PAD = 1;
+}
+
+// A button ID used to identify a button on the USB gamepad
+message ButtonId {
+
+  ButtonType type = 1;
+
+  oneof selector {
+    PushButtonSelector push_button = 2;
+    DPadButtonSelector d_pad = 3;
+  }
+}
+
+// An ID for push buttons
+message PushButtonSelector {
+  uint32 push_button_id = 1;
+}
+
+// An ID for D-pad buttons
+message DPadButtonSelector {
+  enum Direction {
+    UP = 0;
+    DOWN = 1;
+    LEFT = 2;
+    RIGHT = 3;
+  }
+
+  Direction direction = 1;
+}
+
+// Maps a switch to a button
+message ButtonAssignment {
+  uint32 switch_id = 1;
+  ButtonId button_id = 2;
+}

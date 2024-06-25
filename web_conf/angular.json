@@ -17,6 +17,10 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
+            "allowedCommonJsDependencies": [
+                "loglevel",
+                "google-protobuf"
+            ],
             "outputPath": "dist/web_conf",
             "index": "src/index.html",
             "browser": "src/main.ts",

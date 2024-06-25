@@ -9,11 +9,12 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { AnalogSwitchConfigComponent } from '../analog-switch-config/analog-switch-config.component';
 import { BoardButtonsComponent } from '../board-buttons/board-buttons.component';
-import { AnalogSwitchAssignment, AnalogSwitchGroup, ButtonAssignment, ButtonId, SwitchIdToGroupId, UdongConfig, compareButtonIds } from '../config';
+import { AnalogSwitchAssignment, AnalogSwitchGroup, ButtonAssignment, ButtonId, ButtonType, PushButtonSelector, UdongConfig } from '../../proto/config';
 import { AppConsts } from '../consts';
 import { GroupSelectorComponent } from '../group-selector/group-selector.component';
 import { SerialServiceInterface } from '../serial/serial.service';
 import { Logger } from '../logger';
+import { SwitchIdToGroupId, compareButtonIds } from '../config_util';
 
 @Component({
   selector: 'app-configurator',

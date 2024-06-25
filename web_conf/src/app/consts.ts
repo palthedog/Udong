@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { ButtonId, UdongConfig } from "./config";
+import { ButtonId, ButtonType, DPadButtonSelector, PushButtonSelector } from '../proto/config';
 
 @Injectable(
     { providedIn: 'root' }
@@ -12,29 +12,30 @@ export class AppConsts {
             return this._button_ids;
         }
         for (let i = 0; i < 16; i++) {
-            this._button_ids.push({
-                type: 'push',
-                push_button: {
+            this._button_ids.push(new ButtonId({
+                type: ButtonType.PUSH,
+                push_button: new PushButtonSelector({
                     push_button_id: i,
-                }
-            });
+                })
+            }));
         }
-        this._button_ids.push({
-            type: 'd-pad',
-            d_pad: { direction: 'up' }
-        });
-        this._button_ids.push({
-            type: 'd-pad',
-            d_pad: { direction: 'right' }
-        });
-        this._button_ids.push({
-            type: 'd-pad',
-            d_pad: { direction: 'down' }
-        });
-        this._button_ids.push({
-            type: 'd-pad',
-            d_pad: { direction: 'left' }
-        });
+        this._button_ids.push(new ButtonId({
+            type: ButtonType.D_PAD,
+            d_pad: new DPadButtonSelector({ direction: DPadButtonSelector.Direction.UP })
+        }));
+        this._button_ids.push(new ButtonId({
+            type: ButtonType.D_PAD,
+            d_pad: new DPadButtonSelector({ direction: DPadButtonSelector.Direction.RIGHT })
+        }));
+        this._button_ids.push(new ButtonId({
+            type: ButtonType.D_PAD,
+            d_pad: new DPadButtonSelector({ direction: DPadButtonSelector.Direction.DOWN })
+        }));
+        this._button_ids.push(new ButtonId({
+            type: ButtonType.D_PAD,
+            d_pad: new DPadButtonSelector({ direction: DPadButtonSelector.Direction.LEFT })
+        }));
+
         return this._button_ids;
     }
     /*
@@ -65,17 +66,17 @@ export class AppConsts {
 
     buttonName(button_id: ButtonId): string {
         switch (button_id.type) {
-            case 'push':
+            case ButtonType.PUSH:
                 return 'B' + button_id.push_button?.push_button_id;
-            case 'd-pad':
+            case ButtonType.D_PAD:
                 switch (button_id.d_pad?.direction) {
-                    case 'up':
+                    case DPadButtonSelector.Direction.UP:
                         return '↑';
-                    case 'right':
+                    case DPadButtonSelector.Direction.RIGHT:
                         return '→';
-                    case 'down':
+                    case DPadButtonSelector.Direction.DOWN:
                         return '↓';
-                    case 'left':
+                    case DPadButtonSelector.Direction.LEFT:
                         return '←';
                 }
         }

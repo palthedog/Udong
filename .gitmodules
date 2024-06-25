@@ -1,3 +1,3 @@
-[submodule "third_party/nanopb"]
-	path = third_party/nanopb
+[submodule "firmware/lib/nanopb"]
+	path = firmware/lib/nanopb
 	url = https://github.com/nanopb/nanopb.git
