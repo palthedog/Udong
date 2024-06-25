@@ -42,7 +42,6 @@ export class ConfiguratorComponent {
   group_ids: Array<number> = [];
 
   constructor() {
-    console.log('configurator init');
     this.serial_service.ConnectionChanges().subscribe((connected) => {
       console.log('connected', connected);
       if (connected) {
@@ -51,10 +50,9 @@ export class ConfiguratorComponent {
     });
 
     this.serial_service.MessageReceiveFor('get-config').subscribe((v) => {
-      console.log('config', v[0], v[1]);
       this.config = JSON.parse(v[1]);
 
-      console.log('config');
+      console.log('Config received');
       console.log(this.config);
       if (this.config) {
         this.group_ids = this.config.analog_switch_groups.map((group) => {
@@ -103,19 +101,13 @@ export class ConfiguratorComponent {
     })!;
   }
 
-  changeButtonMapping(button_id: number) {
-    console.log('button mapping:', button_id);
-  }
-
   compareValue(a: ButtonId, b: ButtonId): boolean {
-    console.log('compare: ', a, b);
     return compareButtonIds(a, b);
   }
 
   Save() {
     let str_config = JSON.stringify(this.config);
     console.log('save:', this.config);
-    console.log('str:', str_config);
     this.serial_service.Send('save-config:' + str_config);
   }
 }

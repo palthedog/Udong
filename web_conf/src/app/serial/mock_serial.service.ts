@@ -22,7 +22,8 @@ export class MockSerialService extends SerialServiceInterface {
     }
 
     async Send(message: string) {
-        console.log('send via MockSerialService', message);
+        console.log('Sending via MockSerialService');
+        console.log(message);
         if (message == 'get-config') {
             this.HandleGetConfig();
         }
