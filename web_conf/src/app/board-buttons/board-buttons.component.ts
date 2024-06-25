@@ -3,6 +3,7 @@ import { Component, Input, Output, inject } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { SwitchIdToButtonId, SwitchIdToGroupId, UdongConfig } from '../config';
 import { AppConsts } from '../consts';
+import { Logger } from '../logger';
 
 @Component({
   selector: 'app-board-buttons',
@@ -12,6 +13,8 @@ import { AppConsts } from '../consts';
   styleUrl: './board-buttons.component.scss'
 })
 export class BoardButtonsComponent {
+  log = inject(Logger);
+
   @Input()
   config!: UdongConfig;
 
@@ -59,7 +62,7 @@ export class BoardButtonsComponent {
   }
 
   onClickButton(switch_id: number) {
-    console.log('button clicked', switch_id);
+    this.log.debug('button clicked', switch_id);
     this.activeSwitchIdChanged.next(switch_id);
   }
 }

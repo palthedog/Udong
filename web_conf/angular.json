@@ -104,7 +104,7 @@
             },
             "mock": {
               "buildTarget": "web_conf:build:mock"
-            },
+            }
           },
           "defaultConfiguration": "development"
         },

@@ -13,6 +13,7 @@ import { AnalogSwitchAssignment, AnalogSwitchGroup, ButtonAssignment, ButtonId, 
 import { AppConsts } from '../consts';
 import { GroupSelectorComponent } from '../group-selector/group-selector.component';
 import { SerialServiceInterface } from '../serial/serial.service';
+import { Logger } from '../logger';
 
 @Component({
   selector: 'app-configurator',
@@ -22,6 +23,7 @@ import { SerialServiceInterface } from '../serial/serial.service';
   styleUrl: './configurator.component.scss'
 })
 export class ConfiguratorComponent {
+  log = inject(Logger);
   serial_service = inject(SerialServiceInterface);
   consts = inject(AppConsts);
 
@@ -43,7 +45,7 @@ export class ConfiguratorComponent {
 
   constructor() {
     this.serial_service.ConnectionChanges().subscribe((connected) => {
-      console.log('connected', connected);
+      this.log.info('connected', connected);
       if (connected) {
         this.serial_service.Send('get-config');
       }
@@ -52,8 +54,8 @@ export class ConfiguratorComponent {
     this.serial_service.MessageReceiveFor('get-config').subscribe((v) => {
       this.config = JSON.parse(v[1]);
 
-      console.log('Config received');
-      console.log(this.config);
+      this.log.info('Config received');
+      this.log.info(this.config);
       if (this.config) {
         this.group_ids = this.config.analog_switch_groups.map((group) => {
           return group.analog_switch_group_id;
@@ -65,7 +67,7 @@ export class ConfiguratorComponent {
   }
 
   setActiveSwitchId(switch_id: number) {
-    console.log('active switch changed', switch_id);
+    this.log.info('active switch changed', switch_id);
     this.active_switch_id = switch_id;
     this.setActiveGroupId(SwitchIdToGroupId(this.config!, this.active_switch_id));
     if (this.ripple) {
@@ -74,12 +76,12 @@ export class ConfiguratorComponent {
   }
 
   onGroupSelected() {
-    console.log('onGroupSelected');
+    this.log.info('onGroupSelected');
     this.setActiveGroupId(SwitchIdToGroupId(this.config!, this.active_switch_id));
   }
 
   setActiveGroupId(group_id: number) {
-    console.log('active group changed', group_id);
+    this.log.info('active group changed', group_id);
     this.active_group_id = group_id;
   }
 
@@ -107,7 +109,7 @@ export class ConfiguratorComponent {
 
   Save() {
     let str_config = JSON.stringify(this.config);
-    console.log('save:', this.config);
+    this.log.info('save:', this.config);
     this.serial_service.Send('save-config:' + str_config);
   }
 }

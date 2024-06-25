@@ -1,11 +1,14 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 
 import { BehaviorSubject, Observable, Subject, defer, filter } from 'rxjs';
 import { AnalogSwitchAssignment, AnalogSwitchGroup, ButtonAssignment, UdongConfig } from '../config';
 import { SerialServiceInterface } from './serial.service';
+import { Logger } from '../logger';
 
 @Injectable()
 export class MockSerialService extends SerialServiceInterface {
+    log = inject(Logger);
+
     private message_subject = new Subject<[string, string]>();
     private connection_subject = new BehaviorSubject<boolean>(false);
 
@@ -22,8 +25,8 @@ export class MockSerialService extends SerialServiceInterface {
     }
 
     async Send(message: string) {
-        console.log('Sending via MockSerialService');
-        console.log(message);
+        this.log.info('Sending via MockSerialService');
+        this.log.info(message);
         if (message == 'get-config') {
             this.HandleGetConfig();
         }

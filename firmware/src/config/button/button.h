@@ -9,25 +9,6 @@ enum ButtonType {
   // TriggerButton,
   // AnalogTriggerButton,
 };
-inline void convertFromJson(JsonVariantConst var, ButtonType& dst) {
-  if (var == "push") {
-    dst = PushButton;
-  } else if (var == "d-pad") {
-    dst = DPadButton;
-  }
-}
-
-inline bool convertToJson(const ButtonType& src, JsonVariant dst) {
-  switch (src) {
-    case PushButton:
-      dst.set("push");
-      break;
-    case DPadButton:
-      dst.set("d-pad");
-      break;
-  }
-  return true;
-}
 
 struct PushButtonSelector {
   int push_button_id;
@@ -53,13 +34,13 @@ struct DPadButtonSelector {
 };
 
 inline void convertFromJson(JsonVariantConst var, DPadButtonSelector& dst) {
-  if (var["push_button_id"] == "up") {
+  if (var["direction"] == "up") {
     dst.direction = Up;
-  } else if (var["push_button_id"] == "right") {
+  } else if (var["direction"] == "right") {
     dst.direction = Right;
-  } else if (var["push_button_id"] == "down") {
+  } else if (var["direction"] == "down") {
     dst.direction = Down;
-  } else if (var["push_button_id"] == "left") {
+  } else if (var["direction"] == "left") {
     dst.direction = Left;
   }
 }
@@ -108,14 +89,15 @@ struct ButtonId {
 const std::vector<ButtonId>& getAllButtonIds();
 
 inline void convertFromJson(JsonVariantConst var, ButtonId& dst) {
-  dst.type = var["type"];
-  switch (dst.type) {
-    case PushButton:
-      dst.selector.push_button = var["push_button"];
-      break;
-    case DPadButton:
-      dst.selector.d_pad = var["d_pad"];
-      break;
+  String type_str = var["type"];
+  if (type_str == "push") {
+    dst.type = ButtonType::PushButton;
+    dst.selector.push_button = var["push_button"];
+  } else if (type_str == "d-pad") {
+    dst.type = ButtonType::DPadButton;
+    dst.selector.d_pad = var["d_pad"];
+  } else {
+    Serial.printf("ERROR: unknown button type: %s\n", type_str.c_str());
   }
 }
 
