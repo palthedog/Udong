@@ -1,4 +1,6 @@
+syntax = "proto3";
+
 message Foo {
-   optional string name = 1;
-   optional uint32 num = 2;
+  string name = 1;
+  uint32 num = 2;
 }
