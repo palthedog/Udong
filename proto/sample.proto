@@ -1,0 +1,4 @@
+message Foo {
+   optional string name = 1;
+   optional uint32 num = 2;
+}
