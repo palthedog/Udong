@@ -5,12 +5,14 @@
  * git: https://github.com/thesayyn/protoc-gen-ts */
 import * as pb_1 from "google-protobuf";
 export enum TriggerType {
-    RAPID_TRIGGER = 0,
-    STATIC_TRIGGER = 1
+    UNSPECIFIED_TRIGGER = 0,
+    RAPID_TRIGGER = 1,
+    STATIC_TRIGGER = 2
 }
 export enum ButtonType {
-    PUSH = 0,
-    D_PAD = 1
+    UNSPECIFIED_BUTTON_TYPE = 0,
+    PUSH = 1,
+    D_PAD = 2
 }
 export class UdongConfig extends pb_1.Message {
     #one_of_decls: number[][] = [];
@@ -247,7 +249,7 @@ export class AnalogSwitchGroup extends pb_1.Message {
         pb_1.Message.setField(this, 1, value);
     }
     get trigger_type() {
-        return pb_1.Message.getFieldWithDefault(this, 2, TriggerType.RAPID_TRIGGER) as TriggerType;
+        return pb_1.Message.getFieldWithDefault(this, 2, TriggerType.UNSPECIFIED_TRIGGER) as TriggerType;
     }
     set trigger_type(value: TriggerType) {
         pb_1.Message.setField(this, 2, value);
@@ -318,7 +320,7 @@ export class AnalogSwitchGroup extends pb_1.Message {
         const writer = w || new pb_1.BinaryWriter();
         if (this.analog_switch_group_id != 0)
             writer.writeUint32(1, this.analog_switch_group_id);
-        if (this.trigger_type != TriggerType.RAPID_TRIGGER)
+        if (this.trigger_type != TriggerType.UNSPECIFIED_TRIGGER)
             writer.writeEnum(2, this.trigger_type);
         if (this.has_rapid_trigger)
             writer.writeMessage(3, this.rapid_trigger, () => this.rapid_trigger.serialize(writer));
@@ -609,7 +611,7 @@ export class ButtonId extends pb_1.Message {
         }
     }
     get type() {
-        return pb_1.Message.getFieldWithDefault(this, 1, ButtonType.PUSH) as ButtonType;
+        return pb_1.Message.getFieldWithDefault(this, 1, ButtonType.UNSPECIFIED_BUTTON_TYPE) as ButtonType;
     }
     set type(value: ButtonType) {
         pb_1.Message.setField(this, 1, value);
@@ -680,7 +682,7 @@ export class ButtonId extends pb_1.Message {
     serialize(w: pb_1.BinaryWriter): void;
     serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
         const writer = w || new pb_1.BinaryWriter();
-        if (this.type != ButtonType.PUSH)
+        if (this.type != ButtonType.UNSPECIFIED_BUTTON_TYPE)
             writer.writeEnum(1, this.type);
         if (this.has_push_button)
             writer.writeMessage(2, this.push_button, () => this.push_button.serialize(writer));
@@ -797,7 +799,7 @@ export class DPadButtonSelector extends pb_1.Message {
         }
     }
     get direction() {
-        return pb_1.Message.getFieldWithDefault(this, 1, DPadButtonSelector.Direction.UP) as DPadButtonSelector.Direction;
+        return pb_1.Message.getFieldWithDefault(this, 1, DPadButtonSelector.Direction.UNSPECIFIED_DIRECTION) as DPadButtonSelector.Direction;
     }
     set direction(value: DPadButtonSelector.Direction) {
         pb_1.Message.setField(this, 1, value);
@@ -824,7 +826,7 @@ export class DPadButtonSelector extends pb_1.Message {
     serialize(w: pb_1.BinaryWriter): void;
     serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
         const writer = w || new pb_1.BinaryWriter();
-        if (this.direction != DPadButtonSelector.Direction.UP)
+        if (this.direction != DPadButtonSelector.Direction.UNSPECIFIED_DIRECTION)
             writer.writeEnum(1, this.direction);
         if (!w)
             return writer.getResultBuffer();
@@ -852,10 +854,11 @@ export class DPadButtonSelector extends pb_1.Message {
 }
 export namespace DPadButtonSelector {
     export enum Direction {
-        UP = 0,
-        DOWN = 1,
-        LEFT = 2,
-        RIGHT = 3
+        UNSPECIFIED_DIRECTION = 0,
+        UP = 1,
+        DOWN = 2,
+        LEFT = 3,
+        RIGHT = 4
     }
 }
 export class ButtonAssignment extends pb_1.Message {

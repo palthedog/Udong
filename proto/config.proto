@@ -15,8 +15,9 @@ message AnalogSwitchAssignment {
 }
 
 enum TriggerType {
-  RAPID_TRIGGER = 0;
-  STATIC_TRIGGER = 1;
+  UNSPECIFIED_TRIGGER = 0;
+  RAPID_TRIGGER = 1;
+  STATIC_TRIGGER = 2;
 }
 
 // Configurations for a group of analog switches
@@ -46,8 +47,9 @@ message StaticTriggerConfig {
 }
 
 enum ButtonType {
-  PUSH = 0;
-  D_PAD = 1;
+  UNSPECIFIED_BUTTON_TYPE = 0;
+  PUSH = 1;
+  D_PAD = 2;
 }
 
 // A button ID used to identify a button on the USB gamepad
@@ -69,10 +71,11 @@ message PushButtonSelector {
 // An ID for D-pad buttons
 message DPadButtonSelector {
   enum Direction {
-    UP = 0;
-    DOWN = 1;
-    LEFT = 2;
-    RIGHT = 3;
+    UNSPECIFIED_DIRECTION = 0;
+    UP = 1;
+    DOWN = 2;
+    LEFT = 3;
+    RIGHT = 4;
   }
 
   Direction direction = 1;

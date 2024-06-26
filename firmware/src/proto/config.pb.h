@@ -11,20 +11,23 @@
 
 /* Enum definitions */
 typedef enum _TriggerType {
-    TriggerType_RAPID_TRIGGER = 0,
-    TriggerType_STATIC_TRIGGER = 1
+    TriggerType_UNSPECIFIED_TRIGGER = 0,
+    TriggerType_RAPID_TRIGGER = 1,
+    TriggerType_STATIC_TRIGGER = 2
 } TriggerType;
 
 typedef enum _ButtonType {
-    ButtonType_PUSH = 0,
-    ButtonType_D_PAD = 1
+    ButtonType_UNSPECIFIED_BUTTON_TYPE = 0,
+    ButtonType_PUSH = 1,
+    ButtonType_D_PAD = 2
 } ButtonType;
 
 typedef enum _DPadButtonSelector_Direction {
-    DPadButtonSelector_Direction_UP = 0,
-    DPadButtonSelector_Direction_DOWN = 1,
-    DPadButtonSelector_Direction_LEFT = 2,
-    DPadButtonSelector_Direction_RIGHT = 3
+    DPadButtonSelector_Direction_UNSPECIFIED_DIRECTION = 0,
+    DPadButtonSelector_Direction_UP = 1,
+    DPadButtonSelector_Direction_DOWN = 2,
+    DPadButtonSelector_Direction_LEFT = 3,
+    DPadButtonSelector_Direction_RIGHT = 4
 } DPadButtonSelector_Direction;
 
 /* Struct definitions */
@@ -103,15 +106,15 @@ extern "C" {
 #endif
 
 /* Helper constants for enums */
-#define _TriggerType_MIN TriggerType_RAPID_TRIGGER
+#define _TriggerType_MIN TriggerType_UNSPECIFIED_TRIGGER
 #define _TriggerType_MAX TriggerType_STATIC_TRIGGER
 #define _TriggerType_ARRAYSIZE ((TriggerType)(TriggerType_STATIC_TRIGGER+1))
 
-#define _ButtonType_MIN ButtonType_PUSH
+#define _ButtonType_MIN ButtonType_UNSPECIFIED_BUTTON_TYPE
 #define _ButtonType_MAX ButtonType_D_PAD
 #define _ButtonType_ARRAYSIZE ((ButtonType)(ButtonType_D_PAD+1))
 
-#define _DPadButtonSelector_Direction_MIN DPadButtonSelector_Direction_UP
+#define _DPadButtonSelector_Direction_MIN DPadButtonSelector_Direction_UNSPECIFIED_DIRECTION
 #define _DPadButtonSelector_Direction_MAX DPadButtonSelector_Direction_RIGHT
 #define _DPadButtonSelector_Direction_ARRAYSIZE ((DPadButtonSelector_Direction)(DPadButtonSelector_Direction_RIGHT+1))
 
