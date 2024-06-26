@@ -53,11 +53,10 @@ void setup() {
   }
 
   // wait for
-  /*
   for (int i = 0; i < 5; i++) {
     delay(1000);
+    Serial.println("**** Starting ****");
   }
-  */
 
   udong.Setup();
 }
@@ -114,7 +113,6 @@ Throttling calibration_runner(100, []() {
 });
 
 uint32_t last_report_t = 1000;
-
 void loop() {
   serial_handler.HandleSerial(udong);
 

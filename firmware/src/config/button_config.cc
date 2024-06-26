@@ -1,5 +1,6 @@
 #include "button_config.h"
 
+/*
 std::vector<ButtonId> allButtonIds;
 
 const std::vector<ButtonId>& getAllButtonIds() {
@@ -18,3 +19,4 @@ const std::vector<ButtonId>& getAllButtonIds() {
 
   return allButtonIds;
 }
+*/

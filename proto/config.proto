@@ -27,22 +27,22 @@ message AnalogSwitchGroup {
   TriggerType trigger_type = 2;
 
   // Do NOT use oneof here so that we can keep the configuration for both trigger types
-  RapidTrigger rapid_trigger = 3;
-  StaticTrigger static_trigger = 4;
+  RapidTriggerConfig rapid_trigger = 3;
+  StaticTriggerConfig static_trigger = 4;
 }
 
 // Represents a rapid trigger configuration
-message RapidTrigger {
-  float act = 1;
-  float rel = 2;
-  float f_act = 3;
-  float f_rel = 4;
+message RapidTriggerConfig {
+  double act = 1;
+  double rel = 2;
+  double f_act = 3;
+  double f_rel = 4;
 }
 
 // Represents a static trigger configuration
-message StaticTrigger {
-  float act = 1;
-  float rel = 2;
+message StaticTriggerConfig {
+  double act = 1;
+  double rel = 2;
 }
 
 enum ButtonType {

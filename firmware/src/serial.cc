@@ -29,17 +29,24 @@ void HandleGet(Udong& context, const String& cmd, const JsonDocument& arg) {
 
 void HandleGetConfig(
     Udong& context, const String& cmd, const JsonDocument& arg) {
-  JsonDocument json_response;
-  convertToJson(context.circuit->config, json_response.to<JsonObject>());
-  SendResponse(cmd, json_response);
+  /*
+JsonDocument json_response;
+convertToJson(context.circuit->config, json_response.to<JsonObject>());
+SendResponse(cmd, json_response);
+*/
+  Serial.println("TODO: Fix HandleGetConfig on FW");
 }
 
 void HandleSaveConfig(
     Udong& context, const String& cmd, const JsonDocument& arg) {
   // Save the received UdongConfig
+  Serial.println("TODO: Fix HandleSaveConfig on FW");
+  /*
   UdongConfig config;
   convertFromJson(arg, config);
+
   saveUdonConfig(config);
+ */
 
   // Then reload the config and reconstruct Circuit
   context.ReloadConfig();

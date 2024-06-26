@@ -4,7 +4,7 @@ import { BehaviorSubject, Observable, Subject, defer, filter } from 'rxjs';
 import { SerialServiceInterface } from './serial.service';
 import { Logger } from '../logger';
 
-import { AnalogSwitchAssignment, AnalogSwitchGroup, ButtonAssignment, ButtonId, ButtonType, PushButtonSelector, RapidTrigger, StaticTrigger, TriggerType, UdongConfig } from '../../proto/config';
+import { AnalogSwitchAssignment, AnalogSwitchGroup, ButtonAssignment, ButtonId, ButtonType, PushButtonSelector, RapidTriggerConfig, StaticTriggerConfig, TriggerType, UdongConfig } from '../../proto/config';
 
 @Injectable()
 export class MockSerialService extends SerialServiceInterface {
@@ -64,11 +64,11 @@ export class MockSerialService extends SerialServiceInterface {
             let group: AnalogSwitchGroup = new AnalogSwitchGroup({
                 analog_switch_group_id: i,
                 trigger_type: trigger_type,
-                rapid_trigger: new RapidTrigger({
+                rapid_trigger: new RapidTriggerConfig({
                     act: 0.6, rel: 0.4,
                     f_act: 3.0, f_rel: 0.2,
                 }),
-                static_trigger: new StaticTrigger({
+                static_trigger: new StaticTriggerConfig({
                     act: 1.2, rel: 0.8,
                 })
             });

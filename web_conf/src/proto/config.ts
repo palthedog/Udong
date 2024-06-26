@@ -220,8 +220,8 @@ export class AnalogSwitchGroup extends pb_1.Message {
     constructor(data?: any[] | {
         analog_switch_group_id?: number;
         trigger_type?: TriggerType;
-        rapid_trigger?: RapidTrigger;
-        static_trigger?: StaticTrigger;
+        rapid_trigger?: RapidTriggerConfig;
+        static_trigger?: StaticTriggerConfig;
     }) {
         super();
         pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
@@ -253,18 +253,18 @@ export class AnalogSwitchGroup extends pb_1.Message {
         pb_1.Message.setField(this, 2, value);
     }
     get rapid_trigger() {
-        return pb_1.Message.getWrapperField(this, RapidTrigger, 3) as RapidTrigger;
+        return pb_1.Message.getWrapperField(this, RapidTriggerConfig, 3) as RapidTriggerConfig;
     }
-    set rapid_trigger(value: RapidTrigger) {
+    set rapid_trigger(value: RapidTriggerConfig) {
         pb_1.Message.setWrapperField(this, 3, value);
     }
     get has_rapid_trigger() {
         return pb_1.Message.getField(this, 3) != null;
     }
     get static_trigger() {
-        return pb_1.Message.getWrapperField(this, StaticTrigger, 4) as StaticTrigger;
+        return pb_1.Message.getWrapperField(this, StaticTriggerConfig, 4) as StaticTriggerConfig;
     }
-    set static_trigger(value: StaticTrigger) {
+    set static_trigger(value: StaticTriggerConfig) {
         pb_1.Message.setWrapperField(this, 4, value);
     }
     get has_static_trigger() {
@@ -273,8 +273,8 @@ export class AnalogSwitchGroup extends pb_1.Message {
     static fromObject(data: {
         analog_switch_group_id?: number;
         trigger_type?: TriggerType;
-        rapid_trigger?: ReturnType<typeof RapidTrigger.prototype.toObject>;
-        static_trigger?: ReturnType<typeof StaticTrigger.prototype.toObject>;
+        rapid_trigger?: ReturnType<typeof RapidTriggerConfig.prototype.toObject>;
+        static_trigger?: ReturnType<typeof StaticTriggerConfig.prototype.toObject>;
     }): AnalogSwitchGroup {
         const message = new AnalogSwitchGroup({});
         if (data.analog_switch_group_id != null) {
@@ -284,10 +284,10 @@ export class AnalogSwitchGroup extends pb_1.Message {
             message.trigger_type = data.trigger_type;
         }
         if (data.rapid_trigger != null) {
-            message.rapid_trigger = RapidTrigger.fromObject(data.rapid_trigger);
+            message.rapid_trigger = RapidTriggerConfig.fromObject(data.rapid_trigger);
         }
         if (data.static_trigger != null) {
-            message.static_trigger = StaticTrigger.fromObject(data.static_trigger);
+            message.static_trigger = StaticTriggerConfig.fromObject(data.static_trigger);
         }
         return message;
     }
@@ -295,8 +295,8 @@ export class AnalogSwitchGroup extends pb_1.Message {
         const data: {
             analog_switch_group_id?: number;
             trigger_type?: TriggerType;
-            rapid_trigger?: ReturnType<typeof RapidTrigger.prototype.toObject>;
-            static_trigger?: ReturnType<typeof StaticTrigger.prototype.toObject>;
+            rapid_trigger?: ReturnType<typeof RapidTriggerConfig.prototype.toObject>;
+            static_trigger?: ReturnType<typeof StaticTriggerConfig.prototype.toObject>;
         } = {};
         if (this.analog_switch_group_id != null) {
             data.analog_switch_group_id = this.analog_switch_group_id;
@@ -340,10 +340,10 @@ export class AnalogSwitchGroup extends pb_1.Message {
                     message.trigger_type = reader.readEnum();
                     break;
                 case 3:
-                    reader.readMessage(message.rapid_trigger, () => message.rapid_trigger = RapidTrigger.deserialize(reader));
+                    reader.readMessage(message.rapid_trigger, () => message.rapid_trigger = RapidTriggerConfig.deserialize(reader));
                     break;
                 case 4:
-                    reader.readMessage(message.static_trigger, () => message.static_trigger = StaticTrigger.deserialize(reader));
+                    reader.readMessage(message.static_trigger, () => message.static_trigger = StaticTriggerConfig.deserialize(reader));
                     break;
                 default: reader.skipField();
             }
@@ -357,7 +357,7 @@ export class AnalogSwitchGroup extends pb_1.Message {
         return AnalogSwitchGroup.deserialize(bytes);
     }
 }
-export class RapidTrigger extends pb_1.Message {
+export class RapidTriggerConfig extends pb_1.Message {
     #one_of_decls: number[][] = [];
     constructor(data?: any[] | {
         act?: number;
@@ -411,8 +411,8 @@ export class RapidTrigger extends pb_1.Message {
         rel?: number;
         f_act?: number;
         f_rel?: number;
-    }): RapidTrigger {
-        const message = new RapidTrigger({});
+    }): RapidTriggerConfig {
+        const message = new RapidTriggerConfig({});
         if (data.act != null) {
             message.act = data.act;
         }
@@ -453,33 +453,33 @@ export class RapidTrigger extends pb_1.Message {
     serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
         const writer = w || new pb_1.BinaryWriter();
         if (this.act != 0)
-            writer.writeFloat(1, this.act);
+            writer.writeDouble(1, this.act);
         if (this.rel != 0)
-            writer.writeFloat(2, this.rel);
+            writer.writeDouble(2, this.rel);
         if (this.f_act != 0)
-            writer.writeFloat(3, this.f_act);
+            writer.writeDouble(3, this.f_act);
         if (this.f_rel != 0)
-            writer.writeFloat(4, this.f_rel);
+            writer.writeDouble(4, this.f_rel);
         if (!w)
             return writer.getResultBuffer();
     }
-    static deserialize(bytes: Uint8Array | pb_1.BinaryReader): RapidTrigger {
-        const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new RapidTrigger();
+    static deserialize(bytes: Uint8Array | pb_1.BinaryReader): RapidTriggerConfig {
+        const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new RapidTriggerConfig();
         while (reader.nextField()) {
             if (reader.isEndGroup())
                 break;
             switch (reader.getFieldNumber()) {
                 case 1:
-                    message.act = reader.readFloat();
+                    message.act = reader.readDouble();
                     break;
                 case 2:
-                    message.rel = reader.readFloat();
+                    message.rel = reader.readDouble();
                     break;
                 case 3:
-                    message.f_act = reader.readFloat();
+                    message.f_act = reader.readDouble();
                     break;
                 case 4:
-                    message.f_rel = reader.readFloat();
+                    message.f_rel = reader.readDouble();
                     break;
                 default: reader.skipField();
             }
@@ -489,11 +489,11 @@ export class RapidTrigger extends pb_1.Message {
     serializeBinary(): Uint8Array {
         return this.serialize();
     }
-    static override deserializeBinary(bytes: Uint8Array): RapidTrigger {
-        return RapidTrigger.deserialize(bytes);
+    static override deserializeBinary(bytes: Uint8Array): RapidTriggerConfig {
+        return RapidTriggerConfig.deserialize(bytes);
     }
 }
-export class StaticTrigger extends pb_1.Message {
+export class StaticTriggerConfig extends pb_1.Message {
     #one_of_decls: number[][] = [];
     constructor(data?: any[] | {
         act?: number;
@@ -525,8 +525,8 @@ export class StaticTrigger extends pb_1.Message {
     static fromObject(data: {
         act?: number;
         rel?: number;
-    }): StaticTrigger {
-        const message = new StaticTrigger({});
+    }): StaticTriggerConfig {
+        const message = new StaticTriggerConfig({});
         if (data.act != null) {
             message.act = data.act;
         }
@@ -553,23 +553,23 @@ export class StaticTrigger extends pb_1.Message {
     serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
         const writer = w || new pb_1.BinaryWriter();
         if (this.act != 0)
-            writer.writeFloat(1, this.act);
+            writer.writeDouble(1, this.act);
         if (this.rel != 0)
-            writer.writeFloat(2, this.rel);
+            writer.writeDouble(2, this.rel);
         if (!w)
             return writer.getResultBuffer();
     }
-    static deserialize(bytes: Uint8Array | pb_1.BinaryReader): StaticTrigger {
-        const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new StaticTrigger();
+    static deserialize(bytes: Uint8Array | pb_1.BinaryReader): StaticTriggerConfig {
+        const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new StaticTriggerConfig();
         while (reader.nextField()) {
             if (reader.isEndGroup())
                 break;
             switch (reader.getFieldNumber()) {
                 case 1:
-                    message.act = reader.readFloat();
+                    message.act = reader.readDouble();
                     break;
                 case 2:
-                    message.rel = reader.readFloat();
+                    message.rel = reader.readDouble();
                     break;
                 default: reader.skipField();
             }
@@ -579,8 +579,8 @@ export class StaticTrigger extends pb_1.Message {
     serializeBinary(): Uint8Array {
         return this.serialize();
     }
-    static override deserializeBinary(bytes: Uint8Array): StaticTrigger {
-        return StaticTrigger.deserialize(bytes);
+    static override deserializeBinary(bytes: Uint8Array): StaticTriggerConfig {
+        return StaticTriggerConfig.deserialize(bytes);
     }
 }
 export class ButtonId extends pb_1.Message {

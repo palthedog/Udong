@@ -1,6 +1,7 @@
 #ifndef BUTTON_CONFIG_H
 #define BUTTON_CONFIG_H
 
+/*
 #include <ArduinoJson.h>
 
 enum ButtonType {
@@ -86,7 +87,7 @@ struct ButtonId {
   }
 };
 
-const std::vector<ButtonId>& getAllButtonIds();
+// const std::vector<ButtonId>& getAllButtonIds();
 
 inline void convertFromJson(JsonVariantConst var, ButtonId& dst) {
   String type_str = var["type"];
@@ -130,5 +131,5 @@ inline bool convertToJson(const ButtonAssignment& src, JsonVariant dst) {
   dst["button_id"] = src.button_id;
   return true;
 }
-
+*/
 #endif

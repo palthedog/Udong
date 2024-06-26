@@ -9,4 +9,6 @@ echo 'Building .ts proto...'
 protoc -I ./proto --plugin=protoc-gen-ts=${UDONG_ROOT}/web_conf/node_modules/.bin/protoc-gen-ts --ts_out=./web_conf/src/proto/ --ts_opt=explicit_override ./proto/config.proto
 
 echo 'Building .c proto...'
-${UDONG_ROOT}/firmware/lib/nanopb/generator/nanopb_generator.py --cpp-descriptors -I proto -D ./firmware/src/proto config.proto
+${UDONG_ROOT}/firmware/lib/nanopb/generator/nanopb_generator.py -s max_count:32 -s type:FT_STATIC --cpp-descriptors -I proto -D ./firmware/src/proto config.proto
+#protoc -I ./proto --cpp_out=./firmware/src/proto config.proto
+

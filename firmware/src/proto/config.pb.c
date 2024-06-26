@@ -6,7 +6,7 @@
 #error Regenerate this file with the current version of nanopb generator.
 #endif
 
-PB_BIND(UdongConfig, UdongConfig, AUTO)
+PB_BIND(UdongConfig, UdongConfig, 2)
 
 
 PB_BIND(AnalogSwitchAssignment, AnalogSwitchAssignment, AUTO)
@@ -15,10 +15,10 @@ PB_BIND(AnalogSwitchAssignment, AnalogSwitchAssignment, AUTO)
 PB_BIND(AnalogSwitchGroup, AnalogSwitchGroup, AUTO)
 
 
-PB_BIND(RapidTrigger, RapidTrigger, AUTO)
+PB_BIND(RapidTriggerConfig, RapidTriggerConfig, AUTO)
 
 
-PB_BIND(StaticTrigger, StaticTrigger, AUTO)
+PB_BIND(StaticTriggerConfig, StaticTriggerConfig, AUTO)
 
 
 PB_BIND(ButtonId, ButtonId, AUTO)
@@ -36,4 +36,12 @@ PB_BIND(ButtonAssignment, ButtonAssignment, AUTO)
 
 
 
+
+#ifndef PB_CONVERT_DOUBLE_FLOAT
+/* On some platforms (such as AVR), double is really float.
+ * To be able to encode/decode double on these platforms, you need.
+ * to define PB_CONVERT_DOUBLE_FLOAT in pb.h or compiler command line.
+ */
+PB_STATIC_ASSERT(sizeof(double) == 8, DOUBLE_MUST_BE_8_BYTES)
+#endif
 

@@ -10,6 +10,7 @@
 #include "button_config.h"
 #include "json_file.h"
 
+/*
 const String kUdongConfigPath = "/user/config.json";
 
 struct RapidTriggerConfig {
@@ -253,5 +254,5 @@ inline void saveUdonConfig(const UdongConfig& config) {
   convertToJson(config, doc.to<JsonObject>());
   SaveJson(kUdongConfigPath, doc);
 }
-
+*/
 #endif

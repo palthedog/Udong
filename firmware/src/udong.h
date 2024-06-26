@@ -7,7 +7,7 @@
 
 #include <memory>
 
-#include "config/config.h"
+#include "config/config_util.h"
 #include "gamepad/button/button.h"
 #include "gamepad/button/d_pad.h"
 #include "gamepad/button/press_button.h"
@@ -16,6 +16,7 @@
 #include "io_utils/multi_sampling.h"
 #include "io_utils/multiplexer.h"
 #include "io_utils/soft/triangle.h"
+#include "proto/config.pb.h"
 #include "switch/analog_switch.h"
 #include "switch/triggers/rapid_trigger.h"
 #include "switch/triggers/static_trigger.h"
@@ -84,22 +85,31 @@ struct Circuit {
         analog_switch_raw_ins.push_back(std::make_shared<AnalogGroundInput>());
       }
     }
-    const int kButtonCount = 16;
 
-    for (int switch_id = 0; switch_id < kButtonCount; switch_id++) {
+    const int kAnalogSwitchCount = 16;
+    for (int switch_id = 0; switch_id < kAnalogSwitchCount; switch_id++) {
       analog_switch_multi_sampled_ins.push_back(
           std::make_shared<MultiSampling<1, 0, 0>>(
               analog_switch_raw_ins[switch_id]));
 
       const AnalogSwitchGroup& switch_config =
-          config.getConfigFromSwitchId(switch_id);
+          getConfigFromSwitchId(switch_id, config);
       std::unique_ptr<Trigger> trigger;
-      if (switch_config.trigger_type == "rapid-trigger") {
+      if (switch_config.trigger_type == TriggerType_RAPID_TRIGGER) {
+        Serial.printf("analog-switch-%d: rapid-trigger\n", switch_id);
+
         const RapidTriggerConfig& rt_conf = switch_config.rapid_trigger;
         trigger.reset(new RapidTrigger(
             rt_conf.act, rt_conf.rel, rt_conf.f_act, rt_conf.f_rel));
       } else {
         const StaticTriggerConfig& st_conf = switch_config.static_trigger;
+
+        Serial.printf(
+            "analog-switch-%d: static-trigger: act: %.2lf, rel: %.2lf\n",
+            switch_id,
+            st_conf.act,
+            st_conf.rel);
+
         trigger.reset(new StaticTrigger(st_conf.act, st_conf.rel));
       }
       analog_switches.push_back(std::make_shared<AnalogSwitch>(
@@ -160,7 +170,8 @@ class Udong {
   void LoadConfig() {
     UdongConfig config = loadUdonConfig();
     Serial.println("Loaded button assignments");
-    for (auto b : config.button_assignments) {
+    for (int i = 0; i < config.button_assignments_count; i++) {
+      auto& b = config.button_assignments[i];
       Serial.println(b.button_id.selector.push_button.push_button_id);
     }
 
@@ -178,25 +189,32 @@ class Udong {
     // Button assignment
     buttons_.clear();
     d_pad_.Clear();
-    for (auto& it : config.button_assignments) {
+    for (int i = 0; i < config.button_assignments_count; i++) {
+      auto& it = config.button_assignments[i];
+
       std::shared_ptr<AnalogSwitch>& analog_switch =
           circuit->analog_switches[it.switch_id];
 
-      if (it.button_id.type == PushButton) {
+      if (it.button_id.type == ButtonType_PUSH) {
+        Serial.printf(
+            "button-id: %ld > switch-id: %ld\n",
+            it.button_id.selector.push_button.push_button_id,
+            it.switch_id);
+
         buttons_.push_back(std::make_shared<PressButton>(
             analog_switch, it.button_id.selector.push_button.push_button_id));
-      } else if (it.button_id.type == DPadButton) {
+      } else if (it.button_id.type == ButtonType_D_PAD) {
         switch (it.button_id.selector.d_pad.direction) {
-          case DPadDirection::Up:
+          case DPadButtonSelector_Direction_UP:
             d_pad_.AddUpSwitch(analog_switch);
             break;
-          case DPadDirection::Down:
+          case DPadButtonSelector_Direction_DOWN:
             d_pad_.AddDownSwitch(analog_switch);
             break;
-          case DPadDirection::Left:
+          case DPadButtonSelector_Direction_LEFT:
             d_pad_.AddLeftSwitch(analog_switch);
             break;
-          case DPadDirection::Right:
+          case DPadButtonSelector_Direction_RIGHT:
             d_pad_.AddRightSwitch(analog_switch);
             break;
         }

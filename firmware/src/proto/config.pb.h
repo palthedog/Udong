@@ -28,13 +28,6 @@ typedef enum _DPadButtonSelector_Direction {
 } DPadButtonSelector_Direction;
 
 /* Struct definitions */
-/* Represents the overall configuration for Udong */
-typedef struct _UdongConfig {
-    pb_callback_t analog_switch_assignments;
-    pb_callback_t analog_switch_groups;
-    pb_callback_t button_assignments;
-} UdongConfig;
-
 /* Maps an analog switch to a group
  Switches in the same group share the same configuration */
 typedef struct _AnalogSwitchAssignment {
@@ -43,18 +36,18 @@ typedef struct _AnalogSwitchAssignment {
 } AnalogSwitchAssignment;
 
 /* Represents a rapid trigger configuration */
-typedef struct _RapidTrigger {
-    float act;
-    float rel;
-    float f_act;
-    float f_rel;
-} RapidTrigger;
+typedef struct _RapidTriggerConfig {
+    double act;
+    double rel;
+    double f_act;
+    double f_rel;
+} RapidTriggerConfig;
 
 /* Represents a static trigger configuration */
-typedef struct _StaticTrigger {
-    float act;
-    float rel;
-} StaticTrigger;
+typedef struct _StaticTriggerConfig {
+    double act;
+    double rel;
+} StaticTriggerConfig;
 
 /* Configurations for a group of analog switches */
 typedef struct _AnalogSwitchGroup {
@@ -62,9 +55,9 @@ typedef struct _AnalogSwitchGroup {
     TriggerType trigger_type;
     /* Do NOT use oneof here so that we can keep the configuration for both trigger types */
     bool has_rapid_trigger;
-    RapidTrigger rapid_trigger;
+    RapidTriggerConfig rapid_trigger;
     bool has_static_trigger;
-    StaticTrigger static_trigger;
+    StaticTriggerConfig static_trigger;
 } AnalogSwitchGroup;
 
 /* An ID for push buttons */
@@ -93,6 +86,16 @@ typedef struct _ButtonAssignment {
     bool has_button_id;
     ButtonId button_id;
 } ButtonAssignment;
+
+/* Represents the overall configuration for Udong */
+typedef struct _UdongConfig {
+    pb_size_t analog_switch_assignments_count;
+    AnalogSwitchAssignment analog_switch_assignments[32];
+    pb_size_t analog_switch_groups_count;
+    AnalogSwitchGroup analog_switch_groups[32];
+    pb_size_t button_assignments_count;
+    ButtonAssignment button_assignments[32];
+} UdongConfig;
 
 
 #ifdef __cplusplus
@@ -126,37 +129,34 @@ extern "C" {
 
 
 /* Initializer values for message structs */
-#define UdongConfig_init_default                 {{{NULL}, NULL}, {{NULL}, NULL}, {{NULL}, NULL}}
+#define UdongConfig_init_default                 {0, {AnalogSwitchAssignment_init_default, AnalogSwitchAssignment_init_default, AnalogSwitchAssignment_init_default, AnalogSwitchAssignment_init_default, AnalogSwitchAssignment_init_default, AnalogSwitchAssignment_init_default, AnalogSwitchAssignment_init_default, AnalogSwitchAssignment_init_default, AnalogSwitchAssignment_init_default, AnalogSwitchAssignment_init_default, AnalogSwitchAssignment_init_default, AnalogSwitchAssignment_init_default, AnalogSwitchAssignment_init_default, AnalogSwitchAssignment_init_default, AnalogSwitchAssignment_init_default, AnalogSwitchAssignment_init_default, AnalogSwitchAssignment_init_default, AnalogSwitchAssignment_init_default, AnalogSwitchAssignment_init_default, AnalogSwitchAssignment_init_default, AnalogSwitchAssignment_init_default, AnalogSwitchAssignment_init_default, AnalogSwitchAssignment_init_default, AnalogSwitchAssignment_init_default, AnalogSwitchAssignment_init_default, AnalogSwitchAssignment_init_default, AnalogSwitchAssignment_init_default, AnalogSwitchAssignment_init_default, AnalogSwitchAssignment_init_default, AnalogSwitchAssignment_init_default, AnalogSwitchAssignment_init_default, AnalogSwitchAssignment_init_default}, 0, {AnalogSwitchGroup_init_default, AnalogSwitchGroup_init_default, AnalogSwitchGroup_init_default, AnalogSwitchGroup_init_default, AnalogSwitchGroup_init_default, AnalogSwitchGroup_init_default, AnalogSwitchGroup_init_default, AnalogSwitchGroup_init_default, AnalogSwitchGroup_init_default, AnalogSwitchGroup_init_default, AnalogSwitchGroup_init_default, AnalogSwitchGroup_init_default, AnalogSwitchGroup_init_default, AnalogSwitchGroup_init_default, AnalogSwitchGroup_init_default, AnalogSwitchGroup_init_default, AnalogSwitchGroup_init_default, AnalogSwitchGroup_init_default, AnalogSwitchGroup_init_default, AnalogSwitchGroup_init_default, AnalogSwitchGroup_init_default, AnalogSwitchGroup_init_default, AnalogSwitchGroup_init_default, AnalogSwitchGroup_init_default, AnalogSwitchGroup_init_default, AnalogSwitchGroup_init_default, AnalogSwitchGroup_init_default, AnalogSwitchGroup_init_default, AnalogSwitchGroup_init_default, AnalogSwitchGroup_init_default, AnalogSwitchGroup_init_default, AnalogSwitchGroup_init_default}, 0, {ButtonAssignment_init_default, ButtonAssignment_init_default, ButtonAssignment_init_default, ButtonAssignment_init_default, ButtonAssignment_init_default, ButtonAssignment_init_default, ButtonAssignment_init_default, ButtonAssignment_init_default, ButtonAssignment_init_default, ButtonAssignment_init_default, ButtonAssignment_init_default, ButtonAssignment_init_default, ButtonAssignment_init_default, ButtonAssignment_init_default, ButtonAssignment_init_default, ButtonAssignment_init_default, ButtonAssignment_init_default, ButtonAssignment_init_default, ButtonAssignment_init_default, ButtonAssignment_init_default, ButtonAssignment_init_default, ButtonAssignment_init_default, ButtonAssignment_init_default, ButtonAssignment_init_default, ButtonAssignment_init_default, ButtonAssignment_init_default, ButtonAssignment_init_default, ButtonAssignment_init_default, ButtonAssignment_init_default, ButtonAssignment_init_default, ButtonAssignment_init_default, ButtonAssignment_init_default}}
 #define AnalogSwitchAssignment_init_default      {0, 0}
-#define AnalogSwitchGroup_init_default           {0, _TriggerType_MIN, false, RapidTrigger_init_default, false, StaticTrigger_init_default}
-#define RapidTrigger_init_default                {0, 0, 0, 0}
-#define StaticTrigger_init_default               {0, 0}
+#define AnalogSwitchGroup_init_default           {0, _TriggerType_MIN, false, RapidTriggerConfig_init_default, false, StaticTriggerConfig_init_default}
+#define RapidTriggerConfig_init_default          {0, 0, 0, 0}
+#define StaticTriggerConfig_init_default         {0, 0}
 #define ButtonId_init_default                    {_ButtonType_MIN, 0, {PushButtonSelector_init_default}}
 #define PushButtonSelector_init_default          {0}
 #define DPadButtonSelector_init_default          {_DPadButtonSelector_Direction_MIN}
 #define ButtonAssignment_init_default            {0, false, ButtonId_init_default}
-#define UdongConfig_init_zero                    {{{NULL}, NULL}, {{NULL}, NULL}, {{NULL}, NULL}}
+#define UdongConfig_init_zero                    {0, {AnalogSwitchAssignment_init_zero, AnalogSwitchAssignment_init_zero, AnalogSwitchAssignment_init_zero, AnalogSwitchAssignment_init_zero, AnalogSwitchAssignment_init_zero, AnalogSwitchAssignment_init_zero, AnalogSwitchAssignment_init_zero, AnalogSwitchAssignment_init_zero, AnalogSwitchAssignment_init_zero, AnalogSwitchAssignment_init_zero, AnalogSwitchAssignment_init_zero, AnalogSwitchAssignment_init_zero, AnalogSwitchAssignment_init_zero, AnalogSwitchAssignment_init_zero, AnalogSwitchAssignment_init_zero, AnalogSwitchAssignment_init_zero, AnalogSwitchAssignment_init_zero, AnalogSwitchAssignment_init_zero, AnalogSwitchAssignment_init_zero, AnalogSwitchAssignment_init_zero, AnalogSwitchAssignment_init_zero, AnalogSwitchAssignment_init_zero, AnalogSwitchAssignment_init_zero, AnalogSwitchAssignment_init_zero, AnalogSwitchAssignment_init_zero, AnalogSwitchAssignment_init_zero, AnalogSwitchAssignment_init_zero, AnalogSwitchAssignment_init_zero, AnalogSwitchAssignment_init_zero, AnalogSwitchAssignment_init_zero, AnalogSwitchAssignment_init_zero, AnalogSwitchAssignment_init_zero}, 0, {AnalogSwitchGroup_init_zero, AnalogSwitchGroup_init_zero, AnalogSwitchGroup_init_zero, AnalogSwitchGroup_init_zero, AnalogSwitchGroup_init_zero, AnalogSwitchGroup_init_zero, AnalogSwitchGroup_init_zero, AnalogSwitchGroup_init_zero, AnalogSwitchGroup_init_zero, AnalogSwitchGroup_init_zero, AnalogSwitchGroup_init_zero, AnalogSwitchGroup_init_zero, AnalogSwitchGroup_init_zero, AnalogSwitchGroup_init_zero, AnalogSwitchGroup_init_zero, AnalogSwitchGroup_init_zero, AnalogSwitchGroup_init_zero, AnalogSwitchGroup_init_zero, AnalogSwitchGroup_init_zero, AnalogSwitchGroup_init_zero, AnalogSwitchGroup_init_zero, AnalogSwitchGroup_init_zero, AnalogSwitchGroup_init_zero, AnalogSwitchGroup_init_zero, AnalogSwitchGroup_init_zero, AnalogSwitchGroup_init_zero, AnalogSwitchGroup_init_zero, AnalogSwitchGroup_init_zero, AnalogSwitchGroup_init_zero, AnalogSwitchGroup_init_zero, AnalogSwitchGroup_init_zero, AnalogSwitchGroup_init_zero}, 0, {ButtonAssignment_init_zero, ButtonAssignment_init_zero, ButtonAssignment_init_zero, ButtonAssignment_init_zero, ButtonAssignment_init_zero, ButtonAssignment_init_zero, ButtonAssignment_init_zero, ButtonAssignment_init_zero, ButtonAssignment_init_zero, ButtonAssignment_init_zero, ButtonAssignment_init_zero, ButtonAssignment_init_zero, ButtonAssignment_init_zero, ButtonAssignment_init_zero, ButtonAssignment_init_zero, ButtonAssignment_init_zero, ButtonAssignment_init_zero, ButtonAssignment_init_zero, ButtonAssignment_init_zero, ButtonAssignment_init_zero, ButtonAssignment_init_zero, ButtonAssignment_init_zero, ButtonAssignment_init_zero, ButtonAssignment_init_zero, ButtonAssignment_init_zero, ButtonAssignment_init_zero, ButtonAssignment_init_zero, ButtonAssignment_init_zero, ButtonAssignment_init_zero, ButtonAssignment_init_zero, ButtonAssignment_init_zero, ButtonAssignment_init_zero}}
 #define AnalogSwitchAssignment_init_zero         {0, 0}
-#define AnalogSwitchGroup_init_zero              {0, _TriggerType_MIN, false, RapidTrigger_init_zero, false, StaticTrigger_init_zero}
-#define RapidTrigger_init_zero                   {0, 0, 0, 0}
-#define StaticTrigger_init_zero                  {0, 0}
+#define AnalogSwitchGroup_init_zero              {0, _TriggerType_MIN, false, RapidTriggerConfig_init_zero, false, StaticTriggerConfig_init_zero}
+#define RapidTriggerConfig_init_zero             {0, 0, 0, 0}
+#define StaticTriggerConfig_init_zero            {0, 0}
 #define ButtonId_init_zero                       {_ButtonType_MIN, 0, {PushButtonSelector_init_zero}}
 #define PushButtonSelector_init_zero             {0}
 #define DPadButtonSelector_init_zero             {_DPadButtonSelector_Direction_MIN}
 #define ButtonAssignment_init_zero               {0, false, ButtonId_init_zero}
 
 /* Field tags (for use in manual encoding/decoding) */
-#define UdongConfig_analog_switch_assignments_tag 1
-#define UdongConfig_analog_switch_groups_tag     2
-#define UdongConfig_button_assignments_tag       3
 #define AnalogSwitchAssignment_analog_switch_id_tag 1
 #define AnalogSwitchAssignment_analog_switch_group_id_tag 2
-#define RapidTrigger_act_tag                     1
-#define RapidTrigger_rel_tag                     2
-#define RapidTrigger_f_act_tag                   3
-#define RapidTrigger_f_rel_tag                   4
-#define StaticTrigger_act_tag                    1
-#define StaticTrigger_rel_tag                    2
+#define RapidTriggerConfig_act_tag               1
+#define RapidTriggerConfig_rel_tag               2
+#define RapidTriggerConfig_f_act_tag             3
+#define RapidTriggerConfig_f_rel_tag             4
+#define StaticTriggerConfig_act_tag              1
+#define StaticTriggerConfig_rel_tag              2
 #define AnalogSwitchGroup_analog_switch_group_id_tag 1
 #define AnalogSwitchGroup_trigger_type_tag       2
 #define AnalogSwitchGroup_rapid_trigger_tag      3
@@ -168,13 +168,16 @@ extern "C" {
 #define ButtonId_d_pad_tag                       3
 #define ButtonAssignment_switch_id_tag           1
 #define ButtonAssignment_button_id_tag           2
+#define UdongConfig_analog_switch_assignments_tag 1
+#define UdongConfig_analog_switch_groups_tag     2
+#define UdongConfig_button_assignments_tag       3
 
 /* Struct field encoding specification for nanopb */
 #define UdongConfig_FIELDLIST(X, a) \
-X(a, CALLBACK, REPEATED, MESSAGE,  analog_switch_assignments,   1) \
-X(a, CALLBACK, REPEATED, MESSAGE,  analog_switch_groups,   2) \
-X(a, CALLBACK, REPEATED, MESSAGE,  button_assignments,   3)
-#define UdongConfig_CALLBACK pb_default_field_callback
+X(a, STATIC,   REPEATED, MESSAGE,  analog_switch_assignments,   1) \
+X(a, STATIC,   REPEATED, MESSAGE,  analog_switch_groups,   2) \
+X(a, STATIC,   REPEATED, MESSAGE,  button_assignments,   3)
+#define UdongConfig_CALLBACK NULL
 #define UdongConfig_DEFAULT NULL
 #define UdongConfig_analog_switch_assignments_MSGTYPE AnalogSwitchAssignment
 #define UdongConfig_analog_switch_groups_MSGTYPE AnalogSwitchGroup
@@ -193,22 +196,22 @@ X(a, STATIC,   OPTIONAL, MESSAGE,  rapid_trigger,     3) \
 X(a, STATIC,   OPTIONAL, MESSAGE,  static_trigger,    4)
 #define AnalogSwitchGroup_CALLBACK NULL
 #define AnalogSwitchGroup_DEFAULT NULL
-#define AnalogSwitchGroup_rapid_trigger_MSGTYPE RapidTrigger
-#define AnalogSwitchGroup_static_trigger_MSGTYPE StaticTrigger
+#define AnalogSwitchGroup_rapid_trigger_MSGTYPE RapidTriggerConfig
+#define AnalogSwitchGroup_static_trigger_MSGTYPE StaticTriggerConfig
 
-#define RapidTrigger_FIELDLIST(X, a) \
-X(a, STATIC,   SINGULAR, FLOAT,    act,               1) \
-X(a, STATIC,   SINGULAR, FLOAT,    rel,               2) \
-X(a, STATIC,   SINGULAR, FLOAT,    f_act,             3) \
-X(a, STATIC,   SINGULAR, FLOAT,    f_rel,             4)
-#define RapidTrigger_CALLBACK NULL
-#define RapidTrigger_DEFAULT NULL
+#define RapidTriggerConfig_FIELDLIST(X, a) \
+X(a, STATIC,   SINGULAR, DOUBLE,   act,               1) \
+X(a, STATIC,   SINGULAR, DOUBLE,   rel,               2) \
+X(a, STATIC,   SINGULAR, DOUBLE,   f_act,             3) \
+X(a, STATIC,   SINGULAR, DOUBLE,   f_rel,             4)
+#define RapidTriggerConfig_CALLBACK NULL
+#define RapidTriggerConfig_DEFAULT NULL
 
-#define StaticTrigger_FIELDLIST(X, a) \
-X(a, STATIC,   SINGULAR, FLOAT,    act,               1) \
-X(a, STATIC,   SINGULAR, FLOAT,    rel,               2)
-#define StaticTrigger_CALLBACK NULL
-#define StaticTrigger_DEFAULT NULL
+#define StaticTriggerConfig_FIELDLIST(X, a) \
+X(a, STATIC,   SINGULAR, DOUBLE,   act,               1) \
+X(a, STATIC,   SINGULAR, DOUBLE,   rel,               2)
+#define StaticTriggerConfig_CALLBACK NULL
+#define StaticTriggerConfig_DEFAULT NULL
 
 #define ButtonId_FIELDLIST(X, a) \
 X(a, STATIC,   SINGULAR, UENUM,    type,              1) \
@@ -239,8 +242,8 @@ X(a, STATIC,   OPTIONAL, MESSAGE,  button_id,         2)
 extern const pb_msgdesc_t UdongConfig_msg;
 extern const pb_msgdesc_t AnalogSwitchAssignment_msg;
 extern const pb_msgdesc_t AnalogSwitchGroup_msg;
-extern const pb_msgdesc_t RapidTrigger_msg;
-extern const pb_msgdesc_t StaticTrigger_msg;
+extern const pb_msgdesc_t RapidTriggerConfig_msg;
+extern const pb_msgdesc_t StaticTriggerConfig_msg;
 extern const pb_msgdesc_t ButtonId_msg;
 extern const pb_msgdesc_t PushButtonSelector_msg;
 extern const pb_msgdesc_t DPadButtonSelector_msg;
@@ -250,24 +253,24 @@ extern const pb_msgdesc_t ButtonAssignment_msg;
 #define UdongConfig_fields &UdongConfig_msg
 #define AnalogSwitchAssignment_fields &AnalogSwitchAssignment_msg
 #define AnalogSwitchGroup_fields &AnalogSwitchGroup_msg
-#define RapidTrigger_fields &RapidTrigger_msg
-#define StaticTrigger_fields &StaticTrigger_msg
+#define RapidTriggerConfig_fields &RapidTriggerConfig_msg
+#define StaticTriggerConfig_fields &StaticTriggerConfig_msg
 #define ButtonId_fields &ButtonId_msg
 #define PushButtonSelector_fields &PushButtonSelector_msg
 #define DPadButtonSelector_fields &DPadButtonSelector_msg
 #define ButtonAssignment_fields &ButtonAssignment_msg
 
 /* Maximum encoded size of messages (where known) */
-/* UdongConfig_size depends on runtime parameters */
 #define AnalogSwitchAssignment_size              12
-#define AnalogSwitchGroup_size                   42
+#define AnalogSwitchGroup_size                   66
 #define ButtonAssignment_size                    18
 #define ButtonId_size                            10
-#define CONFIG_PB_H_MAX_SIZE                     AnalogSwitchGroup_size
+#define CONFIG_PB_H_MAX_SIZE                     UdongConfig_size
 #define DPadButtonSelector_size                  2
 #define PushButtonSelector_size                  6
-#define RapidTrigger_size                        20
-#define StaticTrigger_size                       10
+#define RapidTriggerConfig_size                  36
+#define StaticTriggerConfig_size                 18
+#define UdongConfig_size                         3264
 
 #ifdef __cplusplus
 } /* extern "C" */
@@ -279,6 +282,7 @@ namespace nanopb {
 template <>
 struct MessageDescriptor<UdongConfig> {
     static PB_INLINE_CONSTEXPR const pb_size_t fields_array_length = 3;
+    static PB_INLINE_CONSTEXPR const pb_size_t size = UdongConfig_size;
     static inline const pb_msgdesc_t* fields() {
         return &UdongConfig_msg;
     }
@@ -318,11 +322,11 @@ struct MessageDescriptor<AnalogSwitchGroup> {
     }
 };
 template <>
-struct MessageDescriptor<RapidTrigger> {
+struct MessageDescriptor<RapidTriggerConfig> {
     static PB_INLINE_CONSTEXPR const pb_size_t fields_array_length = 4;
-    static PB_INLINE_CONSTEXPR const pb_size_t size = RapidTrigger_size;
+    static PB_INLINE_CONSTEXPR const pb_size_t size = RapidTriggerConfig_size;
     static inline const pb_msgdesc_t* fields() {
-        return &RapidTrigger_msg;
+        return &RapidTriggerConfig_msg;
     }
     static inline bool has_msgid() {
         return false;
@@ -332,11 +336,11 @@ struct MessageDescriptor<RapidTrigger> {
     }
 };
 template <>
-struct MessageDescriptor<StaticTrigger> {
+struct MessageDescriptor<StaticTriggerConfig> {
     static PB_INLINE_CONSTEXPR const pb_size_t fields_array_length = 2;
-    static PB_INLINE_CONSTEXPR const pb_size_t size = StaticTrigger_size;
+    static PB_INLINE_CONSTEXPR const pb_size_t size = StaticTriggerConfig_size;
     static inline const pb_msgdesc_t* fields() {
-        return &StaticTrigger_msg;
+        return &StaticTriggerConfig_msg;
     }
     static inline bool has_msgid() {
         return false;
