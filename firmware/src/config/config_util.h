@@ -13,7 +13,6 @@
 #include "../proto/config.pb.h"
 #include "json_file.h"
 
-// const String kUdongConfigPath = "/user/config.json";
 const String kUdongConfigPath = "/user/config.binpb";
 
 inline const AnalogSwitchGroup& getConfigFromGroupId(

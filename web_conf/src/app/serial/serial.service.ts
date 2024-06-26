@@ -2,7 +2,7 @@
 
 import { Injectable } from '@angular/core';
 
-import { BehaviorSubject, Observable, Subject, defer, filter } from 'rxjs';
+import { BehaviorSubject, Observable, Subject, filter } from 'rxjs';
 
 export abstract class SerialServiceInterface {
   abstract ConnectionChanges(): Observable<boolean>;

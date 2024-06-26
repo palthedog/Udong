@@ -31,18 +31,13 @@ void HandleGet(Udong& context, const String& cmd) {
   SendJsonResponse(cmd, json_response);
 }
 
-void HandleGetConfig(Udong& context, const String& cmd, bool binary = true) {
+void HandleGetConfig(Udong& context, const String& cmd) {
   std::vector<uint8_t> payload;
   pb_ostream_t outs = pb_ovstream(payload);
   pb_encode(&outs, &UdongConfig_msg, &context.circuit->config);
-  if (binary) {
-    // Binary fire format
-    Serial.printf("%s@%d#", cmd.c_str(), payload.size());
-    Serial.write((const char*)payload.data(), payload.size());
-  } else {
-    // Base64 encoded format
-    Serial.printf("TODO: Base64 encoding is not supported yet\n");
-  }
+
+  Serial.printf("%s@%d#", cmd.c_str(), payload.size());
+  Serial.write((const char*)payload.data(), payload.size());
   Serial.flush();
 }
 
@@ -104,12 +99,7 @@ void SerialHandler::ReadJsonPayload(Udong& context) {
 void SerialHandler::ReadPayloadSize(Udong& context) {
   while (Serial.available()) {
     uint8_t ch = Serial.read();
-    if (ch == '/') {
-      // End of the payload size.
-      // Start reading the Base64 encoded payload.
-      state_ = State::kReadingBase64Payload;
-      return;
-    } else if (ch == '#') {
+    if (ch == '#') {
       // End of the payload size.
       // Start reading the binary payload.
       state_ = State::kReadingBinaryPayload;
@@ -118,9 +108,6 @@ void SerialHandler::ReadPayloadSize(Udong& context) {
       payload_size_ = payload_size_ * 10 + (ch - '0');
     }
   }
-}
-
-void SerialHandler::ReadBase64Payload(Udong& context) {
 }
 
 void SerialHandler::ReadBinaryPayload(Udong& context) {
@@ -160,9 +147,6 @@ void SerialHandler::HandleSerial(Udong& context) {
         break;
       case State::kReadingPayloadSize:
         this->ReadPayloadSize(context);
-        break;
-      case State::kReadingBase64Payload:
-        this->ReadBase64Payload(context);
         break;
       case State::kReadingBinaryPayload:
         this->ReadBinaryPayload(context);

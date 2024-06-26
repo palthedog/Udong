@@ -5,7 +5,6 @@
 
 #include <memory>
 
-#include "../../config/button_config.h"
 #include "../../switch/switch.h"
 #include "button.h"
 

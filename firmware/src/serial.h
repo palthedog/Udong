@@ -16,15 +16,6 @@
 //   A commannd name and payload is delimited by a colon. The payload finishes
 //   with a newline (\n).
 //
-// - Base64 encoded binary
-//   command-name@100/...100 characters (which encodes payload)...
-//
-//   A command name followed by an atmark (@) and the length of the payload.
-//   The payload is encoded in base64 and delimited by a slash (/).
-//   Note that the length is
-//   equal to `len(base64_encode(binary))`
-//   NOT `len(binary)`
-//
 // - Bianry (not implemented yet)
 //   command-name@100#...100 bytes of binary...
 //
@@ -38,7 +29,6 @@ class SerialHandler {
     kReadingCommand,
     kReadingJsonPayload,
     kReadingPayloadSize,
-    kReadingBase64Payload,
     kReadingBinaryPayload,
   };
 
@@ -67,7 +57,6 @@ class SerialHandler {
   void ReadJsonPayload(Udong& context);
   void ReadPayloadSize(Udong& context);
   void ReadBinaryPayload(Udong& context);
-  void ReadBase64Payload(Udong& context);
 
  public:
   void HandleSerial(Udong& context);
