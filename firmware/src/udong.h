@@ -205,6 +205,8 @@ class Udong {
             analog_switch, it.button_id.selector.push_button.push_button_id));
       } else if (it.button_id.type == ButtonType_D_PAD) {
         switch (it.button_id.selector.d_pad.direction) {
+          case DPadButtonSelector_Direction_UNSPECIFIED_DIRECTION:
+            break;
           case DPadButtonSelector_Direction_UP:
             d_pad_.AddUpSwitch(analog_switch);
             break;
