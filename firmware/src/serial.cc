@@ -1,10 +1,14 @@
 #include "serial.h"
 
 #include <ArduinoJson.h>
+#include <pb_decode.h>
+#include <pb_encode.h>
+
+#include "proto/config.pb.h"
 
 namespace {
 
-void SendResponse(const String& cmd, const JsonDocument& response) {
+void SendJsonResponse(const String& cmd, const JsonDocument& response) {
   String res_buf;
   serializeJson(response, res_buf);
 
@@ -14,7 +18,7 @@ void SendResponse(const String& cmd, const JsonDocument& response) {
   Serial.print('\n');
 }
 
-void HandleGet(Udong& context, const String& cmd, const JsonDocument& arg) {
+void HandleGet(Udong& context, const String& cmd) {
   JsonDocument json_response;
 
   JsonArray analog_switches = json_response["analog_switches"].to<JsonArray>();
@@ -24,58 +28,151 @@ void HandleGet(Udong& context, const String& cmd, const JsonDocument& arg) {
     var["press_mm"] = analog_switch->GetLastPressMm();
   }
 
-  SendResponse(cmd, json_response);
+  SendJsonResponse(cmd, json_response);
 }
 
-void HandleGetConfig(
-    Udong& context, const String& cmd, const JsonDocument& arg) {
-  /*
-JsonDocument json_response;
-convertToJson(context.circuit->config, json_response.to<JsonObject>());
-SendResponse(cmd, json_response);
-*/
-  Serial.println("TODO: Fix HandleGetConfig on FW");
+void HandleGetConfig(Udong& context, const String& cmd, bool binary = true) {
+  std::vector<uint8_t> payload;
+  pb_ostream_t outs = pb_ovstream(payload);
+  pb_encode(&outs, &UdongConfig_msg, &context.circuit->config);
+  if (binary) {
+    // Binary fire format
+    Serial.printf("%s@%d#", cmd.c_str(), payload.size());
+    Serial.write((const char*)payload.data(), payload.size());
+  } else {
+    // Base64 encoded format
+    Serial.printf("TODO: Base64 encoding is not supported yet\n");
+  }
+  Serial.flush();
 }
 
-void HandleSaveConfig(
-    Udong& context, const String& cmd, const JsonDocument& arg) {
+void HandleSaveConfig(Udong& context, const UdongConfig& udong_config) {
   // Save the received UdongConfig
-  Serial.println("TODO: Fix HandleSaveConfig on FW");
-  /*
-  UdongConfig config;
-  convertFromJson(arg, config);
-
-  saveUdonConfig(config);
- */
-
+  saveUdonConfig(udong_config);
   // Then reload the config and reconstruct Circuit
   context.ReloadConfig();
 }
 
 }  // namespace
 
+void SerialHandler::ReadCommand(Udong& context) {
+  while (Serial.available()) {
+    uint8_t ch = Serial.read();
+    if (ch == ':') {
+      // Command with Json payload.
+      state_ = State::kReadingJsonPayload;
+      return;
+    } else if (ch == '@') {
+      // Command with payload size.
+      payload_size_ = 0;
+      state_ = State::kReadingPayloadSize;
+      return;
+    } else if (ch == '\n') {
+      // No payload. Command only.
+      HandleCmd(context, command_);
+      return;
+    } else if (ch == '\r') {
+      // Ignore CR
+      continue;
+    } else {
+      command_ += (char)ch;
+    }
+  }
+}
+
+void SerialHandler::HandleJsonCmd(
+    Udong& context, const String& cmd, const JsonDocument& arg) {
+  Serial.printf("JSON command: %s is not supported\n", cmd.c_str());
+  Reset();
+}
+
+void SerialHandler::ReadJsonPayload(Udong& context) {
+  while (Serial.available()) {
+    uint8_t ch = Serial.read();
+    if (ch == '\n') {
+      // End of the payload.
+      JsonDocument arg;
+      deserializeJson(arg, payload_buffer_.data());
+      HandleJsonCmd(context, command_, arg);
+      return;
+    } else {
+      payload_buffer_.push_back(ch);
+    }
+  }
+}
+
+void SerialHandler::ReadPayloadSize(Udong& context) {
+  while (Serial.available()) {
+    uint8_t ch = Serial.read();
+    if (ch == '/') {
+      // End of the payload size.
+      // Start reading the Base64 encoded payload.
+      state_ = State::kReadingBase64Payload;
+      return;
+    } else if (ch == '#') {
+      // End of the payload size.
+      // Start reading the binary payload.
+      state_ = State::kReadingBinaryPayload;
+      return;
+    } else {
+      payload_size_ = payload_size_ * 10 + (ch - '0');
+    }
+  }
+}
+
+void SerialHandler::ReadBase64Payload(Udong& context) {
+}
+
+void SerialHandler::ReadBinaryPayload(Udong& context) {
+  while (Serial.available()) {
+    uint8_t ch = Serial.read();
+    payload_buffer_.push_back(ch);
+    if (payload_buffer_.size() == payload_size_) {
+      // End of the payload.
+      HandleBinaryCommand(context, payload_buffer_.data());
+      return;
+    }
+  }
+}
+
+void SerialHandler::HandleBinaryCommand(Udong& context, const uint8_t* binary) {
+  pb_istream_t ins = pb_istream_from_buffer(binary, payload_size_);
+
+  if (command_ == "save-config") {
+    UdongConfig arg;
+    pb_decode(&ins, &UdongConfig_msg, &arg);
+    HandleSaveConfig(context, arg);
+  } else {
+    Serial.printf("unknown-cmd: %s\n", command_.c_str());
+  }
+
+  Reset();
+}
+
 void SerialHandler::HandleSerial(Udong& context) {
   while (Serial.available()) {
-    char ch = Serial.read();
-    if (ch == ':') {
-      String cmd = serial_buffer;
-      JsonDocument arg;
-      deserializeJson(arg, Serial);
-      HandleCmd(context, cmd, arg);
-      serial_buffer = "";
-    } else if (ch == '\n') {
-      JsonDocument arg;
-      HandleCmd(context, serial_buffer, arg);
-      serial_buffer = "";
-    } else {
-      serial_buffer += ch;
+    switch (state_) {
+      case State::kReadingCommand:
+        this->ReadCommand(context);
+        break;
+      case State::kReadingJsonPayload:
+        this->ReadJsonPayload(context);
+        break;
+      case State::kReadingPayloadSize:
+        this->ReadPayloadSize(context);
+        break;
+      case State::kReadingBase64Payload:
+        this->ReadBase64Payload(context);
+        break;
+      case State::kReadingBinaryPayload:
+        this->ReadBinaryPayload(context);
+        break;
     }
   }
 }
 
 // String serial_buffer;
-void SerialHandler::HandleCmd(
-    Udong& context, const String& cmd, const JsonDocument& arg) {
+void SerialHandler::HandleCmd(Udong& context, const String& cmd) {
   Circuit& circuit = *context.circuit;
   if (cmd == "") {
     // Do nothing
@@ -85,7 +182,6 @@ void SerialHandler::HandleCmd(
       analog_switch->DumpLastState();
       analog_switch->DumpLookupTable();
     }
-    return;
   } else if (cmd == "reset") {
     Serial.println("Reset all calibration data");
 
@@ -94,13 +190,17 @@ void SerialHandler::HandleCmd(
 
     context.ReloadConfig();
   } else if (cmd == "get") {
-    HandleGet(context, cmd, arg);
+    HandleGet(context, cmd);
   } else if (cmd == "get-config") {
-    HandleGetConfig(context, cmd, arg);
+    HandleGetConfig(context, cmd);
   } else if (cmd == "save-config") {
-    HandleSaveConfig(context, cmd, arg);
+    // TODO: Support this command!
+    // HandleSaveConfig(context, cmd, arg);
+    Serial.println("save-config is not supported yet");
   } else {
-    Serial.print("unknown-cmd:");
+    Serial.print("Received unknown-cmd:");
     Serial.printf("%s\n", cmd.c_str());
   }
+
+  Reset();
 }

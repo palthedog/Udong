@@ -9,7 +9,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { AnalogSwitchConfigComponent } from '../analog-switch-config/analog-switch-config.component';
 import { BoardButtonsComponent } from '../board-buttons/board-buttons.component';
-import { AnalogSwitchAssignment, AnalogSwitchGroup, ButtonAssignment, ButtonId, ButtonType, PushButtonSelector, UdongConfig } from '../../proto/config';
+import { AnalogSwitchAssignment, AnalogSwitchGroup, ButtonAssignment, ButtonId, UdongConfig } from '../../proto/config';
 import { AppConsts } from '../consts';
 import { GroupSelectorComponent } from '../group-selector/group-selector.component';
 import { SerialServiceInterface } from '../serial/serial.service';
@@ -53,10 +53,9 @@ export class ConfiguratorComponent {
     });
 
     this.serial_service.MessageReceiveFor('get-config').subscribe((v) => {
-      this.config = JSON.parse(v[1]);
-
+      this.config = UdongConfig.deserializeBinary(v[1]);
       this.log.info('Config received');
-      this.log.info(this.config);
+      this.log.info(this.config.toObject());
       if (this.config) {
         this.group_ids = this.config.analog_switch_groups.map((group) => {
           return group.analog_switch_group_id;
@@ -109,8 +108,10 @@ export class ConfiguratorComponent {
   }
 
   Save() {
-    let str_config = JSON.stringify(this.config);
+    if (this.config == undefined) {
+      return;
+    }
     this.log.info('save:', this.config);
-    this.serial_service.Send('save-config:' + str_config);
+    this.serial_service.SendBinary('save-config', this.config.serializeBinary());
   }
 }

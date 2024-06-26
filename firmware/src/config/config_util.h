@@ -3,6 +3,10 @@
 
 #include <Arduino.h>
 #include <ArduinoJson.h>
+
+// TODO: Get rid of Nanopb which doesn't support getter/setter
+// As a result, the runtime doesn't know whether each field is set or not.
+// So we need to maintain has_* fields manually. It is terrible for maintenance.
 #include <pb_decode.h>
 #include <pb_encode.h>
 
@@ -65,6 +69,8 @@ inline UdongConfig defaultUdongConfig() {
     group.analog_switch_group_id = i;
     group.trigger_type =
         i < 4 ? TriggerType_RAPID_TRIGGER : TriggerType_STATIC_TRIGGER;
+    group.has_static_trigger = true;
+    group.has_rapid_trigger = true;
     group.static_trigger = {
         .act = 1.2,
         .rel = 0.8,
@@ -83,6 +89,7 @@ inline UdongConfig defaultUdongConfig() {
   for (int i = 0; i < 16; i++) {
     ButtonAssignment& button_assignment = config.button_assignments[i];
     button_assignment.switch_id = i;
+    button_assignment.has_button_id = true;
     button_assignment.button_id = button_ids[i];
   }
   config.button_assignments_count = 16;
@@ -90,16 +97,28 @@ inline UdongConfig defaultUdongConfig() {
   return config;
 }
 
-inline bool write_callback(
+inline bool write_file_callback(
     pb_ostream_t* outs, const pb_byte_t* buf, size_t count) {
-  File* file = (File*)(outs->state);
-  size_t written_cnt = file->write(buf, count);
+  Stream* stream = (Stream*)(outs->state);
+  size_t written_cnt = stream->write(buf, count);
   return written_cnt == count;
-};
+}
 
 inline pb_ostream_s pb_ofstream(File& file) {
-  return {write_callback, &file, SIZE_MAX, 0};
-};
+  return {write_file_callback, &file, SIZE_MAX, 0};
+}
+
+inline bool write_vector_callback(
+    pb_ostream_t* outs, const pb_byte_t* buf, size_t count) {
+  std::vector<uint8_t>* vec = (std::vector<uint8_t>*)(outs->state);
+  vec->reserve(vec->size() + count);
+  vec->insert(vec->end(), buf, buf + count);
+  return true;
+}
+
+inline pb_ostream_s pb_ovstream(std::vector<uint8_t>& buf) {
+  return {write_vector_callback, &buf, SIZE_MAX, 0};
+}
 
 inline bool SaveProtoBin(
     const String& path, const pb_msgdesc_t& fields, const void* msg) {

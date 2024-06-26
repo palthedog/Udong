@@ -12,6 +12,7 @@ const std::vector<ButtonId>& getAllButtonIds() {
   for (uint32_t i = 0; i < 16; i++) {
     allButtonIds.push_back(
         {.type = ButtonType_PUSH,
+         .which_selector = ButtonId_push_button_tag,
          .selector{.push_button{
              .push_button_id = i,
          }}});
@@ -19,6 +20,7 @@ const std::vector<ButtonId>& getAllButtonIds() {
 
   allButtonIds.push_back(
       {.type = ButtonType_D_PAD,
+       .which_selector = ButtonId_d_pad_tag,
        .selector{
            .d_pad = DPadButtonSelector{
                .direction = DPadButtonSelector_Direction_UP,
@@ -26,6 +28,8 @@ const std::vector<ButtonId>& getAllButtonIds() {
 
   allButtonIds.push_back(
       {.type = ButtonType_D_PAD,
+       .which_selector = ButtonId_d_pad_tag,
+
        .selector{
            .d_pad = DPadButtonSelector{
                .direction = DPadButtonSelector_Direction_RIGHT,
@@ -33,6 +37,8 @@ const std::vector<ButtonId>& getAllButtonIds() {
 
   allButtonIds.push_back(
       {.type = ButtonType_D_PAD,
+       .which_selector = ButtonId_d_pad_tag,
+
        .selector{
            .d_pad = DPadButtonSelector{
                .direction = DPadButtonSelector_Direction_DOWN,
@@ -40,6 +46,7 @@ const std::vector<ButtonId>& getAllButtonIds() {
 
   allButtonIds.push_back(
       {.type = ButtonType_D_PAD,
+       .which_selector = ButtonId_d_pad_tag,
        .selector{
            .d_pad = DPadButtonSelector{
                .direction = DPadButtonSelector_Direction_LEFT,

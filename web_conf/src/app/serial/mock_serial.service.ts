@@ -10,14 +10,14 @@ import { AnalogSwitchAssignment, AnalogSwitchGroup, ButtonAssignment, ButtonId, 
 export class MockSerialService extends SerialServiceInterface {
     log = inject(Logger);
 
-    private message_subject = new Subject<[string, string]>();
+    private message_subject = new Subject<[string, Uint8Array]>();
     private connection_subject = new BehaviorSubject<boolean>(false);
 
     public ConnectionChanges(): Observable<boolean> {
         return this.connection_subject;
     }
 
-    public MessageArrives(): Observable<[string, string]> {
+    public MessageArrives(): Observable<[string, Uint8Array]> {
         return this.message_subject;
     }
 
@@ -25,18 +25,27 @@ export class MockSerialService extends SerialServiceInterface {
         this.connection_subject.next(true);
     }
 
-    async Send(message: string) {
+    override async Send(cmd: string, message?: string) {
         this.log.info('Sending via MockSerialService');
-        this.log.info(message);
-        if (message == 'get-config') {
+        this.log.info('cmd: ', cmd);
+        this.log.info('payload: ', message);
+        if (cmd == 'get-config') {
             this.HandleGetConfig();
+        } else {
+            console.error('Unknown command: <' + cmd + '>');
         }
 
         return;
     }
 
-    private MockResponse(type: string, obj: Object) {
-        this.message_subject.next([type, JSON.stringify(obj)]);
+    override async SendBinary(cmd: string, payload: Uint8Array) {
+        this.log.info('Sending Binary via MockSerialService');
+        this.log.info('cmd: ', cmd);
+        this.log.info('payload-size: ', payload.length);
+    }
+
+    private MockResponse(type: string, bin_payload: Uint8Array) {
+        this.message_subject.next([type, bin_payload]);
     }
 
     private HandleGetConfig() {
@@ -96,6 +105,7 @@ export class MockSerialService extends SerialServiceInterface {
         });
 
         // Mock response
-        this.MockResponse('get-config', udong_config.toObject());
+        console.log('mocked response', udong_config);
+        this.MockResponse('get-config', udong_config.serializeBinary());
     }
 }

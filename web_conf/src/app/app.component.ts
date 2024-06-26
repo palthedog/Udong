@@ -36,9 +36,6 @@ export class AppComponent {
   }
 
   ngOnInit() {
-    this.serial_service.MessageArrives().subscribe((line) => {
-      this.log.debug('got in subscribe: ' + line);
-    });
   }
 
 }

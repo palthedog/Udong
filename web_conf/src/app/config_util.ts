@@ -1,11 +1,11 @@
 // TODO: Is there any chance to use ProtoBuf on Rasberry Pi????
 
-import { ButtonId, ButtonType, PushButtonSelector, UdongConfig } from '../proto/config';
+import { ButtonAssignment, ButtonId, ButtonType, PushButtonSelector, UdongConfig } from '../proto/config';
 
 export function SwitchIdToGroupId(config: UdongConfig, switch_id: number) {
     for (let key in config.analog_switch_assignments) {
         let assignment = config.analog_switch_assignments[key];
-        if (switch_id == assignment.analog_switch_id) {
+        if (switch_id === assignment.analog_switch_id) {
             return assignment.analog_switch_group_id;
         }
     }
@@ -14,8 +14,8 @@ export function SwitchIdToGroupId(config: UdongConfig, switch_id: number) {
 
 export function SwitchIdToButtonId(config: UdongConfig, switch_id: number): ButtonId {
     for (let key in config.button_assignments) {
-        let assignment = config.button_assignments[key];
-        if (switch_id == assignment.switch_id) {
+        let assignment: ButtonAssignment = config.button_assignments[key];
+        if (switch_id === assignment.switch_id) {
             return assignment.button_id;
         }
     }
