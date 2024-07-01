@@ -62,9 +62,10 @@ struct Circuit {
     //   https://learn.microsoft.com/windows/win32/xinput/directinput-and-xusb-devices
     // for more details about HID button IDs.
     // {hardware_id, switch_id}
-    enabled_switchs.resize(16, false);
+    enabled_switchs.resize(16, true);
 
     // For my dev board
+    /*
     enabled_switchs[0] = true;
     enabled_switchs[1] = true;
     enabled_switchs[2] = true;
@@ -73,6 +74,7 @@ struct Circuit {
 
     enabled_switchs[8] = true;
     enabled_switchs[9] = true;
+    */
 
     for (uint8_t switch_id = 0; switch_id < 16; switch_id++) {
       if (enabled_switchs[switch_id]) {

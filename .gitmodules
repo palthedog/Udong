@@ -1,3 +1,6 @@
 [submodule "firmware/lib/nanopb"]
 	path = firmware/lib/nanopb
 	url = https://github.com/nanopb/nanopb.git
+[submodule "firmware/lib/protobuf"]
+	path = firmware/lib/protobuf
+	url = https://github.com/protocolbuffers/protobuf.git
