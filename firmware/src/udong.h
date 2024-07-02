@@ -159,11 +159,6 @@ class Udong {
       Serial.println("Failed to send report");
     }
 
-#if TELEPLOT
-    uint32_t now = time_us_32();
-    Serial.printf(">report-dt(ms): %lf\n", (now - last_report_t) / 1000.0);
-    last_report_t = now;
-#endif
     // Consider using sleep_until? (with performance measurement of loop())
     delayMicroseconds(500);
     return true;

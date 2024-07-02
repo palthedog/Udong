@@ -58,6 +58,7 @@ class DPad {
       case DPadLRState::LeftThenRight:
         // TODO: Make it configurabale.
         x = 2;
+        break;
       case DPadLRState::RightThenLeft:
         // TODO: Make it configurabale.
         x = 0;
