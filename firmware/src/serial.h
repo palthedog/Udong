@@ -51,7 +51,7 @@ class SerialHandler {
   void HandleJsonCmd(
       Udong& context, const String& cmd, const JsonDocument& arg);
 
-  void HandleBinaryCommand(Udong& context, const uint8_t* binary);
+  void HandleBinaryCommand(Udong& context, const uint8_t* binary, size_t size);
 
   void ReadCommand(Udong& context);
   void ReadJsonPayload(Udong& context);

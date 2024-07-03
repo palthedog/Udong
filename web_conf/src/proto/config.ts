@@ -14,119 +14,6 @@ export enum ButtonType {
     PUSH = 1,
     D_PAD = 2
 }
-export class UdongConfig extends pb_1.Message {
-    #one_of_decls: number[][] = [];
-    constructor(data?: any[] | {
-        analog_switch_assignments?: AnalogSwitchAssignment[];
-        analog_switch_groups?: AnalogSwitchGroup[];
-        button_assignments?: ButtonAssignment[];
-    }) {
-        super();
-        pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [1, 2, 3], this.#one_of_decls);
-        if (!Array.isArray(data) && typeof data == "object") {
-            if ("analog_switch_assignments" in data && data.analog_switch_assignments != undefined) {
-                this.analog_switch_assignments = data.analog_switch_assignments;
-            }
-            if ("analog_switch_groups" in data && data.analog_switch_groups != undefined) {
-                this.analog_switch_groups = data.analog_switch_groups;
-            }
-            if ("button_assignments" in data && data.button_assignments != undefined) {
-                this.button_assignments = data.button_assignments;
-            }
-        }
-    }
-    get analog_switch_assignments() {
-        return pb_1.Message.getRepeatedWrapperField(this, AnalogSwitchAssignment, 1) as AnalogSwitchAssignment[];
-    }
-    set analog_switch_assignments(value: AnalogSwitchAssignment[]) {
-        pb_1.Message.setRepeatedWrapperField(this, 1, value);
-    }
-    get analog_switch_groups() {
-        return pb_1.Message.getRepeatedWrapperField(this, AnalogSwitchGroup, 2) as AnalogSwitchGroup[];
-    }
-    set analog_switch_groups(value: AnalogSwitchGroup[]) {
-        pb_1.Message.setRepeatedWrapperField(this, 2, value);
-    }
-    get button_assignments() {
-        return pb_1.Message.getRepeatedWrapperField(this, ButtonAssignment, 3) as ButtonAssignment[];
-    }
-    set button_assignments(value: ButtonAssignment[]) {
-        pb_1.Message.setRepeatedWrapperField(this, 3, value);
-    }
-    static fromObject(data: {
-        analog_switch_assignments?: ReturnType<typeof AnalogSwitchAssignment.prototype.toObject>[];
-        analog_switch_groups?: ReturnType<typeof AnalogSwitchGroup.prototype.toObject>[];
-        button_assignments?: ReturnType<typeof ButtonAssignment.prototype.toObject>[];
-    }): UdongConfig {
-        const message = new UdongConfig({});
-        if (data.analog_switch_assignments != null) {
-            message.analog_switch_assignments = data.analog_switch_assignments.map(item => AnalogSwitchAssignment.fromObject(item));
-        }
-        if (data.analog_switch_groups != null) {
-            message.analog_switch_groups = data.analog_switch_groups.map(item => AnalogSwitchGroup.fromObject(item));
-        }
-        if (data.button_assignments != null) {
-            message.button_assignments = data.button_assignments.map(item => ButtonAssignment.fromObject(item));
-        }
-        return message;
-    }
-    toObject() {
-        const data: {
-            analog_switch_assignments?: ReturnType<typeof AnalogSwitchAssignment.prototype.toObject>[];
-            analog_switch_groups?: ReturnType<typeof AnalogSwitchGroup.prototype.toObject>[];
-            button_assignments?: ReturnType<typeof ButtonAssignment.prototype.toObject>[];
-        } = {};
-        if (this.analog_switch_assignments != null) {
-            data.analog_switch_assignments = this.analog_switch_assignments.map((item: AnalogSwitchAssignment) => item.toObject());
-        }
-        if (this.analog_switch_groups != null) {
-            data.analog_switch_groups = this.analog_switch_groups.map((item: AnalogSwitchGroup) => item.toObject());
-        }
-        if (this.button_assignments != null) {
-            data.button_assignments = this.button_assignments.map((item: ButtonAssignment) => item.toObject());
-        }
-        return data;
-    }
-    serialize(): Uint8Array;
-    serialize(w: pb_1.BinaryWriter): void;
-    serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
-        const writer = w || new pb_1.BinaryWriter();
-        if (this.analog_switch_assignments.length)
-            writer.writeRepeatedMessage(1, this.analog_switch_assignments, (item: AnalogSwitchAssignment) => item.serialize(writer));
-        if (this.analog_switch_groups.length)
-            writer.writeRepeatedMessage(2, this.analog_switch_groups, (item: AnalogSwitchGroup) => item.serialize(writer));
-        if (this.button_assignments.length)
-            writer.writeRepeatedMessage(3, this.button_assignments, (item: ButtonAssignment) => item.serialize(writer));
-        if (!w)
-            return writer.getResultBuffer();
-    }
-    static deserialize(bytes: Uint8Array | pb_1.BinaryReader): UdongConfig {
-        const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new UdongConfig();
-        while (reader.nextField()) {
-            if (reader.isEndGroup())
-                break;
-            switch (reader.getFieldNumber()) {
-                case 1:
-                    reader.readMessage(message.analog_switch_assignments, () => pb_1.Message.addToRepeatedWrapperField(message, 1, AnalogSwitchAssignment.deserialize(reader), AnalogSwitchAssignment));
-                    break;
-                case 2:
-                    reader.readMessage(message.analog_switch_groups, () => pb_1.Message.addToRepeatedWrapperField(message, 2, AnalogSwitchGroup.deserialize(reader), AnalogSwitchGroup));
-                    break;
-                case 3:
-                    reader.readMessage(message.button_assignments, () => pb_1.Message.addToRepeatedWrapperField(message, 3, ButtonAssignment.deserialize(reader), ButtonAssignment));
-                    break;
-                default: reader.skipField();
-            }
-        }
-        return message;
-    }
-    serializeBinary(): Uint8Array {
-        return this.serialize();
-    }
-    static override deserializeBinary(bytes: Uint8Array): UdongConfig {
-        return UdongConfig.deserialize(bytes);
-    }
-}
 export class AnalogSwitchAssignment extends pb_1.Message {
     #one_of_decls: number[][] = [];
     constructor(data?: any[] | {
@@ -952,5 +839,118 @@ export class ButtonAssignment extends pb_1.Message {
     }
     static override deserializeBinary(bytes: Uint8Array): ButtonAssignment {
         return ButtonAssignment.deserialize(bytes);
+    }
+}
+export class UdongConfig extends pb_1.Message {
+    #one_of_decls: number[][] = [];
+    constructor(data?: any[] | {
+        analog_switch_assignments?: AnalogSwitchAssignment[];
+        analog_switch_groups?: AnalogSwitchGroup[];
+        button_assignments?: ButtonAssignment[];
+    }) {
+        super();
+        pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [1, 2, 3], this.#one_of_decls);
+        if (!Array.isArray(data) && typeof data == "object") {
+            if ("analog_switch_assignments" in data && data.analog_switch_assignments != undefined) {
+                this.analog_switch_assignments = data.analog_switch_assignments;
+            }
+            if ("analog_switch_groups" in data && data.analog_switch_groups != undefined) {
+                this.analog_switch_groups = data.analog_switch_groups;
+            }
+            if ("button_assignments" in data && data.button_assignments != undefined) {
+                this.button_assignments = data.button_assignments;
+            }
+        }
+    }
+    get analog_switch_assignments() {
+        return pb_1.Message.getRepeatedWrapperField(this, AnalogSwitchAssignment, 1) as AnalogSwitchAssignment[];
+    }
+    set analog_switch_assignments(value: AnalogSwitchAssignment[]) {
+        pb_1.Message.setRepeatedWrapperField(this, 1, value);
+    }
+    get analog_switch_groups() {
+        return pb_1.Message.getRepeatedWrapperField(this, AnalogSwitchGroup, 2) as AnalogSwitchGroup[];
+    }
+    set analog_switch_groups(value: AnalogSwitchGroup[]) {
+        pb_1.Message.setRepeatedWrapperField(this, 2, value);
+    }
+    get button_assignments() {
+        return pb_1.Message.getRepeatedWrapperField(this, ButtonAssignment, 3) as ButtonAssignment[];
+    }
+    set button_assignments(value: ButtonAssignment[]) {
+        pb_1.Message.setRepeatedWrapperField(this, 3, value);
+    }
+    static fromObject(data: {
+        analog_switch_assignments?: ReturnType<typeof AnalogSwitchAssignment.prototype.toObject>[];
+        analog_switch_groups?: ReturnType<typeof AnalogSwitchGroup.prototype.toObject>[];
+        button_assignments?: ReturnType<typeof ButtonAssignment.prototype.toObject>[];
+    }): UdongConfig {
+        const message = new UdongConfig({});
+        if (data.analog_switch_assignments != null) {
+            message.analog_switch_assignments = data.analog_switch_assignments.map(item => AnalogSwitchAssignment.fromObject(item));
+        }
+        if (data.analog_switch_groups != null) {
+            message.analog_switch_groups = data.analog_switch_groups.map(item => AnalogSwitchGroup.fromObject(item));
+        }
+        if (data.button_assignments != null) {
+            message.button_assignments = data.button_assignments.map(item => ButtonAssignment.fromObject(item));
+        }
+        return message;
+    }
+    toObject() {
+        const data: {
+            analog_switch_assignments?: ReturnType<typeof AnalogSwitchAssignment.prototype.toObject>[];
+            analog_switch_groups?: ReturnType<typeof AnalogSwitchGroup.prototype.toObject>[];
+            button_assignments?: ReturnType<typeof ButtonAssignment.prototype.toObject>[];
+        } = {};
+        if (this.analog_switch_assignments != null) {
+            data.analog_switch_assignments = this.analog_switch_assignments.map((item: AnalogSwitchAssignment) => item.toObject());
+        }
+        if (this.analog_switch_groups != null) {
+            data.analog_switch_groups = this.analog_switch_groups.map((item: AnalogSwitchGroup) => item.toObject());
+        }
+        if (this.button_assignments != null) {
+            data.button_assignments = this.button_assignments.map((item: ButtonAssignment) => item.toObject());
+        }
+        return data;
+    }
+    serialize(): Uint8Array;
+    serialize(w: pb_1.BinaryWriter): void;
+    serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+        const writer = w || new pb_1.BinaryWriter();
+        if (this.analog_switch_assignments.length)
+            writer.writeRepeatedMessage(1, this.analog_switch_assignments, (item: AnalogSwitchAssignment) => item.serialize(writer));
+        if (this.analog_switch_groups.length)
+            writer.writeRepeatedMessage(2, this.analog_switch_groups, (item: AnalogSwitchGroup) => item.serialize(writer));
+        if (this.button_assignments.length)
+            writer.writeRepeatedMessage(3, this.button_assignments, (item: ButtonAssignment) => item.serialize(writer));
+        if (!w)
+            return writer.getResultBuffer();
+    }
+    static deserialize(bytes: Uint8Array | pb_1.BinaryReader): UdongConfig {
+        const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new UdongConfig();
+        while (reader.nextField()) {
+            if (reader.isEndGroup())
+                break;
+            switch (reader.getFieldNumber()) {
+                case 1:
+                    reader.readMessage(message.analog_switch_assignments, () => pb_1.Message.addToRepeatedWrapperField(message, 1, AnalogSwitchAssignment.deserialize(reader), AnalogSwitchAssignment));
+                    break;
+                case 2:
+                    reader.readMessage(message.analog_switch_groups, () => pb_1.Message.addToRepeatedWrapperField(message, 2, AnalogSwitchGroup.deserialize(reader), AnalogSwitchGroup));
+                    break;
+                case 3:
+                    reader.readMessage(message.button_assignments, () => pb_1.Message.addToRepeatedWrapperField(message, 3, ButtonAssignment.deserialize(reader), ButtonAssignment));
+                    break;
+                default: reader.skipField();
+            }
+        }
+        return message;
+    }
+    serializeBinary(): Uint8Array {
+        return this.serialize();
+    }
+    static override deserializeBinary(bytes: Uint8Array): UdongConfig {
+        return UdongConfig.deserialize(bytes);
     }
 }

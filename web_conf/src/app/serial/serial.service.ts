@@ -156,6 +156,11 @@ class MessageParser {
         if (ch == '@') {
           this.state_ = ParserState.ReadingSize;
           console.log('received @: cmd: ', this.cmd_);
+        } else if (ch == '\n') {
+          console.log('received LF: cmd: ', this.cmd_);
+          let ret = { done: true, cmd: this.cmd_, payload: new Uint8Array(0) };
+          this.reset();
+          return ret;
         } else {
           this.cmd_ += ch;
         }
@@ -165,6 +170,12 @@ class MessageParser {
         let ch = String.fromCharCode(byte);
         if (ch == '#') {
           console.log('received #: payload size: ', this.payload_size_);
+
+          if (this.payload_size_ == 0) {
+            let ret = { done: true, cmd: this.cmd_, payload: new Uint8Array(0) };
+            this.reset();
+            return ret;
+          }
           this.state_ = ParserState.ReadingBinaryPayload;
           this.payload_ = new Uint8Array(this.payload_size_);
           this.payload_offset_ = 0;
@@ -182,6 +193,7 @@ class MessageParser {
       case ParserState.ReadingBinaryPayload: {
         this.payload_[this.payload_offset_] = byte;
         this.payload_offset_ += 1;
+        console.log('received: ', byte.toString(16), " - ", this.payload_offset_, '/', this.payload_size_);
         if (this.payload_offset_ == this.payload_size_) {
           let ret = { done: true, cmd: this.cmd_, payload: this.payload_ };
           this.reset();
@@ -197,5 +209,6 @@ class MessageParser {
     this.cmd_ = '';
     this.payload_size_ = 0;
     this.payload_ = new Uint8Array(0);
+    this.state_ = ParserState.ReadingCommand;
   }
 }

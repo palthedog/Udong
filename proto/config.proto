@@ -1,12 +1,5 @@
 syntax = "proto3";
 
-// Represents the overall configuration for Udong
-message UdongConfig {
-  repeated AnalogSwitchAssignment analog_switch_assignments = 1;
-  repeated AnalogSwitchGroup analog_switch_groups = 2;
-  repeated ButtonAssignment button_assignments = 3;
-}
-
 // Maps an analog switch to a group
 // Switches in the same group share the same configuration
 message AnalogSwitchAssignment {
@@ -85,4 +78,11 @@ message DPadButtonSelector {
 message ButtonAssignment {
   uint32 switch_id = 1;
   ButtonId button_id = 2;
+}
+
+// Represents the overall configuration for Udong
+message UdongConfig {
+  repeated AnalogSwitchAssignment analog_switch_assignments = 1;
+  repeated AnalogSwitchGroup analog_switch_groups = 2;
+  repeated ButtonAssignment button_assignments = 3;
 }

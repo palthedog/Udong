@@ -6,6 +6,9 @@
 
 #include <map>
 
+// TODO: Replace it with decaproto
+#include "json_file.h"
+
 class AnalogSwitchCalibrationStore {
   int id_;
   double mag_flux_at_farest_;

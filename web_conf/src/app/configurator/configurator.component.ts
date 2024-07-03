@@ -53,6 +53,7 @@ export class ConfiguratorComponent {
     });
 
     this.serial_service.MessageReceiveFor('get-config').subscribe((v) => {
+      this.log.info('get-config size: ', v.length);
       this.config = UdongConfig.deserializeBinary(v[1]);
       this.log.info('Config received');
       this.log.info(this.config.toObject());
