@@ -1,4 +1,0 @@
-#!/bin/bash -e
-
-go build -C lib/decaproto/codegen/ -o ./protoc-gen-deca_cpp
-protoc --plugin=lib/decaproto/codegen/protoc-gen-deca_cpp --deca_cpp_out=./src/proto --proto_path=../proto/ ../proto/*.proto

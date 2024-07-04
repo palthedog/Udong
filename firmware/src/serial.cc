@@ -1,9 +1,14 @@
 #include "serial.h"
 
-#include <ArduinoJson.h>
-#include <pb_decode.h>
-#include <pb_encode.h>
+// #include <ArduinoJson.h>
+//  #include <pb_decode.h>
+//  #include <pb_encode.h>
 
+#include <sstream>
+
+#include "decaproto/decoder.h"
+#include "decaproto/encoder.h"
+#include "decaproto/stream/stl.h"
 #include "proto/config.pb.h"
 
 namespace {
@@ -32,13 +37,57 @@ void HandleGet(Udong& context, const String& cmd) {
 }
 
 void HandleGetConfig(Udong& context, const String& cmd) {
+  /*
   std::vector<uint8_t> payload;
   pb_ostream_t outs = pb_ovstream(payload);
   pb_encode(&outs, &UdongConfig_msg, &context.circuit->config);
+  */
 
-  Serial.printf("%s@%d#", cmd.c_str(), payload.size());
-  Serial.write((const char*)payload.data(), payload.size());
+  std::ostringstream oss;
+  decaproto::StlOutputStream sos(&oss);
+  size_t written_size;
+
+  UdongConfig config = context.circuit->config;
+  config.clear_analog_switch_assignments();  // OK
+
+  /////////
+  // config.clear_analog_switch_groups();  //  trying to fix
+
+  auto fst = config.get_analog_switch_groups(0);
+  config.clear_analog_switch_groups();
+  AnalogSwitchGroup* ana_switch_group = config.add_analog_switch_groups();
+  // ^ OK
+  // ana_switch_group->set_analog_switch_group_id(8);
+  ana_switch_group->set_analog_switch_group_id(0);
+  // ^ OK
+
+  Serial.printf("trigger type: %d\n", fst.trigger_type());
+  ana_switch_group->set_trigger_type(TriggerType::RAPID_TRIGGER);
+  //  ^ NG
+
+  // ana_switch_group->set_trigger_type(fst.trigger_type());
+  //  ^ NG
+
+  //  AnalogSwitchAssignment* aasa = config.add_analog_switch_assignments();
+
+  /////
+
+  config.clear_button_assignments();  // < ng
+
+  if (!EncodeMessage(sos, config, written_size)) {
+    Serial.println("Failed to encode the message");
+    return;
+  }
+
+  std::string payload = oss.str();
+  Serial.printf("Encoded message size: %d %d\n", written_size, payload.size());
   Serial.flush();
+
+  Serial.printf("%s@%u#", cmd.c_str(), written_size);
+  size_t sent = Serial.write(payload.data(), payload.size());
+  Serial.flush();
+
+  Serial.printf("Encoded message sent: %d\n", sent);
 }
 
 void HandleSaveConfig(Udong& context, const UdongConfig& udong_config) {
@@ -116,19 +165,47 @@ void SerialHandler::ReadBinaryPayload(Udong& context) {
     payload_buffer_.push_back(ch);
     if (payload_buffer_.size() == payload_size_) {
       // End of the payload.
-      HandleBinaryCommand(context, payload_buffer_.data());
+      HandleBinaryCommand(context, payload_buffer_.data(), payload_size_);
       return;
     }
   }
 }
 
-void SerialHandler::HandleBinaryCommand(Udong& context, const uint8_t* binary) {
-  pb_istream_t ins = pb_istream_from_buffer(binary, payload_size_);
+class CstrInputStream : public decaproto::InputStream {
+  const char* data_;
+  size_t size_;
+
+ public:
+  CstrInputStream(const char* data, size_t size) : data_(data), size_(size) {
+  }
+
+  virtual ~CstrInputStream() {
+  }
+
+  virtual bool Read(uint8_t& out) {
+    if (size_ == 0) {
+      return false;
+    }
+
+    out = *data_;
+    data_++;
+    size_--;
+    return true;
+  }
+};
+
+void SerialHandler::HandleBinaryCommand(
+    Udong& context, const uint8_t* binary, size_t size) {
+  //  pb_istream_t ins = pb_istream_from_buffer(binary, payload_size_);
 
   if (command_ == "save-config") {
-    UdongConfig arg;
-    pb_decode(&ins, &UdongConfig_msg, &arg);
-    HandleSaveConfig(context, arg);
+    CstrInputStream cis((const char*)binary, size);
+    // std::string buf(reinterpret_cast<const char*>(binary), size);
+    // pb_decode(&ins, &UdongConfig_msg, &arg);
+    UdongConfig config;
+    DecodeMessage(cis, &config);
+
+    HandleSaveConfig(context, config);
   } else {
     Serial.printf("unknown-cmd: %s\n", command_.c_str());
   }

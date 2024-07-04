@@ -2,10 +2,17 @@
 #define CONFIG_UTIL_H
 
 #include <Arduino.h>
+
+#include "decaproto/decoder.h"
+#include "decaproto/encoder.h"
+#include "decaproto/message.h"
+#include "decaproto/stream/stream.h"
+
 // #include <ArduinoJson.h>
 #include <LittleFS.h>
 
 #include "../proto/config.pb.h"
+
 // #include "json_file.h"
 
 const String kUdongConfigPath = "/user/config.binpb";
@@ -108,16 +115,18 @@ inline pb_ostream_s pb_ovstream(std::vector<uint8_t>& buf) {
 */
 
 inline bool SaveProtoBin(
-    const String& path, const pb_msgdesc_t& fields, const void* msg) {
+    const String& path, const decaproto::Message& message) {
   File file = LittleFS.open(path, "w");
   if (!file) {
     Serial.printf("file doesn't exist: %s\n", path.c_str());
     return false;
   }
 
-  pb_ostream_s outs = pb_ofstream(file);
-  bool enc_result = pb_encode(&outs, &fields, msg);
-  Serial.printf("enc_result: %d\n", enc_result);
+  /*
+    pb_ostream_s outs = pb_ofstream(file);
+    bool enc_result = pb_encode(&outs, &fields, msg);
+    Serial.printf("enc_result: %d\n", enc_result);
+    */
 
   return true;
 }
@@ -139,8 +148,26 @@ inline pb_istream_s pb_isstream(Stream& stream, size_t size) {
 };
 */
 
-inline bool LoadProtoBin(
-    const String& path, const decaproto::Message* fields, void* dst) {
+class ArduinoSerialInputStream : public decaproto::InputStream {
+  Stream* stream_;
+
+ public:
+  ArduinoSerialInputStream(Stream* stream) : stream_(stream) {
+  }
+
+  virtual ~ArduinoSerialInputStream() {
+  }
+
+  virtual bool Read(uint8_t& out) {
+    if (stream_->available() == 0) {
+      return false;
+    }
+    out = stream_->read();
+    return true;
+  }
+};
+
+inline bool LoadProtoBin(const String& path, decaproto::Message* dst) {
   File file = LittleFS.open(path, "r");
   if (!file) {
     Serial.printf("file doesn't exist: %s\n", path.c_str());
@@ -152,15 +179,16 @@ inline bool LoadProtoBin(
   //  bool dec_result = pb_decode(&ins, fields, dst);
 
   // Serial.printf("dec_result: %d\n", dec_result);
-
-  return true;
+  Serial.printf("loading proto size: %d\n", file.size());
+  ArduinoSerialInputStream asis(&file);
+  return decaproto::DecodeMessage(asis, dst);
 }
 
 template <typename T>
-inline void complementArray(const std::vector<T>& src, std::vector<T>* dst) {
+inline void complementArray(const std::vector<T>& src, std::vector<T>& dst) {
   dst.resize(src.size());
   for (size_t i = 0; i < src.size(); i++) {
-    *dst[i] = src[i];
+    dst[i] = src[i];
   }
 }
 
@@ -169,27 +197,74 @@ inline void complementWithDefaultValues(UdongConfig& config) {
   UdongConfig def = defaultUdongConfig();
   complementArray(
       def.analog_switch_assignments(),
-      config.mutable_analog_switch_assignments());
+      *config.mutable_analog_switch_assignments());
   complementArray(
-      def.analog_switch_groups(), config.mutable_analog_switch_groups());
+      def.analog_switch_groups(), *config.mutable_analog_switch_groups());
   complementArray(
-      def.button_assignments(), config.mutable_button_assignments());
+      def.button_assignments(), *config.mutable_button_assignments());
 }
 
 inline UdongConfig loadUdonConfig() {
   Serial.println("Load UdongConfig");
 
   UdongConfig config;
-  if (!LoadProtoBin(kUdongConfigPath, &UdongConfig_msg, &config)) {
+  if (!LoadProtoBin(kUdongConfigPath, &config)) {
     Serial.println("Failed to load saved UdongConfig. Use default one.");
     return defaultUdongConfig();
   }
+
+  Serial.println("UdongConfig from file");
+  Serial.printf(
+      "analog switch assignments size: %u\n",
+      config.analog_switch_assignments_size());
+  for (const AnalogSwitchAssignment& assignment :
+       config.analog_switch_assignments()) {
+    Serial.printf(
+        "analog_switch_id: %lu, analog_switch_group_id: %lu\n",
+        assignment.analog_switch_id(),
+        assignment.analog_switch_group_id());
+  }
+
+  Serial.printf("group size: %u\n", config.analog_switch_groups_size());
+  for (const AnalogSwitchGroup& group : config.analog_switch_groups()) {
+    Serial.printf(
+        "group id: %lu, trigger_type: %d\n",
+        group.analog_switch_group_id(),
+        group.trigger_type());
+    if (group.trigger_type() == TriggerType::STATIC_TRIGGER) {
+      Serial.printf(
+          "act: %.2lf, rel: %.2lf\n",
+          group.static_trigger().act(),
+          group.static_trigger().rel());
+    } else {
+      Serial.printf(
+          "act: %.2lf, rel: %.2lf, f_act: %.2lf, f_rel: %.2lf\n",
+          group.rapid_trigger().act(),
+          group.rapid_trigger().rel(),
+          group.rapid_trigger().f_act(),
+          group.rapid_trigger().f_rel());
+    }
+    return config;
+  }
+
+  Serial.printf(
+      "button assignments size: %u\n", config.button_assignments_size());
+  for (const ButtonAssignment& button : config.button_assignments()) {
+    Serial.printf("switch_id: %lu\n", button.switch_id());
+    const ButtonId& button_id = button.button_id();
+    if (button_id.has_d_pad()) {
+      Serial.printf("  d-pad: %d\n", button_id.d_pad().direction());
+    } else {
+      Serial.printf("  push: %lu\n", button_id.push_button().push_button_id());
+    }
+  }
+
   complementWithDefaultValues(config);
   return config;
 }
 
 inline void saveUdonConfig(const UdongConfig& config) {
-  SaveProtoBin(kUdongConfigPath, UdongConfig_msg, &config);
+  // SaveProtoBin(kUdongConfigPath, config);
 }
 
 #endif
