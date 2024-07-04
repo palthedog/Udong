@@ -1,6 +1,5 @@
 #pragma once
 
-#include "decaproto/message.h"
 #include "decaproto/descriptor.h"
 #include "decaproto/reflection.h"
 #include "decaproto/field.h"
@@ -8,6 +7,7 @@
 #include <stdint.h>
 #include <string>
 #include <vector>
+#include "decaproto/message.h"
 
 class AnalogSwitchAssignment;
 class AnalogSwitchGroup;
@@ -86,7 +86,7 @@ class AnalogSwitchGroup final : public decaproto::Message {
 public:
     AnalogSwitchGroup()
         : analog_switch_group_id__(uint32_t())
-        , trigger_type__(::TriggerType())
+        , trigger_type__(TriggerType())
         , rapid_trigger__()
         , has_rapid_trigger__(false)
         , static_trigger__()
@@ -107,31 +107,29 @@ public:
 	    analog_switch_group_id__ = uint32_t();
 	}
 
-	inline ::TriggerType trigger_type() const {
+	inline TriggerType trigger_type() const {
 	    return trigger_type__;
 	}
 
-	inline void set_trigger_type( ::TriggerType value) {
+	inline void set_trigger_type( TriggerType value) {
 	    trigger_type__ = value;
 	}
 
 	inline void clear_trigger_type() {
-	    trigger_type__ = ::TriggerType();
+	    trigger_type__ = TriggerType();
 	}
 
 	// Getter for rapid_trigger
-	const ::RapidTriggerConfig& rapid_trigger() const {
+	const RapidTriggerConfig& rapid_trigger() const {
 		if (!rapid_trigger__) {
-			//rapid_trigger__.reset(new ::RapidTriggerConfig());
 			rapid_trigger__.resetDefault();
         }
 	    return *rapid_trigger__;
 	}
 
 	// Mutable Getter for rapid_trigger
-	::RapidTriggerConfig* mutable_rapid_trigger() {
+	RapidTriggerConfig* mutable_rapid_trigger() {
 	    if (!rapid_trigger__) {
-			//rapid_trigger__.reset(new ::RapidTriggerConfig());
 			rapid_trigger__.resetDefault();
         }
         has_rapid_trigger__ = true;
@@ -151,18 +149,16 @@ public:
 
 
 	// Getter for static_trigger
-	const ::StaticTriggerConfig& static_trigger() const {
+	const StaticTriggerConfig& static_trigger() const {
 		if (!static_trigger__) {
-			//static_trigger__.reset(new ::StaticTriggerConfig());
 			static_trigger__.resetDefault();
         }
 	    return *static_trigger__;
 	}
 
 	// Mutable Getter for static_trigger
-	::StaticTriggerConfig* mutable_static_trigger() {
+	StaticTriggerConfig* mutable_static_trigger() {
 	    if (!static_trigger__) {
-			//static_trigger__.reset(new ::StaticTriggerConfig());
 			static_trigger__.resetDefault();
         }
         has_static_trigger__ = true;
@@ -185,10 +181,10 @@ public:
 
 private:
     uint32_t analog_switch_group_id__;
-    ::TriggerType trigger_type__;
-    mutable decaproto::SubMessagePtr<::RapidTriggerConfig> rapid_trigger__;
+    TriggerType trigger_type__;
+    mutable decaproto::SubMessagePtr<RapidTriggerConfig> rapid_trigger__;
     bool has_rapid_trigger__;
-    mutable decaproto::SubMessagePtr<::StaticTriggerConfig> static_trigger__;
+    mutable decaproto::SubMessagePtr<StaticTriggerConfig> static_trigger__;
     bool has_static_trigger__;
 
 
@@ -309,7 +305,7 @@ private:
 class ButtonId final : public decaproto::Message {
 public:
     ButtonId()
-        : type__(::ButtonType())
+        : type__(ButtonType())
         , push_button__()
         , has_push_button__(false)
         , d_pad__()
@@ -318,31 +314,29 @@ public:
     ~ButtonId() {}
 
 
-	inline ::ButtonType type() const {
+	inline ButtonType type() const {
 	    return type__;
 	}
 
-	inline void set_type( ::ButtonType value) {
+	inline void set_type( ButtonType value) {
 	    type__ = value;
 	}
 
 	inline void clear_type() {
-	    type__ = ::ButtonType();
+	    type__ = ButtonType();
 	}
 
 	// Getter for push_button
-	const ::PushButtonSelector& push_button() const {
+	const PushButtonSelector& push_button() const {
 		if (!push_button__) {
-			//push_button__.reset(new ::PushButtonSelector());
 			push_button__.resetDefault();
         }
 	    return *push_button__;
 	}
 
 	// Mutable Getter for push_button
-	::PushButtonSelector* mutable_push_button() {
+	PushButtonSelector* mutable_push_button() {
 	    if (!push_button__) {
-			//push_button__.reset(new ::PushButtonSelector());
 			push_button__.resetDefault();
         }
         has_push_button__ = true;
@@ -362,18 +356,16 @@ public:
 
 
 	// Getter for d_pad
-	const ::DPadButtonSelector& d_pad() const {
+	const DPadButtonSelector& d_pad() const {
 		if (!d_pad__) {
-			//d_pad__.reset(new ::DPadButtonSelector());
 			d_pad__.resetDefault();
         }
 	    return *d_pad__;
 	}
 
 	// Mutable Getter for d_pad
-	::DPadButtonSelector* mutable_d_pad() {
+	DPadButtonSelector* mutable_d_pad() {
 	    if (!d_pad__) {
-			//d_pad__.reset(new ::DPadButtonSelector());
 			d_pad__.resetDefault();
         }
         has_d_pad__ = true;
@@ -395,10 +387,10 @@ public:
     const decaproto::Reflection* GetReflection() const override;
 
 private:
-    ::ButtonType type__;
-    mutable decaproto::SubMessagePtr<::PushButtonSelector> push_button__;
+    ButtonType type__;
+    mutable decaproto::SubMessagePtr<PushButtonSelector> push_button__;
     bool has_push_button__;
-    mutable decaproto::SubMessagePtr<::DPadButtonSelector> d_pad__;
+    mutable decaproto::SubMessagePtr<DPadButtonSelector> d_pad__;
     bool has_d_pad__;
 
 
@@ -435,28 +427,28 @@ private:
 class DPadButtonSelector final : public decaproto::Message {
 public:
     DPadButtonSelector()
-        : direction__(::DPadButtonSelector::Direction()) {}
+        : direction__(DPadButtonSelector_Direction()) {}
 
     ~DPadButtonSelector() {}
 
     typedef DPadButtonSelector_Direction Direction;
 
-	inline ::DPadButtonSelector::Direction direction() const {
+	inline DPadButtonSelector_Direction direction() const {
 	    return direction__;
 	}
 
-	inline void set_direction( ::DPadButtonSelector::Direction value) {
+	inline void set_direction( DPadButtonSelector_Direction value) {
 	    direction__ = value;
 	}
 
 	inline void clear_direction() {
-	    direction__ = ::DPadButtonSelector::Direction();
+	    direction__ = DPadButtonSelector_Direction();
 	}
     const decaproto::Descriptor* GetDescriptor() const override;
     const decaproto::Reflection* GetReflection() const override;
 
 private:
-    ::DPadButtonSelector::Direction direction__;
+    DPadButtonSelector_Direction direction__;
 
 
 };
@@ -484,18 +476,16 @@ public:
 	}
 
 	// Getter for button_id
-	const ::ButtonId& button_id() const {
+	const ButtonId& button_id() const {
 		if (!button_id__) {
-			//button_id__.reset(new ::ButtonId());
 			button_id__.resetDefault();
         }
 	    return *button_id__;
 	}
 
 	// Mutable Getter for button_id
-	::ButtonId* mutable_button_id() {
+	ButtonId* mutable_button_id() {
 	    if (!button_id__) {
-			//button_id__.reset(new ::ButtonId());
 			button_id__.resetDefault();
         }
         has_button_id__ = true;
@@ -518,7 +508,7 @@ public:
 
 private:
     uint32_t switch_id__;
-    mutable decaproto::SubMessagePtr<::ButtonId> button_id__;
+    mutable decaproto::SubMessagePtr<ButtonId> button_id__;
     bool has_button_id__;
 
 
@@ -534,11 +524,11 @@ public:
     ~UdongConfig() {}
 
 
-	inline const std::vector<::AnalogSwitchAssignment>& analog_switch_assignments() const {
+	inline const std::vector<AnalogSwitchAssignment>& analog_switch_assignments() const {
 	    return analog_switch_assignments__;
 	}
 
-	inline const ::AnalogSwitchAssignment& get_analog_switch_assignments(size_t index) const {
+	inline const AnalogSwitchAssignment& get_analog_switch_assignments(size_t index) const {
 	    return analog_switch_assignments__[index];
 	}
 
@@ -546,16 +536,16 @@ public:
 	    return analog_switch_assignments__.size();
 	}
 
-	inline void set_analog_switch_assignments(size_t index, const ::AnalogSwitchAssignment& value) {
+	inline void set_analog_switch_assignments(size_t index, const AnalogSwitchAssignment& value) {
 	    analog_switch_assignments__[index] = value;
 	}
 
-	inline std::vector<::AnalogSwitchAssignment>* mutable_analog_switch_assignments() {
+	inline std::vector<AnalogSwitchAssignment>* mutable_analog_switch_assignments() {
 		return &analog_switch_assignments__;
 	}
 
-	inline ::AnalogSwitchAssignment* add_analog_switch_assignments() {
-	    analog_switch_assignments__.push_back(::AnalogSwitchAssignment());
+	inline AnalogSwitchAssignment* add_analog_switch_assignments() {
+	    analog_switch_assignments__.push_back(AnalogSwitchAssignment());
 		return &analog_switch_assignments__.back();
 	}
 
@@ -564,11 +554,11 @@ public:
 	}
 
 
-	inline const std::vector<::AnalogSwitchGroup>& analog_switch_groups() const {
+	inline const std::vector<AnalogSwitchGroup>& analog_switch_groups() const {
 	    return analog_switch_groups__;
 	}
 
-	inline const ::AnalogSwitchGroup& get_analog_switch_groups(size_t index) const {
+	inline const AnalogSwitchGroup& get_analog_switch_groups(size_t index) const {
 	    return analog_switch_groups__[index];
 	}
 
@@ -576,16 +566,16 @@ public:
 	    return analog_switch_groups__.size();
 	}
 
-	inline void set_analog_switch_groups(size_t index, const ::AnalogSwitchGroup& value) {
+	inline void set_analog_switch_groups(size_t index, const AnalogSwitchGroup& value) {
 	    analog_switch_groups__[index] = value;
 	}
 
-	inline std::vector<::AnalogSwitchGroup>* mutable_analog_switch_groups() {
+	inline std::vector<AnalogSwitchGroup>* mutable_analog_switch_groups() {
 		return &analog_switch_groups__;
 	}
 
-	inline ::AnalogSwitchGroup* add_analog_switch_groups() {
-	    analog_switch_groups__.push_back(::AnalogSwitchGroup());
+	inline AnalogSwitchGroup* add_analog_switch_groups() {
+	    analog_switch_groups__.push_back(AnalogSwitchGroup());
 		return &analog_switch_groups__.back();
 	}
 
@@ -594,11 +584,11 @@ public:
 	}
 
 
-	inline const std::vector<::ButtonAssignment>& button_assignments() const {
+	inline const std::vector<ButtonAssignment>& button_assignments() const {
 	    return button_assignments__;
 	}
 
-	inline const ::ButtonAssignment& get_button_assignments(size_t index) const {
+	inline const ButtonAssignment& get_button_assignments(size_t index) const {
 	    return button_assignments__[index];
 	}
 
@@ -606,16 +596,16 @@ public:
 	    return button_assignments__.size();
 	}
 
-	inline void set_button_assignments(size_t index, const ::ButtonAssignment& value) {
+	inline void set_button_assignments(size_t index, const ButtonAssignment& value) {
 	    button_assignments__[index] = value;
 	}
 
-	inline std::vector<::ButtonAssignment>* mutable_button_assignments() {
+	inline std::vector<ButtonAssignment>* mutable_button_assignments() {
 		return &button_assignments__;
 	}
 
-	inline ::ButtonAssignment* add_button_assignments() {
-	    button_assignments__.push_back(::ButtonAssignment());
+	inline ButtonAssignment* add_button_assignments() {
+	    button_assignments__.push_back(ButtonAssignment());
 		return &button_assignments__.back();
 	}
 
@@ -627,9 +617,9 @@ public:
     const decaproto::Reflection* GetReflection() const override;
 
 private:
-    std::vector<::AnalogSwitchAssignment> analog_switch_assignments__;
-    std::vector<::AnalogSwitchGroup> analog_switch_groups__;
-    std::vector<::ButtonAssignment> button_assignments__;
+    std::vector<AnalogSwitchAssignment> analog_switch_assignments__;
+    std::vector<AnalogSwitchGroup> analog_switch_groups__;
+    std::vector<ButtonAssignment> button_assignments__;
 
 
 };

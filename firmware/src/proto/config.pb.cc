@@ -96,6 +96,10 @@ const decaproto::Reflection* AnalogSwitchGroup::GetReflection() const {
     kAnalogSwitchGroup__Reflection->RegisterGetMessage(
         3,
 		decaproto::MsgCast(&AnalogSwitchGroup::rapid_trigger));
+    // Hazzer for rapid_trigger
+    kAnalogSwitchGroup__Reflection->RegisterHasField(
+        3,
+		decaproto::MsgCast(&AnalogSwitchGroup::has_rapid_trigger));
     
     // Mutable getter for static_trigger
     kAnalogSwitchGroup__Reflection->RegisterMutableMessage(
@@ -105,6 +109,10 @@ const decaproto::Reflection* AnalogSwitchGroup::GetReflection() const {
     kAnalogSwitchGroup__Reflection->RegisterGetMessage(
         4,
 		decaproto::MsgCast(&AnalogSwitchGroup::static_trigger));
+    // Hazzer for static_trigger
+    kAnalogSwitchGroup__Reflection->RegisterHasField(
+        4,
+		decaproto::MsgCast(&AnalogSwitchGroup::has_static_trigger));
     return kAnalogSwitchGroup__Reflection;
 }
 
@@ -252,6 +260,10 @@ const decaproto::Reflection* ButtonId::GetReflection() const {
     kButtonId__Reflection->RegisterGetMessage(
         2,
 		decaproto::MsgCast(&ButtonId::push_button));
+    // Hazzer for push_button
+    kButtonId__Reflection->RegisterHasField(
+        2,
+		decaproto::MsgCast(&ButtonId::has_push_button));
     
     // Mutable getter for d_pad
     kButtonId__Reflection->RegisterMutableMessage(
@@ -261,6 +273,10 @@ const decaproto::Reflection* ButtonId::GetReflection() const {
     kButtonId__Reflection->RegisterGetMessage(
         3,
 		decaproto::MsgCast(&ButtonId::d_pad));
+    // Hazzer for d_pad
+    kButtonId__Reflection->RegisterHasField(
+        3,
+		decaproto::MsgCast(&ButtonId::has_d_pad));
     return kButtonId__Reflection;
 }
 
@@ -367,6 +383,10 @@ const decaproto::Reflection* ButtonAssignment::GetReflection() const {
     kButtonAssignment__Reflection->RegisterGetMessage(
         2,
 		decaproto::MsgCast(&ButtonAssignment::button_id));
+    // Hazzer for button_id
+    kButtonAssignment__Reflection->RegisterHasField(
+        2,
+		decaproto::MsgCast(&ButtonAssignment::has_button_id));
     return kButtonAssignment__Reflection;
 }
 

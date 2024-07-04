@@ -68,6 +68,7 @@ export class AppConsts {
         switch (button_id.type) {
             case ButtonType.PUSH:
                 return 'B' + button_id.push_button?.push_button_id;
+            //return 'B' + (button_id.push_button?.push_button_id || 0);
             case ButtonType.D_PAD:
                 switch (button_id.d_pad?.direction) {
                     case DPadButtonSelector.Direction.UP:

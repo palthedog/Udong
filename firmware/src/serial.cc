@@ -1,9 +1,5 @@
 #include "serial.h"
 
-// #include <ArduinoJson.h>
-//  #include <pb_decode.h>
-//  #include <pb_encode.h>
-
 #include <sstream>
 
 #include "decaproto/decoder.h"
@@ -37,43 +33,11 @@ void HandleGet(Udong& context, const String& cmd) {
 }
 
 void HandleGetConfig(Udong& context, const String& cmd) {
-  /*
-  std::vector<uint8_t> payload;
-  pb_ostream_t outs = pb_ovstream(payload);
-  pb_encode(&outs, &UdongConfig_msg, &context.circuit->config);
-  */
-
   std::ostringstream oss;
   decaproto::StlOutputStream sos(&oss);
   size_t written_size;
 
   UdongConfig config = context.circuit->config;
-  config.clear_analog_switch_assignments();  // OK
-
-  /////////
-  // config.clear_analog_switch_groups();  //  trying to fix
-
-  auto fst = config.get_analog_switch_groups(0);
-  config.clear_analog_switch_groups();
-  AnalogSwitchGroup* ana_switch_group = config.add_analog_switch_groups();
-  // ^ OK
-  // ana_switch_group->set_analog_switch_group_id(8);
-  ana_switch_group->set_analog_switch_group_id(0);
-  // ^ OK
-
-  Serial.printf("trigger type: %d\n", fst.trigger_type());
-  ana_switch_group->set_trigger_type(TriggerType::RAPID_TRIGGER);
-  //  ^ NG
-
-  // ana_switch_group->set_trigger_type(fst.trigger_type());
-  //  ^ NG
-
-  //  AnalogSwitchAssignment* aasa = config.add_analog_switch_assignments();
-
-  /////
-
-  config.clear_button_assignments();  // < ng
-
   if (!EncodeMessage(sos, config, written_size)) {
     Serial.println("Failed to encode the message");
     return;
@@ -171,6 +135,7 @@ void SerialHandler::ReadBinaryPayload(Udong& context) {
   }
 }
 
+// TODO: Move to the decaproto library
 class CstrInputStream : public decaproto::InputStream {
   const char* data_;
   size_t size_;
@@ -196,12 +161,8 @@ class CstrInputStream : public decaproto::InputStream {
 
 void SerialHandler::HandleBinaryCommand(
     Udong& context, const uint8_t* binary, size_t size) {
-  //  pb_istream_t ins = pb_istream_from_buffer(binary, payload_size_);
-
   if (command_ == "save-config") {
     CstrInputStream cis((const char*)binary, size);
-    // std::string buf(reinterpret_cast<const char*>(binary), size);
-    // pb_decode(&ins, &UdongConfig_msg, &arg);
     UdongConfig config;
     DecodeMessage(cis, &config);
 
