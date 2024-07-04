@@ -166,6 +166,9 @@ void SerialHandler::HandleBinaryCommand(
     UdongConfig config;
     DecodeMessage(cis, &config);
 
+    // Serial.println("Received UdongConfig:");
+    // printUdonConfig(config);
+
     HandleSaveConfig(context, config);
   } else {
     Serial.printf("unknown-cmd: %s\n", command_.c_str());
@@ -215,10 +218,6 @@ void SerialHandler::HandleCmd(Udong& context, const String& cmd) {
     HandleGet(context, cmd);
   } else if (cmd == "get-config") {
     HandleGetConfig(context, cmd);
-  } else if (cmd == "save-config") {
-    // TODO: Support this command!
-    // HandleSaveConfig(context, cmd, arg);
-    Serial.println("save-config is not supported yet");
   } else {
     Serial.print("Received unknown-cmd:");
     Serial.printf("%s\n", cmd.c_str());
