@@ -4,46 +4,46 @@
 #include "decaproto/reflection_util.h"
 
 
-// A singleton Descriptor for AnalogSwitchAssignment
-decaproto::Descriptor* kAnalogSwitchAssignment__Descriptor = nullptr;
+// A singleton Descriptor for AnalogSwitchConfig
+decaproto::Descriptor* kAnalogSwitchConfig__Descriptor = nullptr;
 
-const decaproto::Descriptor* AnalogSwitchAssignment::GetDescriptor() const {
-    if (kAnalogSwitchAssignment__Descriptor != nullptr) {
-        return kAnalogSwitchAssignment__Descriptor;
+const decaproto::Descriptor* AnalogSwitchConfig::GetDescriptor() const {
+    if (kAnalogSwitchConfig__Descriptor != nullptr) {
+        return kAnalogSwitchConfig__Descriptor;
     }
-    kAnalogSwitchAssignment__Descriptor = new decaproto::Descriptor();
-    kAnalogSwitchAssignment__Descriptor->RegisterField(decaproto::FieldDescriptor(1, decaproto::FieldType::kUint32));
-    kAnalogSwitchAssignment__Descriptor->RegisterField(decaproto::FieldDescriptor(2, decaproto::FieldType::kUint32));
-    return kAnalogSwitchAssignment__Descriptor;
+    kAnalogSwitchConfig__Descriptor = new decaproto::Descriptor();
+    kAnalogSwitchConfig__Descriptor->RegisterField(decaproto::FieldDescriptor(1, decaproto::FieldType::kUint32));
+    kAnalogSwitchConfig__Descriptor->RegisterField(decaproto::FieldDescriptor(2, decaproto::FieldType::kUint32));
+    return kAnalogSwitchConfig__Descriptor;
 }
 
-// A singleton Reflection object for AnalogSwitchAssignment
-decaproto::Reflection* kAnalogSwitchAssignment__Reflection = nullptr;
+// A singleton Reflection object for AnalogSwitchConfig
+decaproto::Reflection* kAnalogSwitchConfig__Reflection = nullptr;
 
-const decaproto::Reflection* AnalogSwitchAssignment::GetReflection() const {
-    if (kAnalogSwitchAssignment__Reflection != nullptr) {
-        return kAnalogSwitchAssignment__Reflection;
+const decaproto::Reflection* AnalogSwitchConfig::GetReflection() const {
+    if (kAnalogSwitchConfig__Reflection != nullptr) {
+        return kAnalogSwitchConfig__Reflection;
     }
-    kAnalogSwitchAssignment__Reflection = new decaproto::Reflection();
+    kAnalogSwitchConfig__Reflection = new decaproto::Reflection();
     
     // Setter
-    kAnalogSwitchAssignment__Reflection->RegisterSetUint32(
+    kAnalogSwitchConfig__Reflection->RegisterSetUint32(
         1,
-		decaproto::MsgCast(&AnalogSwitchAssignment::set_analog_switch_id));
+		decaproto::MsgCast(&AnalogSwitchConfig::set_analog_switch_id));
     // Getter
-    kAnalogSwitchAssignment__Reflection->RegisterGetUint32(
+    kAnalogSwitchConfig__Reflection->RegisterGetUint32(
         1,
-		decaproto::MsgCast(&AnalogSwitchAssignment::analog_switch_id));
+		decaproto::MsgCast(&AnalogSwitchConfig::analog_switch_id));
         
     // Setter
-    kAnalogSwitchAssignment__Reflection->RegisterSetUint32(
+    kAnalogSwitchConfig__Reflection->RegisterSetUint32(
         2,
-		decaproto::MsgCast(&AnalogSwitchAssignment::set_analog_switch_group_id));
+		decaproto::MsgCast(&AnalogSwitchConfig::set_analog_switch_group_id));
     // Getter
-    kAnalogSwitchAssignment__Reflection->RegisterGetUint32(
+    kAnalogSwitchConfig__Reflection->RegisterGetUint32(
         2,
-		decaproto::MsgCast(&AnalogSwitchAssignment::analog_switch_group_id));
-        return kAnalogSwitchAssignment__Reflection;
+		decaproto::MsgCast(&AnalogSwitchConfig::analog_switch_group_id));
+        return kAnalogSwitchConfig__Reflection;
 }
 
 // A singleton Descriptor for AnalogSwitchGroup
@@ -459,16 +459,16 @@ const decaproto::Reflection* UdongConfig::GetReflection() const {
     }
     kUdongConfig__Reflection = new decaproto::Reflection();
     
-			// Mutable getter for analog_switch_assignments
+			// Mutable getter for analog_switch_configs
 			kUdongConfig__Reflection->RegisterGetRepeatedMessage(
 				1,
-				decaproto::MsgCast(&UdongConfig::get_analog_switch_assignments));
+				decaproto::MsgCast(&UdongConfig::get_analog_switch_configs));
 			kUdongConfig__Reflection->RegisterAddRepeatedMessage(
 				1,
-				decaproto::MsgCast(&UdongConfig::add_analog_switch_assignments));
+				decaproto::MsgCast(&UdongConfig::add_analog_switch_configs));
 			kUdongConfig__Reflection->RegisterFieldSize(
 				1,
-				decaproto::MsgCast(&UdongConfig::analog_switch_assignments_size));
+				decaproto::MsgCast(&UdongConfig::analog_switch_configs_size));
 		    
 			// Mutable getter for analog_switch_groups
 			kUdongConfig__Reflection->RegisterGetRepeatedMessage(

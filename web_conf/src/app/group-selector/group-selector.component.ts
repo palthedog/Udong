@@ -6,7 +6,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatOptionModule } from '@angular/material/core';
 import { AppConsts } from '../consts';
 import { GroupIconComponent } from "../group-icon/group-icon.component";
-import { AnalogSwitchAssignment } from '../../proto/config';
+import { AnalogSwitchConfig } from '../../proto/config';
 
 @Component({
   selector: 'app-group-selector',
@@ -38,13 +38,13 @@ export class GroupSelectorComponent {
     }
   }
 
-  assignment_!: AnalogSwitchAssignment;
+  assignment_!: AnalogSwitchConfig;
 
   @Input()
-  set assignment(assignment: AnalogSwitchAssignment) {
+  set assignment(assignment: AnalogSwitchConfig) {
     this.assignment_ = assignment;
   }
-  get assignment(): AnalogSwitchAssignment {
+  get assignment(): AnalogSwitchConfig {
     return this.assignment_;
   }
 }

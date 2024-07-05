@@ -1,15 +1,15 @@
 #pragma once
 
-#include <string>
-#include <vector>
-#include "decaproto/message.h"
-#include "decaproto/descriptor.h"
 #include "decaproto/reflection.h"
 #include "decaproto/field.h"
 #include <memory>
 #include <stdint.h>
+#include <string>
+#include <vector>
+#include "decaproto/message.h"
+#include "decaproto/descriptor.h"
 
-class AnalogSwitchAssignment;
+class AnalogSwitchConfig;
 class AnalogSwitchGroup;
 class RapidTriggerConfig;
 class StaticTriggerConfig;
@@ -47,13 +47,13 @@ enum DPadButtonSelector_Direction : int {
 };
 
 
-class AnalogSwitchAssignment final : public decaproto::Message {
+class AnalogSwitchConfig final : public decaproto::Message {
 public:
-    AnalogSwitchAssignment()
+    AnalogSwitchConfig()
         : analog_switch_id__(uint32_t())
         , analog_switch_group_id__(uint32_t()) {}
 
-    ~AnalogSwitchAssignment() {}
+    ~AnalogSwitchConfig() {}
 
 
 	inline uint32_t analog_switch_id() const {
@@ -585,40 +585,40 @@ private:
 class UdongConfig final : public decaproto::Message {
 public:
     UdongConfig()
-        : analog_switch_assignments__()
+        : analog_switch_configs__()
         , analog_switch_groups__()
         , button_assignments__() {}
 
     ~UdongConfig() {}
 
 
-	inline const std::vector<AnalogSwitchAssignment>& analog_switch_assignments() const {
-	    return analog_switch_assignments__;
+	inline const std::vector<AnalogSwitchConfig>& analog_switch_configs() const {
+	    return analog_switch_configs__;
 	}
 
-	inline const AnalogSwitchAssignment& get_analog_switch_assignments(size_t index) const {
-	    return analog_switch_assignments__[index];
+	inline const AnalogSwitchConfig& get_analog_switch_configs(size_t index) const {
+	    return analog_switch_configs__[index];
 	}
 
-	inline size_t analog_switch_assignments_size() const {
-	    return analog_switch_assignments__.size();
+	inline size_t analog_switch_configs_size() const {
+	    return analog_switch_configs__.size();
 	}
 
-	inline void set_analog_switch_assignments(size_t index, const AnalogSwitchAssignment& value) {
-	    analog_switch_assignments__[index] = value;
+	inline void set_analog_switch_configs(size_t index, const AnalogSwitchConfig& value) {
+	    analog_switch_configs__[index] = value;
 	}
 
-	inline std::vector<AnalogSwitchAssignment>* mutable_analog_switch_assignments() {
-		return &analog_switch_assignments__;
+	inline std::vector<AnalogSwitchConfig>* mutable_analog_switch_configs() {
+		return &analog_switch_configs__;
 	}
 
-	inline AnalogSwitchAssignment* add_analog_switch_assignments() {
-	    analog_switch_assignments__.push_back(AnalogSwitchAssignment());
-		return &analog_switch_assignments__.back();
+	inline AnalogSwitchConfig* add_analog_switch_configs() {
+	    analog_switch_configs__.push_back(AnalogSwitchConfig());
+		return &analog_switch_configs__.back();
 	}
 
-	inline void clear_analog_switch_assignments() {
-	    analog_switch_assignments__.clear();
+	inline void clear_analog_switch_configs() {
+	    analog_switch_configs__.clear();
 	}
 
 
@@ -685,7 +685,7 @@ public:
     const decaproto::Reflection* GetReflection() const override;
 
 private:
-    std::vector<AnalogSwitchAssignment> analog_switch_assignments__;
+    std::vector<AnalogSwitchConfig> analog_switch_configs__;
     std::vector<AnalogSwitchGroup> analog_switch_groups__;
     std::vector<ButtonAssignment> button_assignments__;
 
@@ -696,7 +696,7 @@ private:
 /*
 name: "config.proto"
 message_type: {
-    name: "AnalogSwitchAssignment"
+    name: "AnalogSwitchConfig"
     field: {
         name: "analog_switch_id"
         number: 1
@@ -910,12 +910,12 @@ message_type: {
 message_type: {
     name: "UdongConfig"
     field: {
-        name: "analog_switch_assignments"
+        name: "analog_switch_configs"
         number: 1
         label: LABEL_REPEATED
         type: TYPE_MESSAGE
-        type_name: ".AnalogSwitchAssignment"
-        json_name: "analogSwitchAssignments"
+        type_name: ".AnalogSwitchConfig"
+        json_name: "analogSwitchConfigs"
     }
     field: {
         name: "analog_switch_groups"
@@ -1007,7 +1007,7 @@ source_code_info: {
         path: 1
         span: 4
         span: 8
-        span: 30
+        span: 26
     }
     location: {
         path: 4
@@ -2512,7 +2512,7 @@ source_code_info: {
         path: 0
         span: 97
         span: 2
-        span: 64
+        span: 56
     }
     location: {
         path: 4
@@ -2532,7 +2532,7 @@ source_code_info: {
         path: 6
         span: 97
         span: 11
-        span: 33
+        span: 29
     }
     location: {
         path: 4
@@ -2541,8 +2541,8 @@ source_code_info: {
         path: 0
         path: 1
         span: 97
-        span: 34
-        span: 59
+        span: 30
+        span: 51
     }
     location: {
         path: 4
@@ -2551,8 +2551,8 @@ source_code_info: {
         path: 0
         path: 3
         span: 97
-        span: 62
-        span: 63
+        span: 54
+        span: 55
     }
     location: {
         path: 4

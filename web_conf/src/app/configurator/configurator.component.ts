@@ -9,7 +9,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { AnalogSwitchConfigComponent } from '../analog-switch-config/analog-switch-config.component';
 import { BoardButtonsComponent } from '../board-buttons/board-buttons.component';
-import { AnalogSwitchAssignment, AnalogSwitchGroup, ButtonAssignment, ButtonId, SwitchId, SwitchType, UdongConfig } from '../../proto/config';
+import { AnalogSwitchConfig, AnalogSwitchGroup, ButtonAssignment, ButtonId, SwitchId, SwitchType, UdongConfig } from '../../proto/config';
 import { AppConsts } from '../consts';
 import { GroupSelectorComponent } from '../group-selector/group-selector.component';
 import { SerialServiceInterface } from '../serial/serial.service';
@@ -86,12 +86,12 @@ export class ConfiguratorComponent {
     this.active_group_id = group_id;
   }
 
-  activeSwitchAssignment(): AnalogSwitchAssignment | null {
+  activeSwitchConfig(): AnalogSwitchConfig | null {
     if (this.active_switch_id.type != SwitchType.ANALOG_SWITCH) {
       return null;
     }
-    return this.config!.analog_switch_assignments.find((assignment) => {
-      return assignment.analog_switch_id == this.active_switch_id.id;
+    return this.config!.analog_switch_configs.find((aconf) => {
+      return aconf.analog_switch_id == this.active_switch_id.id;
     })!;
   }
 

@@ -4,7 +4,7 @@ import { BehaviorSubject, Observable, Subject, defer, filter } from 'rxjs';
 import { SerialServiceInterface } from './serial.service';
 import { Logger } from '../logger';
 
-import { AnalogSwitchAssignment, AnalogSwitchGroup, ButtonAssignment, ButtonId, ButtonType, PushButtonSelector, RapidTriggerConfig, StaticTriggerConfig, SwitchId, SwitchType, TriggerType, UdongConfig } from '../../proto/config';
+import { AnalogSwitchConfig, AnalogSwitchGroup, ButtonAssignment, ButtonId, ButtonType, PushButtonSelector, RapidTriggerConfig, StaticTriggerConfig, SwitchId, SwitchType, TriggerType, UdongConfig } from '../../proto/config';
 
 @Injectable()
 export class MockSerialService extends SerialServiceInterface {
@@ -49,7 +49,7 @@ export class MockSerialService extends SerialServiceInterface {
     }
 
     private HandleGetConfig() {
-        let assignments: AnalogSwitchAssignment[] = [];
+        let configs: AnalogSwitchConfig[] = [];
         for (let i = 0; i < 16; i++) {
             let group_id;
             if (i >= 12 && i <= 15) {
@@ -61,7 +61,7 @@ export class MockSerialService extends SerialServiceInterface {
             } else {
                 group_id = 4;
             }
-            assignments.push(new AnalogSwitchAssignment({
+            configs.push(new AnalogSwitchConfig({
                 analog_switch_id: i,
                 analog_switch_group_id: group_id
             }));
@@ -118,7 +118,7 @@ export class MockSerialService extends SerialServiceInterface {
         }
 
         let udong_config: UdongConfig = new UdongConfig({
-            analog_switch_assignments: assignments,
+            analog_switch_configs: configs,
             analog_switch_groups: groups,
             button_assignments: button_assignments
         });

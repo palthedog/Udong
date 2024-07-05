@@ -19,7 +19,7 @@ export enum SwitchType {
     ANALOG_SWITCH = 1,
     DIGITAL_SWITCH = 2
 }
-export class AnalogSwitchAssignment extends pb_1.Message {
+export class AnalogSwitchConfig extends pb_1.Message {
     #one_of_decls: number[][] = [];
     constructor(data?: any[] | {
         analog_switch_id?: number;
@@ -51,8 +51,8 @@ export class AnalogSwitchAssignment extends pb_1.Message {
     static fromObject(data: {
         analog_switch_id?: number;
         analog_switch_group_id?: number;
-    }): AnalogSwitchAssignment {
-        const message = new AnalogSwitchAssignment({});
+    }): AnalogSwitchConfig {
+        const message = new AnalogSwitchConfig({});
         if (data.analog_switch_id != null) {
             message.analog_switch_id = data.analog_switch_id;
         }
@@ -85,8 +85,8 @@ export class AnalogSwitchAssignment extends pb_1.Message {
         if (!w)
             return writer.getResultBuffer();
     }
-    static deserialize(bytes: Uint8Array | pb_1.BinaryReader): AnalogSwitchAssignment {
-        const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new AnalogSwitchAssignment();
+    static deserialize(bytes: Uint8Array | pb_1.BinaryReader): AnalogSwitchConfig {
+        const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new AnalogSwitchConfig();
         while (reader.nextField()) {
             if (reader.isEndGroup())
                 break;
@@ -105,8 +105,8 @@ export class AnalogSwitchAssignment extends pb_1.Message {
     serializeBinary(): Uint8Array {
         return this.serialize();
     }
-    static override deserializeBinary(bytes: Uint8Array): AnalogSwitchAssignment {
-        return AnalogSwitchAssignment.deserialize(bytes);
+    static override deserializeBinary(bytes: Uint8Array): AnalogSwitchConfig {
+        return AnalogSwitchConfig.deserialize(bytes);
     }
 }
 export class AnalogSwitchGroup extends pb_1.Message {
@@ -942,15 +942,15 @@ export class ButtonAssignment extends pb_1.Message {
 export class UdongConfig extends pb_1.Message {
     #one_of_decls: number[][] = [];
     constructor(data?: any[] | {
-        analog_switch_assignments?: AnalogSwitchAssignment[];
+        analog_switch_configs?: AnalogSwitchConfig[];
         analog_switch_groups?: AnalogSwitchGroup[];
         button_assignments?: ButtonAssignment[];
     }) {
         super();
         pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [1, 2, 3], this.#one_of_decls);
         if (!Array.isArray(data) && typeof data == "object") {
-            if ("analog_switch_assignments" in data && data.analog_switch_assignments != undefined) {
-                this.analog_switch_assignments = data.analog_switch_assignments;
+            if ("analog_switch_configs" in data && data.analog_switch_configs != undefined) {
+                this.analog_switch_configs = data.analog_switch_configs;
             }
             if ("analog_switch_groups" in data && data.analog_switch_groups != undefined) {
                 this.analog_switch_groups = data.analog_switch_groups;
@@ -960,10 +960,10 @@ export class UdongConfig extends pb_1.Message {
             }
         }
     }
-    get analog_switch_assignments() {
-        return pb_1.Message.getRepeatedWrapperField(this, AnalogSwitchAssignment, 1) as AnalogSwitchAssignment[];
+    get analog_switch_configs() {
+        return pb_1.Message.getRepeatedWrapperField(this, AnalogSwitchConfig, 1) as AnalogSwitchConfig[];
     }
-    set analog_switch_assignments(value: AnalogSwitchAssignment[]) {
+    set analog_switch_configs(value: AnalogSwitchConfig[]) {
         pb_1.Message.setRepeatedWrapperField(this, 1, value);
     }
     get analog_switch_groups() {
@@ -979,13 +979,13 @@ export class UdongConfig extends pb_1.Message {
         pb_1.Message.setRepeatedWrapperField(this, 3, value);
     }
     static fromObject(data: {
-        analog_switch_assignments?: ReturnType<typeof AnalogSwitchAssignment.prototype.toObject>[];
+        analog_switch_configs?: ReturnType<typeof AnalogSwitchConfig.prototype.toObject>[];
         analog_switch_groups?: ReturnType<typeof AnalogSwitchGroup.prototype.toObject>[];
         button_assignments?: ReturnType<typeof ButtonAssignment.prototype.toObject>[];
     }): UdongConfig {
         const message = new UdongConfig({});
-        if (data.analog_switch_assignments != null) {
-            message.analog_switch_assignments = data.analog_switch_assignments.map(item => AnalogSwitchAssignment.fromObject(item));
+        if (data.analog_switch_configs != null) {
+            message.analog_switch_configs = data.analog_switch_configs.map(item => AnalogSwitchConfig.fromObject(item));
         }
         if (data.analog_switch_groups != null) {
             message.analog_switch_groups = data.analog_switch_groups.map(item => AnalogSwitchGroup.fromObject(item));
@@ -997,12 +997,12 @@ export class UdongConfig extends pb_1.Message {
     }
     toObject() {
         const data: {
-            analog_switch_assignments?: ReturnType<typeof AnalogSwitchAssignment.prototype.toObject>[];
+            analog_switch_configs?: ReturnType<typeof AnalogSwitchConfig.prototype.toObject>[];
             analog_switch_groups?: ReturnType<typeof AnalogSwitchGroup.prototype.toObject>[];
             button_assignments?: ReturnType<typeof ButtonAssignment.prototype.toObject>[];
         } = {};
-        if (this.analog_switch_assignments != null) {
-            data.analog_switch_assignments = this.analog_switch_assignments.map((item: AnalogSwitchAssignment) => item.toObject());
+        if (this.analog_switch_configs != null) {
+            data.analog_switch_configs = this.analog_switch_configs.map((item: AnalogSwitchConfig) => item.toObject());
         }
         if (this.analog_switch_groups != null) {
             data.analog_switch_groups = this.analog_switch_groups.map((item: AnalogSwitchGroup) => item.toObject());
@@ -1016,8 +1016,8 @@ export class UdongConfig extends pb_1.Message {
     serialize(w: pb_1.BinaryWriter): void;
     serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
         const writer = w || new pb_1.BinaryWriter();
-        if (this.analog_switch_assignments.length)
-            writer.writeRepeatedMessage(1, this.analog_switch_assignments, (item: AnalogSwitchAssignment) => item.serialize(writer));
+        if (this.analog_switch_configs.length)
+            writer.writeRepeatedMessage(1, this.analog_switch_configs, (item: AnalogSwitchConfig) => item.serialize(writer));
         if (this.analog_switch_groups.length)
             writer.writeRepeatedMessage(2, this.analog_switch_groups, (item: AnalogSwitchGroup) => item.serialize(writer));
         if (this.button_assignments.length)
@@ -1032,7 +1032,7 @@ export class UdongConfig extends pb_1.Message {
                 break;
             switch (reader.getFieldNumber()) {
                 case 1:
-                    reader.readMessage(message.analog_switch_assignments, () => pb_1.Message.addToRepeatedWrapperField(message, 1, AnalogSwitchAssignment.deserialize(reader), AnalogSwitchAssignment));
+                    reader.readMessage(message.analog_switch_configs, () => pb_1.Message.addToRepeatedWrapperField(message, 1, AnalogSwitchConfig.deserialize(reader), AnalogSwitchConfig));
                     break;
                 case 2:
                     reader.readMessage(message.analog_switch_groups, () => pb_1.Message.addToRepeatedWrapperField(message, 2, AnalogSwitchGroup.deserialize(reader), AnalogSwitchGroup));

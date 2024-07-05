@@ -9,10 +9,10 @@ export function SwitchIdToGroupId(config: UdongConfig, switch_id: SwitchId): num
 
     let analog_switch_id = switch_id.id;
 
-    for (let key in config.analog_switch_assignments) {
-        let assignment = config.analog_switch_assignments[key];
-        if (analog_switch_id === assignment.analog_switch_id) {
-            return assignment.analog_switch_group_id;
+    for (let key in config.analog_switch_configs) {
+        let analog_switch_config = config.analog_switch_configs[key];
+        if (analog_switch_id === analog_switch_config.analog_switch_id) {
+            return analog_switch_config.analog_switch_group_id;
         }
     }
     return null;

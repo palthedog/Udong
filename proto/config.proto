@@ -2,7 +2,7 @@ syntax = "proto3";
 
 // Maps an analog switch to a group
 // Switches in the same group share the same configuration
-message AnalogSwitchAssignment {
+message AnalogSwitchConfig {
   uint32 analog_switch_id = 1;
   uint32 analog_switch_group_id = 2;
 }
@@ -95,7 +95,7 @@ message ButtonAssignment {
 
 // Represents the overall configuration for Udong
 message UdongConfig {
-  repeated AnalogSwitchAssignment analog_switch_assignments = 1;
+  repeated AnalogSwitchConfig analog_switch_configs = 1;
   repeated AnalogSwitchGroup analog_switch_groups = 2;
   repeated ButtonAssignment button_assignments = 3;
 }

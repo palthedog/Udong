@@ -52,8 +52,8 @@
 
                 <!-- Config Group -->
                 <app-group-selector
-                    *ngIf="activeSwitchAssignment() as assign"
-                    [assignment]="assign"
+                    *ngIf="activeSwitchConfig() as aconf"
+                    [assignment]="aconf"
                     [group_ids]="group_ids"
                     (selectorClosed)="onGroupSelected()"
                 >
