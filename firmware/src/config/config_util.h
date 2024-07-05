@@ -47,6 +47,20 @@ class ArduinoSerialOutputStream : public decaproto::OutputStream {
   }
 };
 
+inline ButtonId DPadButton(DPadButtonSelector::Direction direction) {
+  ButtonId dpad_button;
+  dpad_button.set_type(ButtonType::D_PAD);
+  dpad_button.mutable_d_pad()->set_direction(direction);
+  return dpad_button;
+}
+
+inline ButtonId PushButton(uint32_t id) {
+  ButtonId push_button;
+  push_button.set_type(ButtonType::PUSH);
+  push_button.mutable_push_button()->set_push_button_id(id);
+  return push_button;
+}
+
 inline const AnalogSwitchGroup& getConfigFromGroupId(
     uint8_t analog_switch_group_id, const UdongConfig& config) {
   for (const AnalogSwitchGroup& group : config.analog_switch_groups()) {
@@ -62,10 +76,9 @@ inline const AnalogSwitchGroup& getConfigFromGroupId(
 
 inline const AnalogSwitchGroup& getConfigFromSwitchId(
     uint8_t analog_switch_id, const UdongConfig& config) {
-  for (const AnalogSwitchAssignment& assignment :
-       config.analog_switch_assignments()) {
-    if (assignment.analog_switch_id() == analog_switch_id) {
-      return getConfigFromGroupId(assignment.analog_switch_group_id(), config);
+  for (const AnalogSwitchConfig& aconf : config.analog_switch_configs()) {
+    if (aconf.analog_switch_id() == analog_switch_id) {
+      return getConfigFromGroupId(aconf.analog_switch_group_id(), config);
     }
   }
   return config.analog_switch_groups()[0];
@@ -73,23 +86,25 @@ inline const AnalogSwitchGroup& getConfigFromSwitchId(
 
 const std::vector<ButtonId>& getAllButtonIds();
 
+// Default config for rev.1 board.
+// TODO: Move it to the board config?
 inline UdongConfig defaultUdongConfig() {
   UdongConfig config;
+  const uint32_t kDPadGroup = 0;
+  const uint32_t kElseGroup = 1;
+
   for (int i = 0; i < 16; i++) {
     uint8_t group_id;
-    if (i >= 12 && i <= 15) {
+    if (i >= 11 && i <= 15) {
       // D-pad
-      group_id = 0;
-    } else if (i == 2 || i == 4) {
-      // for little fingers
-      group_id = 1;
+      group_id = kDPadGroup;
     } else {
-      group_id = 4;
+      group_id = kElseGroup;
     }
 
-    AnalogSwitchAssignment* assignment = config.add_analog_switch_assignments();
-    assignment->set_analog_switch_id(i);
-    assignment->set_analog_switch_group_id(group_id);
+    AnalogSwitchConfig* aconf = config.add_analog_switch_configs();
+    aconf->set_analog_switch_id(i);
+    aconf->set_analog_switch_group_id(group_id);
   }
 
   for (int i = 0; i < 8; i++) {
@@ -107,13 +122,87 @@ inline UdongConfig defaultUdongConfig() {
   }
 
   // TODO: Assign human friendly button like assigning Down button to Switch-12
-  const std::vector<ButtonId>& button_ids = getAllButtonIds();
-  for (int i = 0; i < 16; i++) {
-    ButtonAssignment& button_assignment = *config.add_button_assignments();
-    button_assignment.set_switch_id(i);
-    *button_assignment.mutable_button_id() = button_ids[i];
+
+  const int kDigitalBase = 1000;
+  std::map<int, uint32_t> hwid_to_button_id = {
+      {5, 0},
+      {7, 1},
+      {3, 2},
+      {0, 3},
+
+      {1, 4},  // L1
+      {2, 5},  // R1
+
+      {6, 6},  // L2
+      {4, 7},  // R2
+
+      {10, 8},                // Select, Share
+      {kDigitalBase + 0, 9},  // Start, Option
+
+      {8, 10},  // L3
+      {9, 11},  // R3
+
+      {kDigitalBase + 1, 12},  // Mode
+  };
+
+  for (auto& it : hwid_to_button_id) {
+    ButtonAssignment& assign = *config.add_button_assignments();
+    if (it.first < kDigitalBase) {
+      assign.mutable_switch_id()->set_type(SwitchType::ANALOG_SWITCH);
+      assign.mutable_switch_id()->set_id(it.first);
+    } else {
+      assign.mutable_switch_id()->set_type(SwitchType::DIGITAL_SWITCH);
+      assign.mutable_switch_id()->set_id(it.first - kDigitalBase);
+    }
+    *assign.mutable_button_id() = PushButton(it.second);
   }
 
+  ButtonAssignment* assign;
+
+  assign = config.add_button_assignments();
+  assign->mutable_switch_id()->set_type(SwitchType::ANALOG_SWITCH);
+  assign->mutable_switch_id()->set_id(11);
+  *assign->mutable_button_id() = DPadButton(DPadButtonSelector::Direction::UP);
+
+  assign = config.add_button_assignments();
+  assign->mutable_switch_id()->set_type(SwitchType::ANALOG_SWITCH);
+  assign->mutable_switch_id()->set_id(12);
+  *assign->mutable_button_id() = DPadButton(DPadButtonSelector::Direction::UP);
+
+  assign = config.add_button_assignments();
+  assign->mutable_switch_id()->set_type(SwitchType::ANALOG_SWITCH);
+  assign->mutable_switch_id()->set_id(14);
+  *assign->mutable_button_id() =
+      DPadButton(DPadButtonSelector::Direction::RIGHT);
+
+  assign = config.add_button_assignments();
+  assign->mutable_switch_id()->set_type(SwitchType::ANALOG_SWITCH);
+  assign->mutable_switch_id()->set_id(15);
+  *assign->mutable_button_id() =
+      DPadButton(DPadButtonSelector::Direction::DOWN);
+
+  assign = config.add_button_assignments();
+  assign->mutable_switch_id()->set_type(SwitchType::ANALOG_SWITCH);
+  assign->mutable_switch_id()->set_id(13);
+  *assign->mutable_button_id() =
+      DPadButton(DPadButtonSelector::Direction::LEFT);
+
+  /*
+    // const std::vector<ButtonId>& button_ids = getAllButtonIds();
+    for (int i = 0; i < 16; i++) {
+      ButtonAssignment& button_assignment = *config.add_button_assignments();
+      button_assignment.mutable_switch_id()->set_type(SwitchType::ANALOG_SWITCH);
+      button_assignment.mutable_switch_id()->set_id(i);
+      *button_assignment.mutable_button_id() = button_ids[i];
+    }
+
+    for (int i = 0; i < 2; i++) {
+      ButtonAssignment& button_assignment = *config.add_button_assignments();
+      button_assignment.mutable_switch_id()->set_type(SwitchType::DIGITAL_SWITCH);
+      button_assignment.mutable_switch_id()->set_id(i);
+      *button_assignment.mutable_button_id() = button_ids[30 + i];
+    }
+  */
   return config;
 }
 
@@ -160,8 +249,7 @@ inline void complementArray(const std::vector<T>& src, std::vector<T>& dst) {
 inline void complementWithDefaultValues(UdongConfig& config) {
   UdongConfig def = defaultUdongConfig();
   complementArray(
-      def.analog_switch_assignments(),
-      *config.mutable_analog_switch_assignments());
+      def.analog_switch_configs(), *config.mutable_analog_switch_configs());
   complementArray(
       def.analog_switch_groups(), *config.mutable_analog_switch_groups());
   complementArray(
@@ -172,13 +260,12 @@ inline void complementWithDefaultValues(UdongConfig& config) {
 inline void printUdonConfig(const UdongConfig& config) {
   Serial.printf(
       "analog switch assignments size: %u\n",
-      config.analog_switch_assignments_size());
-  for (const AnalogSwitchAssignment& assignment :
-       config.analog_switch_assignments()) {
+      config.analog_switch_configs_size());
+  for (const AnalogSwitchConfig& aconf : config.analog_switch_configs()) {
     Serial.printf(
         "   analog_switch_id: %lu, analog_switch_group_id: %lu\n",
-        assignment.analog_switch_id(),
-        assignment.analog_switch_group_id());
+        aconf.analog_switch_id(),
+        aconf.analog_switch_group_id());
   }
 
   Serial.printf("group size: %u\n", config.analog_switch_groups_size());
@@ -186,7 +273,7 @@ inline void printUdonConfig(const UdongConfig& config) {
     Serial.printf(
         "   group id: %lu, trigger_type: %d\n",
         group.analog_switch_group_id(),
-        group.trigger_type());
+        (int)group.trigger_type());
     if (group.trigger_type() == TriggerType::STATIC_TRIGGER) {
       Serial.printf(
           "     act: %.2lf, rel: %.2lf\n",
@@ -205,7 +292,7 @@ inline void printUdonConfig(const UdongConfig& config) {
   Serial.printf(
       "button assignments size: %u\n", config.button_assignments_size());
   for (const ButtonAssignment& button : config.button_assignments()) {
-    Serial.printf("   switch_id: %lu\n", button.switch_id());
+    Serial.printf("   switch_id: %lu\n", button.switch_id().id());
     const ButtonId& button_id = button.button_id();
     if (button_id.has_d_pad()) {
       Serial.printf("     d-pad: %d\n", button_id.d_pad().direction());

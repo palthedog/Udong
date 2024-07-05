@@ -9,7 +9,7 @@ const std::vector<ButtonId>& getAllButtonIds() {
     return allButtonIds;
   }
 
-  for (uint32_t i = 0; i < 16; i++) {
+  for (uint32_t i = 0; i < 32; i++) {
     ButtonId button_id;
     button_id.set_type(ButtonType::PUSH);
     button_id.mutable_push_button()->set_push_button_id(i);

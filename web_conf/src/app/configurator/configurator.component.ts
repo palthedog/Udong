@@ -103,7 +103,8 @@ export class ConfiguratorComponent {
 
   activeButtonAssignment(): ButtonAssignment {
     return this.config!.button_assignments.find((button_assignment) => {
-      return button_assignment.switch_id.type == this.active_switch_id.type && button_assignment.switch_id.id == this.active_switch_id.id;
+      return button_assignment.switch_id.type == this.active_switch_id.type &&
+        button_assignment.switch_id.id == this.active_switch_id.id;
     })!;
   }
 

@@ -215,42 +215,45 @@ class Udong {
     buttons_.clear();
     d_pad_.Clear();
     for (const ButtonAssignment& b : config.button_assignments()) {
-      std::shared_ptr<AnalogSwitch>& analog_switch =
-          circuit->analog_switches[b.switch_id()];
+      std::shared_ptr<Switch> switch_ptr;
+      if (b.switch_id().type() == SwitchType::ANALOG_SWITCH) {
+        switch_ptr = circuit->analog_switches[b.switch_id().id()];
+      } else if (b.switch_id().type() == SwitchType::DIGITAL_SWITCH) {
+        switch_ptr = circuit->digital_switches[b.switch_id().id()];
+      } else {
+        Serial.println("Unknown switch type");
+        continue;
+      }
 
       if (b.button_id().type() == ButtonType::PUSH) {
         Serial.printf(
-            "button-id: %ld > switch-id: %ld\n",
+            "button-id: %ld > switch-id: %s-%ld\n",
             b.button_id().push_button().push_button_id(),
-            b.switch_id());
+            b.switch_id().type() == SwitchType::ANALOG_SWITCH ? "analog"
+                                                              : "digital",
+            b.switch_id().id());
 
         buttons_.push_back(std::make_shared<PressButton>(
-            analog_switch, b.button_id().push_button().push_button_id()));
+            switch_ptr, b.button_id().push_button().push_button_id()));
       } else if (b.button_id().type() == ButtonType::D_PAD) {
         switch (b.button_id().d_pad().direction()) {
           case DPadButtonSelector::Direction::UNSPECIFIED_DIRECTION:
             break;
           case DPadButtonSelector::Direction::UP:
-            d_pad_.AddUpSwitch(analog_switch);
+            d_pad_.AddUpSwitch(switch_ptr);
             break;
           case DPadButtonSelector::Direction::DOWN:
-            d_pad_.AddDownSwitch(analog_switch);
+            d_pad_.AddDownSwitch(switch_ptr);
             break;
           case DPadButtonSelector::Direction::LEFT:
-            d_pad_.AddLeftSwitch(analog_switch);
+            d_pad_.AddLeftSwitch(switch_ptr);
             break;
           case DPadButtonSelector::Direction::RIGHT:
-            d_pad_.AddRightSwitch(analog_switch);
+            d_pad_.AddRightSwitch(switch_ptr);
             break;
         }
       }
     }
-
-    // Temporal digital switch assignment
-    buttons_.push_back(
-        std::make_shared<PressButton>(circuit->digital_switches[0], 30));
-    buttons_.push_back(
-        std::make_shared<PressButton>(circuit->digital_switches[1], 31));
   }
 
  public:

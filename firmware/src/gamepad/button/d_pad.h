@@ -85,11 +85,22 @@ class DPad {
         break;
     }
 
+    const uint8_t kCenter = 0;
+    const uint8_t kUp = 1;
+    const uint8_t kUpRight = 2;
+    const uint8_t kRight = 3;
+    const uint8_t kDownRight = 4;
+    const uint8_t kDown = 5;
+    const uint8_t kDownLeft = 6;
+    const uint8_t kLeft = 7;
+    const uint8_t kUpLeft = 8;
+
     const u_int8_t kDpadTable[3][3] = {
-        {GAMEPAD_HAT_UP_LEFT, GAMEPAD_HAT_UP, GAMEPAD_HAT_UP_RIGHT},
-        {GAMEPAD_HAT_LEFT, GAMEPAD_HAT_CENTERED, GAMEPAD_HAT_RIGHT},
-        {GAMEPAD_HAT_DOWN_LEFT, GAMEPAD_HAT_DOWN, GAMEPAD_HAT_DOWN_RIGHT},
+        {kUpLeft, kUp, kUpRight},
+        {kLeft, kCenter, kRight},
+        {kDownLeft, kDown, kDownRight},
     };
+
     gamepad_report.d_pad = kDpadTable[y][x];
   }
 
