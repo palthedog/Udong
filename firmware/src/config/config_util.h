@@ -84,8 +84,6 @@ inline const AnalogSwitchGroup& getConfigFromSwitchId(
   return config.analog_switch_groups()[0];
 }
 
-const std::vector<ButtonId>& getAllButtonIds();
-
 // Default config for rev.1 board.
 // TODO: Move it to the board config?
 inline UdongConfig defaultUdongConfig() {
@@ -186,23 +184,6 @@ inline UdongConfig defaultUdongConfig() {
   assign->mutable_switch_id()->set_id(13);
   *assign->mutable_button_id() =
       DPadButton(DPadButtonSelector::Direction::LEFT);
-
-  /*
-    // const std::vector<ButtonId>& button_ids = getAllButtonIds();
-    for (int i = 0; i < 16; i++) {
-      ButtonAssignment& button_assignment = *config.add_button_assignments();
-      button_assignment.mutable_switch_id()->set_type(SwitchType::ANALOG_SWITCH);
-      button_assignment.mutable_switch_id()->set_id(i);
-      *button_assignment.mutable_button_id() = button_ids[i];
-    }
-
-    for (int i = 0; i < 2; i++) {
-      ButtonAssignment& button_assignment = *config.add_button_assignments();
-      button_assignment.mutable_switch_id()->set_type(SwitchType::DIGITAL_SWITCH);
-      button_assignment.mutable_switch_id()->set_id(i);
-      *button_assignment.mutable_button_id() = button_ids[30 + i];
-    }
-  */
   return config;
 }
 
@@ -245,7 +226,6 @@ inline void complementArray(const std::vector<T>& src, std::vector<T>& dst) {
   }
 }
 
-// TODO: Implement decaproto::Message::MergeFrom and use it here
 inline void complementWithDefaultValues(UdongConfig& config) {
   UdongConfig def = defaultUdongConfig();
   complementArray(
