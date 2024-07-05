@@ -90,7 +90,6 @@ inline UdongConfig defaultUdongConfig() {
   UdongConfig config;
   const uint32_t kDPadGroup = 0;
   const uint32_t kElseGroup = 1;
-
   for (int i = 0; i < 16; i++) {
     uint8_t group_id;
     if (i >= 11 && i <= 15) {
@@ -120,7 +119,6 @@ inline UdongConfig defaultUdongConfig() {
   }
 
   // TODO: Assign human friendly button like assigning Down button to Switch-12
-
   const int kDigitalBase = 1000;
   std::map<int, uint32_t> hwid_to_button_id = {
       {5, 0},
@@ -226,6 +224,7 @@ inline void complementArray(const std::vector<T>& src, std::vector<T>& dst) {
   }
 }
 
+// TODO: Implement decaproto::Message::MergeFrom and use it here
 inline void complementWithDefaultValues(UdongConfig& config) {
   UdongConfig def = defaultUdongConfig();
   complementArray(
