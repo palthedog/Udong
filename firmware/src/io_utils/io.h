@@ -15,6 +15,7 @@ class Input {
 };
 
 typedef Input<uint16_t> AnalogInput;
+typedef Input<bool> DigitalInput;
 
 class AnalogInputPin : public AnalogInput {
   uint8_t pin_id_;
@@ -30,6 +31,27 @@ class AnalogInputPin : public AnalogInput {
   virtual uint16_t Read() override {
     // convert 12bits analog input into uint16_t
     return ((uint16_t)analogRead(pin_id_)) << 4;
+  };
+};
+
+class DigitalInputPin : public DigitalInput {
+  uint8_t pin_id_;
+  bool pull_up_;
+
+ public:
+  DigitalInputPin(uint8_t pin_id, bool pull_up)
+      : pin_id_(pin_id), pull_up_(pull_up) {
+    pinMode(pin_id_, pull_up ? INPUT_PULLUP : INPUT_PULLDOWN);
+  }
+
+  virtual ~DigitalInputPin() override {
+  }
+
+  virtual bool Read() override {
+    if (pull_up_) {
+      return digitalRead(pin_id_) == LOW;
+    }
+    return digitalRead(pin_id_) == HIGH;
   };
 };
 

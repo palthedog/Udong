@@ -45,13 +45,14 @@ const uint8_t kHidDescriptor[] = {
     HID_REPORT_COUNT(1),
     HID_REPORT_SIZE(8),
     HID_INPUT(HID_DATA | HID_VARIABLE | HID_ABSOLUTE),
-    // 16 press buttons
+
+    // 32 press buttons
     HID_USAGE_PAGE(HID_USAGE_PAGE_BUTTON),
     HID_USAGE_MIN(1),
-    HID_USAGE_MAX(16),
+    HID_USAGE_MAX(32),
     HID_LOGICAL_MIN(0),
     HID_LOGICAL_MAX(1),
-    HID_REPORT_COUNT(16),
+    HID_REPORT_COUNT(32),
     HID_REPORT_SIZE(1),
     HID_INPUT(HID_DATA | HID_VARIABLE | HID_ABSOLUTE),
 
@@ -75,7 +76,7 @@ struct TU_ATTR_PACKED GamepadReport {
   // Buttons mask for currently pressed buttons in the DPad/hat
   uint8_t d_pad;
   // Buttons mask for currently pressed buttons
-  uint16_t press_buttons;
+  uint32_t press_buttons;
 
   inline void Clear() {
     d_pad = 0;
@@ -83,12 +84,12 @@ struct TU_ATTR_PACKED GamepadReport {
   }
 
   inline void PressButton(int press_button_id) {
-    if (press_button_id < 0 || press_button_id >= 16) {
+    if (press_button_id < 0 || press_button_id >= 32) {
       Serial.printf("ERROR: invalid press button ID: %d\n", press_button_id);
       return;
     }
 
-    uint16_t button_bit = 1u << press_button_id;
+    uint32_t button_bit = 1u << press_button_id;
     press_buttons |= button_bit;
   }
 };

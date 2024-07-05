@@ -18,6 +18,7 @@
 #include "io_utils/soft/triangle.h"
 #include "proto/config.pb.h"
 #include "switch/analog_switch.h"
+#include "switch/digital_switch.h"
 #include "switch/triggers/rapid_trigger.h"
 #include "switch/triggers/static_trigger.h"
 
@@ -31,13 +32,19 @@ struct Circuit {
   AnalogOutputPin led_pin;
   TriangleInput triangle_in;
 
+  // TODO: Move it to a different class somethig like "Board"
   std::vector<std::shared_ptr<AnalogInput>> analog_switch_raw_ins;
   std::vector<std::shared_ptr<AnalogInput>> analog_switch_multi_sampled_ins;
   std::vector<std::shared_ptr<AnalogSwitch>> analog_switches;
 
+  std::vector<std::shared_ptr<DigitalInput>> digital_switch_ins;
+  std::vector<std::shared_ptr<DigitalSwitch>> digital_switches;
+
   // DO NOT USE IT until we fix a hardware bug!!!
   // TODO: refrence 0.6V must be connected to an ANALOG input not Digital
   // Input AnalogInputPin adc_600mv_input;
+  // AnalogInputPin adc_600mv_input;
+
   std::vector<bool> enabled_switchs;
 
   UdongConfig config;
@@ -64,19 +71,25 @@ struct Circuit {
     // {hardware_id, switch_id}
     enabled_switchs.resize(16, true);
 
-    // For my dev board
-    /*
-    enabled_switchs[0] = true;
-    enabled_switchs[1] = true;
-    enabled_switchs[2] = true;
-    enabled_switchs[3] = true;
-    enabled_switchs[4] = true;
+    bool dev_board = false;
 
-    enabled_switchs[8] = true;
-    enabled_switchs[9] = true;
-    */
+    // For my dev board, it has very limited number of analog switches.
+    if (dev_board) {
+      enabled_switchs[0] = true;
+      enabled_switchs[1] = true;
+      enabled_switchs[2] = true;
+      enabled_switchs[3] = true;
+      enabled_switchs[4] = true;
 
-    for (uint8_t switch_id = 0; switch_id < 16; switch_id++) {
+      enabled_switchs[8] = true;
+      enabled_switchs[9] = true;
+    }
+
+    // Analog switches
+    const int kAnalogSwitchCount = 16;
+    std::shared_ptr<AnalogInput> virtual_ground =
+        std::make_shared<AnalogGroundInput>();
+    for (uint8_t switch_id = 0; switch_id < kAnalogSwitchCount; switch_id++) {
       if (enabled_switchs[switch_id]) {
         if (switch_id < 8) {
           analog_switch_raw_ins.push_back(mux0.GetInput(switch_id));
@@ -84,11 +97,11 @@ struct Circuit {
           analog_switch_raw_ins.push_back(mux1.GetInput(switch_id - 8));
         }
       } else {
-        analog_switch_raw_ins.push_back(std::make_shared<AnalogGroundInput>());
+        //
+        analog_switch_raw_ins.push_back(virtual_ground);
       }
     }
 
-    const int kAnalogSwitchCount = 16;
     for (int switch_id = 0; switch_id < kAnalogSwitchCount; switch_id++) {
       analog_switch_multi_sampled_ins.push_back(
           std::make_shared<MultiSampling<1, 0, 0>>(
@@ -120,6 +133,21 @@ struct Circuit {
           calibration_store.GetSwitchRef(switch_id),
           std::move(trigger)));
     }
+
+    if (!dev_board) {
+      // Don't use D23 on the dev board since it's connected to the power
+      // supply...
+      const bool pull_up = true;
+      digital_switch_ins.push_back(
+          std::make_shared<DigitalInputPin>(D22, pull_up));
+      digital_switch_ins.push_back(
+          std::make_shared<DigitalInputPin>(D23, pull_up));
+
+      for (size_t i = 0; i < digital_switch_ins.size(); i++) {
+        digital_switches.push_back(
+            std::make_shared<DigitalSwitch>(digital_switch_ins[i]));
+      }
+    }
   }
 
   void CalibrateAllZeroPoint() {
@@ -140,11 +168,12 @@ class Udong {
   Adafruit_USBD_HID usb_hid;
 
   void FillGamepadReport() {
-    // analog switches
+    // Buttons
     gamepad_report.Clear();
     for (auto& button : buttons_) {
       button->UpdateGamepadReport(gamepad_report);
     }
+    // D-Pad
     d_pad_.UpdateGamepadReport(gamepad_report);
   }
 
@@ -216,6 +245,12 @@ class Udong {
         }
       }
     }
+
+    // Temporal digital switch assignment
+    buttons_.push_back(
+        std::make_shared<PressButton>(circuit->digital_switches[0], 30));
+    buttons_.push_back(
+        std::make_shared<PressButton>(circuit->digital_switches[1], 31));
   }
 
  public:
