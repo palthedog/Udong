@@ -280,6 +280,48 @@ const decaproto::Reflection* ButtonId::GetReflection() const {
     return kButtonId__Reflection;
 }
 
+// A singleton Descriptor for SwitchId
+decaproto::Descriptor* kSwitchId__Descriptor = nullptr;
+
+const decaproto::Descriptor* SwitchId::GetDescriptor() const {
+    if (kSwitchId__Descriptor != nullptr) {
+        return kSwitchId__Descriptor;
+    }
+    kSwitchId__Descriptor = new decaproto::Descriptor();
+    kSwitchId__Descriptor->RegisterField(decaproto::FieldDescriptor(1, decaproto::FieldType::kEnum));
+    kSwitchId__Descriptor->RegisterField(decaproto::FieldDescriptor(2, decaproto::FieldType::kUint32));
+    return kSwitchId__Descriptor;
+}
+
+// A singleton Reflection object for SwitchId
+decaproto::Reflection* kSwitchId__Reflection = nullptr;
+
+const decaproto::Reflection* SwitchId::GetReflection() const {
+    if (kSwitchId__Reflection != nullptr) {
+        return kSwitchId__Reflection;
+    }
+    kSwitchId__Reflection = new decaproto::Reflection();
+    
+    // EnumValue setter for type
+     kSwitchId__Reflection->RegisterSetEnumValue(
+        1,
+		decaproto::CastForSetEnumValue(&SwitchId::set_type));
+     // EnumValue getter for type
+     kSwitchId__Reflection->RegisterGetEnumValue(
+        1,
+		decaproto::CastForGetEnumValue(&SwitchId::type));
+    
+    // Setter
+    kSwitchId__Reflection->RegisterSetUint32(
+        2,
+		decaproto::MsgCast(&SwitchId::set_id));
+    // Getter
+    kSwitchId__Reflection->RegisterGetUint32(
+        2,
+		decaproto::MsgCast(&SwitchId::id));
+        return kSwitchId__Reflection;
+}
+
 // A singleton Descriptor for PushButtonSelector
 decaproto::Descriptor* kPushButtonSelector__Descriptor = nullptr;
 
@@ -352,7 +394,7 @@ const decaproto::Descriptor* ButtonAssignment::GetDescriptor() const {
         return kButtonAssignment__Descriptor;
     }
     kButtonAssignment__Descriptor = new decaproto::Descriptor();
-    kButtonAssignment__Descriptor->RegisterField(decaproto::FieldDescriptor(1, decaproto::FieldType::kUint32));
+    kButtonAssignment__Descriptor->RegisterField(decaproto::FieldDescriptor(1, decaproto::FieldType::kMessage));
     kButtonAssignment__Descriptor->RegisterField(decaproto::FieldDescriptor(2, decaproto::FieldType::kMessage));
     return kButtonAssignment__Descriptor;
 }
@@ -366,15 +408,19 @@ const decaproto::Reflection* ButtonAssignment::GetReflection() const {
     }
     kButtonAssignment__Reflection = new decaproto::Reflection();
     
-    // Setter
-    kButtonAssignment__Reflection->RegisterSetUint32(
+    // Mutable getter for switch_id
+    kButtonAssignment__Reflection->RegisterMutableMessage(
         1,
-		decaproto::MsgCast(&ButtonAssignment::set_switch_id));
-    // Getter
-    kButtonAssignment__Reflection->RegisterGetUint32(
+		decaproto::MsgCast(&ButtonAssignment::mutable_switch_id));
+    // Getter for switch_id
+    kButtonAssignment__Reflection->RegisterGetMessage(
         1,
 		decaproto::MsgCast(&ButtonAssignment::switch_id));
-        
+    // Hazzer for switch_id
+    kButtonAssignment__Reflection->RegisterHasField(
+        1,
+		decaproto::MsgCast(&ButtonAssignment::has_switch_id));
+    
     // Mutable getter for button_id
     kButtonAssignment__Reflection->RegisterMutableMessage(
         2,

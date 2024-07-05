@@ -56,6 +56,19 @@ message ButtonId {
   }
 }
 
+
+enum SwitchType {
+  UNKNOWN_SWITCH = 0;
+  ANALOG_SWITCH = 1;
+  DIGITAL_SWITCH = 2;
+}
+
+message SwitchId {
+  SwitchType type =1;
+  uint32 id = 2;
+}
+
+
 // An ID for push buttons
 message PushButtonSelector {
   uint32 push_button_id = 1;
@@ -76,7 +89,7 @@ message DPadButtonSelector {
 
 // Maps a switch to a button
 message ButtonAssignment {
-  uint32 switch_id = 1;
+  SwitchId switch_id = 1;
   ButtonId button_id = 2;
 }
 

@@ -3,8 +3,15 @@ import { Component, Input, Output, inject } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { AppConsts } from '../consts';
 import { Logger } from '../logger';
-import { UdongConfig } from '../../proto/config';
+import { SwitchId, SwitchType, UdongConfig } from '../../proto/config';
 import { SwitchIdToButtonId, SwitchIdToGroupId } from '../config_util';
+
+interface SwitchConfig {
+  switch_id: SwitchId,
+
+  x: number;
+  y: number;
+}
 
 @Component({
   selector: 'app-board-buttons',
@@ -20,15 +27,17 @@ export class BoardButtonsComponent {
   config!: UdongConfig;
 
   @Input()
-  active_switch_id: number = 0;
+  active_switch_id: SwitchId = new SwitchId({ type: SwitchType.ANALOG_SWITCH, id: 0 });
 
   @Output()
-  activeSwitchIdChanged = new BehaviorSubject<number>(0);
+  activeSwitchIdChanged = new BehaviorSubject<SwitchId>(
+    new SwitchId({ type: SwitchType.ANALOG_SWITCH, id: 0 }));
 
   app_consts = inject(AppConsts);
 
   // It is sorted based on the Switch ID (hardware order)
-  switch_positions: [number, number][] = [
+
+  analog_switch_positions: [number, number][] = [
     [225, 57.5],  // Button 4
     [255, 62.5], // R1
     [285, 67.5], // L1
@@ -50,19 +59,45 @@ export class BoardButtonsComponent {
     [90, 60],    // D
   ];
 
-  switch_ids: number[] = new Array(this.switch_positions.length).fill(0).map((_v, i) => i);
+  digital_switch_positions: [number, number][] = [
+    [27.25, 17.7],
+    [49.65, 17.7],
+  ];
 
-  getButtonColor(switch_id: number): string {
-    let group_id = SwitchIdToGroupId(this.config, switch_id);
-    return this.app_consts.configGroupColor(group_id);
+  get switch_configs(): SwitchConfig[] {
+    return this.analog_switch_positions.map((pos, i) => {
+      return {
+        switch_id: new SwitchId({ type: SwitchType.ANALOG_SWITCH, id: i }),
+        x: pos[0],
+        y: pos[1],
+      };
+    }).concat(this.digital_switch_positions.map((pos, i) => {
+      return {
+        switch_id: new SwitchId({ type: SwitchType.DIGITAL_SWITCH, id: i }),
+        x: pos[0],
+        y: pos[1],
+      };
+    }));
+  };
+
+  getButtonColor(switch_id: SwitchId): string {
+    if (switch_id.type === SwitchType.DIGITAL_SWITCH) {
+      return '#ccc';
+    } else if (switch_id.type === SwitchType.ANALOG_SWITCH) {
+      let group_id = SwitchIdToGroupId(this.config, switch_id);
+      return this.app_consts.configGroupColor(group_id!);
+    }
+    this.log.error('Unknown switch_id.type: ', switch_id);
+
+    return '#fff';
   }
 
-  getButtonName(switch_id: number): string {
+  getButtonName(switch_id: SwitchId): string {
     let button_id = SwitchIdToButtonId(this.config, switch_id);
     return this.app_consts.buttonName(button_id);
   }
 
-  onClickButton(switch_id: number) {
+  onClickButton(switch_id: SwitchId) {
     this.log.debug('button clicked', switch_id);
     this.activeSwitchIdChanged.next(switch_id);
   }

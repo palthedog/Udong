@@ -52,7 +52,8 @@
 
                 <!-- Config Group -->
                 <app-group-selector
-                    [assignment]="activeSwitchAssignment()"
+                    *ngIf="activeSwitchAssignment() as assign"
+                    [assignment]="assign"
                     [group_ids]="group_ids"
                     (selectorClosed)="onGroupSelected()"
                 >
@@ -62,8 +63,9 @@
         </mat-card>
 
         <app-analog-switch-config
+            *ngIf="activeSwitchGroup() as cfg"
             class="switch-item config-panel"
-            [config]="activeSwitchGroup()"
+            [config]="cfg"
         >
         </app-analog-switch-config>
     </div>

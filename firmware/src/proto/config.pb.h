@@ -1,19 +1,20 @@
 #pragma once
 
+#include <string>
+#include <vector>
+#include "decaproto/message.h"
 #include "decaproto/descriptor.h"
 #include "decaproto/reflection.h"
 #include "decaproto/field.h"
 #include <memory>
 #include <stdint.h>
-#include <string>
-#include <vector>
-#include "decaproto/message.h"
 
 class AnalogSwitchAssignment;
 class AnalogSwitchGroup;
 class RapidTriggerConfig;
 class StaticTriggerConfig;
 class ButtonId;
+class SwitchId;
 class PushButtonSelector;
 class DPadButtonSelector;
 class ButtonAssignment;
@@ -29,6 +30,12 @@ enum ButtonType : int {
     UNSPECIFIED_BUTTON_TYPE = 0,
     PUSH = 1,
     D_PAD = 2,
+};
+
+enum SwitchType : int {
+    UNKNOWN_SWITCH = 0,
+    ANALOG_SWITCH = 1,
+    DIGITAL_SWITCH = 2,
 };
 
 enum DPadButtonSelector_Direction : int {
@@ -396,6 +403,48 @@ private:
 
 };
 
+class SwitchId final : public decaproto::Message {
+public:
+    SwitchId()
+        : type__(SwitchType())
+        , id__(uint32_t()) {}
+
+    ~SwitchId() {}
+
+
+	inline SwitchType type() const {
+	    return type__;
+	}
+
+	inline void set_type( SwitchType value) {
+	    type__ = value;
+	}
+
+	inline void clear_type() {
+	    type__ = SwitchType();
+	}
+
+	inline uint32_t id() const {
+	    return id__;
+	}
+
+	inline void set_id( uint32_t value) {
+	    id__ = value;
+	}
+
+	inline void clear_id() {
+	    id__ = uint32_t();
+	}
+    const decaproto::Descriptor* GetDescriptor() const override;
+    const decaproto::Reflection* GetReflection() const override;
+
+private:
+    SwitchType type__;
+    uint32_t id__;
+
+
+};
+
 class PushButtonSelector final : public decaproto::Message {
 public:
     PushButtonSelector()
@@ -456,24 +505,42 @@ private:
 class ButtonAssignment final : public decaproto::Message {
 public:
     ButtonAssignment()
-        : switch_id__(uint32_t())
+        : switch_id__()
+        , has_switch_id__(false)
         , button_id__()
         , has_button_id__(false) {}
 
     ~ButtonAssignment() {}
 
 
-	inline uint32_t switch_id() const {
-	    return switch_id__;
+	// Getter for switch_id
+	const SwitchId& switch_id() const {
+		if (!switch_id__) {
+			switch_id__.resetDefault();
+        }
+	    return *switch_id__;
 	}
 
-	inline void set_switch_id( uint32_t value) {
-	    switch_id__ = value;
+	// Mutable Getter for switch_id
+	SwitchId* mutable_switch_id() {
+	    if (!switch_id__) {
+			switch_id__.resetDefault();
+        }
+        has_switch_id__ = true;
+	    return switch_id__.get();
 	}
 
-	inline void clear_switch_id() {
-	    switch_id__ = uint32_t();
+	// Hazzer for switch_id
+	bool has_switch_id() const {
+	    return has_switch_id__;
 	}
+
+	// Clearer for switch_id
+	void clear_switch_id() {
+	    switch_id__.reset();
+		has_switch_id__ = false;
+	}
+
 
 	// Getter for button_id
 	const ButtonId& button_id() const {
@@ -507,7 +574,8 @@ public:
     const decaproto::Reflection* GetReflection() const override;
 
 private:
-    uint32_t switch_id__;
+    mutable decaproto::SubMessagePtr<SwitchId> switch_id__;
+    bool has_switch_id__;
     mutable decaproto::SubMessagePtr<ButtonId> button_id__;
     bool has_button_id__;
 
@@ -759,6 +827,24 @@ message_type: {
     }
 }
 message_type: {
+    name: "SwitchId"
+    field: {
+        name: "type"
+        number: 1
+        label: LABEL_OPTIONAL
+        type: TYPE_ENUM
+        type_name: ".SwitchType"
+        json_name: "type"
+    }
+    field: {
+        name: "id"
+        number: 2
+        label: LABEL_OPTIONAL
+        type: TYPE_UINT32
+        json_name: "id"
+    }
+}
+message_type: {
     name: "PushButtonSelector"
     field: {
         name: "push_button_id"
@@ -808,7 +894,8 @@ message_type: {
         name: "switch_id"
         number: 1
         label: LABEL_OPTIONAL
-        type: TYPE_UINT32
+        type: TYPE_MESSAGE
+        type_name: ".SwitchId"
         json_name: "switchId"
     }
     field: {
@@ -877,11 +964,26 @@ enum_type: {
         number: 2
     }
 }
+enum_type: {
+    name: "SwitchType"
+    value: {
+        name: "UNKNOWN_SWITCH"
+        number: 0
+    }
+    value: {
+        name: "ANALOG_SWITCH"
+        number: 1
+    }
+    value: {
+        name: "DIGITAL_SWITCH"
+        number: 2
+    }
+}
 source_code_info: {
     location: {
         span: 0
         span: 0
-        span: 87
+        span: 100
         span: 1
     }
     location: {
@@ -1788,568 +1890,765 @@ source_code_info: {
         span: 32
     }
     location: {
-        path: 4
         path: 5
+        path: 2
         span: 59
         span: 0
+        span: 63
+        span: 1
+    }
+    location: {
+        path: 5
+        path: 2
+        path: 1
+        span: 59
+        span: 5
+        span: 15
+    }
+    location: {
+        path: 5
+        path: 2
+        path: 2
+        path: 0
+        span: 60
+        span: 2
+        span: 21
+    }
+    location: {
+        path: 5
+        path: 2
+        path: 2
+        path: 0
+        path: 1
+        span: 60
+        span: 2
+        span: 16
+    }
+    location: {
+        path: 5
+        path: 2
+        path: 2
+        path: 0
+        path: 2
+        span: 60
+        span: 19
+        span: 20
+    }
+    location: {
+        path: 5
+        path: 2
+        path: 2
+        path: 1
         span: 61
+        span: 2
+        span: 20
+    }
+    location: {
+        path: 5
+        path: 2
+        path: 2
+        path: 1
+        path: 1
+        span: 61
+        span: 2
+        span: 15
+    }
+    location: {
+        path: 5
+        path: 2
+        path: 2
+        path: 1
+        path: 2
+        span: 61
+        span: 18
+        span: 19
+    }
+    location: {
+        path: 5
+        path: 2
+        path: 2
+        path: 2
+        span: 62
+        span: 2
+        span: 21
+    }
+    location: {
+        path: 5
+        path: 2
+        path: 2
+        path: 2
+        path: 1
+        span: 62
+        span: 2
+        span: 16
+    }
+    location: {
+        path: 5
+        path: 2
+        path: 2
+        path: 2
+        path: 2
+        span: 62
+        span: 19
+        span: 20
+    }
+    location: {
+        path: 4
+        path: 5
+        span: 65
+        span: 0
+        span: 68
+        span: 1
+    }
+    location: {
+        path: 4
+        path: 5
+        path: 1
+        span: 65
+        span: 8
+        span: 16
+    }
+    location: {
+        path: 4
+        path: 5
+        path: 2
+        path: 0
+        span: 66
+        span: 2
+        span: 21
+    }
+    location: {
+        path: 4
+        path: 5
+        path: 2
+        path: 0
+        path: 6
+        span: 66
+        span: 2
+        span: 12
+    }
+    location: {
+        path: 4
+        path: 5
+        path: 2
+        path: 0
+        path: 1
+        span: 66
+        span: 13
+        span: 17
+    }
+    location: {
+        path: 4
+        path: 5
+        path: 2
+        path: 0
+        path: 3
+        span: 66
+        span: 19
+        span: 20
+    }
+    location: {
+        path: 4
+        path: 5
+        path: 2
+        path: 1
+        span: 67
+        span: 2
+        span: 16
+    }
+    location: {
+        path: 4
+        path: 5
+        path: 2
+        path: 1
+        path: 5
+        span: 67
+        span: 2
+        span: 8
+    }
+    location: {
+        path: 4
+        path: 5
+        path: 2
+        path: 1
+        path: 1
+        span: 67
+        span: 9
+        span: 11
+    }
+    location: {
+        path: 4
+        path: 5
+        path: 2
+        path: 1
+        path: 3
+        span: 67
+        span: 14
+        span: 15
+    }
+    location: {
+        path: 4
+        path: 6
+        span: 72
+        span: 0
+        span: 74
         span: 1
         leading_comments: " An ID for push buttons\n"
     }
     location: {
         path: 4
-        path: 5
+        path: 6
         path: 1
-        span: 59
+        span: 72
         span: 8
         span: 26
     }
     location: {
         path: 4
-        path: 5
+        path: 6
         path: 2
         path: 0
-        span: 60
+        span: 73
         span: 2
         span: 28
     }
     location: {
         path: 4
-        path: 5
+        path: 6
         path: 2
         path: 0
         path: 5
-        span: 60
+        span: 73
         span: 2
         span: 8
     }
     location: {
         path: 4
-        path: 5
+        path: 6
         path: 2
         path: 0
         path: 1
-        span: 60
+        span: 73
         span: 9
         span: 23
     }
     location: {
         path: 4
-        path: 5
+        path: 6
         path: 2
         path: 0
         path: 3
-        span: 60
+        span: 73
         span: 26
         span: 27
     }
     location: {
         path: 4
-        path: 6
-        span: 64
+        path: 7
+        span: 77
         span: 0
-        span: 74
+        span: 87
         span: 1
         leading_comments: " An ID for D-pad buttons\n"
     }
     location: {
         path: 4
-        path: 6
+        path: 7
         path: 1
-        span: 64
+        span: 77
         span: 8
         span: 26
     }
     location: {
         path: 4
-        path: 6
+        path: 7
         path: 4
         path: 0
-        span: 65
+        span: 78
         span: 2
-        span: 71
+        span: 84
         span: 3
     }
     location: {
         path: 4
-        path: 6
+        path: 7
         path: 4
         path: 0
         path: 1
-        span: 65
+        span: 78
         span: 7
         span: 16
     }
     location: {
         path: 4
-        path: 6
+        path: 7
         path: 4
         path: 0
         path: 2
         path: 0
-        span: 66
+        span: 79
         span: 4
         span: 30
     }
     location: {
         path: 4
-        path: 6
+        path: 7
         path: 4
         path: 0
         path: 2
         path: 0
         path: 1
-        span: 66
+        span: 79
         span: 4
         span: 25
     }
     location: {
         path: 4
-        path: 6
+        path: 7
         path: 4
         path: 0
         path: 2
         path: 0
         path: 2
-        span: 66
+        span: 79
         span: 28
         span: 29
     }
     location: {
         path: 4
-        path: 6
+        path: 7
         path: 4
         path: 0
         path: 2
         path: 1
-        span: 67
+        span: 80
         span: 4
         span: 11
     }
     location: {
         path: 4
-        path: 6
+        path: 7
         path: 4
         path: 0
         path: 2
         path: 1
         path: 1
-        span: 67
+        span: 80
         span: 4
         span: 6
     }
     location: {
         path: 4
-        path: 6
+        path: 7
         path: 4
         path: 0
         path: 2
         path: 1
         path: 2
-        span: 67
+        span: 80
         span: 9
         span: 10
     }
     location: {
         path: 4
-        path: 6
+        path: 7
         path: 4
         path: 0
         path: 2
         path: 2
-        span: 68
+        span: 81
         span: 4
         span: 13
     }
     location: {
         path: 4
-        path: 6
+        path: 7
         path: 4
         path: 0
         path: 2
         path: 2
         path: 1
-        span: 68
+        span: 81
         span: 4
         span: 8
     }
     location: {
         path: 4
-        path: 6
+        path: 7
         path: 4
         path: 0
         path: 2
         path: 2
         path: 2
-        span: 68
+        span: 81
         span: 11
         span: 12
     }
     location: {
         path: 4
-        path: 6
+        path: 7
         path: 4
         path: 0
         path: 2
         path: 3
-        span: 69
+        span: 82
         span: 4
         span: 13
     }
     location: {
         path: 4
-        path: 6
+        path: 7
         path: 4
         path: 0
         path: 2
         path: 3
         path: 1
-        span: 69
+        span: 82
         span: 4
         span: 8
     }
     location: {
         path: 4
-        path: 6
+        path: 7
         path: 4
         path: 0
         path: 2
         path: 3
         path: 2
-        span: 69
+        span: 82
         span: 11
         span: 12
     }
     location: {
         path: 4
-        path: 6
+        path: 7
         path: 4
         path: 0
         path: 2
         path: 4
-        span: 70
+        span: 83
         span: 4
         span: 14
     }
     location: {
         path: 4
-        path: 6
+        path: 7
         path: 4
         path: 0
         path: 2
         path: 4
         path: 1
-        span: 70
+        span: 83
         span: 4
         span: 9
     }
     location: {
         path: 4
-        path: 6
+        path: 7
         path: 4
         path: 0
         path: 2
         path: 4
         path: 2
-        span: 70
+        span: 83
         span: 12
         span: 13
     }
     location: {
         path: 4
-        path: 6
+        path: 7
         path: 2
         path: 0
-        span: 73
+        span: 86
         span: 2
         span: 26
     }
     location: {
         path: 4
-        path: 6
+        path: 7
         path: 2
         path: 0
         path: 6
-        span: 73
+        span: 86
         span: 2
         span: 11
     }
     location: {
         path: 4
-        path: 6
+        path: 7
         path: 2
         path: 0
         path: 1
-        span: 73
+        span: 86
         span: 12
         span: 21
     }
     location: {
         path: 4
-        path: 6
+        path: 7
         path: 2
         path: 0
         path: 3
-        span: 73
+        span: 86
         span: 24
         span: 25
     }
     location: {
         path: 4
-        path: 7
-        span: 77
+        path: 8
+        span: 90
         span: 0
-        span: 80
+        span: 93
         span: 1
         leading_comments: " Maps a switch to a button\n"
     }
     location: {
         path: 4
-        path: 7
+        path: 8
         path: 1
-        span: 77
+        span: 90
         span: 8
         span: 24
     }
     location: {
         path: 4
-        path: 7
+        path: 8
         path: 2
         path: 0
-        span: 78
-        span: 2
-        span: 23
-    }
-    location: {
-        path: 4
-        path: 7
-        path: 2
-        path: 0
-        path: 5
-        span: 78
-        span: 2
-        span: 8
-    }
-    location: {
-        path: 4
-        path: 7
-        path: 2
-        path: 0
-        path: 1
-        span: 78
-        span: 9
-        span: 18
-    }
-    location: {
-        path: 4
-        path: 7
-        path: 2
-        path: 0
-        path: 3
-        span: 78
-        span: 21
-        span: 22
-    }
-    location: {
-        path: 4
-        path: 7
-        path: 2
-        path: 1
-        span: 79
+        span: 91
         span: 2
         span: 25
     }
     location: {
         path: 4
-        path: 7
+        path: 8
         path: 2
-        path: 1
+        path: 0
         path: 6
-        span: 79
+        span: 91
         span: 2
         span: 10
     }
     location: {
         path: 4
-        path: 7
+        path: 8
         path: 2
+        path: 0
         path: 1
-        path: 1
-        span: 79
+        span: 91
         span: 11
         span: 20
     }
     location: {
         path: 4
-        path: 7
+        path: 8
         path: 2
-        path: 1
+        path: 0
         path: 3
-        span: 79
+        span: 91
         span: 23
         span: 24
     }
     location: {
         path: 4
         path: 8
-        span: 83
+        path: 2
+        path: 1
+        span: 92
+        span: 2
+        span: 25
+    }
+    location: {
+        path: 4
+        path: 8
+        path: 2
+        path: 1
+        path: 6
+        span: 92
+        span: 2
+        span: 10
+    }
+    location: {
+        path: 4
+        path: 8
+        path: 2
+        path: 1
+        path: 1
+        span: 92
+        span: 11
+        span: 20
+    }
+    location: {
+        path: 4
+        path: 8
+        path: 2
+        path: 1
+        path: 3
+        span: 92
+        span: 23
+        span: 24
+    }
+    location: {
+        path: 4
+        path: 9
+        span: 96
         span: 0
-        span: 87
+        span: 100
         span: 1
         leading_comments: " Represents the overall configuration for Udong\n"
     }
     location: {
         path: 4
-        path: 8
+        path: 9
         path: 1
-        span: 83
+        span: 96
         span: 8
         span: 19
     }
     location: {
         path: 4
-        path: 8
+        path: 9
         path: 2
         path: 0
-        span: 84
+        span: 97
         span: 2
         span: 64
     }
     location: {
         path: 4
-        path: 8
+        path: 9
         path: 2
         path: 0
         path: 4
-        span: 84
+        span: 97
         span: 2
         span: 10
     }
     location: {
         path: 4
-        path: 8
+        path: 9
         path: 2
         path: 0
         path: 6
-        span: 84
+        span: 97
         span: 11
         span: 33
     }
     location: {
         path: 4
-        path: 8
+        path: 9
         path: 2
         path: 0
         path: 1
-        span: 84
+        span: 97
         span: 34
         span: 59
     }
     location: {
         path: 4
-        path: 8
+        path: 9
         path: 2
         path: 0
         path: 3
-        span: 84
+        span: 97
         span: 62
         span: 63
     }
     location: {
         path: 4
-        path: 8
+        path: 9
         path: 2
         path: 1
-        span: 85
+        span: 98
         span: 2
         span: 54
     }
     location: {
         path: 4
-        path: 8
+        path: 9
         path: 2
         path: 1
         path: 4
-        span: 85
+        span: 98
         span: 2
         span: 10
     }
     location: {
         path: 4
-        path: 8
+        path: 9
         path: 2
         path: 1
         path: 6
-        span: 85
+        span: 98
         span: 11
         span: 28
     }
     location: {
         path: 4
-        path: 8
+        path: 9
         path: 2
         path: 1
         path: 1
-        span: 85
+        span: 98
         span: 29
         span: 49
     }
     location: {
         path: 4
-        path: 8
+        path: 9
         path: 2
         path: 1
         path: 3
-        span: 85
+        span: 98
         span: 52
         span: 53
     }
     location: {
         path: 4
-        path: 8
+        path: 9
         path: 2
         path: 2
-        span: 86
+        span: 99
         span: 2
         span: 51
     }
     location: {
         path: 4
-        path: 8
+        path: 9
         path: 2
         path: 2
         path: 4
-        span: 86
+        span: 99
         span: 2
         span: 10
     }
     location: {
         path: 4
-        path: 8
+        path: 9
         path: 2
         path: 2
         path: 6
-        span: 86
+        span: 99
         span: 11
         span: 27
     }
     location: {
         path: 4
-        path: 8
+        path: 9
         path: 2
         path: 2
         path: 1
-        span: 86
+        span: 99
         span: 28
         span: 46
     }
     location: {
         path: 4
-        path: 8
+        path: 9
         path: 2
         path: 2
         path: 3
-        span: 86
+        span: 99
         span: 49
         span: 50
     }

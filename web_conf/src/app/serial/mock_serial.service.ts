@@ -4,7 +4,7 @@ import { BehaviorSubject, Observable, Subject, defer, filter } from 'rxjs';
 import { SerialServiceInterface } from './serial.service';
 import { Logger } from '../logger';
 
-import { AnalogSwitchAssignment, AnalogSwitchGroup, ButtonAssignment, ButtonId, ButtonType, PushButtonSelector, RapidTriggerConfig, StaticTriggerConfig, TriggerType, UdongConfig } from '../../proto/config';
+import { AnalogSwitchAssignment, AnalogSwitchGroup, ButtonAssignment, ButtonId, ButtonType, PushButtonSelector, RapidTriggerConfig, StaticTriggerConfig, SwitchId, SwitchType, TriggerType, UdongConfig } from '../../proto/config';
 
 @Injectable()
 export class MockSerialService extends SerialServiceInterface {
@@ -86,6 +86,7 @@ export class MockSerialService extends SerialServiceInterface {
 
         // TODO: Choose human friendly button assignments(e.g. D-pad for left hand)
         let button_assignments: ButtonAssignment[] = [];
+        // analog switches
         for (let i = 0; i < 16; i++) {
             button_assignments.push(new ButtonAssignment({
                 button_id: new ButtonId({
@@ -94,7 +95,25 @@ export class MockSerialService extends SerialServiceInterface {
                         push_button_id: i
                     })
                 }),
-                switch_id: i,
+                switch_id: new SwitchId({
+                    type: SwitchType.ANALOG_SWITCH,
+                    id: i,
+                })
+            }));
+        }
+        // digital switches
+        for (let i = 0; i < 2; i++) {
+            button_assignments.push(new ButtonAssignment({
+                button_id: new ButtonId({
+                    type: ButtonType.PUSH,
+                    push_button: new PushButtonSelector({
+                        push_button_id: 30 + i
+                    })
+                }),
+                switch_id: new SwitchId({
+                    type: SwitchType.DIGITAL_SWITCH,
+                    id: i,
+                })
             }));
         }
 

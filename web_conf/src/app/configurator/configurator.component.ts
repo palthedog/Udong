@@ -9,7 +9,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { AnalogSwitchConfigComponent } from '../analog-switch-config/analog-switch-config.component';
 import { BoardButtonsComponent } from '../board-buttons/board-buttons.component';
-import { AnalogSwitchAssignment, AnalogSwitchGroup, ButtonAssignment, ButtonId, UdongConfig } from '../../proto/config';
+import { AnalogSwitchAssignment, AnalogSwitchGroup, ButtonAssignment, ButtonId, SwitchId, SwitchType, UdongConfig } from '../../proto/config';
 import { AppConsts } from '../consts';
 import { GroupSelectorComponent } from '../group-selector/group-selector.component';
 import { SerialServiceInterface } from '../serial/serial.service';
@@ -28,8 +28,8 @@ export class ConfiguratorComponent {
   serial_service = inject(SerialServiceInterface);
   consts = inject(AppConsts);
 
-  active_switch_id: number = 0;
-  active_group_id: number = 0;
+  active_switch_id: SwitchId = new SwitchId({ type: SwitchType.ANALOG_SWITCH, id: 0 });
+  active_group_id: number | null = null;
 
   config?: UdongConfig = undefined;
 
@@ -67,7 +67,7 @@ export class ConfiguratorComponent {
     });
   }
 
-  setActiveSwitchId(switch_id: number) {
+  setActiveSwitchId(switch_id: SwitchId) {
     this.log.info('active switch changed', switch_id);
     this.active_switch_id = switch_id;
     this.setActiveGroupId(SwitchIdToGroupId(this.config!, this.active_switch_id));
@@ -81,14 +81,17 @@ export class ConfiguratorComponent {
     this.setActiveGroupId(SwitchIdToGroupId(this.config!, this.active_switch_id));
   }
 
-  setActiveGroupId(group_id: number) {
+  setActiveGroupId(group_id: number | null) {
     this.log.info('active group changed', group_id);
     this.active_group_id = group_id;
   }
 
-  activeSwitchAssignment(): AnalogSwitchAssignment {
+  activeSwitchAssignment(): AnalogSwitchAssignment | null {
+    if (this.active_switch_id.type != SwitchType.ANALOG_SWITCH) {
+      return null;
+    }
     return this.config!.analog_switch_assignments.find((assignment) => {
-      return assignment.analog_switch_id == this.active_switch_id;
+      return assignment.analog_switch_id == this.active_switch_id.id;
     })!;
   }
 
@@ -100,7 +103,7 @@ export class ConfiguratorComponent {
 
   activeButtonAssignment(): ButtonAssignment {
     return this.config!.button_assignments.find((button_assignment) => {
-      return button_assignment.switch_id == this.active_switch_id;
+      return button_assignment.switch_id.type == this.active_switch_id.type && button_assignment.switch_id.id == this.active_switch_id.id;
     })!;
   }
 

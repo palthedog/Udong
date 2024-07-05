@@ -11,14 +11,7 @@ export class AppConsts {
         if (this._button_ids.length != 0) {
             return this._button_ids;
         }
-        for (let i = 0; i < 16; i++) {
-            this._button_ids.push(new ButtonId({
-                type: ButtonType.PUSH,
-                push_button: new PushButtonSelector({
-                    push_button_id: i,
-                })
-            }));
-        }
+
         this._button_ids.push(new ButtonId({
             type: ButtonType.D_PAD,
             d_pad: new DPadButtonSelector({ direction: DPadButtonSelector.Direction.UP })
@@ -35,6 +28,15 @@ export class AppConsts {
             type: ButtonType.D_PAD,
             d_pad: new DPadButtonSelector({ direction: DPadButtonSelector.Direction.LEFT })
         }));
+
+        for (let i = 0; i < 32; i++) {
+            this._button_ids.push(new ButtonId({
+                type: ButtonType.PUSH,
+                push_button: new PushButtonSelector({
+                    push_button_id: i,
+                })
+            }));
+        }
 
         return this._button_ids;
     }

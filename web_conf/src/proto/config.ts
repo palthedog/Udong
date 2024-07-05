@@ -14,6 +14,11 @@ export enum ButtonType {
     PUSH = 1,
     D_PAD = 2
 }
+export enum SwitchType {
+    UNKNOWN_SWITCH = 0,
+    ANALOG_SWITCH = 1,
+    DIGITAL_SWITCH = 2
+}
 export class AnalogSwitchAssignment extends pb_1.Message {
     #one_of_decls: number[][] = [];
     constructor(data?: any[] | {
@@ -605,6 +610,96 @@ export class ButtonId extends pb_1.Message {
         return ButtonId.deserialize(bytes);
     }
 }
+export class SwitchId extends pb_1.Message {
+    #one_of_decls: number[][] = [];
+    constructor(data?: any[] | {
+        type?: SwitchType;
+        id?: number;
+    }) {
+        super();
+        pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
+        if (!Array.isArray(data) && typeof data == "object") {
+            if ("type" in data && data.type != undefined) {
+                this.type = data.type;
+            }
+            if ("id" in data && data.id != undefined) {
+                this.id = data.id;
+            }
+        }
+    }
+    get type() {
+        return pb_1.Message.getFieldWithDefault(this, 1, SwitchType.UNKNOWN_SWITCH) as SwitchType;
+    }
+    set type(value: SwitchType) {
+        pb_1.Message.setField(this, 1, value);
+    }
+    get id() {
+        return pb_1.Message.getFieldWithDefault(this, 2, 0) as number;
+    }
+    set id(value: number) {
+        pb_1.Message.setField(this, 2, value);
+    }
+    static fromObject(data: {
+        type?: SwitchType;
+        id?: number;
+    }): SwitchId {
+        const message = new SwitchId({});
+        if (data.type != null) {
+            message.type = data.type;
+        }
+        if (data.id != null) {
+            message.id = data.id;
+        }
+        return message;
+    }
+    toObject() {
+        const data: {
+            type?: SwitchType;
+            id?: number;
+        } = {};
+        if (this.type != null) {
+            data.type = this.type;
+        }
+        if (this.id != null) {
+            data.id = this.id;
+        }
+        return data;
+    }
+    serialize(): Uint8Array;
+    serialize(w: pb_1.BinaryWriter): void;
+    serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+        const writer = w || new pb_1.BinaryWriter();
+        if (this.type != SwitchType.UNKNOWN_SWITCH)
+            writer.writeEnum(1, this.type);
+        if (this.id != 0)
+            writer.writeUint32(2, this.id);
+        if (!w)
+            return writer.getResultBuffer();
+    }
+    static deserialize(bytes: Uint8Array | pb_1.BinaryReader): SwitchId {
+        const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new SwitchId();
+        while (reader.nextField()) {
+            if (reader.isEndGroup())
+                break;
+            switch (reader.getFieldNumber()) {
+                case 1:
+                    message.type = reader.readEnum();
+                    break;
+                case 2:
+                    message.id = reader.readUint32();
+                    break;
+                default: reader.skipField();
+            }
+        }
+        return message;
+    }
+    serializeBinary(): Uint8Array {
+        return this.serialize();
+    }
+    static override deserializeBinary(bytes: Uint8Array): SwitchId {
+        return SwitchId.deserialize(bytes);
+    }
+}
 export class PushButtonSelector extends pb_1.Message {
     #one_of_decls: number[][] = [];
     constructor(data?: any[] | {
@@ -751,7 +846,7 @@ export namespace DPadButtonSelector {
 export class ButtonAssignment extends pb_1.Message {
     #one_of_decls: number[][] = [];
     constructor(data?: any[] | {
-        switch_id?: number;
+        switch_id?: SwitchId;
         button_id?: ButtonId;
     }) {
         super();
@@ -766,10 +861,13 @@ export class ButtonAssignment extends pb_1.Message {
         }
     }
     get switch_id() {
-        return pb_1.Message.getFieldWithDefault(this, 1, 0) as number;
+        return pb_1.Message.getWrapperField(this, SwitchId, 1) as SwitchId;
     }
-    set switch_id(value: number) {
-        pb_1.Message.setField(this, 1, value);
+    set switch_id(value: SwitchId) {
+        pb_1.Message.setWrapperField(this, 1, value);
+    }
+    get has_switch_id() {
+        return pb_1.Message.getField(this, 1) != null;
     }
     get button_id() {
         return pb_1.Message.getWrapperField(this, ButtonId, 2) as ButtonId;
@@ -781,12 +879,12 @@ export class ButtonAssignment extends pb_1.Message {
         return pb_1.Message.getField(this, 2) != null;
     }
     static fromObject(data: {
-        switch_id?: number;
+        switch_id?: ReturnType<typeof SwitchId.prototype.toObject>;
         button_id?: ReturnType<typeof ButtonId.prototype.toObject>;
     }): ButtonAssignment {
         const message = new ButtonAssignment({});
         if (data.switch_id != null) {
-            message.switch_id = data.switch_id;
+            message.switch_id = SwitchId.fromObject(data.switch_id);
         }
         if (data.button_id != null) {
             message.button_id = ButtonId.fromObject(data.button_id);
@@ -795,11 +893,11 @@ export class ButtonAssignment extends pb_1.Message {
     }
     toObject() {
         const data: {
-            switch_id?: number;
+            switch_id?: ReturnType<typeof SwitchId.prototype.toObject>;
             button_id?: ReturnType<typeof ButtonId.prototype.toObject>;
         } = {};
         if (this.switch_id != null) {
-            data.switch_id = this.switch_id;
+            data.switch_id = this.switch_id.toObject();
         }
         if (this.button_id != null) {
             data.button_id = this.button_id.toObject();
@@ -810,8 +908,8 @@ export class ButtonAssignment extends pb_1.Message {
     serialize(w: pb_1.BinaryWriter): void;
     serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
         const writer = w || new pb_1.BinaryWriter();
-        if (this.switch_id != 0)
-            writer.writeUint32(1, this.switch_id);
+        if (this.has_switch_id)
+            writer.writeMessage(1, this.switch_id, () => this.switch_id.serialize(writer));
         if (this.has_button_id)
             writer.writeMessage(2, this.button_id, () => this.button_id.serialize(writer));
         if (!w)
@@ -824,7 +922,7 @@ export class ButtonAssignment extends pb_1.Message {
                 break;
             switch (reader.getFieldNumber()) {
                 case 1:
-                    message.switch_id = reader.readUint32();
+                    reader.readMessage(message.switch_id, () => message.switch_id = SwitchId.deserialize(reader));
                     break;
                 case 2:
                     reader.readMessage(message.button_id, () => message.button_id = ButtonId.deserialize(reader));
