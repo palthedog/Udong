@@ -5264,6 +5264,24 @@
 				(hide yes)
 			)
 		)
+		(property "フィールド5" ""
+			(at 243.84 92.71 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド6" ""
+			(at 243.84 92.71 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "2"
 			(uuid "b41bce8c-902a-46f0-9047-08b4006a93a7")
 		)
@@ -5324,6 +5342,24 @@
 			)
 		)
 		(property "Description" "Resistor"
+			(at 57.15 22.86 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド5" ""
+			(at 57.15 22.86 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド6" ""
 			(at 57.15 22.86 0)
 			(effects
 				(font
@@ -5546,6 +5582,24 @@
 				(hide yes)
 			)
 		)
+		(property "フィールド5" ""
+			(at 208.28 58.42 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド6" ""
+			(at 208.28 58.42 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "e4fc1c05-b09b-404e-99dd-c705d1e5a71e")
 		)
@@ -5740,6 +5794,24 @@
 		)
 		(property "Description" "Unipolar 50 mV/mT,+79-mT, 20-kHz, 3.3/5V, SOT-23"
 			(at 102.616 80.518 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド5" ""
+			(at 104.14 58.42 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド6" ""
+			(at 104.14 58.42 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5944,6 +6016,24 @@
 			)
 		)
 		(property "Description" "Unpolarized capacitor"
+			(at 243.84 123.19 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド5" ""
+			(at 243.84 123.19 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド6" ""
 			(at 243.84 123.19 0)
 			(effects
 				(font
@@ -6218,6 +6308,24 @@
 				(hide yes)
 			)
 		)
+		(property "フィールド5" ""
+			(at 238.76 118.11 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド6" ""
+			(at 238.76 118.11 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "c8cc7d00-3817-4498-b431-5ac5839afcd7")
 		)
@@ -6280,6 +6388,24 @@
 			)
 		)
 		(property "Description" "Unpolarized capacitor"
+			(at 26.67 123.19 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド5" ""
+			(at 26.67 123.19 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド6" ""
 			(at 26.67 123.19 0)
 			(effects
 				(font
@@ -6358,6 +6484,24 @@
 				(hide yes)
 			)
 		)
+		(property "フィールド5" ""
+			(at 147.32 27.94 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド6" ""
+			(at 147.32 27.94 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "b3665707-aee9-4749-9ade-e62cbc69f514")
 		)
@@ -6420,6 +6564,24 @@
 			)
 		)
 		(property "Description" "Unpolarized capacitor"
+			(at 62.23 58.42 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド5" ""
+			(at 62.23 58.42 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド6" ""
 			(at 62.23 58.42 0)
 			(effects
 				(font
@@ -6556,6 +6718,24 @@
 		)
 		(property "Description" "Unipolar 50 mV/mT,+79-mT, 20-kHz, 3.3/5V, SOT-23"
 			(at 223.266 145.288 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド5" ""
+			(at 224.79 123.19 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド6" ""
+			(at 224.79 123.19 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6702,6 +6882,24 @@
 				(hide yes)
 			)
 		)
+		(property "フィールド5" ""
+			(at 182.88 123.19 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド6" ""
+			(at 182.88 123.19 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "2"
 			(uuid "c6fc3b90-1fd3-43cb-bcb2-48dab329a1b7")
 		)
@@ -6762,6 +6960,24 @@
 			)
 		)
 		(property "Description" "Resistor"
+			(at 118.11 118.11 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド5" ""
+			(at 118.11 118.11 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド6" ""
 			(at 118.11 118.11 0)
 			(effects
 				(font
@@ -7103,6 +7319,24 @@
 				(hide yes)
 			)
 		)
+		(property "フィールド5" ""
+			(at 163.83 27.94 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド6" ""
+			(at 163.83 27.94 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "3"
 			(uuid "c1260a7f-745d-40cb-9c5d-fe9dc070c49d")
 		)
@@ -7175,6 +7409,24 @@
 				(hide yes)
 			)
 		)
+		(property "フィールド5" ""
+			(at 163.83 92.71 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド6" ""
+			(at 163.83 92.71 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "3"
 			(uuid "6a28d688-1db8-4b4d-b687-709315563aec")
 		)
@@ -7238,6 +7490,24 @@
 			)
 		)
 		(property "Description" "Resistor"
+			(at 118.11 87.63 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド5" ""
+			(at 118.11 87.63 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド6" ""
 			(at 118.11 87.63 0)
 			(effects
 				(font
@@ -7448,6 +7718,24 @@
 				(hide yes)
 			)
 		)
+		(property "フィールド5" ""
+			(at 147.32 92.71 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド6" ""
+			(at 147.32 92.71 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "e8f825bc-fa9a-4c89-9957-4bca25627f16")
 		)
@@ -7508,6 +7796,24 @@
 			)
 		)
 		(property "Description" "Resistor"
+			(at 118.11 53.34 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド5" ""
+			(at 118.11 53.34 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド6" ""
 			(at 118.11 53.34 0)
 			(effects
 				(font
@@ -7578,6 +7884,24 @@
 			)
 		)
 		(property "Description" "Unpolarized capacitor"
+			(at 26.67 92.71 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド5" ""
+			(at 26.67 92.71 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド6" ""
 			(at 26.67 92.71 0)
 			(effects
 				(font
@@ -7788,6 +8112,24 @@
 				(hide yes)
 			)
 		)
+		(property "フィールド5" ""
+			(at 87.63 123.19 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド6" ""
+			(at 87.63 123.19 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "121bc568-1cdd-4b62-a4c4-1a67066d1620")
 		)
@@ -7848,6 +8190,24 @@
 			)
 		)
 		(property "Description" "Resistor"
+			(at 177.8 118.11 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド5" ""
+			(at 177.8 118.11 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド6" ""
 			(at 177.8 118.11 0)
 			(effects
 				(font
@@ -7992,6 +8352,24 @@
 				(hide yes)
 			)
 		)
+		(property "フィールド5" ""
+			(at 26.67 58.42 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド6" ""
+			(at 26.67 58.42 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "77119e11-a0f4-4ad3-a8f3-92b92828906c")
 		)
@@ -8128,6 +8506,24 @@
 				(hide yes)
 			)
 		)
+		(property "フィールド5" ""
+			(at 208.28 123.19 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド6" ""
+			(at 208.28 123.19 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "64a523ac-e7ed-49e5-b48b-cd444c7aefeb")
 		)
@@ -8198,6 +8594,24 @@
 				(hide yes)
 			)
 		)
+		(property "フィールド5" ""
+			(at 147.32 123.19 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド6" ""
+			(at 147.32 123.19 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "28839fc3-cd89-44b7-af52-3f9e7350b04c")
 		)
@@ -8260,6 +8674,24 @@
 			)
 		)
 		(property "Description" "Unpolarized capacitor"
+			(at 243.84 58.42 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド5" ""
+			(at 243.84 58.42 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド6" ""
 			(at 243.84 58.42 0)
 			(effects
 				(font
@@ -8470,6 +8902,24 @@
 				(hide yes)
 			)
 		)
+		(property "フィールド5" ""
+			(at 62.23 27.94 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド6" ""
+			(at 62.23 27.94 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "2"
 			(uuid "87d3542d-0c7e-400f-805e-1af47a76098c")
 		)
@@ -8611,6 +9061,24 @@
 				(hide yes)
 			)
 		)
+		(property "フィールド5" ""
+			(at 43.18 123.19 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド6" ""
+			(at 43.18 123.19 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "3"
 			(uuid "260f19c7-6db2-4656-9400-a10d41fe8887")
 		)
@@ -8676,6 +9144,24 @@
 		)
 		(property "Description" "Unipolar 50 mV/mT,+79-mT, 20-kHz, 3.3/5V, SOT-23"
 			(at 223.266 50.038 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド5" ""
+			(at 224.79 27.94 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド6" ""
+			(at 224.79 27.94 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -8812,6 +9298,24 @@
 			)
 		)
 		(property "Description" "Resistor"
+			(at 57.15 118.11 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド5" ""
+			(at 57.15 118.11 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド6" ""
 			(at 57.15 118.11 0)
 			(effects
 				(font
@@ -9022,6 +9526,24 @@
 				(hide yes)
 			)
 		)
+		(property "フィールド5" ""
+			(at 208.28 92.71 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド6" ""
+			(at 208.28 92.71 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "1709897c-a367-4ec6-b3c7-1831d4569638")
 		)
@@ -9100,6 +9622,24 @@
 				(hide yes)
 			)
 		)
+		(property "フィールド5" ""
+			(at 43.18 27.94 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド6" ""
+			(at 43.18 27.94 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "3"
 			(uuid "35405888-0227-47de-894c-534a6cfadf11")
 		)
@@ -9165,6 +9705,24 @@
 			)
 		)
 		(property "Description" "Unpolarized capacitor"
+			(at 123.19 92.71 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド5" ""
+			(at 123.19 92.71 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド6" ""
 			(at 123.19 92.71 0)
 			(effects
 				(font
@@ -9309,6 +9867,24 @@
 				(hide yes)
 			)
 		)
+		(property "フィールド5" ""
+			(at 147.32 58.42 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド6" ""
+			(at 147.32 58.42 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "87615002-3e5a-46b6-9d53-8424670ee6af")
 		)
@@ -9437,6 +10013,24 @@
 		)
 		(property "Description" "Unipolar 50 mV/mT,+79-mT, 20-kHz, 3.3/5V, SOT-23"
 			(at 162.306 80.518 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド5" ""
+			(at 163.83 58.42 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド6" ""
+			(at 163.83 58.42 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -9581,6 +10175,24 @@
 				(hide yes)
 			)
 		)
+		(property "フィールド5" ""
+			(at 238.76 53.34 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド6" ""
+			(at 238.76 53.34 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "a01855c9-9edf-4448-9cc5-86948eabf85c")
 		)
@@ -9717,6 +10329,24 @@
 				(hide yes)
 			)
 		)
+		(property "フィールド5" ""
+			(at 87.63 58.42 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド6" ""
+			(at 87.63 58.42 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "260b23a9-bd44-4450-9d32-c6506779b893")
 		)
@@ -9777,6 +10407,24 @@
 			)
 		)
 		(property "Description" "Resistor"
+			(at 177.8 53.34 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド5" ""
+			(at 177.8 53.34 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド6" ""
 			(at 177.8 53.34 0)
 			(effects
 				(font
@@ -9847,6 +10495,24 @@
 			)
 		)
 		(property "Description" "Unpolarized capacitor"
+			(at 123.19 58.42 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド5" ""
+			(at 123.19 58.42 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド6" ""
 			(at 123.19 58.42 0)
 			(effects
 				(font
@@ -9991,6 +10657,24 @@
 				(hide yes)
 			)
 		)
+		(property "フィールド5" ""
+			(at 182.88 58.42 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド6" ""
+			(at 182.88 58.42 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "2"
 			(uuid "71d5a682-d091-41d4-8742-8772ce2f804e")
 		)
@@ -10051,6 +10735,24 @@
 			)
 		)
 		(property "Description" "Resistor"
+			(at 177.8 87.63 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド5" ""
+			(at 177.8 87.63 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド6" ""
 			(at 177.8 87.63 0)
 			(effects
 				(font
@@ -10121,6 +10823,24 @@
 		)
 		(property "Description" "Unipolar 50 mV/mT,+79-mT, 20-kHz, 3.3/5V, SOT-23"
 			(at 102.616 50.038 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド5" ""
+			(at 104.14 27.94 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド6" ""
+			(at 104.14 27.94 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -10201,6 +10921,24 @@
 				(hide yes)
 			)
 		)
+		(property "フィールド5" ""
+			(at 208.28 27.94 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド6" ""
+			(at 208.28 27.94 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "5bf3fa84-dd41-4cc6-bd04-26f25339e770")
 		)
@@ -10263,6 +11001,24 @@
 			)
 		)
 		(property "Description" "Unpolarized capacitor"
+			(at 123.19 27.94 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド5" ""
+			(at 123.19 27.94 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド6" ""
 			(at 123.19 27.94 0)
 			(effects
 				(font
@@ -10397,6 +11153,24 @@
 			)
 		)
 		(property "Description" "Resistor"
+			(at 238.76 22.86 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド5" ""
+			(at 238.76 22.86 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド6" ""
 			(at 238.76 22.86 0)
 			(effects
 				(font
@@ -10599,6 +11373,24 @@
 			)
 		)
 		(property "Description" "Unpolarized capacitor"
+			(at 26.67 27.94 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド5" ""
+			(at 26.67 27.94 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド6" ""
 			(at 26.67 27.94 0)
 			(effects
 				(font
@@ -10815,6 +11607,24 @@
 				(hide yes)
 			)
 		)
+		(property "フィールド5" ""
+			(at 87.63 92.71 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド6" ""
+			(at 87.63 92.71 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "d98cc5b6-2063-479e-b7fb-016721d5d17d")
 		)
@@ -11016,6 +11826,24 @@
 				(hide yes)
 			)
 		)
+		(property "フィールド5" ""
+			(at 224.79 92.71 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド6" ""
+			(at 224.79 92.71 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "3"
 			(uuid "d9e9f3d1-ab18-430a-8457-3ed101b38e02")
 		)
@@ -11147,6 +11975,24 @@
 			)
 		)
 		(property "Description" "Unpolarized capacitor"
+			(at 62.23 123.19 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド5" ""
+			(at 62.23 123.19 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド6" ""
 			(at 62.23 123.19 0)
 			(effects
 				(font
@@ -11291,6 +12137,24 @@
 				(hide yes)
 			)
 		)
+		(property "フィールド5" ""
+			(at 123.19 123.19 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド6" ""
+			(at 123.19 123.19 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "2"
 			(uuid "695c1c7a-90d2-4d7a-8b8d-f300c4a6daf3")
 		)
@@ -11362,6 +12226,24 @@
 			)
 		)
 		(property "JCSC" "C21379"
+			(at 118.11 168.91 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド5" ""
+			(at 118.11 168.91 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド6" ""
 			(at 118.11 168.91 0)
 			(effects
 				(font
@@ -11481,6 +12363,24 @@
 				(hide yes)
 			)
 		)
+		(property "フィールド5" ""
+			(at 43.18 92.71 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド6" ""
+			(at 43.18 92.71 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "3"
 			(uuid "fce10e1b-6c8f-4908-92ea-5f75343d8451")
 		)
@@ -11552,6 +12452,24 @@
 				(hide yes)
 			)
 		)
+		(property "フィールド5" ""
+			(at 177.8 22.86 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド6" ""
+			(at 177.8 22.86 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "c19da8b1-ae65-4f74-8ab9-534c729bdd20")
 		)
@@ -11614,6 +12532,24 @@
 		)
 		(property "Description" "Unipolar 50 mV/mT,+79-mT, 20-kHz, 3.3/5V, SOT-23"
 			(at 223.266 80.518 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド5" ""
+			(at 224.79 58.42 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド6" ""
+			(at 224.79 58.42 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11694,6 +12630,24 @@
 				(hide yes)
 			)
 		)
+		(property "フィールド5" ""
+			(at 243.84 27.94 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド6" ""
+			(at 243.84 27.94 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "2"
 			(uuid "c9f3ff87-4d15-4dc5-b24c-5f5da9b5d49e")
 		)
@@ -11756,6 +12710,24 @@
 		)
 		(property "Description" "Unipolar 50 mV/mT,+79-mT, 20-kHz, 3.3/5V, SOT-23"
 			(at 102.616 114.808 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド5" ""
+			(at 104.14 92.71 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド6" ""
+			(at 104.14 92.71 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11968,6 +12940,24 @@
 				(hide yes)
 			)
 		)
+		(property "フィールド5" ""
+			(at 62.23 92.71 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド6" ""
+			(at 62.23 92.71 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "2"
 			(uuid "e71541d8-c567-4044-b62f-df3d11d78ffb")
 		)
@@ -12094,6 +13084,24 @@
 			)
 		)
 		(property "Description" "Resistor"
+			(at 118.11 22.86 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド5" ""
+			(at 118.11 22.86 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド6" ""
 			(at 118.11 22.86 0)
 			(effects
 				(font
@@ -12368,6 +13376,24 @@
 				(hide yes)
 			)
 		)
+		(property "フィールド5" ""
+			(at 57.15 53.34 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド6" ""
+			(at 57.15 53.34 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "59df1832-5c5d-4c5b-96aa-cd6bc02a2bc3")
 		)
@@ -12428,6 +13454,24 @@
 			)
 		)
 		(property "Description" "Resistor"
+			(at 57.15 87.63 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド5" ""
+			(at 57.15 87.63 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド6" ""
 			(at 57.15 87.63 0)
 			(effects
 				(font
@@ -12498,6 +13542,24 @@
 		)
 		(property "Description" "Unipolar 50 mV/mT,+79-mT, 20-kHz, 3.3/5V, SOT-23"
 			(at 102.616 145.288 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド5" ""
+			(at 104.14 123.19 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド6" ""
+			(at 104.14 123.19 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -12840,6 +13902,24 @@
 				(hide yes)
 			)
 		)
+		(property "フィールド5" ""
+			(at 238.76 87.63 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド6" ""
+			(at 238.76 87.63 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "c00b0c8d-f83b-4508-8b05-7655855817d7")
 		)
@@ -13041,6 +14121,24 @@
 				(hide yes)
 			)
 		)
+		(property "フィールド5" ""
+			(at 43.18 58.42 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド6" ""
+			(at 43.18 58.42 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "3"
 			(uuid "6c352680-6b6f-41a6-8562-50c4e766101a")
 		)
@@ -13114,6 +14212,24 @@
 				(hide yes)
 			)
 		)
+		(property "フィールド5" ""
+			(at 182.88 27.94 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド6" ""
+			(at 182.88 27.94 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "2"
 			(uuid "bef73c95-ee3b-402d-9492-cb499516ca7d")
 		)
@@ -13176,6 +14292,24 @@
 		)
 		(property "Description" "Unipolar 50 mV/mT,+79-mT, 20-kHz, 3.3/5V, SOT-23"
 			(at 162.306 145.288 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド5" ""
+			(at 163.83 123.19 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド6" ""
+			(at 163.83 123.19 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -13257,6 +14391,24 @@
 			)
 		)
 		(property "JCSC" "C21379"
+			(at 48.26 168.91 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド5" ""
+			(at 48.26 168.91 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド6" ""
 			(at 48.26 168.91 0)
 			(effects
 				(font
@@ -13377,6 +14529,24 @@
 				(hide yes)
 			)
 		)
+		(property "フィールド5" ""
+			(at 87.63 27.94 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド6" ""
+			(at 87.63 27.94 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "a78fa7cc-7863-4a09-8ee2-6713a8c1c6b5")
 		)
@@ -13439,6 +14609,24 @@
 			)
 		)
 		(property "Description" "Unpolarized capacitor"
+			(at 182.88 92.71 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド5" ""
+			(at 182.88 92.71 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド6" ""
 			(at 182.88 92.71 0)
 			(effects
 				(font

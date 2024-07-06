@@ -7829,6 +7829,16 @@
 		)
 		(uuid "a643b81f-f79b-4436-b8e9-d137caa70552")
 	)
+	(text "Both resistors must be placed close to the flash"
+		(exclude_from_sim no)
+		(at 57.15 163.83 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+		(uuid "b508c0a4-95b6-4209-b6c3-46448fe20c97")
+	)
 	(text "Shield from USB cable\n"
 		(exclude_from_sim no)
 		(at 13.97 64.77 0)
@@ -7882,7 +7892,7 @@
 	)
 	(text "Flash"
 		(exclude_from_sim no)
-		(at 46.99 158.75 0)
+		(at 27.94 154.94 0)
 		(effects
 			(font
 				(size 2.54 2.54)
@@ -8063,28 +8073,6 @@
 					(size 1.27 1.27)
 				)
 				(justify left)
-				(hide yes)
-			)
-		)
-	)
-	(global_label "DS_1_IN"
-		(shape input)
-		(at 41.91 175.26 180)
-		(fields_autoplaced yes)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right)
-		)
-		(uuid "0bb17c89-65b6-438a-8eb1-f6ed8e020d3f")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 31.3653 175.26 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
 				(hide yes)
 			)
 		)
@@ -8639,6 +8627,28 @@
 			)
 		)
 	)
+	(global_label "BOOTSEL_SW"
+		(shape input)
+		(at 41.91 175.26 180)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "bef2901c-7438-4e33-8871-bcacf0eeb270")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 27.0111 175.26 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+				(hide yes)
+			)
+		)
+	)
 	(global_label "QSPI_SD0"
 		(shape input)
 		(at 74.93 180.34 180)
@@ -8933,6 +8943,24 @@
 				(hide yes)
 			)
 		)
+		(property "フィールド5" ""
+			(at 182.88 200.66 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド6" ""
+			(at 182.88 200.66 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "e4676de0-0c87-4c16-82cf-8f94dd7bf6d7")
 		)
@@ -9171,6 +9199,24 @@
 				(hide yes)
 			)
 		)
+		(property "フィールド5" ""
+			(at 101.6 182.88 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド6" ""
+			(at 101.6 182.88 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "4ee7bd2e-0a00-49ab-8db2-e298f7ff0c41")
 		)
@@ -9264,6 +9310,24 @@
 				(hide yes)
 			)
 		)
+		(property "フィールド5" ""
+			(at 107.95 156.21 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド6" ""
+			(at 107.95 156.21 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "176cc445-4234-4132-a257-eef61725e826")
 		)
@@ -9337,6 +9401,24 @@
 				(hide yes)
 			)
 		)
+		(property "フィールド5" ""
+			(at 229.87 152.4 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド6" ""
+			(at 229.87 152.4 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "60dc964c-070d-4bb6-baff-9198e6259093")
 		)
@@ -9402,6 +9484,24 @@
 			)
 		)
 		(property "Description" ""
+			(at 229.87 160.02 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド5" ""
+			(at 229.87 160.02 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド6" ""
 			(at 229.87 160.02 0)
 			(effects
 				(font
@@ -9485,6 +9585,24 @@
 				(hide yes)
 			)
 		)
+		(property "フィールド5" ""
+			(at 208.28 121.92 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド6" ""
+			(at 208.28 121.92 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "46043b20-542e-484e-a22c-d9b92e7ece6c")
 		)
@@ -9552,6 +9670,24 @@
 			)
 		)
 		(property "Description" ""
+			(at 219.71 121.92 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド5" ""
+			(at 219.71 121.92 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド6" ""
 			(at 219.71 121.92 0)
 			(effects
 				(font
@@ -9635,6 +9771,24 @@
 				(hide yes)
 			)
 		)
+		(property "フィールド5" ""
+			(at 231.14 121.92 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド6" ""
+			(at 231.14 121.92 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "0bf6eb5f-269b-4dfc-8e63-51549f46911c")
 		)
@@ -9702,6 +9856,24 @@
 			)
 		)
 		(property "Description" ""
+			(at 242.57 121.92 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド5" ""
+			(at 242.57 121.92 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド6" ""
 			(at 242.57 121.92 0)
 			(effects
 				(font
@@ -9785,6 +9957,24 @@
 				(hide yes)
 			)
 		)
+		(property "フィールド5" ""
+			(at 254 121.92 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド6" ""
+			(at 254 121.92 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "26694f66-7d6a-4ae9-aded-6d762543ab88")
 		)
@@ -9852,6 +10042,24 @@
 			)
 		)
 		(property "Description" ""
+			(at 265.43 121.92 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド5" ""
+			(at 265.43 121.92 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド6" ""
 			(at 265.43 121.92 0)
 			(effects
 				(font
@@ -9935,6 +10143,24 @@
 				(hide yes)
 			)
 		)
+		(property "フィールド5" ""
+			(at 276.86 121.92 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド6" ""
+			(at 276.86 121.92 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "a90bd869-bdcb-4ff8-bcaf-4efdec05f6bc")
 		)
@@ -10010,6 +10236,24 @@
 				(hide yes)
 			)
 		)
+		(property "フィールド5" ""
+			(at 142.24 121.92 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド6" ""
+			(at 142.24 121.92 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "7f1181fe-5e30-4203-bc57-4622c6cda01e")
 		)
@@ -10077,6 +10321,24 @@
 			)
 		)
 		(property "Description" ""
+			(at 153.67 121.92 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド5" ""
+			(at 153.67 121.92 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド6" ""
 			(at 153.67 121.92 0)
 			(effects
 				(font
@@ -10161,6 +10423,24 @@
 				(hide yes)
 			)
 		)
+		(property "フィールド5" ""
+			(at 153.67 137.16 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド6" ""
+			(at 153.67 137.16 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "7cef4d84-e4f1-4670-9f8b-8064a5d0c8cb")
 		)
@@ -10229,6 +10509,24 @@
 			)
 		)
 		(property "Description" ""
+			(at 208.28 137.16 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド5" ""
+			(at 208.28 137.16 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド6" ""
 			(at 208.28 137.16 0)
 			(effects
 				(font
@@ -10450,6 +10748,24 @@
 				(hide yes)
 			)
 		)
+		(property "フィールド5" ""
+			(at 256.54 259.08 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド6" ""
+			(at 256.54 259.08 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(instances
 			(project "RP2040_minimal_r2"
 				(path "/8c0b3d8b-46d3-4173-ab1e-a61765f77d61"
@@ -10519,6 +10835,24 @@
 				(hide yes)
 			)
 		)
+		(property "フィールド5" ""
+			(at 256.54 264.16 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド6" ""
+			(at 256.54 264.16 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(instances
 			(project "RP2040_minimal_r2"
 				(path "/8c0b3d8b-46d3-4173-ab1e-a61765f77d61"
@@ -10580,6 +10914,24 @@
 			)
 		)
 		(property "Description" ""
+			(at 151.13 41.91 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド5" ""
+			(at 151.13 41.91 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド6" ""
 			(at 151.13 41.91 0)
 			(effects
 				(font
@@ -10663,6 +11015,24 @@
 				(hide yes)
 			)
 		)
+		(property "フィールド5" ""
+			(at 186.69 41.91 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド6" ""
+			(at 186.69 41.91 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "8e62a75b-8257-4ce9-814b-06e8be09948e")
 		)
@@ -10738,6 +11108,24 @@
 				(hide yes)
 			)
 		)
+		(property "フィールド5" ""
+			(at 240.03 269.24 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド6" ""
+			(at 240.03 269.24 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "342787f7-3575-4ea1-8154-8c9fa22e81d1")
 		)
@@ -10805,6 +11193,24 @@
 			)
 		)
 		(property "Description" ""
+			(at 279.4 274.32 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド5" ""
+			(at 279.4 274.32 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド6" ""
 			(at 279.4 274.32 0)
 			(effects
 				(font
@@ -11210,6 +11616,24 @@
 				(hide yes)
 			)
 		)
+		(property "フィールド5" ""
+			(at 279.4 254 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド6" ""
+			(at 279.4 254 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(instances
 			(project "mainboard"
 				(path "/b1313647-8d60-4294-add7-71c03651cfe3"
@@ -11263,6 +11687,24 @@
 			)
 		)
 		(property "Description" ""
+			(at 375.92 222.25 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド5" ""
+			(at 375.92 222.25 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド6" ""
 			(at 375.92 222.25 0)
 			(effects
 				(font
@@ -11529,6 +11971,24 @@
 			)
 		)
 		(property "Description" "Resistor"
+			(at 36.83 88.9 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド5" ""
+			(at 36.83 88.9 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド6" ""
 			(at 36.83 88.9 0)
 			(effects
 				(font
@@ -12014,6 +12474,24 @@
 				(hide yes)
 			)
 		)
+		(property "フィールド5" ""
+			(at 59.69 41.91 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド6" ""
+			(at 59.69 41.91 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "d8a013f3-f306-4758-acc5-dfcc3e059ce8")
 		)
@@ -12089,6 +12567,24 @@
 				(hide yes)
 			)
 		)
+		(property "フィールド5" ""
+			(at 279.4 259.08 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド6" ""
+			(at 279.4 259.08 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(instances
 			(project "mainboard"
 				(path "/b1313647-8d60-4294-add7-71c03651cfe3"
@@ -12144,6 +12640,24 @@
 			)
 		)
 		(property "Description" ""
+			(at 44.45 226.06 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド5" ""
+			(at 44.45 226.06 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド6" ""
 			(at 44.45 226.06 0)
 			(effects
 				(font
@@ -12237,6 +12751,24 @@
 				(hide yes)
 			)
 		)
+		(property "フィールド5" ""
+			(at 52.07 175.26 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド6" ""
+			(at 52.07 175.26 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "dbe1e5d3-d369-483e-8c77-c7cf2d5813ef")
 		)
@@ -12278,7 +12810,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Udong:JST_SH_BM03B-SRSS-TB_1x03-1MP_P1.00mm_Vertical"
+		(property "Footprint" "Connector_JST:JST_SH_SM03B-SRSS-TB_1x03-1MP_P1.00mm_Horizontal"
 			(at 304.8 41.91 0)
 			(effects
 				(font
@@ -12306,6 +12838,24 @@
 			)
 		)
 		(property "JCSC" "C160403"
+			(at 304.8 41.91 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド5" ""
+			(at 304.8 41.91 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド6" ""
 			(at 304.8 41.91 0)
 			(effects
 				(font
@@ -12514,6 +13064,24 @@
 			)
 		)
 		(property "Description" ""
+			(at 29.21 220.98 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド5" ""
+			(at 29.21 220.98 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド6" ""
 			(at 29.21 220.98 0)
 			(effects
 				(font
@@ -13002,6 +13570,24 @@
 				(hide yes)
 			)
 		)
+		(property "フィールド5" ""
+			(at 36.83 78.74 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド6" ""
+			(at 36.83 78.74 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "fb8d7a59-e693-4026-af69-2d713a9aab16")
 		)
@@ -13071,6 +13657,24 @@
 			)
 		)
 		(property "JLCPCB" "C5156480"
+			(at 384.81 227.33 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド5" ""
+			(at 384.81 227.33 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド6" ""
 			(at 384.81 227.33 0)
 			(effects
 				(font
@@ -13229,6 +13833,24 @@
 				(hide yes)
 			)
 		)
+		(property "フィールド5" ""
+			(at 81.28 49.53 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド6" ""
+			(at 81.28 49.53 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "6"
 			(uuid "3891579d-bbf1-4e3e-b7dd-df706d52450a")
 		)
@@ -13310,6 +13932,24 @@
 			)
 		)
 		(property "JLCPCB" "C5156480"
+			(at 326.39 227.33 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド5" ""
+			(at 326.39 227.33 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド6" ""
 			(at 326.39 227.33 0)
 			(effects
 				(font
@@ -13520,6 +14160,24 @@
 				(hide yes)
 			)
 		)
+		(property "フィールド5" ""
+			(at 279.4 248.92 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド6" ""
+			(at 279.4 248.92 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(instances
 			(project "mainboard"
 				(path "/b1313647-8d60-4294-add7-71c03651cfe3"
@@ -13716,6 +14374,24 @@
 				(hide yes)
 			)
 		)
+		(property "フィールド5" ""
+			(at 279.4 264.16 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド6" ""
+			(at 279.4 264.16 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(instances
 			(project "mainboard"
 				(path "/b1313647-8d60-4294-add7-71c03651cfe3"
@@ -13843,6 +14519,24 @@
 				(hide yes)
 			)
 		)
+		(property "フィールド5" ""
+			(at 62.23 231.14 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド6" ""
+			(at 62.23 231.14 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "bf196a85-9a18-4d95-926a-a53e71f64796")
 		)
@@ -13932,6 +14626,24 @@
 				(hide yes)
 			)
 		)
+		(property "フィールド5" ""
+			(at 360.68 187.96 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド6" ""
+			(at 360.68 187.96 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "b7a1062d-999f-4a3f-a0d8-ba321c8f6b7d")
 		)
@@ -13993,6 +14705,24 @@
 			)
 		)
 		(property "Description" ""
+			(at 279.4 269.24 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド5" ""
+			(at 279.4 269.24 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド6" ""
 			(at 279.4 269.24 0)
 			(effects
 				(font
@@ -14064,6 +14794,24 @@
 			)
 		)
 		(property "JCSC" "C165948"
+			(at 34.29 49.53 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド5" ""
+			(at 34.29 49.53 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド6" ""
 			(at 34.29 49.53 0)
 			(effects
 				(font
@@ -14518,6 +15266,24 @@
 				(hide yes)
 			)
 		)
+		(property "フィールド5" ""
+			(at 353.06 187.96 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド6" ""
+			(at 353.06 187.96 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "2"
 			(uuid "f0555768-f20d-422f-980f-180dbea76522")
 		)
@@ -14862,6 +15628,24 @@
 				(hide yes)
 			)
 		)
+		(property "フィールド5" ""
+			(at 59.69 39.37 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド6" ""
+			(at 59.69 39.37 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "ef9c24a8-682f-410d-a76b-e5bb19cfacd5")
 		)
@@ -15004,6 +15788,24 @@
 				(hide yes)
 			)
 		)
+		(property "フィールド5" ""
+			(at 29.21 231.14 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド6" ""
+			(at 29.21 231.14 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "e8ef5753-ed3f-4194-a547-308692c0698e")
 		)
@@ -15075,6 +15877,24 @@
 			)
 		)
 		(property "Description" ""
+			(at 368.3 227.33 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド5" ""
+			(at 368.3 227.33 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド6" ""
 			(at 368.3 227.33 0)
 			(effects
 				(font
@@ -15284,6 +16104,24 @@
 			)
 		)
 		(property "JCSC" "C26537"
+			(at 168.91 36.83 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド5" ""
+			(at 168.91 36.83 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド6" ""
 			(at 168.91 36.83 0)
 			(effects
 				(font
@@ -15628,6 +16466,24 @@
 				(hide yes)
 			)
 		)
+		(property "フィールド5" ""
+			(at 256.54 226.06 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド6" ""
+			(at 256.54 226.06 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "d40fd32f-bb56-4887-95aa-18a0e9228eb1")
 		)
@@ -15687,6 +16543,24 @@
 			)
 		)
 		(property "Description" ""
+			(at 83.82 167.64 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド5" ""
+			(at 83.82 167.64 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "フィールド6" ""
 			(at 83.82 167.64 0)
 			(effects
 				(font
