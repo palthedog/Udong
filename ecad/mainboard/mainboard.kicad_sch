@@ -8120,7 +8120,7 @@
 	)
 	(wire
 		(pts
-			(xy 356.87 127) (xy 360.68 127)
+			(xy 355.6 137.16) (xy 359.41 137.16)
 		)
 		(stroke
 			(width 0)
@@ -8390,7 +8390,7 @@
 	)
 	(wire
 		(pts
-			(xy 339.09 127) (xy 341.63 127)
+			(xy 337.82 137.16) (xy 340.36 137.16)
 		)
 		(stroke
 			(width 0)
@@ -8549,7 +8549,7 @@
 	)
 	(text "LED"
 		(exclude_from_sim no)
-		(at 349.25 115.57 0)
+		(at 347.98 125.73 0)
 		(effects
 			(font
 				(size 2 2)
@@ -8620,6 +8620,16 @@
 			(justify left bottom)
 		)
 		(uuid "d508c945-e545-4375-a8d9-ad1ed423034e")
+	)
+	(text "REMOVE UART: we don't use it\n\nSwap SWD and SWCLK\nhttps://datasheets.raspberrypi.com/debug/debug-connector-specification.pdf"
+		(exclude_from_sim no)
+		(at 360.68 114.3 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+		(uuid "dcc8ad8b-273a-4cae-94bc-dab873e2859d")
 	)
 	(text "Differentional pair\n"
 		(exclude_from_sim no)
@@ -9138,7 +9148,7 @@
 	)
 	(global_label "GPIO25"
 		(shape input)
-		(at 339.09 127 180)
+		(at 337.82 137.16 180)
 		(fields_autoplaced yes)
 		(effects
 			(font
@@ -9148,7 +9158,7 @@
 		)
 		(uuid "6f117c41-5b3e-4214-b305-4ca71483b482")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 329.2105 127 0)
+			(at 327.9405 137.16 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -12920,7 +12930,7 @@
 	(symbol
 		(lib_name "GND_2")
 		(lib_id "power:GND")
-		(at 360.68 127 0)
+		(at 359.41 137.16 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -12929,7 +12939,7 @@
 		(fields_autoplaced yes)
 		(uuid "331cfa99-b824-4617-b678-f32567755754")
 		(property "Reference" "#PWR020"
-			(at 360.68 133.35 0)
+			(at 359.41 143.51 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -12938,7 +12948,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 360.68 132.08 0)
+			(at 359.41 142.24 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -12946,7 +12956,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 360.68 127 0)
+			(at 359.41 137.16 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -12955,7 +12965,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 360.68 127 0)
+			(at 359.41 137.16 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -12964,7 +12974,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 360.68 127 0)
+			(at 359.41 137.16 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -15391,7 +15401,7 @@
 	)
 	(symbol
 		(lib_id "Device:LED")
-		(at 353.06 127 180)
+		(at 351.79 137.16 180)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -15400,7 +15410,7 @@
 		(fields_autoplaced yes)
 		(uuid "98a8fae7-8a57-44c6-8ead-5df27038bd38")
 		(property "Reference" "D1"
-			(at 354.6475 119.38 0)
+			(at 353.3775 129.54 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -15408,7 +15418,7 @@
 			)
 		)
 		(property "Value" "LED"
-			(at 354.6475 121.92 0)
+			(at 353.3775 132.08 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -15416,7 +15426,7 @@
 			)
 		)
 		(property "Footprint" "LED_SMD:LED_0805_2012Metric"
-			(at 353.06 127 0)
+			(at 351.79 137.16 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -15425,7 +15435,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 353.06 127 0)
+			(at 351.79 137.16 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -15434,7 +15444,7 @@
 			)
 		)
 		(property "Description" "Light emitting diode"
-			(at 353.06 127 0)
+			(at 351.79 137.16 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -15443,7 +15453,7 @@
 			)
 		)
 		(property "JCSC" "C2297"
-			(at 353.06 127 0)
+			(at 351.79 137.16 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -16138,7 +16148,7 @@
 	)
 	(symbol
 		(lib_id "Device:R")
-		(at 345.44 127 270)
+		(at 344.17 137.16 270)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -16147,7 +16157,7 @@
 		(fields_autoplaced yes)
 		(uuid "b1fc08cf-1855-46a0-a84b-54f6d814030e")
 		(property "Reference" "R8"
-			(at 345.44 120.65 90)
+			(at 344.17 130.81 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -16155,7 +16165,7 @@
 			)
 		)
 		(property "Value" "470"
-			(at 345.44 123.19 90)
+			(at 344.17 133.35 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -16163,7 +16173,7 @@
 			)
 		)
 		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
-			(at 345.44 125.222 90)
+			(at 344.17 135.382 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -16172,7 +16182,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 345.44 127 0)
+			(at 344.17 137.16 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -16181,7 +16191,7 @@
 			)
 		)
 		(property "Description" "Resistor"
-			(at 345.44 127 0)
+			(at 344.17 137.16 0)
 			(effects
 				(font
 					(size 1.27 1.27)

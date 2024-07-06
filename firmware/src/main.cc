@@ -114,7 +114,7 @@ Throttling calibration_runner(100, []() {
   }
 });
 
-uint32_t last_report_t = 1000;
+// uint32_t last_report_t = 1000;
 void loop() {
   serial_handler.HandleSerial(udong);
 
