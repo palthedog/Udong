@@ -2,33 +2,30 @@ import { SwitchId } from '../../../proto/config';
 import { AnalogSwitch, BoardInfo, DigitalSwitch, SwitchInfo } from '../board_info';
 
 const analog_switch_positions: [number, number][] = [
+    [64, 56],  // Buton 3
+    [94, 58],  // L1
+    [122, 76],  // R1
+    [34, 58],  // Button 2
 
-    // -160, +7.5
+    [122, 106],   // R2
+    [34, 90],    // Button 0
+    [94, 90],    // L2
+    [64, 88],    // Button 1
 
-    [65, 65],  // Buton 3
-    [95, 70],  // L1
-    [125, 75],  // R1
-    [35, 70],  // Button 2
+    [-126, 102],     // L3
+    [20, 128],   // R3
+    [6, 72],  // Select
+    [-70, 50],     // U
 
-    [125, 107.5],   // R2
-    [35, 102.5],    // Button 0
-    [95, 102.5],    // L2
-    [65, 97.5],    // Button 1
-
-    [-125, 102.5],     // L3
-    [20, 127.5],   // R3
-    [5, 80],  // Select
-    [-70, 42],     // U
-
-    [-10, 137.5],   // U (thumb)
-    [-100, 77.5],     // L
-    [-40, 77.5],    // R
-    [-70, 67.5],     // D
+    [-10, 138],   // U (thumb)
+    [-100, 78],     // L
+    [-40, 78],    // R
+    [-70, 76],     // D
 ];
 
 const digital_switch_positions: [number, number][] = [
-    [-132.75, 30],  // Start
-    [-110, 30],  // Home
+    [122, 26],  // Start
+    [94, 26],  // Home
 ];
 
 const analog_switch_infos: SwitchInfo[] =
