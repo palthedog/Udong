@@ -5,13 +5,7 @@ import { AppConsts } from '../consts';
 import { Logger } from '../logger';
 import { SwitchId, SwitchType, UdongConfig } from '../../proto/config';
 import { SwitchIdToButtonId, SwitchIdToGroupId } from '../config_util';
-
-interface SwitchConfig {
-  switch_id: SwitchId,
-
-  x: number;
-  y: number;
-}
+import { BoardInfo, BoardInfoProvider, SwitchInfo } from '../board_info/board_info';
 
 @Component({
   selector: 'app-board-buttons',
@@ -22,6 +16,8 @@ interface SwitchConfig {
 })
 export class BoardButtonsComponent {
   log = inject(Logger);
+
+  board_info_provider = inject(BoardInfoProvider);
 
   @Input()
   config!: UdongConfig;
@@ -35,50 +31,14 @@ export class BoardButtonsComponent {
 
   app_consts = inject(AppConsts);
 
-  // It is sorted based on the Switch ID (hardware order)
+  get board_info(): BoardInfo {
+    let board_names = this.board_info_provider.getAllBoardNames();
+    return this.board_info_provider.get(board_names[0])!;
+  }
 
-  analog_switch_positions: [number, number][] = [
-    [225, 57.5],  // Button 4
-    [255, 62.5], // R1
-    [285, 67.5], // L1
-    [195, 62.5], // Button 3
-
-    [285, 100],  // L2
-    [195, 95],  // Button 1
-    [255, 95],   // R2
-    [225, 90],  // Button 2
-
-    [35, 95],  // L3
-    [180, 120],   // B15
-    [165, 72.5],  // B14
-    [90, 30],   // R3
-
-    [150, 130],  // U
-    [60, 70],    // L
-    [120, 70],   // R
-    [90, 60],    // D
-  ];
-
-  digital_switch_positions: [number, number][] = [
-    [27.25, 17.7],
-    [49.65, 17.7],
-  ];
-
-  get switch_configs(): SwitchConfig[] {
-    return this.analog_switch_positions.map((pos, i) => {
-      return {
-        switch_id: new SwitchId({ type: SwitchType.ANALOG_SWITCH, id: i }),
-        x: pos[0],
-        y: pos[1],
-      };
-    }).concat(this.digital_switch_positions.map((pos, i) => {
-      return {
-        switch_id: new SwitchId({ type: SwitchType.DIGITAL_SWITCH, id: i }),
-        x: pos[0],
-        y: pos[1],
-      };
-    }));
-  };
+  getBoardViewBox(board_info: BoardInfo): string {
+    return `${board_info.left} ${board_info.top} ${board_info.width} ${board_info.height}`;
+  }
 
   getButtonColor(switch_id: SwitchId): string {
     if (switch_id.type === SwitchType.DIGITAL_SWITCH) {
