@@ -94,8 +94,9 @@ def calc_rel_pos(d):
     for t in d:
         rel_x = d[t].GetX() - base_x
         rel_y = d[t].GetY() - base_y
+        ori = d[t].GetOrientationDegrees()
         print(f"    {t}0 :{rel_x}nm, {rel_y}nm")
-        ret[t] = [rel_x, rel_y]
+        ret[t] = [rel_x, rel_y, ori]
 
     return ret
 
@@ -104,6 +105,9 @@ def mm_to_nm(mm):
 
 def update_switches(switch_pos_in_millis):
     board = pcbnew.GetBoard()
+
+    origin = board.GetDesignSettings().GetGridOrigin()
+
     switches = list_switches()
     print("Switch 0")
     rel_pos_dict = calc_rel_pos(switches[0])
@@ -118,9 +122,17 @@ def update_switches(switch_pos_in_millis):
 
             rel_pos = rel_pos_dict[part_type]
             print(f"  rel-pos: {rel_pos}")
-            new_x = base_x + rel_pos[0]
-            new_y = base_y + rel_pos[1]
-            print(f"  new_pos: {new_x}, {new_y}")
+            # Note that x-axis is reversed since we put parts on the back
+            # side of PCB
+            new_x = origin.x - base_x + rel_pos[0]
+            new_y = origin.y + base_y + rel_pos[1]
+            new_ori = rel_pos[2]
+            print(f"  new_pos: {new_x}, {new_y}, orientatin: {new_ori}")
+
+            part = sw_parts[part_type]
+            part.SetX(new_x)
+            part.SetY(new_y)
+            part.SetOrientationDegrees(new_ori)
 
 try:
     update_switches(digital_switch_positions)
