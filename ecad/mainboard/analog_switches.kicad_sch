@@ -5264,13 +5264,12 @@
 				(hide yes)
 			)
 		)
-		(property "フィールド5" ""
+		(property "DigitalSwitch" "OC11"
 			(at 243.84 92.71 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(hide yes)
 			)
 		)
 		(property "フィールド6" ""
@@ -5305,7 +5304,6 @@
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
-		(fields_autoplaced yes)
 		(uuid "016b0ff7-3011-4f3c-829f-862e2baf4e88")
 		(property "Reference" "R14"
 			(at 57.15 16.51 90)
@@ -5350,13 +5348,12 @@
 				(hide yes)
 			)
 		)
-		(property "フィールド5" ""
-			(at 57.15 22.86 0)
+		(property "DigitalSwitch" "OR0"
+			(at 57.15 25.4 90)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(hide yes)
 			)
 		)
 		(property "フィールド6" ""
@@ -5582,13 +5579,12 @@
 				(hide yes)
 			)
 		)
-		(property "フィールド5" ""
+		(property "DigitalSwitch" "BC7"
 			(at 208.28 58.42 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(hide yes)
 			)
 		)
 		(property "フィールド6" ""
@@ -5756,7 +5752,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "0ee9a641-b434-4d18-aacd-7475ef9e940e")
-		(property "Reference" "U11"
+		(property "Reference" "K5"
 			(at 111.76 68.58 0)
 			(effects
 				(font
@@ -5774,7 +5770,7 @@
 				(justify right)
 			)
 		)
-		(property "Footprint" "Udong:SW_Cherry_MX_PCB_1.00u_hall_effect"
+		(property "Footprint" "Udong:SK20_hall_IC"
 			(at 93.98 76.2 0)
 			(effects
 				(font
@@ -5831,7 +5827,7 @@
 		(instances
 			(project "mainboard"
 				(path "/b1313647-8d60-4294-add7-71c03651cfe3/89b6f170-ffaa-4d16-937f-213835be9ca4"
-					(reference "U11")
+					(reference "K5")
 					(unit 1)
 				)
 			)
@@ -6024,13 +6020,12 @@
 				(hide yes)
 			)
 		)
-		(property "フィールド5" ""
+		(property "DigitalSwitch" "OC15"
 			(at 243.84 123.19 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(hide yes)
 			)
 		)
 		(property "フィールド6" ""
@@ -6308,13 +6303,12 @@
 				(hide yes)
 			)
 		)
-		(property "フィールド5" ""
+		(property "DigitalSwitch" "OR15"
 			(at 238.76 118.11 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(hide yes)
 			)
 		)
 		(property "フィールド6" ""
@@ -6396,13 +6390,12 @@
 				(hide yes)
 			)
 		)
-		(property "フィールド5" ""
+		(property "DigitalSwitch" "BC12"
 			(at 26.67 123.19 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(hide yes)
 			)
 		)
 		(property "フィールド6" ""
@@ -6484,13 +6477,12 @@
 				(hide yes)
 			)
 		)
-		(property "フィールド5" ""
+		(property "DigitalSwitch" "BC2"
 			(at 147.32 27.94 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(hide yes)
 			)
 		)
 		(property "フィールド6" ""
@@ -6572,13 +6564,12 @@
 				(hide yes)
 			)
 		)
-		(property "フィールド5" ""
+		(property "DigitalSwitch" "OC4"
 			(at 62.23 58.42 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(hide yes)
 			)
 		)
 		(property "フィールド6" ""
@@ -6680,7 +6671,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "238af20b-28e7-4c9c-b024-e850cf02c881")
-		(property "Reference" "U21"
+		(property "Reference" "K15"
 			(at 232.41 133.35 0)
 			(effects
 				(font
@@ -6698,7 +6689,7 @@
 				(justify right)
 			)
 		)
-		(property "Footprint" "Udong:SW_Cherry_MX_PCB_1.00u_hall_effect"
+		(property "Footprint" "Udong:SK20_hall_IC"
 			(at 214.63 140.97 0)
 			(effects
 				(font
@@ -6755,7 +6746,7 @@
 		(instances
 			(project "mainboard"
 				(path "/b1313647-8d60-4294-add7-71c03651cfe3/89b6f170-ffaa-4d16-937f-213835be9ca4"
-					(reference "U21")
+					(reference "K15")
 					(unit 1)
 				)
 			)
@@ -6882,13 +6873,12 @@
 				(hide yes)
 			)
 		)
-		(property "フィールド5" ""
+		(property "DigitalSwitch" "OC14"
 			(at 182.88 123.19 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(hide yes)
 			)
 		)
 		(property "フィールド6" ""
@@ -6968,13 +6958,12 @@
 				(hide yes)
 			)
 		)
-		(property "フィールド5" ""
+		(property "DigitalSwitch" "OR13"
 			(at 118.11 118.11 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(hide yes)
 			)
 		)
 		(property "フィールド6" ""
@@ -7274,7 +7263,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "31884de0-160f-418c-a816-eff2acfe275c")
-		(property "Reference" "U8"
+		(property "Reference" "K2"
 			(at 171.45 38.1 0)
 			(effects
 				(font
@@ -7292,7 +7281,7 @@
 				(justify right)
 			)
 		)
-		(property "Footprint" "Udong:SW_Cherry_MX_PCB_1.00u_hall_effect"
+		(property "Footprint" "Udong:SK20_hall_IC"
 			(at 153.67 45.72 0)
 			(effects
 				(font
@@ -7349,7 +7338,7 @@
 		(instances
 			(project "mainboard"
 				(path "/b1313647-8d60-4294-add7-71c03651cfe3/89b6f170-ffaa-4d16-937f-213835be9ca4"
-					(reference "U8")
+					(reference "K2")
 					(unit 1)
 				)
 			)
@@ -7364,7 +7353,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "357b0fe9-e1fe-4510-b785-db3094b279f0")
-		(property "Reference" "U16"
+		(property "Reference" "K10"
 			(at 171.45 102.87 0)
 			(effects
 				(font
@@ -7382,7 +7371,7 @@
 				(justify right)
 			)
 		)
-		(property "Footprint" "Udong:SW_Cherry_MX_PCB_1.00u_hall_effect"
+		(property "Footprint" "Udong:SK20_hall_IC"
 			(at 153.67 110.49 0)
 			(effects
 				(font
@@ -7439,7 +7428,7 @@
 		(instances
 			(project "mainboard"
 				(path "/b1313647-8d60-4294-add7-71c03651cfe3/89b6f170-ffaa-4d16-937f-213835be9ca4"
-					(reference "U16")
+					(reference "K10")
 					(unit 1)
 				)
 			)
@@ -7498,13 +7487,12 @@
 				(hide yes)
 			)
 		)
-		(property "フィールド5" ""
+		(property "DigitalSwitch" "OR9"
 			(at 118.11 87.63 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(hide yes)
 			)
 		)
 		(property "フィールド6" ""
@@ -7718,13 +7706,12 @@
 				(hide yes)
 			)
 		)
-		(property "フィールド5" ""
+		(property "DigitalSwitch" "BC10"
 			(at 147.32 92.71 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(hide yes)
 			)
 		)
 		(property "フィールド6" ""
@@ -7804,7 +7791,7 @@
 				(hide yes)
 			)
 		)
-		(property "フィールド5" ""
+		(property "DigitalSwitch" "OR5"
 			(at 118.11 53.34 0)
 			(effects
 				(font
@@ -7892,13 +7879,12 @@
 				(hide yes)
 			)
 		)
-		(property "フィールド5" ""
+		(property "DigitalSwitch" "BC8"
 			(at 26.67 92.71 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(hide yes)
 			)
 		)
 		(property "フィールド6" ""
@@ -8112,13 +8098,12 @@
 				(hide yes)
 			)
 		)
-		(property "フィールド5" ""
+		(property "DigitalSwitch" "BC13"
 			(at 87.63 123.19 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(hide yes)
 			)
 		)
 		(property "フィールド6" ""
@@ -8198,13 +8183,12 @@
 				(hide yes)
 			)
 		)
-		(property "フィールド5" ""
+		(property "DigitalSwitch" "OR14"
 			(at 177.8 118.11 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(hide yes)
 			)
 		)
 		(property "フィールド6" ""
@@ -8352,13 +8336,12 @@
 				(hide yes)
 			)
 		)
-		(property "フィールド5" ""
+		(property "DigitalSwitch" "BC4"
 			(at 26.67 58.42 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(hide yes)
 			)
 		)
 		(property "フィールド6" ""
@@ -8506,13 +8489,12 @@
 				(hide yes)
 			)
 		)
-		(property "フィールド5" ""
+		(property "DigitalSwitch" "BC15"
 			(at 208.28 123.19 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(hide yes)
 			)
 		)
 		(property "フィールド6" ""
@@ -8594,13 +8576,12 @@
 				(hide yes)
 			)
 		)
-		(property "フィールド5" ""
+		(property "DigitalSwitch" "BC14"
 			(at 147.32 123.19 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(hide yes)
 			)
 		)
 		(property "フィールド6" ""
@@ -8682,13 +8663,12 @@
 				(hide yes)
 			)
 		)
-		(property "フィールド5" ""
+		(property "DigitalSwitch" "OC7"
 			(at 243.84 58.42 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(hide yes)
 			)
 		)
 		(property "フィールド6" ""
@@ -8855,7 +8835,6 @@
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
-		(fields_autoplaced yes)
 		(uuid "54bc1d29-c140-4897-b87a-a885d6b31397")
 		(property "Reference" "C22"
 			(at 66.04 26.6699 0)
@@ -8902,13 +8881,12 @@
 				(hide yes)
 			)
 		)
-		(property "フィールド5" ""
-			(at 62.23 27.94 0)
+		(property "DigitalSwitch" "OC0"
+			(at 57.15 27.94 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(hide yes)
 			)
 		)
 		(property "フィールド6" ""
@@ -9016,7 +8994,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "6099c45b-6289-4225-a3fb-f401eb72c038")
-		(property "Reference" "U18"
+		(property "Reference" "K12"
 			(at 50.8 133.35 0)
 			(effects
 				(font
@@ -9034,7 +9012,7 @@
 				(justify right)
 			)
 		)
-		(property "Footprint" "Udong:SW_Cherry_MX_PCB_1.00u_hall_effect"
+		(property "Footprint" "Udong:SK20_hall_IC"
 			(at 33.02 140.97 0)
 			(effects
 				(font
@@ -9091,7 +9069,7 @@
 		(instances
 			(project "mainboard"
 				(path "/b1313647-8d60-4294-add7-71c03651cfe3/89b6f170-ffaa-4d16-937f-213835be9ca4"
-					(reference "U18")
+					(reference "K12")
 					(unit 1)
 				)
 			)
@@ -9106,7 +9084,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "6197b14b-6889-4b2f-97a4-18b342f91a36")
-		(property "Reference" "U9"
+		(property "Reference" "K3"
 			(at 232.41 38.1 0)
 			(effects
 				(font
@@ -9124,7 +9102,7 @@
 				(justify right)
 			)
 		)
-		(property "Footprint" "Udong:SW_Cherry_MX_PCB_1.00u_hall_effect"
+		(property "Footprint" "Udong:SK20_hall_IC"
 			(at 214.63 45.72 0)
 			(effects
 				(font
@@ -9181,7 +9159,7 @@
 		(instances
 			(project "mainboard"
 				(path "/b1313647-8d60-4294-add7-71c03651cfe3/89b6f170-ffaa-4d16-937f-213835be9ca4"
-					(reference "U9")
+					(reference "K3")
 					(unit 1)
 				)
 			)
@@ -9306,13 +9284,12 @@
 				(hide yes)
 			)
 		)
-		(property "フィールド5" ""
+		(property "DigitalSwitch" "OR12"
 			(at 57.15 118.11 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(hide yes)
 			)
 		)
 		(property "フィールド6" ""
@@ -9526,13 +9503,12 @@
 				(hide yes)
 			)
 		)
-		(property "フィールド5" ""
+		(property "DigitalSwitch" "BC11"
 			(at 208.28 92.71 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(hide yes)
 			)
 		)
 		(property "フィールド6" ""
@@ -9568,7 +9544,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "713a77ac-74dd-4bf6-8d31-90be70814a5a")
-		(property "Reference" "U6"
+		(property "Reference" "K0"
 			(at 50.8 38.1 0)
 			(effects
 				(font
@@ -9586,7 +9562,7 @@
 				(justify right)
 			)
 		)
-		(property "Footprint" "Udong:SW_Cherry_MX_PCB_1.00u_hall_effect"
+		(property "Footprint" "Udong:SK20_hall_IC"
 			(at 33.02 45.72 0)
 			(effects
 				(font
@@ -9652,7 +9628,7 @@
 		(instances
 			(project ""
 				(path "/b1313647-8d60-4294-add7-71c03651cfe3/89b6f170-ffaa-4d16-937f-213835be9ca4"
-					(reference "U6")
+					(reference "K0")
 					(unit 1)
 				)
 			)
@@ -9713,13 +9689,12 @@
 				(hide yes)
 			)
 		)
-		(property "フィールド5" ""
+		(property "DigitalSwitch" "OC9"
 			(at 123.19 92.71 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(hide yes)
 			)
 		)
 		(property "フィールド6" ""
@@ -9867,13 +9842,12 @@
 				(hide yes)
 			)
 		)
-		(property "フィールド5" ""
+		(property "DigitalSwitch" "BC6"
 			(at 147.32 58.42 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(hide yes)
 			)
 		)
 		(property "フィールド6" ""
@@ -9975,7 +9949,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "82a41aed-a757-4636-a865-6727c73727ce")
-		(property "Reference" "U12"
+		(property "Reference" "K6"
 			(at 171.45 68.58 0)
 			(effects
 				(font
@@ -9993,7 +9967,7 @@
 				(justify right)
 			)
 		)
-		(property "Footprint" "Udong:SW_Cherry_MX_PCB_1.00u_hall_effect"
+		(property "Footprint" "Udong:SK20_hall_IC"
 			(at 153.67 76.2 0)
 			(effects
 				(font
@@ -10050,7 +10024,7 @@
 		(instances
 			(project "mainboard"
 				(path "/b1313647-8d60-4294-add7-71c03651cfe3/89b6f170-ffaa-4d16-937f-213835be9ca4"
-					(reference "U12")
+					(reference "K6")
 					(unit 1)
 				)
 			)
@@ -10175,13 +10149,12 @@
 				(hide yes)
 			)
 		)
-		(property "フィールド5" ""
+		(property "DigitalSwitch" "OR7"
 			(at 238.76 53.34 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(hide yes)
 			)
 		)
 		(property "フィールド6" ""
@@ -10329,13 +10302,12 @@
 				(hide yes)
 			)
 		)
-		(property "フィールド5" ""
+		(property "DigitalSwitch" "BC5"
 			(at 87.63 58.42 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(hide yes)
 			)
 		)
 		(property "フィールド6" ""
@@ -10415,13 +10387,12 @@
 				(hide yes)
 			)
 		)
-		(property "フィールド5" ""
+		(property "DigitalSwitch" "OR6"
 			(at 177.8 53.34 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(hide yes)
 			)
 		)
 		(property "フィールド6" ""
@@ -10503,13 +10474,12 @@
 				(hide yes)
 			)
 		)
-		(property "フィールド5" ""
+		(property "DigitalSwitch" "OC5"
 			(at 123.19 58.42 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(hide yes)
 			)
 		)
 		(property "フィールド6" ""
@@ -10657,13 +10627,12 @@
 				(hide yes)
 			)
 		)
-		(property "フィールド5" ""
+		(property "DigitalSwitch" "OC6"
 			(at 182.88 58.42 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(hide yes)
 			)
 		)
 		(property "フィールド6" ""
@@ -10743,13 +10712,12 @@
 				(hide yes)
 			)
 		)
-		(property "フィールド5" ""
+		(property "DigitalSwitch" "OR10"
 			(at 177.8 87.63 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(hide yes)
 			)
 		)
 		(property "フィールド6" ""
@@ -10785,7 +10753,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "9834be3f-97a7-4ee1-9f58-f71e8e0343c3")
-		(property "Reference" "U7"
+		(property "Reference" "K1"
 			(at 111.76 38.1 0)
 			(effects
 				(font
@@ -10803,7 +10771,7 @@
 				(justify right)
 			)
 		)
-		(property "Footprint" "Udong:SW_Cherry_MX_PCB_1.00u_hall_effect"
+		(property "Footprint" "Udong:SK20_hall_IC"
 			(at 93.98 45.72 0)
 			(effects
 				(font
@@ -10860,7 +10828,7 @@
 		(instances
 			(project "mainboard"
 				(path "/b1313647-8d60-4294-add7-71c03651cfe3/89b6f170-ffaa-4d16-937f-213835be9ca4"
-					(reference "U7")
+					(reference "K1")
 					(unit 1)
 				)
 			)
@@ -10921,13 +10889,12 @@
 				(hide yes)
 			)
 		)
-		(property "フィールド5" ""
+		(property "DigitalSwitch" "BC3"
 			(at 208.28 27.94 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(hide yes)
 			)
 		)
 		(property "フィールド6" ""
@@ -11009,13 +10976,12 @@
 				(hide yes)
 			)
 		)
-		(property "フィールド5" ""
+		(property "DigitalSwitch" "OC1"
 			(at 123.19 27.94 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(hide yes)
 			)
 		)
 		(property "フィールド6" ""
@@ -11161,13 +11127,12 @@
 				(hide yes)
 			)
 		)
-		(property "フィールド5" ""
+		(property "DigitalSwitch" "OR3"
 			(at 238.76 22.86 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(hide yes)
 			)
 		)
 		(property "フィールド6" ""
@@ -11334,7 +11299,6 @@
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
-		(fields_autoplaced yes)
 		(uuid "adfbddb2-e61a-4004-bb32-d11d639d5d50")
 		(property "Reference" "C21"
 			(at 30.48 26.6699 0)
@@ -11381,13 +11345,12 @@
 				(hide yes)
 			)
 		)
-		(property "フィールド5" ""
-			(at 26.67 27.94 0)
+		(property "DigitalSwitch" "BC0"
+			(at 21.59 27.94 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(hide yes)
 			)
 		)
 		(property "フィールド6" ""
@@ -11607,13 +11570,12 @@
 				(hide yes)
 			)
 		)
-		(property "フィールド5" ""
+		(property "DigitalSwitch" "BC9"
 			(at 87.63 92.71 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(hide yes)
 			)
 		)
 		(property "フィールド6" ""
@@ -11781,7 +11743,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "b489aab8-d515-4313-8cd4-4a77121d2159")
-		(property "Reference" "U17"
+		(property "Reference" "K11"
 			(at 232.41 102.87 0)
 			(effects
 				(font
@@ -11799,7 +11761,7 @@
 				(justify right)
 			)
 		)
-		(property "Footprint" "Udong:SW_Cherry_MX_PCB_1.00u_hall_effect"
+		(property "Footprint" "Udong:SK20_hall_IC"
 			(at 214.63 110.49 0)
 			(effects
 				(font
@@ -11856,7 +11818,7 @@
 		(instances
 			(project "mainboard"
 				(path "/b1313647-8d60-4294-add7-71c03651cfe3/89b6f170-ffaa-4d16-937f-213835be9ca4"
-					(reference "U17")
+					(reference "K11")
 					(unit 1)
 				)
 			)
@@ -11983,13 +11945,12 @@
 				(hide yes)
 			)
 		)
-		(property "フィールド5" ""
+		(property "DigitalSwitch" "OC12"
 			(at 62.23 123.19 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(hide yes)
 			)
 		)
 		(property "フィールド6" ""
@@ -12137,13 +12098,12 @@
 				(hide yes)
 			)
 		)
-		(property "フィールド5" ""
+		(property "DigitalSwitch" "OC13"
 			(at 123.19 123.19 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(hide yes)
 			)
 		)
 		(property "フィールド6" ""
@@ -12318,7 +12278,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "bfe90d8c-3800-4a63-ac3d-a7a2bc95c070")
-		(property "Reference" "U14"
+		(property "Reference" "K8"
 			(at 50.8 102.87 0)
 			(effects
 				(font
@@ -12336,7 +12296,7 @@
 				(justify right)
 			)
 		)
-		(property "Footprint" "Udong:SW_Cherry_MX_PCB_1.00u_hall_effect"
+		(property "Footprint" "Udong:SK20_hall_IC"
 			(at 33.02 110.49 0)
 			(effects
 				(font
@@ -12393,7 +12353,7 @@
 		(instances
 			(project "mainboard"
 				(path "/b1313647-8d60-4294-add7-71c03651cfe3/89b6f170-ffaa-4d16-937f-213835be9ca4"
-					(reference "U14")
+					(reference "K8")
 					(unit 1)
 				)
 			)
@@ -12452,13 +12412,12 @@
 				(hide yes)
 			)
 		)
-		(property "フィールド5" ""
+		(property "DigitalSwitch" "OR2"
 			(at 177.8 22.86 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(hide yes)
 			)
 		)
 		(property "フィールド6" ""
@@ -12494,7 +12453,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "c3d4fb1d-0aba-4422-bca6-1c38153b7ed1")
-		(property "Reference" "U13"
+		(property "Reference" "K7"
 			(at 232.41 68.58 0)
 			(effects
 				(font
@@ -12512,7 +12471,7 @@
 				(justify right)
 			)
 		)
-		(property "Footprint" "Udong:SW_Cherry_MX_PCB_1.00u_hall_effect"
+		(property "Footprint" "Udong:SK20_hall_IC"
 			(at 214.63 76.2 0)
 			(effects
 				(font
@@ -12569,7 +12528,7 @@
 		(instances
 			(project "mainboard"
 				(path "/b1313647-8d60-4294-add7-71c03651cfe3/89b6f170-ffaa-4d16-937f-213835be9ca4"
-					(reference "U13")
+					(reference "K7")
 					(unit 1)
 				)
 			)
@@ -12630,13 +12589,12 @@
 				(hide yes)
 			)
 		)
-		(property "フィールド5" ""
+		(property "DigitalSwitch" "OC3"
 			(at 243.84 27.94 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(hide yes)
 			)
 		)
 		(property "フィールド6" ""
@@ -12672,7 +12630,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "c726718a-67c9-4c5f-929d-81096847ff3c")
-		(property "Reference" "U15"
+		(property "Reference" "K9"
 			(at 111.76 102.87 0)
 			(effects
 				(font
@@ -12690,7 +12648,7 @@
 				(justify right)
 			)
 		)
-		(property "Footprint" "Udong:SW_Cherry_MX_PCB_1.00u_hall_effect"
+		(property "Footprint" "Udong:SK20_hall_IC"
 			(at 93.98 110.49 0)
 			(effects
 				(font
@@ -12747,7 +12705,7 @@
 		(instances
 			(project "mainboard"
 				(path "/b1313647-8d60-4294-add7-71c03651cfe3/89b6f170-ffaa-4d16-937f-213835be9ca4"
-					(reference "U15")
+					(reference "K9")
 					(unit 1)
 				)
 			)
@@ -12940,13 +12898,12 @@
 				(hide yes)
 			)
 		)
-		(property "フィールド5" ""
+		(property "DigitalSwitch" "OC8"
 			(at 62.23 92.71 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(hide yes)
 			)
 		)
 		(property "フィールド6" ""
@@ -13092,13 +13049,12 @@
 				(hide yes)
 			)
 		)
-		(property "フィールド5" ""
+		(property "DigitalSwitch" "OR1"
 			(at 118.11 22.86 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(hide yes)
 			)
 		)
 		(property "フィールド6" ""
@@ -13376,13 +13332,12 @@
 				(hide yes)
 			)
 		)
-		(property "フィールド5" ""
+		(property "DigitalSwitch" "OR4"
 			(at 57.15 53.34 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(hide yes)
 			)
 		)
 		(property "フィールド6" ""
@@ -13462,13 +13417,12 @@
 				(hide yes)
 			)
 		)
-		(property "フィールド5" ""
+		(property "DigitalSwitch" "OR8"
 			(at 57.15 87.63 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(hide yes)
 			)
 		)
 		(property "フィールド6" ""
@@ -13504,7 +13458,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "e52c944d-4ce9-4289-bbdf-e0a2d1775372")
-		(property "Reference" "U19"
+		(property "Reference" "K13"
 			(at 111.76 133.35 0)
 			(effects
 				(font
@@ -13522,7 +13476,7 @@
 				(justify right)
 			)
 		)
-		(property "Footprint" "Udong:SW_Cherry_MX_PCB_1.00u_hall_effect"
+		(property "Footprint" "Udong:SK20_hall_IC"
 			(at 93.98 140.97 0)
 			(effects
 				(font
@@ -13579,7 +13533,7 @@
 		(instances
 			(project "mainboard"
 				(path "/b1313647-8d60-4294-add7-71c03651cfe3/89b6f170-ffaa-4d16-937f-213835be9ca4"
-					(reference "U19")
+					(reference "K13")
 					(unit 1)
 				)
 			)
@@ -13902,13 +13856,12 @@
 				(hide yes)
 			)
 		)
-		(property "フィールド5" ""
+		(property "DigitalSwitch" "OR11"
 			(at 238.76 87.63 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(hide yes)
 			)
 		)
 		(property "フィールド6" ""
@@ -14076,7 +14029,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "f64f387f-a92a-46a5-93d9-907c1c6f2485")
-		(property "Reference" "U10"
+		(property "Reference" "K4"
 			(at 50.8 68.58 0)
 			(effects
 				(font
@@ -14094,7 +14047,7 @@
 				(justify right)
 			)
 		)
-		(property "Footprint" "Udong:SW_Cherry_MX_PCB_1.00u_hall_effect"
+		(property "Footprint" "Udong:SK20_hall_IC"
 			(at 33.02 76.2 0)
 			(effects
 				(font
@@ -14151,7 +14104,7 @@
 		(instances
 			(project "mainboard"
 				(path "/b1313647-8d60-4294-add7-71c03651cfe3/89b6f170-ffaa-4d16-937f-213835be9ca4"
-					(reference "U10")
+					(reference "K4")
 					(unit 1)
 				)
 			)
@@ -14212,13 +14165,12 @@
 				(hide yes)
 			)
 		)
-		(property "フィールド5" ""
+		(property "DigitalSwitch" "OC2"
 			(at 182.88 27.94 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(hide yes)
 			)
 		)
 		(property "フィールド6" ""
@@ -14254,7 +14206,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "f7f8cf52-7470-4d3a-8e6b-e7f19e52e348")
-		(property "Reference" "U20"
+		(property "Reference" "K14"
 			(at 171.45 133.35 0)
 			(effects
 				(font
@@ -14272,7 +14224,7 @@
 				(justify right)
 			)
 		)
-		(property "Footprint" "Udong:SW_Cherry_MX_PCB_1.00u_hall_effect"
+		(property "Footprint" "Udong:SK20_hall_IC"
 			(at 153.67 140.97 0)
 			(effects
 				(font
@@ -14329,7 +14281,7 @@
 		(instances
 			(project "mainboard"
 				(path "/b1313647-8d60-4294-add7-71c03651cfe3/89b6f170-ffaa-4d16-937f-213835be9ca4"
-					(reference "U20")
+					(reference "K14")
 					(unit 1)
 				)
 			)
@@ -14529,13 +14481,12 @@
 				(hide yes)
 			)
 		)
-		(property "フィールド5" ""
+		(property "DigitalSwitch" "BC1"
 			(at 87.63 27.94 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(hide yes)
 			)
 		)
 		(property "フィールド6" ""
@@ -14617,13 +14568,12 @@
 				(hide yes)
 			)
 		)
-		(property "フィールド5" ""
+		(property "DigitalSwitch" "OC10"
 			(at 182.88 92.71 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(hide yes)
 			)
 		)
 		(property "フィールド6" ""
