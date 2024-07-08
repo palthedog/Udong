@@ -5806,7 +5806,7 @@
 				(hide yes)
 			)
 		)
-		(property "フィールド6" ""
+		(property "LCSC" "C2866615"
 			(at 104.14 58.42 0)
 			(effects
 				(font
@@ -6725,7 +6725,7 @@
 				(hide yes)
 			)
 		)
-		(property "フィールド6" ""
+		(property "LCSC" "C2866615"
 			(at 224.79 123.19 0)
 			(effects
 				(font
@@ -7317,7 +7317,7 @@
 				(hide yes)
 			)
 		)
-		(property "フィールド6" ""
+		(property "LCSC" "C2866615"
 			(at 163.83 27.94 0)
 			(effects
 				(font
@@ -7407,7 +7407,7 @@
 				(hide yes)
 			)
 		)
-		(property "フィールド6" ""
+		(property "LCSC" "C2866615"
 			(at 163.83 92.71 0)
 			(effects
 				(font
@@ -9048,7 +9048,7 @@
 				(hide yes)
 			)
 		)
-		(property "フィールド6" ""
+		(property "LCSC" "C2866615"
 			(at 43.18 123.19 0)
 			(effects
 				(font
@@ -9138,7 +9138,7 @@
 				(hide yes)
 			)
 		)
-		(property "フィールド6" ""
+		(property "LCSC" "C2866615"
 			(at 224.79 27.94 0)
 			(effects
 				(font
@@ -9589,7 +9589,7 @@
 				(hide yes)
 			)
 		)
-		(property "JCSC" "C2866615"
+		(property "DigitalSwitch" "K0"
 			(at 43.18 27.94 0)
 			(effects
 				(font
@@ -9598,7 +9598,7 @@
 				(hide yes)
 			)
 		)
-		(property "DigitalSwitch" "K0"
+		(property "LCSC" "C2866615"
 			(at 43.18 27.94 0)
 			(effects
 				(font
@@ -10003,7 +10003,7 @@
 				(hide yes)
 			)
 		)
-		(property "フィールド6" ""
+		(property "LCSC" "C2866615"
 			(at 163.83 58.42 0)
 			(effects
 				(font
@@ -10799,6 +10799,15 @@
 			)
 		)
 		(property "DigitalSwitch" "K1"
+			(at 104.14 27.94 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC" "C2866615"
 			(at 104.14 27.94 0)
 			(effects
 				(font
@@ -11788,7 +11797,7 @@
 				(hide yes)
 			)
 		)
-		(property "フィールド6" ""
+		(property "LCSC" "C2866615"
 			(at 224.79 92.71 0)
 			(effects
 				(font
@@ -12176,7 +12185,7 @@
 				(hide yes)
 			)
 		)
-		(property "JCSC" "C21379"
+		(property "LCSC" "C21379"
 			(at 118.11 168.91 0)
 			(effects
 				(font
@@ -12323,7 +12332,7 @@
 				(hide yes)
 			)
 		)
-		(property "フィールド6" ""
+		(property "LCSC" "C2866615"
 			(at 43.18 92.71 0)
 			(effects
 				(font
@@ -12498,7 +12507,7 @@
 				(hide yes)
 			)
 		)
-		(property "フィールド6" ""
+		(property "LCSC" "C2866615"
 			(at 224.79 58.42 0)
 			(effects
 				(font
@@ -12675,7 +12684,7 @@
 				(hide yes)
 			)
 		)
-		(property "フィールド6" ""
+		(property "LCSC" "C2866615"
 			(at 104.14 92.71 0)
 			(effects
 				(font
@@ -13503,7 +13512,7 @@
 				(hide yes)
 			)
 		)
-		(property "フィールド6" ""
+		(property "LCSC" "C2866615"
 			(at 104.14 123.19 0)
 			(effects
 				(font
@@ -14074,7 +14083,7 @@
 				(hide yes)
 			)
 		)
-		(property "フィールド6" ""
+		(property "LCSC" "C2866615"
 			(at 43.18 58.42 0)
 			(effects
 				(font
@@ -14251,7 +14260,7 @@
 				(hide yes)
 			)
 		)
-		(property "フィールド6" ""
+		(property "LCSC" "C2866615"
 			(at 163.83 123.19 0)
 			(effects
 				(font
@@ -14333,7 +14342,7 @@
 				(hide yes)
 			)
 		)
-		(property "JCSC" "C21379"
+		(property "LCSC" "C21379"
 			(at 48.26 168.91 0)
 			(effects
 				(font

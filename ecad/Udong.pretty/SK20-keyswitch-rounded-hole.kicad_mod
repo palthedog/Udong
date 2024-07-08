@@ -6,8 +6,8 @@
 	(descr "Cherry MX keyswitch PCB Mount with 1.00u keycap")
 	(tags "Cherry MX Keyboard Keyswitch Switch PCB Cutout 1.00u")
 	(property "Reference" "REF**"
-		(at 0 -2.6 0)
-		(layer "F.SilkS")
+		(at 5.3 -8.5 0)
+		(layer "Eco1.User")
 		(hide yes)
 		(uuid "fdfe690a-38fe-42b2-bdc1-379c1f9992af")
 		(effects
@@ -145,46 +145,6 @@
 		)
 		(layer "Dwgs.User")
 		(uuid "179b170b-0f85-42b8-9b8c-d98a94f9f240")
-	)
-	(fp_line
-		(start -7 -7)
-		(end -7 7)
-		(stroke
-			(width 0.1)
-			(type solid)
-		)
-		(layer "Eco1.User")
-		(uuid "7825966e-33cb-44ad-b8f1-c200c33bb817")
-	)
-	(fp_line
-		(start -7 7)
-		(end 7 7)
-		(stroke
-			(width 0.1)
-			(type solid)
-		)
-		(layer "Eco1.User")
-		(uuid "cd947cbf-c299-4d10-8911-4fa5d777713d")
-	)
-	(fp_line
-		(start 7 -7)
-		(end -7 -7)
-		(stroke
-			(width 0.1)
-			(type solid)
-		)
-		(layer "Eco1.User")
-		(uuid "08468088-12bf-4ffb-92dc-273a72ad9a53")
-	)
-	(fp_line
-		(start 7 7)
-		(end 7 -7)
-		(stroke
-			(width 0.1)
-			(type solid)
-		)
-		(layer "Eco1.User")
-		(uuid "b4002452-8e01-4627-b466-4603ca0991c5")
 	)
 	(fp_line
 		(start -7 6.8)

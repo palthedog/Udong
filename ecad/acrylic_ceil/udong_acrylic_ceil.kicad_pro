@@ -220,7 +220,7 @@
     "pinned_symbol_libs": []
   },
   "meta": {
-    "filename": "mainboard_top_plate.kicad_pro",
+    "filename": "udong_acrylic_ceil.kicad_pro",
     "version": 1
   },
   "net_settings": {
@@ -258,7 +258,7 @@
       "plot": "gerber/",
       "pos_files": "",
       "specctra_dsn": "",
-      "step": "mainboard_top_plate.step",
+      "step": "../../../../../../Desktop/Udong rev.2/Udong.rev2_ceil.step",
       "svg": "",
       "vrml": ""
     },

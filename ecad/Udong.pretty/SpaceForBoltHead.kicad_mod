@@ -1,0 +1,96 @@
+(footprint "SpaceForBoltHead"
+	(version 20240108)
+	(generator "pcbnew")
+	(generator_version "8.0")
+	(layer "F.Cu")
+	(descr "Mounting Hole 3.7mm")
+	(tags "mounting hole 3.7mm")
+	(property "Reference" "H1"
+		(at 0 -4.7 0)
+		(layer "F.SilkS")
+		(hide yes)
+		(uuid "e84438c1-5a63-438f-afca-0fbde63fc811")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Value" "8mm"
+		(at 1.9 5.5 0)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "f2fb819d-bf39-48bb-af7f-2e42053cddc3")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Footprint" "Acrylic Ceil BoltHead Space"
+		(at -7 -7 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "63ce09fe-7770-4208-9924-c1b44582cd7f")
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Datasheet" ""
+		(at 0 0 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "d84ffda3-e9c9-43b1-b7d2-9872e65c452c")
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Description" "Acrylic Ceil BoltHead Space"
+		(at 0.2 9 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "d6e483b1-59bc-433d-b5ba-2140357f51be")
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.15)
+			)
+		)
+	)
+	(attr through_hole exclude_from_pos_files exclude_from_bom)
+	(fp_circle
+		(center 0 0)
+		(end 4 0)
+		(stroke
+			(width 0.05)
+			(type default)
+		)
+		(fill none)
+		(layer "Edge.Cuts")
+		(uuid "0054150b-c171-418f-b67f-197122ba9e47")
+	)
+	(fp_text user "Φ8mm"
+		(at 3.65 3.25 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(uuid "39ce41a1-c9c3-42f3-a1ae-daba60ea91e8")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+			(justify left bottom)
+		)
+	)
+)

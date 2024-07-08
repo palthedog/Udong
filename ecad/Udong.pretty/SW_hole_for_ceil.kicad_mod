@@ -1,0 +1,133 @@
+(footprint "SW_hole_for_ceil"
+	(version 20240108)
+	(generator "pcbnew")
+	(generator_version "8.0")
+	(layer "F.Cu")
+	(descr "Cherry MX keyswitch PCB Mount with 1.00u keycap")
+	(tags "Cherry MX Keyboard Keyswitch Switch PCB Cutout 1.00u")
+	(property "Reference" "REF**"
+		(at 5.3 -8.5 0)
+		(layer "Eco1.User")
+		(hide yes)
+		(uuid "fdfe690a-38fe-42b2-bdc1-379c1f9992af")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Value" "22mm"
+		(at -4.4 15.8 0)
+		(layer "B.Fab")
+		(hide yes)
+		(uuid "6553cdc4-594e-4270-b7a9-af2469bae141")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Footprint" ""
+		(at 0 0 0)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "47ee32f0-760e-45c1-884a-881bc9a370d0")
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Datasheet" ""
+		(at 0 0 0)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "87ace176-7d74-4495-8c57-336c091aa24f")
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Description" ""
+		(at 0 0 0)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "d1dfde02-ef55-4664-8dcd-cdbe9e125294")
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.15)
+			)
+		)
+	)
+	(attr through_hole)
+	(fp_line
+		(start -9.525 -9.525)
+		(end -9.525 9.525)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(layer "Dwgs.User")
+		(uuid "bc4d5e8b-2518-432c-b4b7-330b7686b195")
+	)
+	(fp_line
+		(start -9.525 9.525)
+		(end 9.525 9.525)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(layer "Dwgs.User")
+		(uuid "457af0af-e360-407f-aa86-a9262066aaf8")
+	)
+	(fp_line
+		(start 9.525 -9.525)
+		(end -9.525 -9.525)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(layer "Dwgs.User")
+		(uuid "a7f21a33-1961-4536-92a9-cd1d06b46282")
+	)
+	(fp_line
+		(start 9.525 9.525)
+		(end 9.525 -9.525)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(layer "Dwgs.User")
+		(uuid "179b170b-0f85-42b8-9b8c-d98a94f9f240")
+	)
+	(fp_circle
+		(center 0 0)
+		(end 11 0)
+		(stroke
+			(width 0.05)
+			(type default)
+		)
+		(fill none)
+		(layer "Edge.Cuts")
+		(uuid "d12003d8-9f3a-4277-8552-4e2cced8cb6b")
+	)
+	(fp_text user "Φ22mm"
+		(at 5.95 11.95 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(uuid "d2bb0f24-5bb0-4264-b863-7be47cdcfdb0")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+			(justify left bottom)
+		)
+	)
+)

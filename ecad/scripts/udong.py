@@ -37,6 +37,12 @@ digital_switch_positions = [
     [-70, 76],
 ]
 
+analog_switch_positions = [
+    [122, 26],
+    [94, 26],
+]
+
+
 '''
 returns a dict contains all digital switch related foot prints.
 
@@ -103,7 +109,7 @@ def calc_rel_pos(d):
 def mm_to_nm(mm):
     return mm * 1000 * 1000
 
-def update_switches(switch_pos_in_millis):
+def update_digital_switches(switch_pos_in_millis):
     board = pcbnew.GetBoard()
 
     origin = board.GetDesignSettings().GetGridOrigin()
@@ -134,8 +140,40 @@ def update_switches(switch_pos_in_millis):
             part.SetY(new_y)
             part.SetOrientationDegrees(new_ori)
 
+def update_switches():
+    try:
+        update_digital_switches(digital_switch_positions)
+    except Exception as e:
+        print(e)
+
+def list_holes():
+    board = pcbnew.GetBoard()
+    holes = []
+
+    hole_name = "Udong:SK20-keyswitch-rounded-hole"
+    for fp in board.GetFootprints():
+        if fp.GetFieldByName("Footprint").GetText() == hole_name:
+            holes.append(fp)
+
+    return holes
+
+def update_holes(switch_pos_in_millis):
+    holes = list_holes()
+    assert(len(holes) == len(switch_pos_in_millis))
+
+    board = pcbnew.GetBoard()
+    origin = board.GetDesignSettings().GetGridOrigin()
+    for i in range(len(holes)):
+        switch_x = mm_to_nm(switch_pos_in_millis[i][0])
+        switch_y = mm_to_nm(switch_pos_in_millis[i][1])
+
+        x = origin.x - switch_x
+        y = origin.y + switch_y
+
+        holes[i].SetX(x)
+        holes[i].SetY(y)
+
 try:
-    update_switches(digital_switch_positions)
+    update_holes(digital_switch_positions + analog_switch_positions)
 except Exception as e:
     print(e)
-

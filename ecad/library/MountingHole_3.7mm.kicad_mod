@@ -1,0 +1,100 @@
+(footprint "MountingHole_3.7mm"
+	(version 20240108)
+	(generator "pcbnew")
+	(generator_version "8.0")
+	(layer "F.Cu")
+	(descr "Mounting Hole 3.7mm")
+	(tags "mounting hole 3.7mm")
+	(property "Reference" "H1"
+		(at 0 -4.7 0)
+		(layer "F.SilkS")
+		(hide yes)
+		(uuid "97b18b76-727a-4ee4-a13d-1c481e0c8a43")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Value" "MountingHole_Pad"
+		(at 0 6.9 0)
+		(layer "F.Fab")
+		(uuid "58607842-fd12-4bbe-8167-2b8d17932f21")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Footprint" "MountingHole:MountingHole_3.7mm_Pad_Via"
+		(at 5.9 4.8 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "7180fc11-807c-46b4-8838-7af344494715")
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Datasheet" ""
+		(at 0 0 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "ddaaaae1-33c3-406e-88d8-c9b8b092ec47")
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Description" "Mounting Hole with connection"
+		(at 0.2 8.2 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "2395d970-0c4e-415d-9461-692dbd2e2fbc")
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.15)
+			)
+		)
+	)
+	(attr through_hole exclude_from_pos_files exclude_from_bom)
+	(fp_circle
+		(center 0 0)
+		(end 3.7 0)
+		(stroke
+			(width 0.15)
+			(type solid)
+		)
+		(fill none)
+		(layer "Cmts.User")
+		(uuid "a1c72268-9216-447d-bc77-eecc2868f5cc")
+	)
+	(fp_circle
+		(center 0 0)
+		(end 3.95 0)
+		(stroke
+			(width 0.05)
+			(type solid)
+		)
+		(fill none)
+		(layer "F.CrtYd")
+		(uuid "52a153c3-784d-4d35-a906-3d661a49d405")
+	)
+	(pad "" np_thru_hole circle
+		(at 0 0)
+		(size 8 8)
+		(drill 8)
+		(layers "*.Mask")
+		(uuid "b1c61ca7-d4e0-4ed3-9993-ada08b2f4b48")
+	)
+)

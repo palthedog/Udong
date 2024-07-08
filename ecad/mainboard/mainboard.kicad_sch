@@ -10964,7 +10964,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "MountingHole:MountingHole_2.7mm_M2.5_Pad_Via"
+		(property "Footprint" "MountingHole:MountingHole_3.7mm_Pad_Via"
 			(at 262.89 270.51 0)
 			(effects
 				(font
@@ -11165,7 +11165,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "MountingHole:MountingHole_2.7mm_M2.5_Pad_Via"
+		(property "Footprint" "MountingHole:MountingHole_3.7mm_Pad_Via"
 			(at 262.89 264.16 0)
 			(effects
 				(font
@@ -12583,7 +12583,7 @@
 				(hide yes)
 			)
 		)
-		(property "JCSC" "C160403"
+		(property "LCSC" "C160403"
 			(at 304.8 41.91 0)
 			(effects
 				(font
@@ -13399,7 +13399,7 @@
 				(hide yes)
 			)
 		)
-		(property "JLCPCB" "C5156480"
+		(property "LCSC" "C5156480"
 			(at 384.81 227.33 0)
 			(effects
 				(font
@@ -13567,7 +13567,7 @@
 				(hide yes)
 			)
 		)
-		(property "JCSC" "C2827654"
+		(property "LCSC" "C2827654"
 			(at 81.28 49.53 0)
 			(effects
 				(font
@@ -13674,7 +13674,7 @@
 				(hide yes)
 			)
 		)
-		(property "JLCPCB" "C5156480"
+		(property "LCSC" "C5156480"
 			(at 326.39 227.33 0)
 			(effects
 				(font
@@ -14198,7 +14198,7 @@
 				(hide yes)
 			)
 		)
-		(property "JCSC" "C2297"
+		(property "LCSC" "C2297"
 			(at 360.68 187.96 0)
 			(effects
 				(font
@@ -14268,7 +14268,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "MountingHole:MountingHole_2.7mm_M2.5_Pad_Via"
+		(property "Footprint" "MountingHole:MountingHole_3.7mm_Pad_Via"
 			(at 262.89 245.11 0)
 			(effects
 				(font
@@ -14360,7 +14360,7 @@
 				(hide yes)
 			)
 		)
-		(property "JCSC" "C165948"
+		(property "LCSC" "C165948"
 			(at 34.29 49.53 0)
 			(effects
 				(font
@@ -14894,7 +14894,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "MountingHole:MountingHole_2.7mm_M2.5_Pad_Via"
+		(property "Footprint" "MountingHole:MountingHole_3.7mm_Pad_Via"
 			(at 262.89 257.81 0)
 			(effects
 				(font
@@ -15162,7 +15162,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "MountingHole:MountingHole_2.7mm_M2.5_Pad_Via"
+		(property "Footprint" "MountingHole:MountingHole_3.7mm_Pad_Via"
 			(at 262.89 251.46 0)
 			(effects
 				(font
@@ -15804,7 +15804,7 @@
 				(hide yes)
 			)
 		)
-		(property "JCSC" "C26537"
+		(property "LCSC" "C26537"
 			(at 168.91 36.83 0)
 			(effects
 				(font

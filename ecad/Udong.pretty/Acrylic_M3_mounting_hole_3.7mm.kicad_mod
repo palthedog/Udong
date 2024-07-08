@@ -1,0 +1,91 @@
+(footprint "Acrylic_M3_mounting_hole_3.7mm"
+	(version 20240108)
+	(generator "pcbnew")
+	(generator_version "8.0")
+	(layer "F.Cu")
+	(property "Reference" "REF**"
+		(at 4.5 1.7 0)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "43118421-0739-4346-a876-4d4c2d81c6d9")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Value" "3.7mm"
+		(at 3.15 -2.8 0)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "e92f0391-f746-4eae-b7bb-bc71331aa33d")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Footprint" ""
+		(at -9.5 -9.5 0)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "7f3c18e8-1082-43a3-8c19-063aaa0d9b62")
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Datasheet" ""
+		(at -9.5 -9.5 0)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "beaf9409-d35e-4700-8491-20e802dd9ae7")
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Description" ""
+		(at -9.5 -9.5 0)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "67e36e25-27aa-452a-925d-f7244e3567ed")
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.15)
+			)
+		)
+	)
+	(attr through_hole)
+	(fp_circle
+		(center 0 0)
+		(end 1.85 0)
+		(stroke
+			(width 0.05)
+			(type default)
+		)
+		(fill none)
+		(layer "Edge.Cuts")
+		(uuid "69c37c15-aca9-42e3-8995-8c8efb03277f")
+	)
+	(fp_text user "M3 Mounting hole"
+		(at -14.05 -2.45 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(uuid "bbb6e77d-53e0-4442-98fd-6ecd6e7b8f1e")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+			(justify left bottom)
+		)
+	)
+)

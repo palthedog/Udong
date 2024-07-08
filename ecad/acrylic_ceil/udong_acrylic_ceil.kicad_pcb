@@ -1,0 +1,3611 @@
+(kicad_pcb
+	(version 20240108)
+	(generator "pcbnew")
+	(generator_version "8.0")
+	(general
+		(thickness 1.6)
+		(legacy_teardrops no)
+	)
+	(paper "A3")
+	(layers
+		(0 "F.Cu" signal)
+		(31 "B.Cu" signal)
+		(32 "B.Adhes" user "B.Adhesive")
+		(33 "F.Adhes" user "F.Adhesive")
+		(34 "B.Paste" user)
+		(35 "F.Paste" user)
+		(36 "B.SilkS" user "B.Silkscreen")
+		(37 "F.SilkS" user "F.Silkscreen")
+		(38 "B.Mask" user)
+		(39 "F.Mask" user)
+		(40 "Dwgs.User" user "User.Drawings")
+		(41 "Cmts.User" user "User.Comments")
+		(42 "Eco1.User" user "User.Eco1")
+		(43 "Eco2.User" user "User.Eco2")
+		(44 "Edge.Cuts" user)
+		(45 "Margin" user)
+		(46 "B.CrtYd" user "B.Courtyard")
+		(47 "F.CrtYd" user "F.Courtyard")
+		(48 "B.Fab" user)
+		(49 "F.Fab" user)
+		(50 "User.1" user)
+		(51 "User.2" user)
+		(52 "User.3" user)
+		(53 "User.4" user)
+		(54 "User.5" user)
+		(55 "User.6" user)
+		(56 "User.7" user)
+		(57 "User.8" user)
+		(58 "User.9" user)
+	)
+	(setup
+		(stackup
+			(layer "F.SilkS"
+				(type "Top Silk Screen")
+			)
+			(layer "F.Paste"
+				(type "Top Solder Paste")
+			)
+			(layer "F.Mask"
+				(type "Top Solder Mask")
+				(thickness 0.01)
+			)
+			(layer "F.Cu"
+				(type "copper")
+				(thickness 0.035)
+			)
+			(layer "dielectric 1"
+				(type "core")
+				(thickness 1.51)
+				(material "FR4")
+				(epsilon_r 4.5)
+				(loss_tangent 0.02)
+			)
+			(layer "B.Cu"
+				(type "copper")
+				(thickness 0.035)
+			)
+			(layer "B.Mask"
+				(type "Bottom Solder Mask")
+				(thickness 0.01)
+			)
+			(layer "B.Paste"
+				(type "Bottom Solder Paste")
+			)
+			(layer "B.SilkS"
+				(type "Bottom Silk Screen")
+			)
+			(copper_finish "None")
+			(dielectric_constraints no)
+		)
+		(pad_to_mask_clearance 0)
+		(allow_soldermask_bridges_in_footprints no)
+		(grid_origin 210 40)
+		(pcbplotparams
+			(layerselection 0x00010fc_ffffffff)
+			(plot_on_all_layers_selection 0x0000000_00000000)
+			(disableapertmacros no)
+			(usegerberextensions no)
+			(usegerberattributes no)
+			(usegerberadvancedattributes yes)
+			(creategerberjobfile yes)
+			(dashed_line_dash_ratio 12.000000)
+			(dashed_line_gap_ratio 3.000000)
+			(svgprecision 4)
+			(plotframeref no)
+			(viasonmask no)
+			(mode 1)
+			(useauxorigin no)
+			(hpglpennumber 1)
+			(hpglpenspeed 20)
+			(hpglpendiameter 15.000000)
+			(pdf_front_fp_property_popups yes)
+			(pdf_back_fp_property_popups yes)
+			(dxfpolygonmode yes)
+			(dxfimperialunits yes)
+			(dxfusepcbnewfont yes)
+			(psnegative no)
+			(psa4output no)
+			(plotreference yes)
+			(plotvalue yes)
+			(plotfptext yes)
+			(plotinvisibletext no)
+			(sketchpadsonfab no)
+			(subtractmaskfromsilk no)
+			(outputformat 1)
+			(mirror no)
+			(drillshape 0)
+			(scaleselection 1)
+			(outputdirectory "gerber/")
+		)
+	)
+	(net 0 "")
+	(footprint "Udong:SW_hole_for_ceil"
+		(layer "F.Cu")
+		(uuid "04b5c2f4-71b8-458d-a17c-38696792bbb5")
+		(at 146 96)
+		(descr "Cherry MX keyswitch PCB Mount with 1.00u keycap")
+		(tags "Cherry MX Keyboard Keyswitch Switch PCB Cutout 1.00u")
+		(property "Reference" "U13"
+			(at 5.3 -8.5 0)
+			(layer "Eco1.User")
+			(hide yes)
+			(uuid "183ae9c1-f30d-4ae4-af54-9904cd614186")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Value" "DRV5056A3xQDBZxR"
+			(at -4.4 15.8 0)
+			(layer "B.Fab")
+			(hide yes)
+			(uuid "c1905509-da08-4143-9f20-fad2d32f2daf")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Footprint" "Udong:SW_hole_for_ceil"
+			(at 0 0 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "ac83bd1f-a706-44fb-8228-4018f4272c05")
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Datasheet" "https://www.ti.com/lit/ds/symlink/drv5056.pdf"
+			(at 0 0 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "e2b9ad91-df43-4d6a-b03f-6b04ca58f6ae")
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Description" "Unipolar 50 mV/mT,+79-mT, 20-kHz, 3.3/5V, SOT-23"
+			(at 0 0 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "08760865-5295-474a-8f71-46c0c438c6d5")
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property ki_fp_filters "SOT?23*")
+		(path "/89b6f170-ffaa-4d16-937f-213835be9ca4/c3d4fb1d-0aba-4422-bca6-1c38153b7ed1")
+		(sheetname "Analog Switches")
+		(sheetfile "analog_switches.kicad_sch")
+		(attr through_hole)
+		(fp_line
+			(start -9.525 -9.525)
+			(end -9.525 9.525)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(layer "Dwgs.User")
+			(uuid "b207a456-9405-4abe-bb9b-7e1652336a60")
+		)
+		(fp_line
+			(start -9.525 9.525)
+			(end 9.525 9.525)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(layer "Dwgs.User")
+			(uuid "a1a66a07-ed0c-4a1c-bc6f-b58df925dd10")
+		)
+		(fp_line
+			(start 9.525 -9.525)
+			(end -9.525 -9.525)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(layer "Dwgs.User")
+			(uuid "d64e3d14-d83c-4013-9bf9-311b2524b63e")
+		)
+		(fp_line
+			(start 9.525 9.525)
+			(end 9.525 -9.525)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(layer "Dwgs.User")
+			(uuid "d632da38-b8d8-44a1-8bd5-a5987f296035")
+		)
+		(fp_circle
+			(center 0 0)
+			(end 11 0)
+			(stroke
+				(width 0.05)
+				(type default)
+			)
+			(fill none)
+			(layer "Edge.Cuts")
+			(uuid "a87f6bf9-e4fc-4e83-a98b-cbc8737e6ed5")
+		)
+		(fp_text user "Φ22mm"
+			(at 5.95 11.95 0)
+			(unlocked yes)
+			(layer "F.Fab")
+			(uuid "c900ab1c-e83c-4473-bff2-7ea2af080b09")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+				(justify left bottom)
+			)
+		)
+	)
+	(footprint "Udong:Acrylic_M3_mounting_hole_3.7mm"
+		(layer "F.Cu")
+		(uuid "07bb7ad4-eb5f-4bf9-af10-458576fd4568")
+		(at 360 260)
+		(property "Reference" "REF**"
+			(at 6.6 -11.3 0)
+			(layer "F.SilkS")
+			(hide yes)
+			(uuid "709c9e66-f391-43fa-8ad5-9017662bc959")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Value" "3.7mm"
+			(at -8.3 -10.8 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "6d163299-496d-45e5-aa4b-3dc34389759f")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Footprint" "Udong:Acrylic_M3_mounting_hole_3.7mm"
+			(at -9.5 -9.5 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "8f2c8450-844b-48bd-98d8-f5bedb706de8")
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at -9.5 -9.5 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "38943d98-d45a-4c18-955a-e943cee282e0")
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Description" ""
+			(at -9.5 -9.5 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "408d6903-7cd0-4b3d-9aa1-28cd6d1f320e")
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(attr through_hole)
+		(fp_circle
+			(center 0 0)
+			(end 1.85 0)
+			(stroke
+				(width 0.05)
+				(type default)
+			)
+			(fill none)
+			(layer "Edge.Cuts")
+			(uuid "faad094e-bd4a-4269-86c6-123607f4c208")
+		)
+		(fp_text user "M3 Mounting hole"
+			(at -13 -3 0)
+			(unlocked yes)
+			(layer "F.Fab")
+			(uuid "49969d7d-c82e-4437-bb20-5ce522b94039")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+				(justify left bottom)
+			)
+		)
+	)
+	(footprint "Udong:Acrylic_M3_mounting_hole_3.7mm"
+		(layer "F.Cu")
+		(uuid "0887aa3e-b2d4-4448-b8a2-ed6390610f6b")
+		(at 360 50)
+		(property "Reference" "REF**"
+			(at 6.6 -11.3 0)
+			(layer "F.SilkS")
+			(hide yes)
+			(uuid "ea70f002-67a6-42ab-96a0-e085bcb9d5d0")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Value" "3.7mm"
+			(at -8.3 -10.8 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "093cb9ee-c442-437c-86c9-676bec112f61")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Footprint" "Udong:Acrylic_M3_mounting_hole_3.7mm"
+			(at -9.5 -9.5 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "a12b51a4-ae9a-4bc0-9a11-3f7fdfff74c5")
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at -9.5 -9.5 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "5f790ef0-6cf7-44d6-aac8-69d695a907f1")
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Description" ""
+			(at -9.5 -9.5 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "91326c41-0b50-433f-9c36-b134f3079a2b")
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(attr through_hole)
+		(fp_circle
+			(center 0 0)
+			(end 1.85 0)
+			(stroke
+				(width 0.05)
+				(type default)
+			)
+			(fill none)
+			(layer "Edge.Cuts")
+			(uuid "ece93cec-c86f-49f1-869b-fb7d56a19485")
+		)
+		(fp_text user "M3 Mounting hole"
+			(at -7 -3 0)
+			(unlocked yes)
+			(layer "F.Fab")
+			(uuid "32da8ca9-2cac-48f0-af3b-c5012c1d9f6d")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+				(justify left bottom)
+			)
+		)
+	)
+	(footprint "Udong:SW_hole_for_ceil"
+		(layer "F.Cu")
+		(uuid "16663af8-7828-4fa6-b84d-f6c2517ea834")
+		(at 116 98)
+		(descr "Cherry MX keyswitch PCB Mount with 1.00u keycap")
+		(tags "Cherry MX Keyboard Keyswitch Switch PCB Cutout 1.00u")
+		(property "Reference" "U15"
+			(at 5.3 -8.5 0)
+			(layer "Eco1.User")
+			(hide yes)
+			(uuid "075d13c4-b865-468f-97bc-02600c19e3b6")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Value" "DRV5056A3xQDBZxR"
+			(at -4.4 15.8 0)
+			(layer "B.Fab")
+			(hide yes)
+			(uuid "5d8b291b-a4f3-4b38-ba85-676b3abaddbc")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Footprint" "Udong:SW_hole_for_ceil"
+			(at 0 0 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "72a081b0-e481-4eed-8a8a-b34a0a42561d")
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Datasheet" "https://www.ti.com/lit/ds/symlink/drv5056.pdf"
+			(at 0 0 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "d8d821a9-776f-40e6-a279-67f496128b12")
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Description" "Unipolar 50 mV/mT,+79-mT, 20-kHz, 3.3/5V, SOT-23"
+			(at 0 0 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "17ecae77-76ea-49be-9092-89eddbda63ac")
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property ki_fp_filters "SOT?23*")
+		(path "/89b6f170-ffaa-4d16-937f-213835be9ca4/c726718a-67c9-4c5f-929d-81096847ff3c")
+		(sheetname "Analog Switches")
+		(sheetfile "analog_switches.kicad_sch")
+		(attr through_hole)
+		(fp_line
+			(start -9.525 -9.525)
+			(end -9.525 9.525)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(layer "Dwgs.User")
+			(uuid "3fa80730-c049-4f2a-bc9d-34d6b1b9aa0b")
+		)
+		(fp_line
+			(start -9.525 9.525)
+			(end 9.525 9.525)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(layer "Dwgs.User")
+			(uuid "6c2cef18-34d5-41c7-98b3-b96729f2c247")
+		)
+		(fp_line
+			(start 9.525 -9.525)
+			(end -9.525 -9.525)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(layer "Dwgs.User")
+			(uuid "0965a20f-6dcf-4163-bc3e-0d3ce028faf0")
+		)
+		(fp_line
+			(start 9.525 9.525)
+			(end 9.525 -9.525)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(layer "Dwgs.User")
+			(uuid "8461c81b-ef8e-4f68-9f61-af386f1a75d6")
+		)
+		(fp_circle
+			(center 0 0)
+			(end 11 0)
+			(stroke
+				(width 0.05)
+				(type default)
+			)
+			(fill none)
+			(layer "Edge.Cuts")
+			(uuid "63c4e789-e869-4add-be8a-4613cdcf0ea3")
+		)
+		(fp_text user "Φ22mm"
+			(at 5.95 11.95 0)
+			(unlocked yes)
+			(layer "F.Fab")
+			(uuid "ec8b6b8e-9903-4217-8a93-7c4d5d1f1dba")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+				(justify left bottom)
+			)
+		)
+	)
+	(footprint "Udong:SW_hole_for_ceil"
+		(layer "F.Cu")
+		(uuid "2c4be549-a03b-46a4-862c-2fd11e83c058")
+		(at 88 116)
+		(descr "Cherry MX keyswitch PCB Mount with 1.00u keycap")
+		(tags "Cherry MX Keyboard Keyswitch Switch PCB Cutout 1.00u")
+		(property "Reference" "U6"
+			(at 5.3 -8.5 0)
+			(layer "Eco1.User")
+			(hide yes)
+			(uuid "1c95017d-508c-4c83-b5e4-c8a7f80a8fe8")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Value" "DRV5056A3xQDBZxR"
+			(at -4.4 15.8 0)
+			(layer "B.Fab")
+			(hide yes)
+			(uuid "3131ea1c-1265-492e-8cec-c49cdd7e92f1")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Footprint" "Udong:SW_hole_for_ceil"
+			(at 0 0 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "f99691b7-1a92-497d-936d-172912af6631")
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Datasheet" "https://www.ti.com/lit/ds/symlink/drv5056.pdf"
+			(at 0 0 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "d8bf45f6-ca3f-40cf-9935-f9cd23500789")
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Description" "Unipolar 50 mV/mT,+79-mT, 20-kHz, 3.3/5V, SOT-23"
+			(at 0 0 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "0fc1f480-325d-4f2b-8758-e7889a3ea14e")
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "JLCPCB" "C2866615"
+			(at 0 0 0)
+			(unlocked yes)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "4f8455a9-5974-404d-9224-31f8c52a74f2")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property ki_fp_filters "SOT?23*")
+		(path "/89b6f170-ffaa-4d16-937f-213835be9ca4/713a77ac-74dd-4bf6-8d31-90be70814a5a")
+		(sheetname "Analog Switches")
+		(sheetfile "analog_switches.kicad_sch")
+		(attr through_hole)
+		(fp_line
+			(start -9.525 -9.525)
+			(end -9.525 9.525)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(layer "Dwgs.User")
+			(uuid "d4055a6c-a359-4d3d-90f8-3e84f450ade1")
+		)
+		(fp_line
+			(start -9.525 9.525)
+			(end 9.525 9.525)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(layer "Dwgs.User")
+			(uuid "aa2ef562-4319-4f32-a004-d4f41c449625")
+		)
+		(fp_line
+			(start 9.525 -9.525)
+			(end -9.525 -9.525)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(layer "Dwgs.User")
+			(uuid "a4deb50f-e803-4937-9807-179a40c457a9")
+		)
+		(fp_line
+			(start 9.525 9.525)
+			(end 9.525 -9.525)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(layer "Dwgs.User")
+			(uuid "44d49097-d15d-46d6-86f9-4aeea23345ac")
+		)
+		(fp_circle
+			(center 0 0)
+			(end 11 0)
+			(stroke
+				(width 0.05)
+				(type default)
+			)
+			(fill none)
+			(layer "Edge.Cuts")
+			(uuid "3dc6c9cc-eccd-4eee-9038-9ff11462e792")
+		)
+		(fp_text user "Φ22mm"
+			(at 5.95 11.95 0)
+			(unlocked yes)
+			(layer "F.Fab")
+			(uuid "f0b1f6b5-f66d-488d-96cd-6299a947f992")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+				(justify left bottom)
+			)
+		)
+	)
+	(footprint "Udong:SpaceForBoltHead"
+		(layer "F.Cu")
+		(uuid "350c99b4-e535-489b-a7cf-f2beb3f8e225")
+		(at 140 160)
+		(descr "Mounting Hole 3.7mm")
+		(tags "mounting hole 3.7mm")
+		(property "Reference" "H4"
+			(at 0 -4.7 0)
+			(layer "F.SilkS")
+			(hide yes)
+			(uuid "3a3c5193-8f76-41b8-bef1-10f7dfd5f833")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Value" "MountingHole_Pad"
+			(at 1.9 5.5 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "5876af58-eecb-411c-bff8-09af916d2ab3")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Footprint" "Udong:SpaceForBoltHead"
+			(at -7 -7 0)
+			(unlocked yes)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "411a848d-ad8c-4720-afc6-dff3f575cf23")
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 0 0 0)
+			(unlocked yes)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "99d80b0c-5d2b-42ac-9bb1-d0a092a477c8")
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Description" "Mounting Hole with connection"
+			(at 0.2 9 0)
+			(unlocked yes)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "fb24c8b4-adfd-4cd1-acc4-e99b1f7f2cf8")
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(attr through_hole exclude_from_pos_files exclude_from_bom)
+		(fp_circle
+			(center 0 0)
+			(end 4 0)
+			(stroke
+				(width 0.05)
+				(type default)
+			)
+			(fill none)
+			(layer "Edge.Cuts")
+			(uuid "d5aa9723-72da-4090-8939-54da1a9d01dc")
+		)
+		(fp_text user "Φ8mm"
+			(at 3.65 3.25 0)
+			(unlocked yes)
+			(layer "F.Fab")
+			(uuid "0babf8a0-6fb7-4fb7-90dc-6591d5b0650e")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+				(justify left bottom)
+			)
+		)
+	)
+	(footprint "Udong:Acrylic_M3_mounting_hole_3.7mm"
+		(layer "F.Cu")
+		(uuid "405efa61-2851-407a-9d6a-0202f6599573")
+		(at 60 260)
+		(property "Reference" "REF**"
+			(at 6.6 -11.3 0)
+			(layer "F.SilkS")
+			(hide yes)
+			(uuid "2ccd44f8-b713-46c4-8fd0-c05a06c58596")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Value" "3.7mm"
+			(at -8.3 -10.8 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "7c8837aa-aa4d-4ebe-9dfb-e699610a48e9")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Footprint" "Udong:Acrylic_M3_mounting_hole_3.7mm"
+			(at -9.5 -9.5 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "0220925a-0317-4d40-8111-41ad736857f0")
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at -9.5 -9.5 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "12764b1f-68a0-4944-8bac-d506d91d32cb")
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Description" ""
+			(at -9.5 -9.5 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "6d60182b-5018-4122-a1f6-48b47c929355")
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(attr through_hole)
+		(fp_circle
+			(center 0 0)
+			(end 1.85 0)
+			(stroke
+				(width 0.05)
+				(type default)
+			)
+			(fill none)
+			(layer "Edge.Cuts")
+			(uuid "af0b0ece-9470-4a16-b879-297df882662e")
+		)
+		(fp_text user "M3 Mounting hole"
+			(at -14.05 -2.45 0)
+			(unlocked yes)
+			(layer "F.Fab")
+			(uuid "e53fc171-2688-4580-b407-4f9a8adf3cea")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+				(justify left bottom)
+			)
+		)
+	)
+	(footprint "Udong:SW_hole_for_ceil"
+		(layer "F.Cu")
+		(uuid "450bb674-9cae-4363-9b0d-0facd1a513e0")
+		(at 176 98)
+		(descr "Cherry MX keyswitch PCB Mount with 1.00u keycap")
+		(tags "Cherry MX Keyboard Keyswitch Switch PCB Cutout 1.00u")
+		(property "Reference" "U10"
+			(at 5.3 -8.5 0)
+			(layer "Eco1.User")
+			(hide yes)
+			(uuid "8178a1ee-0722-4307-bb8f-9fe82a044b0d")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Value" "DRV5056A3xQDBZxR"
+			(at -4.4 15.8 0)
+			(layer "B.Fab")
+			(hide yes)
+			(uuid "9c784788-07ab-4cbf-bbaf-db47b19e2e83")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Footprint" "Udong:SW_hole_for_ceil"
+			(at 0 0 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "340e7aae-c75c-46b9-a1e7-97e66872f7ed")
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Datasheet" "https://www.ti.com/lit/ds/symlink/drv5056.pdf"
+			(at 0 0 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "714c6d00-1775-4419-b656-4f3f22c91f1d")
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Description" "Unipolar 50 mV/mT,+79-mT, 20-kHz, 3.3/5V, SOT-23"
+			(at 0 0 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "5ae49ae2-2fc1-4a1b-9ccd-9f3d7e25c1cd")
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property ki_fp_filters "SOT?23*")
+		(path "/89b6f170-ffaa-4d16-937f-213835be9ca4/f64f387f-a92a-46a5-93d9-907c1c6f2485")
+		(sheetname "Analog Switches")
+		(sheetfile "analog_switches.kicad_sch")
+		(attr through_hole)
+		(fp_line
+			(start -9.525 -9.525)
+			(end -9.525 9.525)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(layer "Dwgs.User")
+			(uuid "1b749d6c-7e19-488d-98f6-26eb8f6a9d01")
+		)
+		(fp_line
+			(start -9.525 9.525)
+			(end 9.525 9.525)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(layer "Dwgs.User")
+			(uuid "2c3beaed-3101-4613-91fd-ed0c558af70b")
+		)
+		(fp_line
+			(start 9.525 -9.525)
+			(end -9.525 -9.525)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(layer "Dwgs.User")
+			(uuid "35bdeb1a-2983-47e3-8473-3db2146617d2")
+		)
+		(fp_line
+			(start 9.525 9.525)
+			(end 9.525 -9.525)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(layer "Dwgs.User")
+			(uuid "9ec17158-3bcf-4db2-ad47-4a5e48c187fc")
+		)
+		(fp_circle
+			(center 0 0)
+			(end 11 0)
+			(stroke
+				(width 0.05)
+				(type default)
+			)
+			(fill none)
+			(layer "Edge.Cuts")
+			(uuid "ad112330-3a74-4df5-8266-e44b8bbda6d7")
+		)
+		(fp_text user "Φ22mm"
+			(at 5.95 11.95 0)
+			(unlocked yes)
+			(layer "F.Fab")
+			(uuid "d3f40175-df21-413a-b9fd-1d6b94774179")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+				(justify left bottom)
+			)
+		)
+	)
+	(footprint "Udong:SW_hole_for_ceil"
+		(layer "F.Cu")
+		(uuid "5d2466cc-44fb-491a-b161-0a10dc381051")
+		(at 88 146)
+		(descr "Cherry MX keyswitch PCB Mount with 1.00u keycap")
+		(tags "Cherry MX Keyboard Keyswitch Switch PCB Cutout 1.00u")
+		(property "Reference" "U19"
+			(at 5.3 -8.5 0)
+			(layer "Eco1.User")
+			(hide yes)
+			(uuid "b0d1f3b1-b795-4378-9bc5-10745a803e88")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Value" "DRV5056A3xQDBZxR"
+			(at -4.4 15.8 0)
+			(layer "B.Fab")
+			(hide yes)
+			(uuid "df36bae6-ac94-411a-a335-800621a43a53")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Footprint" "Udong:SW_hole_for_ceil"
+			(at 0 0 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "224b2ba6-4bab-421a-8a93-4189aca15a7e")
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Datasheet" "https://www.ti.com/lit/ds/symlink/drv5056.pdf"
+			(at 0 0 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "ecb1df1a-1569-430a-aa1b-e767bc9be71e")
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Description" "Unipolar 50 mV/mT,+79-mT, 20-kHz, 3.3/5V, SOT-23"
+			(at 0 0 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "dd3a0c26-935b-405b-b42b-6b65a32a87f0")
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property ki_fp_filters "SOT?23*")
+		(path "/89b6f170-ffaa-4d16-937f-213835be9ca4/e52c944d-4ce9-4289-bbdf-e0a2d1775372")
+		(sheetname "Analog Switches")
+		(sheetfile "analog_switches.kicad_sch")
+		(attr through_hole)
+		(fp_line
+			(start -9.525 -9.525)
+			(end -9.525 9.525)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(layer "Dwgs.User")
+			(uuid "1e32b100-4918-4c41-bff4-81c81d83bea4")
+		)
+		(fp_line
+			(start -9.525 9.525)
+			(end 9.525 9.525)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(layer "Dwgs.User")
+			(uuid "28a6f2e0-b165-474c-a26c-5a0eaee60d53")
+		)
+		(fp_line
+			(start 9.525 -9.525)
+			(end -9.525 -9.525)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(layer "Dwgs.User")
+			(uuid "4b2efa47-40e1-40d7-924f-b7948e1d0598")
+		)
+		(fp_line
+			(start 9.525 9.525)
+			(end 9.525 -9.525)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(layer "Dwgs.User")
+			(uuid "968640a9-4e62-4e46-b6dd-c4caa514c36e")
+		)
+		(fp_circle
+			(center 0 0)
+			(end 11 0)
+			(stroke
+				(width 0.05)
+				(type default)
+			)
+			(fill none)
+			(layer "Edge.Cuts")
+			(uuid "ce3e0418-0d67-45fb-a4b4-8a04e488395d")
+		)
+		(fp_text user "Φ22mm"
+			(at 5.95 11.95 0)
+			(unlocked yes)
+			(layer "F.Fab")
+			(uuid "b56accfe-0ea6-421c-aaf6-63c69d1d99f4")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+				(justify left bottom)
+			)
+		)
+	)
+	(footprint "Udong:SW_hole_for_ceil"
+		(layer "F.Cu")
+		(uuid "5e616a31-2ef6-4d02-a919-0ecfcad6dfdc")
+		(at 176 130 180)
+		(descr "Cherry MX keyswitch PCB Mount with 1.00u keycap")
+		(tags "Cherry MX Keyboard Keyswitch Switch PCB Cutout 1.00u")
+		(property "Reference" "SW4"
+			(at 5.3 -8.5 180)
+			(layer "Eco1.User")
+			(hide yes)
+			(uuid "7a1c1c81-7129-4b76-8c8e-e97ceb448d3b")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Value" "SW_Push"
+			(at -4.4 15.8 180)
+			(layer "B.Fab")
+			(hide yes)
+			(uuid "66ec72c1-e1ec-4685-97a5-59294dc70b06")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Footprint" "Udong:SW_hole_for_ceil"
+			(at 0 0 180)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "f2b1c909-abae-458b-9445-4e12036de542")
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 0 0 180)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "d644cc84-000b-4c42-83a0-ce4767adc2a0")
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Description" "Push button switch, generic, two pins"
+			(at 0 0 180)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "3d65ea34-da0b-4f70-97aa-6f371b1be93f")
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(path "/7b2615f1-e566-432f-a9fb-3d66ee46f458")
+		(sheetname "ルート")
+		(sheetfile "mainboard.kicad_sch")
+		(attr through_hole)
+		(fp_line
+			(start 9.525 9.525)
+			(end 9.525 -9.525)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(layer "Dwgs.User")
+			(uuid "523f4b4f-ad6b-4c39-aefb-3d008245be1e")
+		)
+		(fp_line
+			(start 9.525 -9.525)
+			(end -9.525 -9.525)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(layer "Dwgs.User")
+			(uuid "08631797-2b4b-4392-b865-149e5662a878")
+		)
+		(fp_line
+			(start -9.525 9.525)
+			(end 9.525 9.525)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(layer "Dwgs.User")
+			(uuid "55b740c5-6b4a-46d4-b315-7202238c9444")
+		)
+		(fp_line
+			(start -9.525 -9.525)
+			(end -9.525 9.525)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(layer "Dwgs.User")
+			(uuid "be81e4b5-9c36-401f-a902-1620c38643a1")
+		)
+		(fp_circle
+			(center 0 0)
+			(end 11 0)
+			(stroke
+				(width 0.05)
+				(type default)
+			)
+			(fill none)
+			(layer "Edge.Cuts")
+			(uuid "fcfef5e7-64dd-444f-9765-a80feea6c503")
+		)
+		(fp_text user "Φ22mm"
+			(at -9 -11 0)
+			(unlocked yes)
+			(layer "F.Fab")
+			(uuid "017e684d-2a8b-4942-8220-c0a97224c411")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+				(justify left bottom)
+			)
+		)
+	)
+	(footprint "Udong:SW_hole_for_ceil"
+		(layer "F.Cu")
+		(uuid "61a4ebc5-4c93-4c16-80a7-b8d50c6d9ce2")
+		(at 116 130)
+		(descr "Cherry MX keyswitch PCB Mount with 1.00u keycap")
+		(tags "Cherry MX Keyboard Keyswitch Switch PCB Cutout 1.00u")
+		(property "Reference" "U12"
+			(at 5.3 -8.5 0)
+			(layer "Eco1.User")
+			(hide yes)
+			(uuid "5e7f9fbf-2e2f-45d9-9c72-029547a39dc5")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Value" "DRV5056A3xQDBZxR"
+			(at -4.4 15.8 0)
+			(layer "B.Fab")
+			(hide yes)
+			(uuid "9d362ed1-b90a-4388-bd2b-b9eb058e9ef9")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Footprint" "Udong:SW_hole_for_ceil"
+			(at 0 0 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "d08a6f40-9b83-430a-9ef9-a533d4af7958")
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Datasheet" "https://www.ti.com/lit/ds/symlink/drv5056.pdf"
+			(at 0 0 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "7376598c-5a2f-40ce-8ac1-38cd418bab7c")
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Description" "Unipolar 50 mV/mT,+79-mT, 20-kHz, 3.3/5V, SOT-23"
+			(at 0 0 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "f86e1c5b-5839-4364-85e4-197b235836e8")
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property ki_fp_filters "SOT?23*")
+		(path "/89b6f170-ffaa-4d16-937f-213835be9ca4/82a41aed-a757-4636-a865-6727c73727ce")
+		(sheetname "Analog Switches")
+		(sheetfile "analog_switches.kicad_sch")
+		(attr through_hole)
+		(fp_line
+			(start -9.525 -9.525)
+			(end -9.525 9.525)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(layer "Dwgs.User")
+			(uuid "96535432-de7e-4f22-8959-ee76358a8a64")
+		)
+		(fp_line
+			(start -9.525 9.525)
+			(end 9.525 9.525)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(layer "Dwgs.User")
+			(uuid "dd800d9f-779a-4a2a-9878-78b0c4c6433e")
+		)
+		(fp_line
+			(start 9.525 -9.525)
+			(end -9.525 -9.525)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(layer "Dwgs.User")
+			(uuid "1e3b3a51-d0c6-4db3-8488-44a2cbd7b349")
+		)
+		(fp_line
+			(start 9.525 9.525)
+			(end 9.525 -9.525)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(layer "Dwgs.User")
+			(uuid "84253a14-ade1-4e1f-af74-a9b8feb29e80")
+		)
+		(fp_circle
+			(center 0 0)
+			(end 11 0)
+			(stroke
+				(width 0.05)
+				(type default)
+			)
+			(fill none)
+			(layer "Edge.Cuts")
+			(uuid "f0e6a124-e277-465c-b37d-cf46e718d07a")
+		)
+		(fp_text user "Φ22mm"
+			(at 5.95 11.95 0)
+			(unlocked yes)
+			(layer "F.Fab")
+			(uuid "adf9726e-c1c4-4251-9b18-9781882d0c71")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+				(justify left bottom)
+			)
+		)
+	)
+	(footprint "Udong:SW_hole_for_ceil"
+		(layer "F.Cu")
+		(uuid "696e4e27-2da7-463a-9a4b-64b935c3497b")
+		(at 146 128)
+		(descr "Cherry MX keyswitch PCB Mount with 1.00u keycap")
+		(tags "Cherry MX Keyboard Keyswitch Switch PCB Cutout 1.00u")
+		(property "Reference" "U14"
+			(at 5.3 -8.5 0)
+			(layer "Eco1.User")
+			(hide yes)
+			(uuid "91c233b7-2e8a-4bc9-92cb-8eba8c2c2919")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Value" "DRV5056A3xQDBZxR"
+			(at -4.4 15.8 0)
+			(layer "B.Fab")
+			(hide yes)
+			(uuid "e18a45e1-b899-4e6f-b932-832af19ff3cc")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Footprint" "Udong:SW_hole_for_ceil"
+			(at 0 0 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "e71bab9f-bb3f-45c2-92dd-e05321f3e5c3")
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Datasheet" "https://www.ti.com/lit/ds/symlink/drv5056.pdf"
+			(at 0 0 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "d0654a88-78be-4609-8790-5d2a2de9cd11")
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Description" "Unipolar 50 mV/mT,+79-mT, 20-kHz, 3.3/5V, SOT-23"
+			(at 0 0 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "51209a23-374e-4588-b5c2-a0188168b3c3")
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property ki_fp_filters "SOT?23*")
+		(path "/89b6f170-ffaa-4d16-937f-213835be9ca4/bfe90d8c-3800-4a63-ac3d-a7a2bc95c070")
+		(sheetname "Analog Switches")
+		(sheetfile "analog_switches.kicad_sch")
+		(attr through_hole)
+		(fp_line
+			(start -9.525 -9.525)
+			(end -9.525 9.525)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(layer "Dwgs.User")
+			(uuid "8651a978-c2a1-470d-8ad2-e592fb546655")
+		)
+		(fp_line
+			(start -9.525 9.525)
+			(end 9.525 9.525)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(layer "Dwgs.User")
+			(uuid "2efc264a-413a-4109-891b-115f52c1f3b1")
+		)
+		(fp_line
+			(start 9.525 -9.525)
+			(end -9.525 -9.525)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(layer "Dwgs.User")
+			(uuid "454b629a-e481-4187-a2bc-78de6f9c6748")
+		)
+		(fp_line
+			(start 9.525 9.525)
+			(end 9.525 -9.525)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(layer "Dwgs.User")
+			(uuid "e9fac4d5-0331-471c-92ff-92d748f3597a")
+		)
+		(fp_circle
+			(center 0 0)
+			(end 11 0)
+			(stroke
+				(width 0.05)
+				(type default)
+			)
+			(fill none)
+			(layer "Edge.Cuts")
+			(uuid "d07a2cc2-3515-401e-9c63-a021487939dd")
+		)
+		(fp_text user "Φ22mm"
+			(at 5.95 11.95 0)
+			(unlocked yes)
+			(layer "F.Fab")
+			(uuid "06b9485a-c367-49ca-b9fe-735d1d2940c8")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+				(justify left bottom)
+			)
+		)
+	)
+	(footprint "Udong:SpaceForBoltHead"
+		(layer "F.Cu")
+		(uuid "6ff377d3-c86a-42a4-bde6-820ba478622c")
+		(at 280 70)
+		(descr "Mounting Hole 3.7mm")
+		(tags "mounting hole 3.7mm")
+		(property "Reference" "H2"
+			(at 0 -4.7 0)
+			(layer "F.SilkS")
+			(hide yes)
+			(uuid "b3cd9e27-468e-4303-ba2e-9c415dfbf9eb")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Value" "MountingHole_Pad"
+			(at 1.9 5.5 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "2506ca2c-7700-49c3-b68e-05dae6282d68")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Footprint" "Udong:SpaceForBoltHead"
+			(at -7 -7 0)
+			(unlocked yes)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "b6da50ac-5a6e-47be-a277-435b061e3f3b")
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 0 0 0)
+			(unlocked yes)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "28e53d92-513c-4b85-9fe7-e5907d6c356b")
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Description" "Mounting Hole with connection"
+			(at 0.2 9 0)
+			(unlocked yes)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "a636a1ae-e773-46a4-9765-9dfe6c6fb64b")
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(attr through_hole exclude_from_pos_files exclude_from_bom)
+		(fp_circle
+			(center 0 0)
+			(end 4 0)
+			(stroke
+				(width 0.05)
+				(type default)
+			)
+			(fill none)
+			(layer "Edge.Cuts")
+			(uuid "d0ffe697-0a15-45d3-b214-b426dc4d0d7a")
+		)
+		(fp_text user "Φ8mm"
+			(at 3.65 3.25 0)
+			(unlocked yes)
+			(layer "F.Fab")
+			(uuid "f3ba3f40-d7c6-4052-b803-1e8f19618d71")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+				(justify left bottom)
+			)
+		)
+	)
+	(footprint "Udong:SW_hole_for_ceil"
+		(layer "F.Cu")
+		(uuid "82e1e958-8b58-4801-a005-237ca2c088ea")
+		(at 336 142)
+		(descr "Cherry MX keyswitch PCB Mount with 1.00u keycap")
+		(tags "Cherry MX Keyboard Keyswitch Switch PCB Cutout 1.00u")
+		(property "Reference" "U17"
+			(at 5.3 -8.5 0)
+			(layer "Eco1.User")
+			(hide yes)
+			(uuid "a6a8e0a2-e18c-4ec0-9fa7-e09e1a2dd506")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Value" "DRV5056A3xQDBZxR"
+			(at -4.4 15.8 0)
+			(layer "B.Fab")
+			(hide yes)
+			(uuid "12ee55c7-ab02-4a8b-9564-a5a1eba31814")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Footprint" "Udong:SW_hole_for_ceil"
+			(at 0 0 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "0e92296b-35f2-411a-9d63-1cc060ff04e9")
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Datasheet" "https://www.ti.com/lit/ds/symlink/drv5056.pdf"
+			(at 0 0 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "87cbc91e-ed38-4f11-8a61-27640c04b0fa")
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Description" "Unipolar 50 mV/mT,+79-mT, 20-kHz, 3.3/5V, SOT-23"
+			(at 0 0 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "d867f1b0-f158-4ef4-b384-18b33005e374")
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property ki_fp_filters "SOT?23*")
+		(path "/89b6f170-ffaa-4d16-937f-213835be9ca4/b489aab8-d515-4313-8cd4-4a77121d2159")
+		(sheetname "Analog Switches")
+		(sheetfile "analog_switches.kicad_sch")
+		(attr through_hole)
+		(fp_line
+			(start -9.525 -9.525)
+			(end -9.525 9.525)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(layer "Dwgs.User")
+			(uuid "e769c878-de0b-4b7c-a4dc-d334ab966827")
+		)
+		(fp_line
+			(start -9.525 9.525)
+			(end 9.525 9.525)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(layer "Dwgs.User")
+			(uuid "7aac923e-8dca-46a1-b443-4f76db782e93")
+		)
+		(fp_line
+			(start 9.525 -9.525)
+			(end -9.525 -9.525)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(layer "Dwgs.User")
+			(uuid "797d7d27-eb58-4151-8f28-3b42de6da2f7")
+		)
+		(fp_line
+			(start 9.525 9.525)
+			(end 9.525 -9.525)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(layer "Dwgs.User")
+			(uuid "46d5dea3-7e92-4d39-81cb-87d2a0c9973f")
+		)
+		(fp_circle
+			(center 0 0)
+			(end 11 0)
+			(stroke
+				(width 0.05)
+				(type default)
+			)
+			(fill none)
+			(layer "Edge.Cuts")
+			(uuid "01f31c33-0d7b-421d-9ce4-ac637ff6a5ee")
+		)
+		(fp_text user "Φ22mm"
+			(at 5.95 11.95 0)
+			(unlocked yes)
+			(layer "F.Fab")
+			(uuid "3631287d-5e81-4790-832d-cbfced96c711")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+				(justify left bottom)
+			)
+		)
+	)
+	(footprint "Udong:SW_hole_for_ceil"
+		(layer "F.Cu")
+		(uuid "84a4bcc0-a8e8-49c9-bb24-306b207d0167")
+		(at 190 168)
+		(descr "Cherry MX keyswitch PCB Mount with 1.00u keycap")
+		(tags "Cherry MX Keyboard Keyswitch Switch PCB Cutout 1.00u")
+		(property "Reference" "U16"
+			(at 5.3 -8.5 0)
+			(layer "Eco1.User")
+			(hide yes)
+			(uuid "54894ba0-39ff-472c-8e94-e3d2e35748a4")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Value" "DRV5056A3xQDBZxR"
+			(at -4.4 15.8 0)
+			(layer "B.Fab")
+			(hide yes)
+			(uuid "00ae842a-f2b2-411a-9772-8740df730263")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Footprint" "Udong:SW_hole_for_ceil"
+			(at 0 0 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "293d8d6f-e8a3-4931-a7da-8d855f5e4bab")
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Datasheet" "https://www.ti.com/lit/ds/symlink/drv5056.pdf"
+			(at 0 0 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "907194f5-f9ef-4301-9547-306da3c01fe0")
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Description" "Unipolar 50 mV/mT,+79-mT, 20-kHz, 3.3/5V, SOT-23"
+			(at 0 0 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "32794702-b158-4f78-be48-e937982424e0")
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property ki_fp_filters "SOT?23*")
+		(path "/89b6f170-ffaa-4d16-937f-213835be9ca4/357b0fe9-e1fe-4510-b785-db3094b279f0")
+		(sheetname "Analog Switches")
+		(sheetfile "analog_switches.kicad_sch")
+		(attr through_hole)
+		(fp_line
+			(start -9.525 -9.525)
+			(end -9.525 9.525)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(layer "Dwgs.User")
+			(uuid "69c90df1-0720-46e7-b738-1ef7b299ef7e")
+		)
+		(fp_line
+			(start -9.525 9.525)
+			(end 9.525 9.525)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(layer "Dwgs.User")
+			(uuid "efa6e95f-3fe6-443c-8228-2df31d5c80c5")
+		)
+		(fp_line
+			(start 9.525 -9.525)
+			(end -9.525 -9.525)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(layer "Dwgs.User")
+			(uuid "31fe39f7-f7ab-49e4-9213-e9cc757e2134")
+		)
+		(fp_line
+			(start 9.525 9.525)
+			(end 9.525 -9.525)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(layer "Dwgs.User")
+			(uuid "b21bc869-d00e-43ae-8712-c1bf3be2d0b1")
+		)
+		(fp_circle
+			(center 0 0)
+			(end 11 0)
+			(stroke
+				(width 0.05)
+				(type default)
+			)
+			(fill none)
+			(layer "Edge.Cuts")
+			(uuid "fd3dd297-f621-4362-ba87-6f9c43601146")
+		)
+		(fp_text user "Φ22mm"
+			(at 5.95 11.95 0)
+			(unlocked yes)
+			(layer "F.Fab")
+			(uuid "090d0ce0-b346-4e8a-8388-e99cb869bfe6")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+				(justify left bottom)
+			)
+		)
+	)
+	(footprint "Udong:SW_hole_for_ceil"
+		(layer "F.Cu")
+		(uuid "8eedea40-4b72-4401-8055-bf3cf4289aef")
+		(at 204 112)
+		(descr "Cherry MX keyswitch PCB Mount with 1.00u keycap")
+		(tags "Cherry MX Keyboard Keyswitch Switch PCB Cutout 1.00u")
+		(property "Reference" "U8"
+			(at 5.3 -8.5 0)
+			(layer "Eco1.User")
+			(hide yes)
+			(uuid "7656a947-76ce-4562-bb57-c5ae4799c714")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Value" "DRV5056A3xQDBZxR"
+			(at -4.4 15.8 0)
+			(layer "B.Fab")
+			(hide yes)
+			(uuid "c6025a8d-a3f1-4a10-8419-8a7f0f755989")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Footprint" "Udong:SW_hole_for_ceil"
+			(at 0 0 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "9496cec7-a4d7-40f4-b40d-3779880cae13")
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Datasheet" "https://www.ti.com/lit/ds/symlink/drv5056.pdf"
+			(at 0 0 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "6a41fb46-81ae-4e6d-8d37-7ab04cc97db5")
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Description" "Unipolar 50 mV/mT,+79-mT, 20-kHz, 3.3/5V, SOT-23"
+			(at 0 0 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "6de21554-3dfb-4b6b-9b76-28d998daad86")
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property ki_fp_filters "SOT?23*")
+		(path "/89b6f170-ffaa-4d16-937f-213835be9ca4/31884de0-160f-418c-a816-eff2acfe275c")
+		(sheetname "Analog Switches")
+		(sheetfile "analog_switches.kicad_sch")
+		(attr through_hole)
+		(fp_line
+			(start -9.525 -9.525)
+			(end -9.525 9.525)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(layer "Dwgs.User")
+			(uuid "a9df3d88-ec5a-49ba-8ac4-44d9eefa35b0")
+		)
+		(fp_line
+			(start -9.525 9.525)
+			(end 9.525 9.525)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(layer "Dwgs.User")
+			(uuid "94acb411-d945-4b51-b2ed-97f962a7474c")
+		)
+		(fp_line
+			(start 9.525 -9.525)
+			(end -9.525 -9.525)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(layer "Dwgs.User")
+			(uuid "abaa97d6-b430-4a36-b59a-27972e4b1fdd")
+		)
+		(fp_line
+			(start 9.525 9.525)
+			(end 9.525 -9.525)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(layer "Dwgs.User")
+			(uuid "2718aa05-9e4a-4b8d-b6b2-9232a0e91f69")
+		)
+		(fp_circle
+			(center 0 0)
+			(end 11 0)
+			(stroke
+				(width 0.05)
+				(type default)
+			)
+			(fill none)
+			(layer "Edge.Cuts")
+			(uuid "d6772281-8783-4542-9445-571652d2246c")
+		)
+		(fp_text user "Φ22mm"
+			(at 12 -8 0)
+			(unlocked yes)
+			(layer "F.Fab")
+			(uuid "af5e614b-d557-434e-b266-234d319ca250")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+				(justify left bottom)
+			)
+		)
+	)
+	(footprint "Udong:SW_hole_for_ceil"
+		(layer "F.Cu")
+		(uuid "975ef9a2-961d-4d75-8885-7ade2ba33d83")
+		(at 280 90)
+		(descr "Cherry MX keyswitch PCB Mount with 1.00u keycap")
+		(tags "Cherry MX Keyboard Keyswitch Switch PCB Cutout 1.00u")
+		(property "Reference" "U9"
+			(at 5.3 -8.5 0)
+			(layer "Eco1.User")
+			(hide yes)
+			(uuid "3ef963e0-356b-4a6e-b3f3-e3dacadb60a8")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Value" "DRV5056A3xQDBZxR"
+			(at -4.4 15.8 0)
+			(layer "B.Fab")
+			(hide yes)
+			(uuid "1589435a-9649-4866-aac2-35a9e4213962")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Footprint" "Udong:SW_hole_for_ceil"
+			(at 0 0 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "f09bd88b-59ee-4dd4-bb6d-a1004eb35ef4")
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Datasheet" "https://www.ti.com/lit/ds/symlink/drv5056.pdf"
+			(at 0 0 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "9a594183-da8f-4015-948a-3736ff325db2")
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Description" "Unipolar 50 mV/mT,+79-mT, 20-kHz, 3.3/5V, SOT-23"
+			(at 0 0 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "706e769c-f705-4a39-ae56-21bb56702210")
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property ki_fp_filters "SOT?23*")
+		(path "/89b6f170-ffaa-4d16-937f-213835be9ca4/6197b14b-6889-4b2f-97a4-18b342f91a36")
+		(sheetname "Analog Switches")
+		(sheetfile "analog_switches.kicad_sch")
+		(attr through_hole)
+		(fp_line
+			(start -9.525 -9.525)
+			(end -9.525 9.525)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(layer "Dwgs.User")
+			(uuid "21356dac-c53f-4bc8-865b-c61983c78a28")
+		)
+		(fp_line
+			(start -9.525 9.525)
+			(end 9.525 9.525)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(layer "Dwgs.User")
+			(uuid "14c8571e-cf9f-4a06-893f-12420b88e8f3")
+		)
+		(fp_line
+			(start 9.525 -9.525)
+			(end -9.525 -9.525)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(layer "Dwgs.User")
+			(uuid "7124afbe-7e3b-479e-b8e9-95ff4fa7498a")
+		)
+		(fp_line
+			(start 9.525 9.525)
+			(end 9.525 -9.525)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(layer "Dwgs.User")
+			(uuid "fa64dd51-8694-4192-9f3e-e523beb5a5be")
+		)
+		(fp_circle
+			(center 0 0)
+			(end 11 0)
+			(stroke
+				(width 0.05)
+				(type default)
+			)
+			(fill none)
+			(layer "Edge.Cuts")
+			(uuid "ffcdb7cf-73b5-4616-b9d1-b0da200ce15c")
+		)
+		(fp_text user "Φ22mm"
+			(at 5.95 11.95 0)
+			(unlocked yes)
+			(layer "F.Fab")
+			(uuid "b2099f3e-86f1-4195-92b7-082a4ca72800")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+				(justify left bottom)
+			)
+		)
+	)
+	(footprint "Udong:SW_hole_for_ceil"
+		(layer "F.Cu")
+		(uuid "a3877eee-5b51-4ae1-ab19-2873b38db42a")
+		(at 220 178)
+		(descr "Cherry MX keyswitch PCB Mount with 1.00u keycap")
+		(tags "Cherry MX Keyboard Keyswitch Switch PCB Cutout 1.00u")
+		(property "Reference" "U21"
+			(at 5.3 -8.5 0)
+			(layer "Eco1.User")
+			(hide yes)
+			(uuid "e9de9f4d-fe17-4525-bb2c-2c1dfdc78965")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Value" "DRV5056A3xQDBZxR"
+			(at -4.4 15.8 0)
+			(layer "B.Fab")
+			(hide yes)
+			(uuid "ed19f13f-3087-4dfe-94e8-1f189efb83ac")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Footprint" "Udong:SW_hole_for_ceil"
+			(at 0 0 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "0dc4c51f-0d44-4d01-a167-a7c102d263c0")
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Datasheet" "https://www.ti.com/lit/ds/symlink/drv5056.pdf"
+			(at 0 0 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "a45fecd8-991d-4e65-bc81-3f2ed6bd8d8a")
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Description" "Unipolar 50 mV/mT,+79-mT, 20-kHz, 3.3/5V, SOT-23"
+			(at 0 0 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "1d770246-50f4-4641-a483-5e0a6e602603")
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property ki_fp_filters "SOT?23*")
+		(path "/89b6f170-ffaa-4d16-937f-213835be9ca4/238af20b-28e7-4c9c-b024-e850cf02c881")
+		(sheetname "Analog Switches")
+		(sheetfile "analog_switches.kicad_sch")
+		(attr through_hole)
+		(fp_line
+			(start -9.525 -9.525)
+			(end -9.525 9.525)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(layer "Dwgs.User")
+			(uuid "42a96bb6-304b-4b08-9052-a0668b8ffb1c")
+		)
+		(fp_line
+			(start -9.525 9.525)
+			(end 9.525 9.525)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(layer "Dwgs.User")
+			(uuid "c5069b05-09b4-43f8-b722-45e6787ded05")
+		)
+		(fp_line
+			(start 9.525 -9.525)
+			(end -9.525 -9.525)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(layer "Dwgs.User")
+			(uuid "e94d03f5-3529-40c5-b5cd-5012d35b8448")
+		)
+		(fp_line
+			(start 9.525 9.525)
+			(end 9.525 -9.525)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(layer "Dwgs.User")
+			(uuid "ff03cb4b-995d-47e0-87ff-25a833e850f2")
+		)
+		(fp_circle
+			(center 0 0)
+			(end 11 0)
+			(stroke
+				(width 0.05)
+				(type default)
+			)
+			(fill none)
+			(layer "Edge.Cuts")
+			(uuid "d0da0bdd-5743-4a72-a3a5-ae81c3d847e3")
+		)
+		(fp_text user "Φ22mm"
+			(at 5.95 11.95 0)
+			(unlocked yes)
+			(layer "F.Fab")
+			(uuid "5384d438-610e-48ee-a204-9ace833e1faa")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+				(justify left bottom)
+			)
+		)
+	)
+	(footprint "Udong:SW_hole_for_ceil"
+		(layer "F.Cu")
+		(uuid "ae0bf652-affd-4a74-b9d4-5f37742191a8")
+		(at 310 118 180)
+		(descr "Cherry MX keyswitch PCB Mount with 1.00u keycap")
+		(tags "Cherry MX Keyboard Keyswitch Switch PCB Cutout 1.00u")
+		(property "Reference" "SW3"
+			(at 5.3 -8.5 180)
+			(layer "Eco1.User")
+			(hide yes)
+			(uuid "bd302785-682a-417c-bae4-c3ce03ff2257")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Value" "SW_Push"
+			(at -4.4 15.8 180)
+			(layer "B.Fab")
+			(hide yes)
+			(uuid "c23ea1ac-2514-436c-8586-9849b32ffc92")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Footprint" "Udong:SW_hole_for_ceil"
+			(at 0 0 180)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "48530992-b885-4524-8ccf-d56aa56758ce")
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 0 0 180)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "ba31c0d9-6f4d-4f59-9c8a-7056ea0d93a9")
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Description" "Push button switch, generic, two pins"
+			(at 0 0 180)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "0fb6102e-901b-4d57-b8a4-cac2b2bd5429")
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(path "/83716614-0e48-4310-b3e2-67d34a12e72d")
+		(sheetname "ルート")
+		(sheetfile "mainboard.kicad_sch")
+		(attr through_hole)
+		(fp_line
+			(start 9.525 9.525)
+			(end 9.525 -9.525)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(layer "Dwgs.User")
+			(uuid "ae899d47-3107-4862-a615-a2045d19230f")
+		)
+		(fp_line
+			(start 9.525 -9.525)
+			(end -9.525 -9.525)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(layer "Dwgs.User")
+			(uuid "016e18cb-eb80-439f-a043-6b32564f5c77")
+		)
+		(fp_line
+			(start -9.525 9.525)
+			(end 9.525 9.525)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(layer "Dwgs.User")
+			(uuid "6ce2cfbd-a22f-43e2-8639-c9da81b8cf0e")
+		)
+		(fp_line
+			(start -9.525 -9.525)
+			(end -9.525 9.525)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(layer "Dwgs.User")
+			(uuid "a592ed2b-013d-477d-8f84-0f3ad5954e87")
+		)
+		(fp_circle
+			(center 0 0)
+			(end 11 0)
+			(stroke
+				(width 0.05)
+				(type default)
+			)
+			(fill none)
+			(layer "Edge.Cuts")
+			(uuid "ea5305a4-a4f9-4eb6-9604-224e91f16d21")
+		)
+		(fp_text user "Φ22mm"
+			(at -4 11.95 0)
+			(unlocked yes)
+			(layer "F.Fab")
+			(uuid "ef32d180-66df-4400-b294-dcd08dcbe0a4")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+				(justify left bottom)
+			)
+		)
+	)
+	(footprint "Udong:Acrylic_M3_mounting_hole_3.7mm"
+		(layer "F.Cu")
+		(uuid "b7106466-23b3-42c8-96f4-e37bafed00a2")
+		(at 60 50)
+		(property "Reference" "REF**"
+			(at 6.6 -11.3 0)
+			(layer "F.SilkS")
+			(hide yes)
+			(uuid "232271ae-a185-4ce6-8278-5b3fa7ecabfc")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Value" "3.7mm"
+			(at -8.3 -10.8 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "037fde7a-f8ec-4084-a0bb-162845ee8d6e")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Footprint" "Udong:Acrylic_M3_mounting_hole_3.7mm"
+			(at -9.5 -9.5 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "1254dae3-408e-4a4c-a498-3913c7a16fb4")
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at -9.5 -9.5 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "1b6c242f-9bae-4a66-936a-68d9d38fd28b")
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Description" ""
+			(at -9.5 -9.5 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "807a62f2-5c95-4c2c-b8c0-4056a0a16b2d")
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(attr through_hole)
+		(fp_circle
+			(center 0 0)
+			(end 1.85 0)
+			(stroke
+				(width 0.05)
+				(type default)
+			)
+			(fill none)
+			(layer "Edge.Cuts")
+			(uuid "7fc8484d-9f75-47fb-aa58-39ac5cee1eb7")
+		)
+		(fp_text user "M3 Mounting hole"
+			(at -11 5 0)
+			(unlocked yes)
+			(layer "F.Fab")
+			(uuid "07bd5415-1187-41f1-b50a-2f63251b3527")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+				(justify left bottom)
+			)
+		)
+	)
+	(footprint "Udong:SW_hole_for_ceil"
+		(layer "F.Cu")
+		(uuid "c3f4a1d7-6d24-47a0-aef0-d63b64685498")
+		(at 250 118)
+		(descr "Cherry MX keyswitch PCB Mount with 1.00u keycap")
+		(tags "Cherry MX Keyboard Keyswitch Switch PCB Cutout 1.00u")
+		(property "Reference" "U11"
+			(at 5.3 -8.5 0)
+			(layer "Eco1.User")
+			(hide yes)
+			(uuid "28460077-f13b-4d18-ac93-e931a3cc9daf")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Value" "DRV5056A3xQDBZxR"
+			(at -4.4 15.8 0)
+			(layer "B.Fab")
+			(hide yes)
+			(uuid "ef437827-85b9-4ef6-9e13-d814970c437f")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Footprint" "Udong:SW_hole_for_ceil"
+			(at 0 0 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "e7d8dd68-046b-4890-a1fa-3381e66d8e0d")
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Datasheet" "https://www.ti.com/lit/ds/symlink/drv5056.pdf"
+			(at 0 0 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "f098de29-d76e-471d-9da1-268f1e944709")
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Description" "Unipolar 50 mV/mT,+79-mT, 20-kHz, 3.3/5V, SOT-23"
+			(at 0 0 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "70393462-04c1-4fee-b6ce-895ff51a12c7")
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property ki_fp_filters "SOT?23*")
+		(path "/89b6f170-ffaa-4d16-937f-213835be9ca4/0ee9a641-b434-4d18-aacd-7475ef9e940e")
+		(sheetname "Analog Switches")
+		(sheetfile "analog_switches.kicad_sch")
+		(attr through_hole)
+		(fp_line
+			(start -9.525 -9.525)
+			(end -9.525 9.525)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(layer "Dwgs.User")
+			(uuid "b0206783-b619-499d-a45b-a7ea9a22d54c")
+		)
+		(fp_line
+			(start -9.525 9.525)
+			(end 9.525 9.525)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(layer "Dwgs.User")
+			(uuid "60e7bf3f-d6d0-4de3-8917-63a61dd01ab3")
+		)
+		(fp_line
+			(start 9.525 -9.525)
+			(end -9.525 -9.525)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(layer "Dwgs.User")
+			(uuid "81ca58c7-99af-4ac6-bce0-76987bba6fec")
+		)
+		(fp_line
+			(start 9.525 9.525)
+			(end 9.525 -9.525)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(layer "Dwgs.User")
+			(uuid "56d0fe3a-59f8-4c9b-8d80-ca4ebd584c92")
+		)
+		(fp_circle
+			(center 0 0)
+			(end 11 0)
+			(stroke
+				(width 0.05)
+				(type default)
+			)
+			(fill none)
+			(layer "Edge.Cuts")
+			(uuid "ad2fb981-38e3-4756-aa4a-f348c2a851e7")
+		)
+		(fp_text user "Φ22mm"
+			(at 5.95 11.95 0)
+			(unlocked yes)
+			(layer "F.Fab")
+			(uuid "f243ffd1-bd58-4e3b-9049-4823ed15b5e0")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+				(justify left bottom)
+			)
+		)
+	)
+	(footprint "Udong:SW_hole_for_ceil"
+		(layer "F.Cu")
+		(uuid "c51a005d-582e-4094-a62d-734b41b1ad77")
+		(at 280 116)
+		(descr "Cherry MX keyswitch PCB Mount with 1.00u keycap")
+		(tags "Cherry MX Keyboard Keyswitch Switch PCB Cutout 1.00u")
+		(property "Reference" "U20"
+			(at 5.3 -8.5 0)
+			(layer "Eco1.User")
+			(hide yes)
+			(uuid "f3da19b5-6983-4d1a-ab4f-9ee5ae1bfeeb")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Value" "DRV5056A3xQDBZxR"
+			(at -4.4 15.8 0)
+			(layer "B.Fab")
+			(hide yes)
+			(uuid "4a414d67-2541-4598-92ed-3b9c29acbf01")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Footprint" "Udong:SW_hole_for_ceil"
+			(at 0 0 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "da047b7b-875a-4d8c-8f91-1a78effd28ac")
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Datasheet" "https://www.ti.com/lit/ds/symlink/drv5056.pdf"
+			(at 0 0 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "fd5ab318-4d1f-49d1-b6f0-b58f9a758605")
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Description" "Unipolar 50 mV/mT,+79-mT, 20-kHz, 3.3/5V, SOT-23"
+			(at 0 0 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "bb77f2d1-3eb4-48b1-913d-4656ae9719fb")
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property ki_fp_filters "SOT?23*")
+		(path "/89b6f170-ffaa-4d16-937f-213835be9ca4/f7f8cf52-7470-4d3a-8e6b-e7f19e52e348")
+		(sheetname "Analog Switches")
+		(sheetfile "analog_switches.kicad_sch")
+		(attr through_hole)
+		(fp_line
+			(start -9.525 -9.525)
+			(end -9.525 9.525)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(layer "Dwgs.User")
+			(uuid "60270fd5-92f2-465e-809d-f65f7524bec6")
+		)
+		(fp_line
+			(start -9.525 9.525)
+			(end 9.525 9.525)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(layer "Dwgs.User")
+			(uuid "326afb42-527a-4617-a658-2114deff7554")
+		)
+		(fp_line
+			(start 9.525 -9.525)
+			(end -9.525 -9.525)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(layer "Dwgs.User")
+			(uuid "cbff8023-db3c-4503-9e20-1da1c296147f")
+		)
+		(fp_line
+			(start 9.525 9.525)
+			(end 9.525 -9.525)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(layer "Dwgs.User")
+			(uuid "144aef77-074d-4e0a-9509-e955feb4e32c")
+		)
+		(fp_circle
+			(center 0 0)
+			(end 11 0)
+			(stroke
+				(width 0.05)
+				(type default)
+			)
+			(fill none)
+			(layer "Edge.Cuts")
+			(uuid "e1f8a0df-7deb-474e-a37c-a9ee7f0b485c")
+		)
+		(fp_text user "Φ22mm"
+			(at 5.95 11.95 0)
+			(unlocked yes)
+			(layer "F.Fab")
+			(uuid "6cde3ff2-99b6-412e-8455-dee78c226cc2")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+				(justify left bottom)
+			)
+		)
+	)
+	(footprint "Udong:SW_hole_for_ceil"
+		(layer "F.Cu")
+		(uuid "c966d1e4-0439-43de-a36a-969b39e03f75")
+		(at 88 66)
+		(descr "Cherry MX keyswitch PCB Mount with 1.00u keycap")
+		(tags "Cherry MX Keyboard Keyswitch Switch PCB Cutout 1.00u")
+		(property "Reference" "U7"
+			(at 5.3 -8.5 0)
+			(layer "Eco1.User")
+			(hide yes)
+			(uuid "f0b089c3-8703-4322-bf69-f00f33b32142")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Value" "DRV5056A3xQDBZxR"
+			(at -4.4 15.8 0)
+			(layer "B.Fab")
+			(hide yes)
+			(uuid "b3a3d329-eb69-4278-9aa5-aea55bbb4707")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Footprint" "Udong:SW_hole_for_ceil"
+			(at 0 0 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "64728961-ea76-4312-b088-7398f95cf782")
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Datasheet" "https://www.ti.com/lit/ds/symlink/drv5056.pdf"
+			(at 0 0 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "bbfd6cde-6340-4932-a8a8-1cfbd0b64724")
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Description" "Unipolar 50 mV/mT,+79-mT, 20-kHz, 3.3/5V, SOT-23"
+			(at 0 0 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "ec63fc44-bb81-4366-b3b2-571888656107")
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property ki_fp_filters "SOT?23*")
+		(path "/89b6f170-ffaa-4d16-937f-213835be9ca4/9834be3f-97a7-4ee1-9f58-f71e8e0343c3")
+		(sheetname "Analog Switches")
+		(sheetfile "analog_switches.kicad_sch")
+		(attr through_hole)
+		(fp_line
+			(start -9.525 -9.525)
+			(end -9.525 9.525)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(layer "Dwgs.User")
+			(uuid "b2192c94-4567-44ce-baa7-be503225bc99")
+		)
+		(fp_line
+			(start -9.525 9.525)
+			(end 9.525 9.525)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(layer "Dwgs.User")
+			(uuid "af0343d4-c5ef-487e-b2e7-05493035fcd3")
+		)
+		(fp_line
+			(start 9.525 -9.525)
+			(end -9.525 -9.525)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(layer "Dwgs.User")
+			(uuid "d47a7f56-29da-4d6a-a025-7f1f5dcc60f5")
+		)
+		(fp_line
+			(start 9.525 9.525)
+			(end 9.525 -9.525)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(layer "Dwgs.User")
+			(uuid "45abad47-c87a-45f5-9654-e306d79834b7")
+		)
+		(fp_circle
+			(center 0 0)
+			(end 11 0)
+			(stroke
+				(width 0.05)
+				(type default)
+			)
+			(fill none)
+			(layer "Edge.Cuts")
+			(uuid "2d027a65-fd63-485e-94a4-e41a178cce32")
+		)
+		(fp_text user "Φ22mm"
+			(at 5.95 11.95 0)
+			(unlocked yes)
+			(layer "F.Fab")
+			(uuid "733fdd42-52e6-4022-91fb-08a4d71fdba7")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+				(justify left bottom)
+			)
+		)
+	)
+	(footprint "Udong:SpaceForBoltHead"
+		(layer "F.Cu")
+		(uuid "ca97adc4-fb18-4fa7-aa32-aaea5871df02")
+		(at 140 70)
+		(descr "Mounting Hole 3.7mm")
+		(tags "mounting hole 3.7mm")
+		(property "Reference" "H1"
+			(at 0 -4.7 0)
+			(layer "F.SilkS")
+			(hide yes)
+			(uuid "c0f2decc-1bf7-4b47-93a1-07e2c0d51a7f")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Value" "MountingHole_Pad"
+			(at 1.9 5.5 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "b40cee24-4eee-4549-83bf-07b386ef9237")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Footprint" "Udong:SpaceForBoltHead"
+			(at -7 -7 0)
+			(unlocked yes)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "e0992ba1-e3f3-4de6-bcd3-3708475e290a")
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 0 0 0)
+			(unlocked yes)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "2ff019e9-1a36-4334-b2d1-de3e978eb7f1")
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Description" "Mounting Hole with connection"
+			(at 0.2 9 0)
+			(unlocked yes)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "01d24a8e-ef4d-4def-8496-0ca49f5aafff")
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(attr through_hole exclude_from_pos_files exclude_from_bom)
+		(fp_circle
+			(center 0 0)
+			(end 4 0)
+			(stroke
+				(width 0.05)
+				(type default)
+			)
+			(fill none)
+			(layer "Edge.Cuts")
+			(uuid "deb2e561-3d10-4a27-afed-4d43767ee681")
+		)
+		(fp_text user "Φ8mm"
+			(at 3.65 3.25 0)
+			(unlocked yes)
+			(layer "F.Fab")
+			(uuid "bc3a84d4-9d12-4272-a305-f83db295e3cf")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+				(justify left bottom)
+			)
+		)
+	)
+	(footprint "Udong:SpaceForBoltHead"
+		(layer "F.Cu")
+		(uuid "dcf53989-90a7-455f-ac49-d293080fdb62")
+		(at 280 160)
+		(descr "Mounting Hole 3.7mm")
+		(tags "mounting hole 3.7mm")
+		(property "Reference" "H5"
+			(at 0 -4.7 0)
+			(layer "F.SilkS")
+			(hide yes)
+			(uuid "8bf83595-9c93-4283-b0b5-ce2396192db2")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Value" "MountingHole_Pad"
+			(at 1.9 5.5 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "5b641a95-60d0-43aa-a857-3ce658f655c0")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Footprint" "Udong:SpaceForBoltHead"
+			(at -7 -7 0)
+			(unlocked yes)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "6f37e805-3b71-4978-b534-55204cb2fdf6")
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 0 0 0)
+			(unlocked yes)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "0dbbf819-57c5-4ddf-b59e-1fac8dcc3bdf")
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Description" "Mounting Hole with connection"
+			(at 0.2 9 0)
+			(unlocked yes)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "50b6f378-ea7c-4fbe-ad87-71b41f4796a9")
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(attr through_hole exclude_from_pos_files exclude_from_bom)
+		(fp_circle
+			(center 0 0)
+			(end 4 0)
+			(stroke
+				(width 0.05)
+				(type default)
+			)
+			(fill none)
+			(layer "Edge.Cuts")
+			(uuid "252f07e1-0c2c-4ab7-9ac2-108dc8ff3c54")
+		)
+		(fp_text user "Φ8mm"
+			(at 3.65 3.25 0)
+			(unlocked yes)
+			(layer "F.Fab")
+			(uuid "d42324f6-1927-4b71-a623-7a29d81ac20f")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+				(justify left bottom)
+			)
+		)
+	)
+	(footprint "Udong:SpaceForBoltHead"
+		(layer "F.Cu")
+		(uuid "edce24a4-7507-4a60-b182-6c8d43c82443")
+		(at 210 130)
+		(descr "Mounting Hole 3.7mm")
+		(tags "mounting hole 3.7mm")
+		(property "Reference" "H3"
+			(at 0 -4.7 0)
+			(layer "F.SilkS")
+			(hide yes)
+			(uuid "30330cb9-64c2-455c-98d1-2f05147cf818")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Value" "MountingHole_Pad"
+			(at 1.9 5.5 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "aaf7d9c7-3abb-4fd9-8609-d384abd90203")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Footprint" "Udong:SpaceForBoltHead"
+			(at -7 -7 0)
+			(unlocked yes)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "95655df2-6dbf-48bc-a31f-f8820649ee63")
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 0 0 0)
+			(unlocked yes)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "bd3b73cf-2762-47de-a670-e87f3c1502ad")
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Description" "Mounting Hole with connection"
+			(at 0.2 9 0)
+			(unlocked yes)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "2bd9a5d4-ee7a-4056-84aa-c5482664edb5")
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(attr through_hole exclude_from_pos_files exclude_from_bom)
+		(fp_circle
+			(center 0 0)
+			(end 4 0)
+			(stroke
+				(width 0.05)
+				(type default)
+			)
+			(fill none)
+			(layer "Edge.Cuts")
+			(uuid "10c5e6c6-e38f-448c-8455-f2a0d4a8b6b5")
+		)
+		(fp_text user "Φ8mm"
+			(at 3.65 3.25 0)
+			(unlocked yes)
+			(layer "F.Fab")
+			(uuid "5c014aeb-986d-4f64-b43a-af99857ac2b7")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+				(justify left bottom)
+			)
+		)
+	)
+	(footprint "Udong:SW_hole_for_ceil"
+		(layer "F.Cu")
+		(uuid "f847b9a3-15b1-4470-9398-d295e36bc0b0")
+		(at 116 66)
+		(descr "Cherry MX keyswitch PCB Mount with 1.00u keycap")
+		(tags "Cherry MX Keyboard Keyswitch Switch PCB Cutout 1.00u")
+		(property "Reference" "U18"
+			(at 5.3 -8.5 0)
+			(layer "Eco1.User")
+			(hide yes)
+			(uuid "ef9470e2-3625-4fce-b50b-d7d2cd52d33f")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Value" "DRV5056A3xQDBZxR"
+			(at -4.4 15.8 0)
+			(layer "B.Fab")
+			(hide yes)
+			(uuid "1119d05d-13a0-4eea-aada-ca253c4f6d3b")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Footprint" "Udong:SW_hole_for_ceil"
+			(at 0 0 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "2ac22597-ce49-40a8-b2c1-a7576bf55282")
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Datasheet" "https://www.ti.com/lit/ds/symlink/drv5056.pdf"
+			(at 0 0 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "78b33105-acde-4d0f-8d8f-b3e1e61cd44c")
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Description" "Unipolar 50 mV/mT,+79-mT, 20-kHz, 3.3/5V, SOT-23"
+			(at 0 0 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "31abd80a-ab7a-460e-a7da-02ae67b530e5")
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property ki_fp_filters "SOT?23*")
+		(path "/89b6f170-ffaa-4d16-937f-213835be9ca4/6099c45b-6289-4225-a3fb-f401eb72c038")
+		(sheetname "Analog Switches")
+		(sheetfile "analog_switches.kicad_sch")
+		(attr through_hole)
+		(fp_line
+			(start -9.525 -9.525)
+			(end -9.525 9.525)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(layer "Dwgs.User")
+			(uuid "ea192a46-d149-4f07-bfd8-2ce72cc2fd23")
+		)
+		(fp_line
+			(start -9.525 9.525)
+			(end 9.525 9.525)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(layer "Dwgs.User")
+			(uuid "32f218af-2687-4d22-92e2-aacb38ecb4e4")
+		)
+		(fp_line
+			(start 9.525 -9.525)
+			(end -9.525 -9.525)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(layer "Dwgs.User")
+			(uuid "90322553-997a-49b1-8748-fea76c192390")
+		)
+		(fp_line
+			(start 9.525 9.525)
+			(end 9.525 -9.525)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(layer "Dwgs.User")
+			(uuid "3032d9f9-91da-4e90-81c5-76272796a9fd")
+		)
+		(fp_circle
+			(center 0 0)
+			(end 11 0)
+			(stroke
+				(width 0.05)
+				(type default)
+			)
+			(fill none)
+			(layer "Edge.Cuts")
+			(uuid "7714786d-ba7b-4ee5-95d2-923c1baa111c")
+		)
+		(fp_text user "Φ22mm"
+			(at 5.95 11.95 0)
+			(unlocked yes)
+			(layer "F.Fab")
+			(uuid "cba0688b-9610-4c92-a379-41ef52314912")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+				(justify left bottom)
+			)
+		)
+	)
+	(gr_arc
+		(start 48 276)
+		(mid 45.171573 274.828427)
+		(end 44 272)
+		(stroke
+			(width 0.05)
+			(type default)
+		)
+		(layer "Edge.Cuts")
+		(uuid "28a3f43c-f73c-46a7-bdad-ece38845172b")
+	)
+	(gr_arc
+		(start 376 272)
+		(mid 374.828427 274.828427)
+		(end 372 276)
+		(stroke
+			(width 0.05)
+			(type default)
+		)
+		(layer "Edge.Cuts")
+		(uuid "34948dd3-2aaa-4509-b5b7-324e5267091b")
+	)
+	(gr_line
+		(start 372 276)
+		(end 48 276)
+		(stroke
+			(width 0.05)
+			(type default)
+		)
+		(layer "Edge.Cuts")
+		(uuid "38b1261c-5883-4624-9cc2-5418e5e07995")
+	)
+	(gr_line
+		(start 44 272)
+		(end 44 38)
+		(stroke
+			(width 0.05)
+			(type default)
+		)
+		(layer "Edge.Cuts")
+		(uuid "6f0ee03b-ee9f-4b11-8634-5d6d5e3adc31")
+	)
+	(gr_arc
+		(start 372 34)
+		(mid 374.828427 35.171573)
+		(end 376 38)
+		(stroke
+			(width 0.05)
+			(type default)
+		)
+		(layer "Edge.Cuts")
+		(uuid "70525bf8-7953-4fa8-b862-f0db984aeff6")
+	)
+	(gr_line
+		(start 48 34)
+		(end 372 34)
+		(stroke
+			(width 0.05)
+			(type default)
+		)
+		(layer "Edge.Cuts")
+		(uuid "78552418-f1d4-4c1b-b0d5-5a0e723f5a30")
+	)
+	(gr_line
+		(start 376 38)
+		(end 376 272)
+		(stroke
+			(width 0.05)
+			(type default)
+		)
+		(layer "Edge.Cuts")
+		(uuid "85f1d645-e30c-4f84-ab9e-a2a09e9137bd")
+	)
+	(gr_arc
+		(start 44 38)
+		(mid 45.171573 35.171573)
+		(end 48 34)
+		(stroke
+			(width 0.05)
+			(type default)
+		)
+		(layer "Edge.Cuts")
+		(uuid "c2e5f8cb-420b-49e9-89bb-356153c63bd8")
+	)
+	(gr_arc
+		(start 350 186)
+		(mid 348.828427 188.828427)
+		(end 346 190)
+		(stroke
+			(width 0.1)
+			(type default)
+		)
+		(layer "User.1")
+		(uuid "be94203b-8f6e-404a-ae9c-c49de42c63e1")
+	)
+	(gr_arc
+		(start 346 40)
+		(mid 348.828427 41.171573)
+		(end 350 44)
+		(stroke
+			(width 0.1)
+			(type default)
+		)
+		(layer "User.1")
+		(uuid "caa1e7c4-6c4b-4949-9aa1-baf99fff45ee")
+	)
+	(gr_arc
+		(start 74 190)
+		(mid 71.171573 188.828427)
+		(end 70 186)
+		(stroke
+			(width 0.1)
+			(type default)
+		)
+		(layer "User.1")
+		(uuid "db518e74-a9e2-4e60-b05f-2747b98c3a10")
+	)
+	(gr_arc
+		(start 70 44)
+		(mid 71.171573 41.171573)
+		(end 74 40)
+		(stroke
+			(width 0.1)
+			(type default)
+		)
+		(layer "User.1")
+		(uuid "f885fb81-c442-44cc-8594-1b2051fba464")
+	)
+	(dimension
+		(type aligned)
+		(layer "F.Fab")
+		(uuid "20a2c8df-7fdc-4b4a-9804-c4f09fc1140b")
+		(pts
+			(xy 372 34) (xy 372 276)
+		)
+		(height -15)
+		(gr_text "242.0000 mm"
+			(at 390 160 90)
+			(layer "F.Fab")
+			(uuid "20a2c8df-7fdc-4b4a-9804-c4f09fc1140b")
+			(effects
+				(font
+					(size 5 5)
+					(thickness 0.4)
+				)
+			)
+		)
+		(format
+			(prefix "")
+			(suffix "")
+			(units 3)
+			(units_format 1)
+			(precision 4)
+		)
+		(style
+			(thickness 0.1)
+			(arrow_length 1.27)
+			(text_position_mode 2)
+			(extension_height 0.58642)
+			(extension_offset 0.5) keep_text_aligned)
+	)
+	(dimension
+		(type aligned)
+		(layer "F.Fab")
+		(uuid "fba50a43-7af8-4fdf-bdb4-2456ae1c837a")
+		(pts
+			(xy 44 38) (xy 376 38)
+		)
+		(height -15)
+		(gr_text "332.0000 mm"
+			(at 205 24 0)
+			(layer "F.Fab")
+			(uuid "fba50a43-7af8-4fdf-bdb4-2456ae1c837a")
+			(effects
+				(font
+					(size 4 4)
+					(thickness 0.4)
+				)
+			)
+		)
+		(format
+			(prefix "")
+			(suffix "")
+			(units 3)
+			(units_format 1)
+			(precision 4)
+		)
+		(style
+			(thickness 0.1)
+			(arrow_length 1.27)
+			(text_position_mode 2)
+			(extension_height 0.58642)
+			(extension_offset 0.5) keep_text_aligned)
+	)
+)

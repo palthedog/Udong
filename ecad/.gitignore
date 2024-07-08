@@ -17,3 +17,5 @@ sym-lib-table
 **/_autosave-*
 
 **/__pycache__
+
+**/*.zip
