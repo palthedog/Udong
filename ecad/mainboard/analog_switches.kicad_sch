@@ -5797,7 +5797,7 @@
 				(hide yes)
 			)
 		)
-		(property "フィールド5" ""
+		(property "DigitalSwitch" "K5"
 			(at 104.14 58.42 0)
 			(effects
 				(font
@@ -6716,7 +6716,7 @@
 				(hide yes)
 			)
 		)
-		(property "フィールド5" ""
+		(property "DigitalSwitch" "K15"
 			(at 224.79 123.19 0)
 			(effects
 				(font
@@ -7308,7 +7308,7 @@
 				(hide yes)
 			)
 		)
-		(property "フィールド5" ""
+		(property "DigitalSwitch" "K2"
 			(at 163.83 27.94 0)
 			(effects
 				(font
@@ -7398,7 +7398,7 @@
 				(hide yes)
 			)
 		)
-		(property "フィールド5" ""
+		(property "DigitalSwitch" "K10"
 			(at 163.83 92.71 0)
 			(effects
 				(font
@@ -9039,7 +9039,7 @@
 				(hide yes)
 			)
 		)
-		(property "フィールド5" ""
+		(property "DigitalSwitch" "K12"
 			(at 43.18 123.19 0)
 			(effects
 				(font
@@ -9129,7 +9129,7 @@
 				(hide yes)
 			)
 		)
-		(property "フィールド5" ""
+		(property "DigitalSwitch" "K3"
 			(at 224.79 27.94 0)
 			(effects
 				(font
@@ -9598,7 +9598,7 @@
 				(hide yes)
 			)
 		)
-		(property "フィールド5" ""
+		(property "DigitalSwitch" "K0"
 			(at 43.18 27.94 0)
 			(effects
 				(font
@@ -9994,7 +9994,7 @@
 				(hide yes)
 			)
 		)
-		(property "フィールド5" ""
+		(property "DigitalSwitch" "K6"
 			(at 163.83 58.42 0)
 			(effects
 				(font
@@ -10798,16 +10798,7 @@
 				(hide yes)
 			)
 		)
-		(property "フィールド5" ""
-			(at 104.14 27.94 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "フィールド6" ""
+		(property "DigitalSwitch" "K1"
 			(at 104.14 27.94 0)
 			(effects
 				(font
@@ -11788,7 +11779,7 @@
 				(hide yes)
 			)
 		)
-		(property "フィールド5" ""
+		(property "DigitalSwitch" "K11"
 			(at 224.79 92.71 0)
 			(effects
 				(font
@@ -12323,7 +12314,7 @@
 				(hide yes)
 			)
 		)
-		(property "フィールド5" ""
+		(property "DigitalSwitch" "K8"
 			(at 43.18 92.71 0)
 			(effects
 				(font
@@ -12498,7 +12489,7 @@
 				(hide yes)
 			)
 		)
-		(property "フィールド5" ""
+		(property "DigitalSwitch" "K7"
 			(at 224.79 58.42 0)
 			(effects
 				(font
@@ -12675,7 +12666,7 @@
 				(hide yes)
 			)
 		)
-		(property "フィールド5" ""
+		(property "DigitalSwitch" "K9"
 			(at 104.14 92.71 0)
 			(effects
 				(font
@@ -13503,7 +13494,7 @@
 				(hide yes)
 			)
 		)
-		(property "フィールド5" ""
+		(property "DigitalSwitch" "K13"
 			(at 104.14 123.19 0)
 			(effects
 				(font
@@ -14074,7 +14065,7 @@
 				(hide yes)
 			)
 		)
-		(property "フィールド5" ""
+		(property "DigitalSwitch" "K4"
 			(at 43.18 58.42 0)
 			(effects
 				(font
@@ -14251,7 +14242,7 @@
 				(hide yes)
 			)
 		)
-		(property "フィールド5" ""
+		(property "DigitalSwitch" "K14"
 			(at 163.83 123.19 0)
 			(effects
 				(font
