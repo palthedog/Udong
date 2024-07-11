@@ -71,16 +71,25 @@ inline const AnalogSwitchGroup& getConfigFromGroupId(
 
   // Not found.
   // TODO: Choose a solid/better solution
+  Serial.printf(
+      "ERROR: Given analog switch group ID(%d) doesn't exist in the "
+      "UdonConfig.\n",
+      analog_switch_group_id);
   return config.analog_switch_groups()[0];
 }
 
 inline const AnalogSwitchGroup& getConfigFromSwitchId(
     uint8_t analog_switch_id, const UdongConfig& config) {
+  Serial.printf("config count: %d\n", config.analog_switch_configs_size());
   for (const AnalogSwitchConfig& aconf : config.analog_switch_configs()) {
     if (aconf.analog_switch_id() == analog_switch_id) {
       return getConfigFromGroupId(aconf.analog_switch_group_id(), config);
     }
   }
+
+  Serial.printf(
+      "ERROR: Given analog switch ID(%d) doesn't exist in the UdonConfig.\n",
+      analog_switch_id);
   return config.analog_switch_groups()[0];
 }
 

@@ -23,7 +23,7 @@ void HandleGet(Udong& context, const String& cmd) {
   JsonDocument json_response;
 
   JsonArray analog_switches = json_response["analog_switches"].to<JsonArray>();
-  for (auto& analog_switch : context.circuit->analog_switches) {
+  for (auto& analog_switch : context.GetAnalogSwitches()) {
     JsonVariant var = analog_switches.add<JsonVariant>();
     var["id"] = analog_switch->GetId();
     var["press_mm"] = analog_switch->GetLastPressMm();
@@ -37,7 +37,7 @@ void HandleGetConfig(Udong& context, const String& cmd) {
   decaproto::StlOutputStream sos(&oss);
   size_t written_size;
 
-  UdongConfig config = context.circuit->config;
+  UdongConfig config = context.GetConfig();
   if (!EncodeMessage(sos, config, written_size)) {
     Serial.println("Failed to encode the message");
     return;
@@ -198,11 +198,10 @@ void SerialHandler::HandleSerial(Udong& context) {
 
 // String serial_buffer;
 void SerialHandler::HandleCmd(Udong& context, const String& cmd) {
-  Circuit& circuit = *context.circuit;
   if (cmd == "") {
     // Do nothing
   } else if (cmd == "dump") {
-    for (auto& analog_switch : circuit.analog_switches) {
+    for (auto& analog_switch : context.GetAnalogSwitches()) {
       Serial.printf("* Dump switch-%d\n", analog_switch->GetId());
       analog_switch->DumpLastState();
       analog_switch->DumpLookupTable();

@@ -52,7 +52,8 @@ void setup() {
     Serial.println("Failed to setup HID devices");
   }
 
-  // wait for
+  // wait for 5 seconds so that we can connect to the serial console before
+  // boot.
   /*
   for (int i = 0; i < 5; i++) {
     delay(1000);
@@ -73,11 +74,6 @@ Throttling teleplot_runner(100, []() {
   udong.circuit->analog_switches[0]->TelePrint();
   Serial.flush();
   udong.circuit->analog_switches[1]->TelePrint();
-  /*
-  Serial.printf(
-      ">ADC-600-mV: %lf\n",
-      udong.circuit->adc_600mv_input.Read() * 3300.0 / 65536.0);
-  */
   Serial.flush();
   delay(1);
 #endif
@@ -86,7 +82,7 @@ Throttling teleplot_runner(100, []() {
 bool need_to_save_calibration_store = false;
 Throttling calibration_runner(100, []() {
   bool calibratin_has_run = false;
-  for (auto& analog_switch : udong.circuit->analog_switches) {
+  for (auto& analog_switch : udong.GetAnalogSwitches()) {
     if (analog_switch->NeedRecalibration()) {
       Serial.printf("Calibrate switch-%d\n", analog_switch->GetId());
       analog_switch->Calibrate();
@@ -107,8 +103,7 @@ Throttling calibration_runner(100, []() {
     need_to_save_calibration_store = false;
 
     unsigned long from = time_us_32();
-    udong.circuit->calibration_store.SaveIntoFile();
-    udong.circuit->calibration_store.ClearUpdatedFlag();
+    udong.SaveCalibrationStore();
     unsigned long to = time_us_32();
     Serial.printf(">save(us): %lu\n", to - from);
   }
