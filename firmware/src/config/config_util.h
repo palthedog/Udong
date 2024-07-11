@@ -123,7 +123,7 @@ inline UdongConfig defaultUdongConfig() {
 
     group.mutable_rapid_trigger()->set_act(0.8);
     group.mutable_rapid_trigger()->set_rel(0.4);
-    group.mutable_rapid_trigger()->set_f_act(3.8);
+    group.mutable_rapid_trigger()->set_f_act(3.6);
     group.mutable_rapid_trigger()->set_f_rel(0.2);
   }
 

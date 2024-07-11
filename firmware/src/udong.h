@@ -128,8 +128,6 @@ class Udong {
     circuit = std::make_unique<UdongPrototype1>();
 
     ConfigureSwitches();
-
-    calibration_store_.LoadFromFile();
     CalibrateAllZeroPoint();
     // We need to call Calibrate after loading calibration data to update all
     // related data (e.g. lookup-table)
@@ -236,16 +234,12 @@ class Udong {
     if (!LittleFS.begin()) {
       Serial.println("Failed to initialize LittleFS");
     }
+
     LoadConfig();
   }
 
   void ReloadConfig() {
     LoadConfig();
-  }
-
-  void SaveCalibrationStore() {
-    calibration_store_.SaveIntoFile();
-    calibration_store_.ClearUpdatedFlag();
   }
 
   void CalibrateAllZeroPoint() {

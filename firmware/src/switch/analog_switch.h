@@ -210,6 +210,7 @@ class AnalogSwitch : public Switch {
   void TelePrint() {
 #if TELEPLOT
     Serial.printf(">asw%02d-mV:%lf\n", id_, last_analog_ / 65536.0 * 3300.0);
+    // Serial.printf(">asw%02d-mT:%lf\n", id_, last_mag_flux_);
     Serial.printf(">asw%02d-mm:%lf\n", id_, last_press_mm_);
     trigger_->TelePrint(GetId());
 #endif

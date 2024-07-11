@@ -98,9 +98,15 @@ class CalibrationStore {
 
     Serial.printf("Not found in the saved data. Creating a new one: %id\n", id);
     // TODO: Read from factory data?
+    // The value moves between 6mT ~ 60mT on the prototype board.
+    // Initialize calibration store with the range but with margin so that we
+    // can calibrate the data at runtime.
+    const double kFarest_mT = 10.0;
+    const double kNearest_mT = 40.0;
     return &analog_switches_
                 .insert(std::make_pair(
-                    id, AnalogSwitchCalibrationStore(id, UINT16_MAX, 0)))
+                    id,
+                    AnalogSwitchCalibrationStore(id, kFarest_mT, kNearest_mT)))
                 .first->second;
   }
 
@@ -123,35 +129,6 @@ class CalibrationStore {
     for (auto& it : analog_switches_) {
       it.second.ClearUpdatedFlag();
     }
-  }
-
-  bool LoadFromFile() {
-    JsonDocument doc;
-    LoadJson(kCalibrationFilePath, doc);
-
-    // doc["analog_switches"];
-    size_t as_size = doc["analog_switches"].size();
-    for (size_t i = 0; i < as_size; i++) {
-      JsonVariant var = doc["analog_switches"][i];
-      AnalogSwitchCalibrationStore v(var);
-      Serial.printf("loaded analog switch: %d\n", v.GetId());
-      Serial.printf("analog switches.size(): %d\n", analog_switches_.size());
-      analog_switches_[v.GetId()] = v;
-    }
-    Serial.println("Calibration data loaded successfully");
-
-    return true;
-  }
-
-  void SaveIntoFile() {
-    JsonDocument doc;
-    // doc["analog_switches"];
-    Serial.printf("# of analog_switches: %d\n", analog_switches_.size());
-    int index = 0;
-    for (auto& it : analog_switches_) {
-      doc["analog_switches"][index++] = it.second;
-    }
-    SaveJson(kCalibrationFilePath, doc);
   }
 };
 

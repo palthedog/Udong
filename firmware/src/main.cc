@@ -69,43 +69,26 @@ inline int16_t map_u16_s16(uint16_t v) {
 }
 
 // every 100ms
-Throttling teleplot_runner(100, []() {
+Throttling teleplot_runner(10, []() {
 #if TELEPLOT
-  udong.circuit->analog_switches[0]->TelePrint();
+  udong.GetAnalogSwitches()[0]->TelePrint();
   Serial.flush();
-  udong.circuit->analog_switches[1]->TelePrint();
+  udong.GetAnalogSwitches()[1]->TelePrint();
   Serial.flush();
   delay(1);
 #endif
 });
 
-bool need_to_save_calibration_store = false;
 Throttling calibration_runner(100, []() {
-  bool calibratin_has_run = false;
   for (auto& analog_switch : udong.GetAnalogSwitches()) {
     if (analog_switch->NeedRecalibration()) {
       Serial.printf("Calibrate switch-%d\n", analog_switch->GetId());
       analog_switch->Calibrate();
-      calibratin_has_run = true;
-
-      need_to_save_calibration_store = true;
 
       // Do NOT calibrate multiple switches at once since it is a bit heavy
       // routine.
       break;
     }
-  }
-
-  // TODO: It's much much slower routine.
-  //       Run it only when the game pad is fully idle
-  //       (e.g. all keys are not pressed for 10 seconds)
-  if (need_to_save_calibration_store && !calibratin_has_run) {
-    need_to_save_calibration_store = false;
-
-    unsigned long from = time_us_32();
-    udong.SaveCalibrationStore();
-    unsigned long to = time_us_32();
-    Serial.printf(">save(us): %lu\n", to - from);
   }
 });
 
