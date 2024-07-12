@@ -939,9 +939,77 @@ export class ButtonAssignment extends pb_1.Message {
         return ButtonAssignment.deserialize(bytes);
     }
 }
+export class BakedData extends pb_1.Message {
+    #one_of_decls: number[][] = [];
+    constructor(data?: any[] | {
+        board_name?: string;
+    }) {
+        super();
+        pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
+        if (!Array.isArray(data) && typeof data == "object") {
+            if ("board_name" in data && data.board_name != undefined) {
+                this.board_name = data.board_name;
+            }
+        }
+    }
+    get board_name() {
+        return pb_1.Message.getFieldWithDefault(this, 1, "") as string;
+    }
+    set board_name(value: string) {
+        pb_1.Message.setField(this, 1, value);
+    }
+    static fromObject(data: {
+        board_name?: string;
+    }): BakedData {
+        const message = new BakedData({});
+        if (data.board_name != null) {
+            message.board_name = data.board_name;
+        }
+        return message;
+    }
+    toObject() {
+        const data: {
+            board_name?: string;
+        } = {};
+        if (this.board_name != null) {
+            data.board_name = this.board_name;
+        }
+        return data;
+    }
+    serialize(): Uint8Array;
+    serialize(w: pb_1.BinaryWriter): void;
+    serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+        const writer = w || new pb_1.BinaryWriter();
+        if (this.board_name.length)
+            writer.writeString(1, this.board_name);
+        if (!w)
+            return writer.getResultBuffer();
+    }
+    static deserialize(bytes: Uint8Array | pb_1.BinaryReader): BakedData {
+        const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new BakedData();
+        while (reader.nextField()) {
+            if (reader.isEndGroup())
+                break;
+            switch (reader.getFieldNumber()) {
+                case 1:
+                    message.board_name = reader.readString();
+                    break;
+                default: reader.skipField();
+            }
+        }
+        return message;
+    }
+    serializeBinary(): Uint8Array {
+        return this.serialize();
+    }
+    static override deserializeBinary(bytes: Uint8Array): BakedData {
+        return BakedData.deserialize(bytes);
+    }
+}
 export class UdongConfig extends pb_1.Message {
     #one_of_decls: number[][] = [];
     constructor(data?: any[] | {
+        baked?: BakedData;
         analog_switch_configs?: AnalogSwitchConfig[];
         analog_switch_groups?: AnalogSwitchGroup[];
         button_assignments?: ButtonAssignment[];
@@ -949,6 +1017,9 @@ export class UdongConfig extends pb_1.Message {
         super();
         pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [1, 2, 3], this.#one_of_decls);
         if (!Array.isArray(data) && typeof data == "object") {
+            if ("baked" in data && data.baked != undefined) {
+                this.baked = data.baked;
+            }
             if ("analog_switch_configs" in data && data.analog_switch_configs != undefined) {
                 this.analog_switch_configs = data.analog_switch_configs;
             }
@@ -959,6 +1030,15 @@ export class UdongConfig extends pb_1.Message {
                 this.button_assignments = data.button_assignments;
             }
         }
+    }
+    get baked() {
+        return pb_1.Message.getWrapperField(this, BakedData, 4) as BakedData;
+    }
+    set baked(value: BakedData) {
+        pb_1.Message.setWrapperField(this, 4, value);
+    }
+    get has_baked() {
+        return pb_1.Message.getField(this, 4) != null;
     }
     get analog_switch_configs() {
         return pb_1.Message.getRepeatedWrapperField(this, AnalogSwitchConfig, 1) as AnalogSwitchConfig[];
@@ -979,11 +1059,15 @@ export class UdongConfig extends pb_1.Message {
         pb_1.Message.setRepeatedWrapperField(this, 3, value);
     }
     static fromObject(data: {
+        baked?: ReturnType<typeof BakedData.prototype.toObject>;
         analog_switch_configs?: ReturnType<typeof AnalogSwitchConfig.prototype.toObject>[];
         analog_switch_groups?: ReturnType<typeof AnalogSwitchGroup.prototype.toObject>[];
         button_assignments?: ReturnType<typeof ButtonAssignment.prototype.toObject>[];
     }): UdongConfig {
         const message = new UdongConfig({});
+        if (data.baked != null) {
+            message.baked = BakedData.fromObject(data.baked);
+        }
         if (data.analog_switch_configs != null) {
             message.analog_switch_configs = data.analog_switch_configs.map(item => AnalogSwitchConfig.fromObject(item));
         }
@@ -997,10 +1081,14 @@ export class UdongConfig extends pb_1.Message {
     }
     toObject() {
         const data: {
+            baked?: ReturnType<typeof BakedData.prototype.toObject>;
             analog_switch_configs?: ReturnType<typeof AnalogSwitchConfig.prototype.toObject>[];
             analog_switch_groups?: ReturnType<typeof AnalogSwitchGroup.prototype.toObject>[];
             button_assignments?: ReturnType<typeof ButtonAssignment.prototype.toObject>[];
         } = {};
+        if (this.baked != null) {
+            data.baked = this.baked.toObject();
+        }
         if (this.analog_switch_configs != null) {
             data.analog_switch_configs = this.analog_switch_configs.map((item: AnalogSwitchConfig) => item.toObject());
         }
@@ -1016,6 +1104,8 @@ export class UdongConfig extends pb_1.Message {
     serialize(w: pb_1.BinaryWriter): void;
     serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
         const writer = w || new pb_1.BinaryWriter();
+        if (this.has_baked)
+            writer.writeMessage(4, this.baked, () => this.baked.serialize(writer));
         if (this.analog_switch_configs.length)
             writer.writeRepeatedMessage(1, this.analog_switch_configs, (item: AnalogSwitchConfig) => item.serialize(writer));
         if (this.analog_switch_groups.length)
@@ -1031,6 +1121,9 @@ export class UdongConfig extends pb_1.Message {
             if (reader.isEndGroup())
                 break;
             switch (reader.getFieldNumber()) {
+                case 4:
+                    reader.readMessage(message.baked, () => message.baked = BakedData.deserialize(reader));
+                    break;
                 case 1:
                     reader.readMessage(message.analog_switch_configs, () => pb_1.Message.addToRepeatedWrapperField(message, 1, AnalogSwitchConfig.deserialize(reader), AnalogSwitchConfig));
                     break;

@@ -1,13 +1,13 @@
 #pragma once
 
-#include "decaproto/descriptor.h"
-#include "decaproto/reflection.h"
 #include "decaproto/field.h"
 #include <memory>
 #include <stdint.h>
 #include <string>
 #include <vector>
 #include "decaproto/message.h"
+#include "decaproto/descriptor.h"
+#include "decaproto/reflection.h"
 
 class AnalogSwitchConfig;
 class AnalogSwitchGroup;
@@ -18,6 +18,7 @@ class SwitchId;
 class PushButtonSelector;
 class DPadButtonSelector;
 class ButtonAssignment;
+class BakedData;
 class UdongConfig;
 
 enum TriggerType : int {
@@ -582,14 +583,78 @@ private:
 
 };
 
+class BakedData final : public decaproto::Message {
+public:
+    BakedData()
+        : board_name__(std::string()) {}
+
+    ~BakedData() {}
+
+
+	inline const std::string& board_name() const {
+	    return board_name__;
+	}
+
+	// TODO: Support string_view
+	inline void set_board_name(const std::string& value) {
+	    board_name__ = value;
+	}
+
+	inline std::string* mutable_board_name() {
+	    return &board_name__;
+	}
+
+	inline void clear_board_name() {
+	    board_name__.clear();
+	}
+    const decaproto::Descriptor* GetDescriptor() const override;
+    const decaproto::Reflection* GetReflection() const override;
+
+private:
+    std::string board_name__;
+
+
+};
+
 class UdongConfig final : public decaproto::Message {
 public:
     UdongConfig()
-        : analog_switch_configs__()
+        : baked__()
+        , has_baked__(false)
+        , analog_switch_configs__()
         , analog_switch_groups__()
         , button_assignments__() {}
 
     ~UdongConfig() {}
+
+
+	// Getter for baked
+	const BakedData& baked() const {
+		if (!baked__) {
+			baked__.resetDefault();
+        }
+	    return *baked__;
+	}
+
+	// Mutable Getter for baked
+	BakedData* mutable_baked() {
+	    if (!baked__) {
+			baked__.resetDefault();
+        }
+        has_baked__ = true;
+	    return baked__.get();
+	}
+
+	// Hazzer for baked
+	bool has_baked() const {
+	    return has_baked__;
+	}
+
+	// Clearer for baked
+	void clear_baked() {
+	    baked__.reset();
+		has_baked__ = false;
+	}
 
 
 	inline const std::vector<AnalogSwitchConfig>& analog_switch_configs() const {
@@ -685,6 +750,8 @@ public:
     const decaproto::Reflection* GetReflection() const override;
 
 private:
+    mutable decaproto::SubMessagePtr<BakedData> baked__;
+    bool has_baked__;
     std::vector<AnalogSwitchConfig> analog_switch_configs__;
     std::vector<AnalogSwitchGroup> analog_switch_groups__;
     std::vector<ButtonAssignment> button_assignments__;
@@ -908,7 +975,25 @@ message_type: {
     }
 }
 message_type: {
+    name: "BakedData"
+    field: {
+        name: "board_name"
+        number: 1
+        label: LABEL_OPTIONAL
+        type: TYPE_STRING
+        json_name: "boardName"
+    }
+}
+message_type: {
     name: "UdongConfig"
+    field: {
+        name: "baked"
+        number: 4
+        label: LABEL_OPTIONAL
+        type: TYPE_MESSAGE
+        type_name: ".BakedData"
+        json_name: "baked"
+    }
     field: {
         name: "analog_switch_configs"
         number: 1
@@ -983,7 +1068,7 @@ source_code_info: {
     location: {
         span: 0
         span: 0
-        span: 100
+        span: 108
         span: 1
     }
     location: {
@@ -2491,18 +2576,46 @@ source_code_info: {
     location: {
         path: 4
         path: 9
-        span: 96
+        span: 95
         span: 0
-        span: 100
+        span: 97
         span: 1
-        leading_comments: " Represents the overall configuration for Udong\n"
     }
     location: {
         path: 4
         path: 9
         path: 1
-        span: 96
+        span: 95
         span: 8
+        span: 17
+    }
+    location: {
+        path: 4
+        path: 9
+        path: 2
+        path: 0
+        span: 96
+        span: 2
+        span: 24
+    }
+    location: {
+        path: 4
+        path: 9
+        path: 2
+        path: 0
+        path: 5
+        span: 96
+        span: 2
+        span: 8
+    }
+    location: {
+        path: 4
+        path: 9
+        path: 2
+        path: 0
+        path: 1
+        span: 96
+        span: 9
         span: 19
     }
     location: {
@@ -2510,145 +2623,212 @@ source_code_info: {
         path: 9
         path: 2
         path: 0
-        span: 97
+        path: 3
+        span: 96
+        span: 22
+        span: 23
+    }
+    location: {
+        path: 4
+        path: 10
+        span: 100
+        span: 0
+        span: 108
+        span: 1
+        leading_comments: " Represents the overall configuration for Udong\n"
+    }
+    location: {
+        path: 4
+        path: 10
+        path: 1
+        span: 100
+        span: 8
+        span: 19
+    }
+    location: {
+        path: 4
+        path: 10
+        path: 2
+        path: 0
+        span: 103
+        span: 2
+        span: 22
+        leading_comments: " Readonly baked data\n The data is baked into the flash when the board is shipped.\n"
+    }
+    location: {
+        path: 4
+        path: 10
+        path: 2
+        path: 0
+        path: 6
+        span: 103
+        span: 2
+        span: 11
+    }
+    location: {
+        path: 4
+        path: 10
+        path: 2
+        path: 0
+        path: 1
+        span: 103
+        span: 12
+        span: 17
+    }
+    location: {
+        path: 4
+        path: 10
+        path: 2
+        path: 0
+        path: 3
+        span: 103
+        span: 20
+        span: 21
+    }
+    location: {
+        path: 4
+        path: 10
+        path: 2
+        path: 1
+        span: 105
         span: 2
         span: 56
     }
     location: {
         path: 4
-        path: 9
+        path: 10
         path: 2
-        path: 0
+        path: 1
         path: 4
-        span: 97
+        span: 105
         span: 2
         span: 10
     }
     location: {
         path: 4
-        path: 9
+        path: 10
         path: 2
-        path: 0
+        path: 1
         path: 6
-        span: 97
+        span: 105
         span: 11
         span: 29
     }
     location: {
         path: 4
-        path: 9
+        path: 10
         path: 2
-        path: 0
         path: 1
-        span: 97
+        path: 1
+        span: 105
         span: 30
         span: 51
     }
     location: {
         path: 4
-        path: 9
+        path: 10
         path: 2
-        path: 0
+        path: 1
         path: 3
-        span: 97
+        span: 105
         span: 54
         span: 55
     }
     location: {
         path: 4
-        path: 9
+        path: 10
         path: 2
-        path: 1
-        span: 98
+        path: 2
+        span: 106
         span: 2
         span: 54
     }
     location: {
         path: 4
-        path: 9
+        path: 10
         path: 2
-        path: 1
+        path: 2
         path: 4
-        span: 98
+        span: 106
         span: 2
         span: 10
     }
     location: {
         path: 4
-        path: 9
+        path: 10
         path: 2
-        path: 1
+        path: 2
         path: 6
-        span: 98
+        span: 106
         span: 11
         span: 28
     }
     location: {
         path: 4
-        path: 9
+        path: 10
+        path: 2
         path: 2
         path: 1
-        path: 1
-        span: 98
+        span: 106
         span: 29
         span: 49
     }
     location: {
         path: 4
-        path: 9
+        path: 10
         path: 2
-        path: 1
+        path: 2
         path: 3
-        span: 98
+        span: 106
         span: 52
         span: 53
     }
     location: {
         path: 4
-        path: 9
+        path: 10
         path: 2
-        path: 2
-        span: 99
+        path: 3
+        span: 107
         span: 2
         span: 51
     }
     location: {
         path: 4
-        path: 9
+        path: 10
         path: 2
-        path: 2
+        path: 3
         path: 4
-        span: 99
+        span: 107
         span: 2
         span: 10
     }
     location: {
         path: 4
-        path: 9
+        path: 10
         path: 2
-        path: 2
+        path: 3
         path: 6
-        span: 99
+        span: 107
         span: 11
         span: 27
     }
     location: {
         path: 4
-        path: 9
+        path: 10
         path: 2
-        path: 2
+        path: 3
         path: 1
-        span: 99
+        span: 107
         span: 28
         span: 46
     }
     location: {
         path: 4
-        path: 9
-        path: 2
+        path: 10
         path: 2
         path: 3
-        span: 99
+        path: 3
+        span: 107
         span: 49
         span: 50
     }

@@ -436,6 +436,38 @@ const decaproto::Reflection* ButtonAssignment::GetReflection() const {
     return kButtonAssignment__Reflection;
 }
 
+// A singleton Descriptor for BakedData
+decaproto::Descriptor* kBakedData__Descriptor = nullptr;
+
+const decaproto::Descriptor* BakedData::GetDescriptor() const {
+    if (kBakedData__Descriptor != nullptr) {
+        return kBakedData__Descriptor;
+    }
+    kBakedData__Descriptor = new decaproto::Descriptor();
+    kBakedData__Descriptor->RegisterField(decaproto::FieldDescriptor(1, decaproto::FieldType::kString));
+    return kBakedData__Descriptor;
+}
+
+// A singleton Reflection object for BakedData
+decaproto::Reflection* kBakedData__Reflection = nullptr;
+
+const decaproto::Reflection* BakedData::GetReflection() const {
+    if (kBakedData__Reflection != nullptr) {
+        return kBakedData__Reflection;
+    }
+    kBakedData__Reflection = new decaproto::Reflection();
+    
+    // Mutable getter for board_name
+    kBakedData__Reflection->RegisterMutableString(
+        1,
+		decaproto::MsgCast(&BakedData::mutable_board_name));
+    // Getter for board_name
+    kBakedData__Reflection->RegisterGetString(
+        1,
+		decaproto::MsgCast(&BakedData::board_name));
+    return kBakedData__Reflection;
+}
+
 // A singleton Descriptor for UdongConfig
 decaproto::Descriptor* kUdongConfig__Descriptor = nullptr;
 
@@ -444,6 +476,7 @@ const decaproto::Descriptor* UdongConfig::GetDescriptor() const {
         return kUdongConfig__Descriptor;
     }
     kUdongConfig__Descriptor = new decaproto::Descriptor();
+    kUdongConfig__Descriptor->RegisterField(decaproto::FieldDescriptor(4, decaproto::FieldType::kMessage));
     kUdongConfig__Descriptor->RegisterField(decaproto::FieldDescriptor(1, decaproto::FieldType::kMessage, true));
     kUdongConfig__Descriptor->RegisterField(decaproto::FieldDescriptor(2, decaproto::FieldType::kMessage, true));
     kUdongConfig__Descriptor->RegisterField(decaproto::FieldDescriptor(3, decaproto::FieldType::kMessage, true));
@@ -458,6 +491,19 @@ const decaproto::Reflection* UdongConfig::GetReflection() const {
         return kUdongConfig__Reflection;
     }
     kUdongConfig__Reflection = new decaproto::Reflection();
+    
+    // Mutable getter for baked
+    kUdongConfig__Reflection->RegisterMutableMessage(
+        4,
+		decaproto::MsgCast(&UdongConfig::mutable_baked));
+    // Getter for baked
+    kUdongConfig__Reflection->RegisterGetMessage(
+        4,
+		decaproto::MsgCast(&UdongConfig::baked));
+    // Hazzer for baked
+    kUdongConfig__Reflection->RegisterHasField(
+        4,
+		decaproto::MsgCast(&UdongConfig::has_baked));
     
 			// Mutable getter for analog_switch_configs
 			kUdongConfig__Reflection->RegisterGetRepeatedMessage(

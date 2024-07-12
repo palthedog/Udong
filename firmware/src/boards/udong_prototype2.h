@@ -40,8 +40,8 @@ class UdongPrototype1 : public Board {
       analog_switch_raw_ins_.push_back(mux1_.GetInput(i));
     }
 
-    digital_switch_ins_.push_back(std::make_shared<DigitalInputPin>(D22, true));
-    digital_switch_ins_.push_back(std::make_shared<DigitalInputPin>(D23, true));
+    digital_switch_ins_.push_back(std::make_shared<DigitalInputPin>(D2, true));
+    digital_switch_ins_.push_back(std::make_shared<DigitalInputPin>(D3, true));
 
     // TODO: Configure unused pins as input pulldown.
     //       All unused GPIOs are connected to the ground on Udong Board.

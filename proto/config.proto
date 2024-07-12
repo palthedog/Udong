@@ -93,8 +93,16 @@ message ButtonAssignment {
   ButtonId button_id = 2;
 }
 
+message BakedData {
+  string board_name = 1;
+}
+
 // Represents the overall configuration for Udong
 message UdongConfig {
+  // Readonly baked data
+  // The data is baked into the flash when the board is shipped.
+  BakedData baked = 4;
+
   repeated AnalogSwitchConfig analog_switch_configs = 1;
   repeated AnalogSwitchGroup analog_switch_groups = 2;
   repeated ButtonAssignment button_assignments = 3;

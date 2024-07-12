@@ -73,6 +73,7 @@ class Udong {
   void ConfigureSwitches() {
     // Configure analog switches
     auto& analog_inputs = circuit->GetAnalogInputs();
+
     size_t size = analog_inputs.size();
     for (size_t switch_id = 0; switch_id < size; switch_id++) {
       auto analog_input = analog_inputs[switch_id];
@@ -117,28 +118,45 @@ class Udong {
     }
   }
 
-  void LoadConfig() {
-    config = loadUdonConfig();
-    Serial.println("Loaded button assignments");
-    for (const ButtonAssignment& b : config.button_assignments()) {
-      Serial.println(b.button_id().push_button().push_button_id());
+  const String LoadBoardName() {
+    // Load board name
+    const char* kBoardNamePath = "/baked/board_name.txt";
+    if (LittleFS.exists(kBoardNamePath)) {
+      File file = LittleFS.open(kBoardNamePath, "r");
+      if (file) {
+        String board_name = file.readStringUntil('\n');
+        file.close();
+        return board_name.c_str();
+      }
     }
+    return "Unknown";
+  }
+
+  void LoadConfig(bool reloading) {
+    buttons_.clear();
+    d_pad_.Clear();
+    analog_switches_.clear();
+    analog_switch_multi_sampled_ins.clear();
+    digital_switches_.clear();
+
+    String board_name = LoadBoardName();
+    config = loadUdonConfig();
+    config.mutable_baked()->set_board_name(board_name.c_str());
 
     // Configure circuit
     circuit = std::make_unique<UdongPrototype1>();
-
     ConfigureSwitches();
-    CalibrateAllZeroPoint();
-    // We need to call Calibrate after loading calibration data to update all
-    // related data (e.g. lookup-table)
-    for (auto& analog_switch : analog_switches_) {
-      analog_switch->Calibrate();
-      analog_switch->DumpLastState();
+
+    // No need of calibration if reloading
+    if (!reloading) {
+      CalibrateAllZeroPoint();
+      for (auto& analog_switch : analog_switches_) {
+        analog_switch->Calibrate();
+        analog_switch->DumpLastState();
+      }
     }
 
     // Button assignment
-    buttons_.clear();
-    d_pad_.Clear();
     for (const ButtonAssignment& b : config.button_assignments()) {
       std::shared_ptr<Switch> switch_ptr;
       if (b.switch_id().type() == SwitchType::ANALOG_SWITCH) {
@@ -235,11 +253,11 @@ class Udong {
       Serial.println("Failed to initialize LittleFS");
     }
 
-    LoadConfig();
+    LoadConfig(false);
   }
 
   void ReloadConfig() {
-    LoadConfig();
+    LoadConfig(true);
   }
 
   void CalibrateAllZeroPoint() {

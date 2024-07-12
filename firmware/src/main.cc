@@ -68,14 +68,13 @@ inline int16_t map_u16_s16(uint16_t v) {
   return (uint32_t)v - (1 << 15);
 }
 
-// every 100ms
 Throttling teleplot_runner(10, []() {
 #if TELEPLOT
-  udong.GetAnalogSwitches()[0]->TelePrint();
-  Serial.flush();
-  udong.GetAnalogSwitches()[1]->TelePrint();
-  Serial.flush();
-  delay(1);
+  for (size_t i = 0; i < 2; i++) {
+    udong.GetAnalogSwitches()[i]->TelePrint();
+    Serial.flush();
+    delay(1);
+  }
 #endif
 });
 

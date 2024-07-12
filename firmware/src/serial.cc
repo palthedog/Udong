@@ -1,5 +1,7 @@
 #include "serial.h"
 
+#include <Arduino.h>
+
 #include <sstream>
 
 #include "decaproto/decoder.h"
@@ -55,6 +57,8 @@ void HandleGetConfig(Udong& context, const String& cmd) {
 }
 
 void HandleSaveConfig(Udong& context, const UdongConfig& udong_config) {
+  Serial.println("HandleSaveConfig");
+
   // Save the received UdongConfig
   saveUdonConfig(udong_config);
   // Then reload the config and reconstruct Circuit
