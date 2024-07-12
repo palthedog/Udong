@@ -1,4 +1,4 @@
-import { inject, Component } from '@angular/core';
+import { inject, Component, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 
@@ -10,7 +10,8 @@ import { AnalogSwitchConfigComponent } from "./analog-switch-config/analog-switc
 import { ConfiguratorComponent } from "./configurator/configurator.component";
 import { SerialConnectorComponent } from './serial-connector/serial-connector.component';
 import { TextCommanderComponent } from './text-commander/text-commander.component';
-import { Logger } from './logger';
+import { logger } from './logger';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -22,20 +23,20 @@ import { Logger } from './logger';
   ]
 })
 export class AppComponent {
-  log = inject(Logger);
+  serial_service = inject(SerialServiceInterface);
 
   title: string = '';
-
-  serial_service = inject(SerialServiceInterface);
-  connected = this.serial_service.ConnectionChanges();
+  connected?: Observable<boolean>;
 
   constructor() {
+    logger.debug('AppComponent initialized', this.serial_service);
+    this.connected = this.serial_service.ConnectionChanges();
+  }
+
+  ngOnInit() {
+    logger.debug('AppComponent initialized', this.serial_service);
     this.serial_service.ConnectionChanges().subscribe(connected => {
       this.title = connected ? 'Udong is Connected' : 'Udong is Not Connected';
     });
   }
-
-  ngOnInit() {
-  }
-
 }

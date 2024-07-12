@@ -1,15 +1,13 @@
-import { Injectable, inject } from '@angular/core';
+import { Injectable } from '@angular/core';
 
 import { BehaviorSubject, Observable, Subject, defer, filter } from 'rxjs';
 import { SerialServiceInterface } from './serial.service';
-import { Logger } from '../logger';
 
 import { AnalogSwitchConfig, AnalogSwitchGroup, ButtonAssignment, ButtonId, ButtonType, PushButtonSelector, RapidTriggerConfig, StaticTriggerConfig, SwitchId, SwitchType, TriggerType, UdongConfig } from '../../proto/config';
+import { logger } from '../logger';
 
 @Injectable()
 export class MockSerialService extends SerialServiceInterface {
-    log = inject(Logger);
-
     private message_subject = new Subject<[string, Uint8Array]>();
     private connection_subject = new BehaviorSubject<boolean>(false);
 
@@ -26,9 +24,9 @@ export class MockSerialService extends SerialServiceInterface {
     }
 
     override async Send(cmd: string, message?: string) {
-        this.log.info('Sending via MockSerialService');
-        this.log.info('cmd: ', cmd);
-        this.log.info('payload: ', message);
+        logger.info('Sending via MockSerialService');
+        logger.info('cmd: ', cmd);
+        logger.info('payload: ', message);
         if (cmd == 'get-config') {
             this.HandleGetConfig();
         } else {
@@ -39,9 +37,9 @@ export class MockSerialService extends SerialServiceInterface {
     }
 
     override async SendBinary(cmd: string, payload: Uint8Array) {
-        this.log.info('Sending Binary via MockSerialService');
-        this.log.info('cmd: ', cmd);
-        this.log.info('payload-size: ', payload.length);
+        logger.info('Sending Binary via MockSerialService');
+        logger.info('cmd: ', cmd);
+        logger.info('payload-size: ', payload.length);
     }
 
     private MockResponse(type: string, bin_payload: Uint8Array) {

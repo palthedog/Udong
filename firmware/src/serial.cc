@@ -202,6 +202,7 @@ void SerialHandler::HandleSerial(Udong& context) {
 
 // String serial_buffer;
 void SerialHandler::HandleCmd(Udong& context, const String& cmd) {
+  Serial.printf("Received command: %s\n", cmd.c_str());
   if (cmd == "") {
     // Do nothing
   } else if (cmd == "dump") {

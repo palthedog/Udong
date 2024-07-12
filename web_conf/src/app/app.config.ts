@@ -7,7 +7,6 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { routes } from './app.routes';
 
 import { environment } from '../environments/environment';
-import { provideLogger } from './logger';
 import { SerialServiceInterface } from './serial/serial.service';
 
 export const appConfig: ApplicationConfig = {
@@ -17,7 +16,6 @@ export const appConfig: ApplicationConfig = {
     provideClientHydration(),
     provideAnimationsAsync(),
     provideAnimations(), provideAnimationsAsync(), provideAnimationsAsync(),
-    provideLogger(),
     { provide: SerialServiceInterface, useClass: environment.serialService },
   ]
 };

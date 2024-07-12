@@ -13,18 +13,18 @@ import { AnalogSwitchConfig, AnalogSwitchGroup, ButtonAssignment, ButtonId, Swit
 import { AppConsts } from '../consts';
 import { GroupSelectorComponent } from '../group-selector/group-selector.component';
 import { SerialServiceInterface } from '../serial/serial.service';
-import { Logger } from '../logger';
+import { logger, Logger } from '../logger';
 import { SwitchIdToGroupId, compareButtonIds } from '../config_util';
+import { ButtonPreviewComponent } from "../button-preview/button-preview.component";
 
 @Component({
   selector: 'app-configurator',
   standalone: true,
-  imports: [MatDividerModule, MatSelectModule, BoardButtonsComponent, MatRippleModule, MatFormFieldModule, MatCardModule, CommonModule, AnalogSwitchConfigComponent, MatButtonModule, GroupSelectorComponent, FormsModule],
+  imports: [MatDividerModule, MatSelectModule, BoardButtonsComponent, MatRippleModule, MatFormFieldModule, MatCardModule, CommonModule, AnalogSwitchConfigComponent, MatButtonModule, GroupSelectorComponent, FormsModule, ButtonPreviewComponent],
   templateUrl: './configurator.component.html',
   styleUrl: './configurator.component.scss'
 })
 export class ConfiguratorComponent {
-  log = inject(Logger);
   serial_service = inject(SerialServiceInterface);
   consts = inject(AppConsts);
 
@@ -46,17 +46,17 @@ export class ConfiguratorComponent {
 
   constructor() {
     this.serial_service.ConnectionChanges().subscribe((connected) => {
-      this.log.info('connected', connected);
+      logger.info('connected', connected);
       if (connected) {
         this.serial_service.Send('get-config');
       }
     });
 
     this.serial_service.MessageReceiveFor('get-config').subscribe((v) => {
-      this.log.info('get-config size: ', v.length);
+      logger.info('get-config size: ', v.length);
       this.config = UdongConfig.deserializeBinary(v[1]);
-      this.log.info('Config received');
-      this.log.info(this.config.toObject());
+      logger.info('Config received');
+      logger.info(this.config.toObject());
       if (this.config) {
         this.group_ids = this.config.analog_switch_groups.map((group) => {
           return group.analog_switch_group_id;
@@ -68,7 +68,7 @@ export class ConfiguratorComponent {
   }
 
   setActiveSwitchId(switch_id: SwitchId) {
-    this.log.info('active switch changed', switch_id);
+    logger.info('active switch changed', switch_id);
     this.active_switch_id = switch_id;
     this.setActiveGroupId(SwitchIdToGroupId(this.config!, this.active_switch_id));
     if (this.ripple) {
@@ -77,12 +77,12 @@ export class ConfiguratorComponent {
   }
 
   onGroupSelected() {
-    this.log.info('onGroupSelected');
+    logger.info('onGroupSelected');
     this.setActiveGroupId(SwitchIdToGroupId(this.config!, this.active_switch_id));
   }
 
   setActiveGroupId(group_id: number | null) {
-    this.log.info('active group changed', group_id);
+    logger.info('active group changed', group_id);
     this.active_group_id = group_id;
   }
 
@@ -116,7 +116,7 @@ export class ConfiguratorComponent {
     if (this.config == undefined) {
       return;
     }
-    this.log.info('save:', this.config);
+    logger.info('save:', this.config);
     this.serial_service.SendBinary('save-config', this.config.serializeBinary());
   }
 }

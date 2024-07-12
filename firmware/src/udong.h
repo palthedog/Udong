@@ -7,6 +7,7 @@
 
 #include <memory>
 
+#include "boards/breadboard.h"
 #include "boards/udong_prototype1.h"
 #include "config/config_util.h"
 #include "gamepad/button/button.h"
@@ -144,7 +145,15 @@ class Udong {
     config.mutable_baked()->set_board_name(board_name.c_str());
 
     // Configure circuit
-    circuit = std::make_unique<UdongPrototype1>();
+    if (config.baked().board_name() == "Udong Board rev.1") {
+      circuit = std::make_unique<UdongPrototype1>();
+    } else if (config.baked().board_name() == "Udong Board rev.2") {
+      // circuit = std::make_unique<UdongPrototype2>();
+    } else if (config.baked().board_name() == "Breadboard") {
+      circuit = std::make_unique<Breadboard>();
+    } else {
+      // TODO
+    }
     ConfigureSwitches();
 
     // No need of calibration if reloading
@@ -160,8 +169,15 @@ class Udong {
     for (const ButtonAssignment& b : config.button_assignments()) {
       std::shared_ptr<Switch> switch_ptr;
       if (b.switch_id().type() == SwitchType::ANALOG_SWITCH) {
+        if (analog_switches_.size() <= b.switch_id().id()) {
+          // We don't have that many analog switches
+          continue;
+        }
         switch_ptr = analog_switches_[b.switch_id().id()];
       } else if (b.switch_id().type() == SwitchType::DIGITAL_SWITCH) {
+        if (digital_switches_.size() <= b.switch_id().id()) {
+          continue;
+        }
         switch_ptr = digital_switches_[b.switch_id().id()];
       } else {
         Serial.println("Unknown switch type");

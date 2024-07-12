@@ -7,26 +7,28 @@ import { BehaviorSubject, Observable, Subject, filter } from 'rxjs';
 export abstract class SerialServiceInterface {
   abstract ConnectionChanges(): Observable<boolean>;
 
-  abstract MessageArrives(): Observable<[string, Uint8Array]>;
+  abstract MessageArrives(): Observable<[string, any]>;
 
   abstract Connect(): Promise<void>;
 
   abstract Send(cmd: string, message?: string): Promise<void>;
   abstract SendBinary(cmd: string, payload: Uint8Array): Promise<void>;
 
-  MessageReceiveFor(response_type: string): Observable<[string, Uint8Array]> {
+  MessageReceiveFor(response_type: string): Observable<[string, any]> {
     return this.MessageArrives().pipe(filter((pair) => {
       return pair[0] == response_type;
     }));
   }
 }
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class SerialService extends SerialServiceInterface {
 
   private port?: SerialPort;
 
-  private message_subject = new Subject<[string, Uint8Array]>();
+  private message_subject = new Subject<[string, any]>();
   private connection_subject = new BehaviorSubject<boolean>(false);
 
   private parser = new MessageParser();
@@ -40,7 +42,7 @@ export class SerialService extends SerialServiceInterface {
     return this.connection_subject;
   }
 
-  public MessageArrives(): Observable<[string, Uint8Array]> {
+  public MessageArrives(): Observable<[string, Uint8Array | object]> {
     return this.message_subject;
   }
 
@@ -64,15 +66,18 @@ export class SerialService extends SerialServiceInterface {
       return;
     }
 
-    console.log('Sending: cmd: ', cmd, 'payload: ', message);
     const encoder = new TextEncoder();
-    const writer = this.port.writable.getWriter();
-    if (message == undefined) {
-      await writer.write(encoder.encode(cmd + '\n'));
-    } else {
-      await writer.write(encoder.encode(cmd + ':' + message + '\n'));
+    try {
+      const writer = this.port.writable.getWriter();
+      if (message == undefined || message == '') {
+        await writer.write(encoder.encode(cmd + '\n'));
+      } else {
+        await writer.write(encoder.encode(cmd + ':' + message + '\n'));
+      }
+      writer.releaseLock();
+    } catch (e) {
+      console.error("Error: ", e);
     }
-    writer.releaseLock();
   }
 
   override async SendBinary(cmd: string, payload: Uint8Array) {
@@ -84,7 +89,6 @@ export class SerialService extends SerialServiceInterface {
     console.log('sending: <binary> size: ', payload.length);
     await writer.write(this.text_encoder.encode(cmd + '@' + payload.length + '#'));
     await writer.write(payload);
-    console.log('wrote');
     writer.releaseLock();
   }
 
@@ -128,13 +132,14 @@ export class SerialService extends SerialServiceInterface {
 enum ParserState {
   ReadingCommand,
   ReadingSize,
-  ReadingBinaryPayload
+  ReadingBinaryPayload,
+  ReadingJsonPayload,
 };
 
 interface ParseResult {
   done: boolean;
   cmd?: string;
-  payload?: Uint8Array;
+  payload?: Uint8Array | object;
 };
 
 class MessageParser {
@@ -143,10 +148,12 @@ class MessageParser {
   cmd_: string = '';
   payload_size_: number = 0;
 
+  string_payload_: string = '';
   payload_: Uint8Array = new Uint8Array(0);
   payload_offset_: number = 0;
 
   constructor() {
+    console.log('MessageParser created');
   }
 
   push(byte: number): ParseResult {
@@ -155,9 +162,9 @@ class MessageParser {
         let ch = String.fromCharCode(byte);
         if (ch == '@') {
           this.state_ = ParserState.ReadingSize;
-          console.log('received @: cmd: ', this.cmd_);
+        } else if (ch == ':') {
+          this.state_ = ParserState.ReadingJsonPayload;
         } else if (ch == '\n') {
-          console.log('received LF: cmd: ', this.cmd_);
           let ret = { done: true, cmd: this.cmd_, payload: new Uint8Array(0) };
           this.reset();
           return ret;
@@ -169,8 +176,6 @@ class MessageParser {
       case ParserState.ReadingSize: {
         let ch = String.fromCharCode(byte);
         if (ch == '#') {
-          console.log('received #: payload size: ', this.payload_size_);
-
           if (this.payload_size_ == 0) {
             let ret = { done: true, cmd: this.cmd_, payload: new Uint8Array(0) };
             this.reset();
@@ -183,7 +188,7 @@ class MessageParser {
           if (ch >= '0' && ch <= '9') {
             this.payload_size_ = this.payload_size_ * 10 + parseInt(ch);
           } else {
-            console.error('Error: ReadingSize: Invalid character: ', ch);
+            //logger.error('Error: ReadingSize: Invalid character: ', ch);
             this.reset();
             return { done: false };
           }
@@ -193,11 +198,28 @@ class MessageParser {
       case ParserState.ReadingBinaryPayload: {
         this.payload_[this.payload_offset_] = byte;
         this.payload_offset_ += 1;
-        console.log('received: ', byte.toString(16), " - ", this.payload_offset_, '/', this.payload_size_);
         if (this.payload_offset_ == this.payload_size_) {
           let ret = { done: true, cmd: this.cmd_, payload: this.payload_ };
           this.reset();
           return ret;
+        }
+        break;
+      }
+      case ParserState.ReadingJsonPayload: {
+        let ch = String.fromCharCode(byte);
+        this.string_payload_ += ch;
+        if (ch == '\n') {
+          try {
+            let payload = JSON.parse(this.string_payload_);
+            let ret = { done: true, cmd: this.cmd_, payload: payload };
+            this.reset();
+            return ret;
+          } catch (e) {
+            // Not json. It might be a debug log from the firmware.
+            console.info('from FW>>' + this.cmd_ + ':' + this.string_payload_);
+            this.reset();
+            break;
+          }
         }
         break;
       }
@@ -207,6 +229,7 @@ class MessageParser {
 
   reset() {
     this.cmd_ = '';
+    this.string_payload_ = '';
     this.payload_size_ = 0;
     this.payload_ = new Uint8Array(0);
     this.state_ = ParserState.ReadingCommand;

@@ -1,8 +1,8 @@
-import { Provider } from '@angular/core';
 import log, { getLogger } from 'loglevel';
 import { environment } from '../environments/environment';
 
 export class Logger {
+    [x: string]: any;
     impl_: log.Logger;
 
     constructor(impl: log.Logger) {
@@ -46,6 +46,4 @@ function loggerFactory() {
     return new Logger(logger);
 }
 
-export function provideLogger(): Provider {
-    return { provide: Logger, useFactory: loggerFactory };
-};
+export let logger: Logger = loggerFactory();

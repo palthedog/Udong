@@ -2,10 +2,10 @@ import { CommonModule } from '@angular/common';
 import { Component, Input, Output, inject } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { AppConsts } from '../consts';
-import { Logger } from '../logger';
 import { SwitchId, SwitchType, UdongConfig } from '../../proto/config';
 import { SwitchIdToButtonId, SwitchIdToGroupId } from '../config_util';
 import { BoardInfo, BoardInfoProvider, SwitchInfo } from '../board_info/board_info';
+import { logger } from '../logger';
 
 @Component({
   selector: 'app-board-buttons',
@@ -15,8 +15,6 @@ import { BoardInfo, BoardInfoProvider, SwitchInfo } from '../board_info/board_in
   styleUrl: './board-buttons.component.scss'
 })
 export class BoardButtonsComponent {
-  log = inject(Logger);
-
   board_info_provider = inject(BoardInfoProvider);
 
   @Input()
@@ -47,7 +45,7 @@ export class BoardButtonsComponent {
       let group_id = SwitchIdToGroupId(this.config, switch_id);
       return this.app_consts.configGroupColor(group_id!);
     }
-    this.log.error('Unknown switch_id.type: ', switch_id);
+    logger.error('Unknown switch_id.type: ', switch_id);
 
     return '#fff';
   }
@@ -58,7 +56,7 @@ export class BoardButtonsComponent {
   }
 
   onClickButton(switch_id: SwitchId) {
-    this.log.debug('button clicked', switch_id);
+    logger.debug('button clicked', switch_id);
     this.activeSwitchIdChanged.next(switch_id);
   }
 }
