@@ -2,8 +2,18 @@
     margin-bottom: 8px;
 }
 
-.config-panel {
-    // flex: 1;
+.upper-container {
+    display: flex;
+}
+
+.board-container {
+    flex: 1;
+    height: 300px;
+}
+
+.button-preview-container {
+    flex: 3;
+    height: 300px;
 }
 
 .configulator-container {

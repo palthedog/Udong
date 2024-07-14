@@ -8,6 +8,7 @@
 #include "decaproto/encoder.h"
 #include "decaproto/stream/stl.h"
 #include "proto/config.pb.h"
+#include "proto/rpc.pb.h"
 
 namespace {
 
@@ -34,26 +35,30 @@ void HandleGet(Udong& context, const String& cmd) {
   SendJsonResponse(cmd, json_response);
 }
 
-void HandleGetConfig(Udong& context, const String& cmd) {
+bool SendProto(const char* cmd, const decaproto::Message& msg) {
   std::ostringstream oss;
   decaproto::StlOutputStream sos(&oss);
   size_t written_size;
 
-  UdongConfig config = context.GetConfig();
-  if (!EncodeMessage(sos, config, written_size)) {
-    Serial.println("Failed to encode the message");
-    return;
+  if (!EncodeMessage(sos, msg, written_size)) {
+    Serial.println("Failed to encode a message");
+    return false;
   }
 
   std::string payload = oss.str();
-  Serial.printf("Encoded message size: %d %d\n", written_size, payload.size());
+  Serial.printf("%s@%u#", cmd, written_size);
+  Serial.write(payload.data(), payload.size());
   Serial.flush();
 
-  Serial.printf("%s@%u#", cmd.c_str(), written_size);
-  size_t sent = Serial.write(payload.data(), payload.size());
-  Serial.flush();
+  return true;
+}
 
-  Serial.printf("Encoded message sent: %d\n", sent);
+void HandleGetConfig(Udong& context, const String& cmd) {
+  UdongConfig config = context.GetConfig();
+  if (!SendProto(cmd.c_str(), config)) {
+    Serial.println("Faild to send UdongConfig");
+    return;
+  }
 }
 
 void HandleSaveConfig(Udong& context, const UdongConfig& udong_config) {
@@ -66,6 +71,23 @@ void HandleSaveConfig(Udong& context, const UdongConfig& udong_config) {
 }
 
 }  // namespace
+
+void SerialHandler::PushAnalogSwitchState(Udong& context) {
+  switch_state_history_.PushAnalogSwitchState(context);
+}
+
+void SerialHandler::HandleGetAnalogSwitchStateRequest(
+    Udong& context,
+    const String& cmd,
+    const GetAnalogSwitchStateRequest& request) {
+  Serial.println("GetAnalogSwitchStateRequest");
+  GetAnalogSwitchStateResponse response =
+      switch_state_history_.GetAnalogSwitchStateHistory(request);
+  if (!SendProto(cmd.c_str(), response)) {
+    Serial.println("Faild to send get-analog-switch-state response");
+    return;
+  }
+}
 
 void SerialHandler::ReadCommand(Udong& context) {
   while (Serial.available()) {
@@ -120,6 +142,11 @@ void SerialHandler::ReadPayloadSize(Udong& context) {
       // End of the payload size.
       // Start reading the binary payload.
       state_ = State::kReadingBinaryPayload;
+      if (payload_size_ == 0) {
+        // Payload size is zero
+        HandleBinaryCommand(context, payload_buffer_.data(), 0);
+        return;
+      }
       return;
     } else {
       payload_size_ = payload_size_ * 10 + (ch - '0');
@@ -174,6 +201,12 @@ void SerialHandler::HandleBinaryCommand(
     // printUdonConfig(config);
 
     HandleSaveConfig(context, config);
+  } else if (command_ == "get-analog-switch-state") {
+    CstrInputStream cis((const char*)binary, size);
+    GetAnalogSwitchStateRequest req;
+    DecodeMessage(cis, &req);
+
+    HandleGetAnalogSwitchStateRequest(context, command_, req);
   } else {
     Serial.printf("unknown-cmd: %s\n", command_.c_str());
   }

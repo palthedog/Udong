@@ -9,19 +9,16 @@
 </div>
 
 <ng-container *ngIf="config">
-    <app-board-buttons
-        class="board-container"
-        [config]="config!"
-        [active_switch_id]="active_switch_id"
-        (activeSwitchIdChanged)="setActiveSwitchId($event)"
-    >
-    </app-board-buttons>
-
-    <app-button-preview>
-    </app-button-preview>
-
+    <div class="upper-container">
+        <div class="board-container">
+            <app-board-buttons
+                [config]="config!"
+                [active_switch_id]="active_switch_id"
+                (activeSwitchIdChanged)="setActiveSwitchId($event)"
+            />
+        </div>
+    </div>
     <mat-divider style="margin-bottom: 8px"></mat-divider>
-
     <div
         class="configulator-container"
         matRipple
@@ -55,7 +52,7 @@
 
                 <!-- Config Group -->
                 <app-group-selector
-                    *ngIf="activeSwitchConfig() as aconf"
+                    *ngIf="activeAnalogSwitchConfig() as aconf"
                     [assignment]="aconf"
                     [group_ids]="group_ids"
                     (selectorClosed)="onGroupSelected()"
@@ -65,11 +62,18 @@
             </mat-card-content>
         </mat-card>
 
-        <app-analog-switch-config
-            *ngIf="activeSwitchGroup() as cfg"
-            class="switch-item config-panel"
-            [config]="cfg"
-        >
-        </app-analog-switch-config>
+        <ng-container *ngIf="activeAnalogSwitchGroup() as cfg">
+            <app-analog-switch-config
+                *ngIf="activeAnalogSwitchGroup() as cfg"
+                class="switch-item config-panel"
+                [config]="cfg"
+            >
+            </app-analog-switch-config>
+            <app-button-preview
+                class="button-preview-container"
+                [active_analog_switch_id]="active_switch_id.id"
+                [analog_switch_group_config]="cfg"
+            />
+        </ng-container>
     </div>
 </ng-container>

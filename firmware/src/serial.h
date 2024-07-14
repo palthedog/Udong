@@ -1,6 +1,7 @@
 #ifndef SERIAL_H
 #define SERIAL_H
 
+#include "switch_state_history.h"
 #include "udong.h"
 
 // A class handling serial communication with Web-Configurator.
@@ -40,6 +41,8 @@ class SerialHandler {
   String command_;
   size_t payload_size_;
 
+  SwitchStateHistory switch_state_history_;
+
   void Reset() {
     state_ = kReadingCommand;
     payload_buffer_.clear();
@@ -50,8 +53,12 @@ class SerialHandler {
   void HandleCmd(Udong& context, const String& cmd);
   void HandleJsonCmd(
       Udong& context, const String& cmd, const JsonDocument& arg);
-
   void HandleBinaryCommand(Udong& context, const uint8_t* binary, size_t size);
+
+  void HandleGetAnalogSwitchStateRequest(
+      Udong& context,
+      const String& cmd,
+      const GetAnalogSwitchStateRequest& request);
 
   void ReadCommand(Udong& context);
   void ReadJsonPayload(Udong& context);
@@ -59,7 +66,12 @@ class SerialHandler {
   void ReadBinaryPayload(Udong& context);
 
  public:
+  SerialHandler() {
+  }
+
   void HandleSerial(Udong& context);
+
+  void PushAnalogSwitchState(Udong& context);
 };
 
 #endif

@@ -20,7 +20,13 @@
 const uint32_t kAdcBits = 12;
 
 SerialHandler serial_handler;
-Udong udong;
+
+void OnReportSent();
+Udong udong(OnReportSent);
+
+void OnReportSent() {
+  serial_handler.PushAnalogSwitchState(udong);
+}
 
 void setup() {
   analogReadResolution(kAdcBits);
@@ -78,26 +84,13 @@ Throttling teleplot_runner(10, []() {
 #endif
 });
 
-Throttling calibration_runner(100, []() {
-  for (auto& analog_switch : udong.GetAnalogSwitches()) {
-    if (analog_switch->NeedRecalibration()) {
-      Serial.printf("Calibrate switch-%d\n", analog_switch->GetId());
-      analog_switch->Calibrate();
-
-      // Do NOT calibrate multiple switches at once since it is a bit heavy
-      // routine.
-      break;
-    }
-  }
-});
-
 // uint32_t last_report_t = 1000;
 void loop() {
   serial_handler.HandleSerial(udong);
 
-  // TODO: Refactoring...
-  uint32_t now = time_us_32();
-  calibration_runner.MaybeRun(now);
-  teleplot_runner.MaybeRun(now);
+#if TELEPLOT
+  teleplot_runner.MaybeRun(time_us_32());
+#endif
+
   udong.Loop();
 }

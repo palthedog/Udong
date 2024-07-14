@@ -86,7 +86,7 @@ export class ConfiguratorComponent {
     this.active_group_id = group_id;
   }
 
-  activeSwitchConfig(): AnalogSwitchConfig | null {
+  activeAnalogSwitchConfig(): AnalogSwitchConfig | null {
     if (this.active_switch_id.type != SwitchType.ANALOG_SWITCH) {
       return null;
     }
@@ -95,7 +95,10 @@ export class ConfiguratorComponent {
     })!;
   }
 
-  activeSwitchGroup(): AnalogSwitchGroup {
+  activeAnalogSwitchGroup(): AnalogSwitchGroup | null {
+    if (this.active_switch_id.type != SwitchType.ANALOG_SWITCH) {
+      return null;
+    }
     return this.config!.analog_switch_groups.find((group) => {
       return group.analog_switch_group_id == this.active_group_id;
     })!;

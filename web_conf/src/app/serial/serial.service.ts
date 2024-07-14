@@ -86,7 +86,7 @@ export class SerialService extends SerialServiceInterface {
       return;
     }
     const writer = this.port.writable.getWriter();
-    console.log('sending: <binary> size: ', payload.length);
+    //console.log('sending: <binary> size: ', payload.length);
     await writer.write(this.text_encoder.encode(cmd + '@' + payload.length + '#'));
     await writer.write(payload);
     writer.releaseLock();

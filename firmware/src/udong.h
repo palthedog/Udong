@@ -19,10 +19,12 @@
 #include "io_utils/multiplexer.h"
 #include "io_utils/soft/triangle.h"
 #include "proto/config.pb.h"
+#include "proto/rpc.pb.h"
 #include "switch/analog_switch.h"
 #include "switch/digital_switch.h"
 #include "switch/triggers/rapid_trigger.h"
 #include "switch/triggers/static_trigger.h"
+#include "throttling.h"
 
 // context
 class Udong {
@@ -45,6 +47,8 @@ class Udong {
   GamepadReport gamepad_report;
   Adafruit_USBD_HID usb_hid;
 
+  std::function<void()> on_report_sent_;
+
   void FillGamepadReport() {
     // Buttons
     gamepad_report.Clear();
@@ -57,7 +61,7 @@ class Udong {
 
   bool MaybeSendReport() {
     if (!usb_hid.ready()) {
-      delayMicroseconds(50);
+      delayMicroseconds(0);
       return false;
     }
 
@@ -65,7 +69,9 @@ class Udong {
     if (!usb_hid.sendReport(0, &gamepad_report, sizeof(gamepad_report))) {
       Serial.println("Failed to send report");
     }
+    this->on_report_sent_();
 
+    // Since we set polling rate 1000hz, we need to wait for 1ms here.
     // Consider using sleep_until? (with performance measurement of loop())
     delayMicroseconds(500);
     return true;
@@ -215,11 +221,28 @@ class Udong {
     }
   }
 
+  Throttling update_led_;
+  Throttling calibration_runner_;
+
  public:
   // TODO: Move it to private.
   std::unique_ptr<Board> circuit;
 
-  Udong() {
+  Udong(const std::function<void()>& on_report_sent)
+      : on_report_sent_(on_report_sent),
+        update_led_(
+            10, [&]() { circuit->GetPowerLed().Write(triangle_in_.Read()); }),
+        calibration_runner_(1000, [&]() {
+          for (auto& analog_switch : this->GetAnalogSwitches()) {
+            if (analog_switch->NeedRecalibration()) {
+              Serial.printf("Calibrate switch-%d\n", analog_switch->GetId());
+              analog_switch->Calibrate();
+              // Do NOT calibrate multiple switches at once since it is a bit
+              // heavy routine.
+              break;
+            }
+          }
+        }) {
     usb_hids_setup_completed = false;
 
     gamepad_report.d_pad = GAMEPAD_HAT_CENTERED;
@@ -227,7 +250,9 @@ class Udong {
   }
 
   void Loop() {
-    circuit->GetPowerLed().Write(triangle_in_.Read());
+    uint32_t now = time_us_32();
+    update_led_.MaybeRun(now);
+    calibration_runner_.MaybeRun(now);
 
     MaybeSendReport();
   }

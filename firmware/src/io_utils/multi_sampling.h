@@ -7,12 +7,12 @@
 #include "io.h"
 
 template <int BufferSize>
-class RingBuffer {
+class RingBufferUint16 {
   std::vector<uint16_t> buffer_;
   size_t ins_pos_;
 
  public:
-  RingBuffer() : ins_pos_(0) {
+  RingBufferUint16() : ins_pos_(0) {
   }
 
   inline void push(uint16_t v) {
@@ -40,7 +40,7 @@ class RingBuffer {
 template <int BufferSize, int DropMinNum, int DropMaxNum>
 class MultiSampling : public AnalogInput {
   std::shared_ptr<AnalogInput> source_input_;
-  RingBuffer<BufferSize> buffer_;
+  RingBufferUint16<BufferSize> buffer_;
   std::vector<uint16_t> sorted_;
 
  public:

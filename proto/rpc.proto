@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+message GetAnalogSwitchStateRequest {
+  uint32 analog_switch_id = 1;
+}
+
+message AnalogSwitchState {
+  // The timestamp in micro seconds.
+  // Note that this value may wrap roughly every 1 hour 11 minutes.
+  uint32 timestamp_us = 1;
+
+  double pressed_mm = 2;
+}
+
+message GetAnalogSwitchStateResponse {
+  repeated AnalogSwitchState states = 1;
+}

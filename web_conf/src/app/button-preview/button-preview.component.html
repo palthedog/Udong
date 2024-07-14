@@ -1,1 +1,10 @@
-<p>{{press_mm.toFixed(3)}} mm</p>
+<div style="height:100%">
+    <canvas
+        baseChart
+        [type]="'line'"
+        [data]="data"
+        [options]="options"
+    ></canvas>
+    <div>Polling-rate: {{polling_rate.toFixed(0)}}</div>
+    <div>Pressed: {{press_mm.toFixed(3)}} mm</div>
+</div>
