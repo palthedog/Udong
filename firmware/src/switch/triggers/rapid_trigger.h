@@ -85,9 +85,12 @@ class RapidTrigger : public Trigger {
 
   virtual void FillTriggerState(AnalogSwitchState& state) const {
     RapidTriggerState& trigger_state = *state.mutable_rapid_trigger();
-    trigger_state.set_actuation_point_mm(
-        shallow_point_mm_ + actuation_distance_mm_);
-    trigger_state.set_release_point_mm(deep_point_mm_ - release_distance_mm_);
+    if (current_state_) {
+      trigger_state.set_release_point_mm(deep_point_mm_ - release_distance_mm_);
+    } else {
+      trigger_state.set_actuation_point_mm(
+          shallow_point_mm_ + actuation_distance_mm_);
+    }
   }
 
   virtual void TelePrint(int switch_id) const override {

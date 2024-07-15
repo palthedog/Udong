@@ -43,7 +43,7 @@ export class ButtonPreviewComponent {
   @ViewChild(BaseChartDirective)
   chart!: BaseChartDirective;
 
-  data: ChartData<'line', number[], number> = {
+  data: ChartData<'line', (number | null)[], number> = {
     datasets: [
     ],
     labels: []
@@ -220,7 +220,7 @@ export class ButtonPreviewComponent {
         // Calculate polling rate
         if (res.states.length > 1) {
           let duration_us = res.states[res.states.length - 1].timestamp_us - res.states[0].timestamp_us;
-          this.polling_rate = res.states.length / (duration_us / 1000000);
+          this.polling_rate = (res.states.length - 1) / (duration_us / 1000000);
         }
 
         for (let i = 0; i < res.states.length; i++) {
@@ -228,17 +228,24 @@ export class ButtonPreviewComponent {
           this.data.labels!.push(state.timestamp_us);
           this.data.datasets[kIndexPressMm].data.push(state.pressed_mm);
           this.data.datasets[kIndexPollingRate].data.push(this.polling_rate);
+          this.data.datasets[kIndexButtonState].data.push(state.is_triggered ? 1 : 0);
 
           if (state.has_rapid_trigger) {
             let trigger_state = state.rapid_trigger;
-            this.data.datasets[kIndexActuationPoint].data.push(trigger_state.actuation_point_mm);
-            this.data.datasets[kIndexReleasePoint].data.push(trigger_state.release_point_mm);
+            let rel = null;
+            let act = null;
+            if (state.is_triggered) {
+              rel = trigger_state.release_point_mm;
+            } else {
+              act = trigger_state.actuation_point_mm;
+            }
+            this.data.datasets[kIndexReleasePoint].data.push(rel);
+            this.data.datasets[kIndexActuationPoint].data.push(act);
           } else if (state.has_static_trigger) {
             let trigger_state = state.static_trigger;
             this.data.datasets[kIndexActuationPoint].data.push(trigger_state.actuation_point_mm);
             this.data.datasets[kIndexReleasePoint].data.push(trigger_state.release_point_mm);
           }
-          this.data.datasets[kIndexButtonState].data.push(state.is_triggered ? 1 : 0);
 
           this.press_mm = state.pressed_mm;
         }
@@ -256,7 +263,7 @@ export class ButtonPreviewComponent {
       if (this.connected && !this.paused) {
         setTimeout(() => {
           this.sendGetAnalogSwitchState();
-        }, 5);
+        }, 1);
       } else {
         logger.info('Serial port is disconnected');
       }

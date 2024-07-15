@@ -30,7 +30,7 @@ void OnReportSent() {
 
   uint32_t now = time_us_32();
   uint32_t dt = now - sent_time;
-  if (dt > 10000) {
+  if (dt > 5000) {
     Serial.printf(
         "Low polling rate detected: %lu Hz, dt: %lu us\n", 1000000 / dt, dt);
   }
