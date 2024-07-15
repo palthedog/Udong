@@ -29,6 +29,13 @@ export class BoardButtonsComponent {
 
   app_consts = inject(AppConsts);
 
+  ngOnInit() {
+    let board_info = this.board_info;
+    if (board_info.switches.length > 0) {
+      this.active_switch_id = board_info.switches[0].switch_id;
+    }
+  }
+
   get board_info(): BoardInfo {
     let board_names = this.board_info_provider.getAllBoardNames();
     return this.board_info_provider.get(board_names[0])!;
