@@ -217,12 +217,12 @@ export class ButtonPreviewComponent {
       }
       let res = GetAnalogSwitchStateResponse.deserializeBinary(v);
       if (res.states.length > 0) {
+        // Calculate polling rate
         if (res.states.length > 1) {
           let duration_us = res.states[res.states.length - 1].timestamp_us - res.states[0].timestamp_us;
           this.polling_rate = res.states.length / (duration_us / 1000000);
         }
 
-        let latest_us = 0;
         for (let i = 0; i < res.states.length; i++) {
           let state = res.states[i];
           this.data.labels!.push(state.timestamp_us);
@@ -241,9 +241,9 @@ export class ButtonPreviewComponent {
           this.data.datasets[kIndexButtonState].data.push(state.is_triggered ? 1 : 0);
 
           this.press_mm = state.pressed_mm;
-          latest_us = state.timestamp_us;
         }
 
+        let latest_us = res.states[res.states.length - 1].timestamp_us;
         let min_us = latest_us - 3000 * 1000;
         let max_us = latest_us;
 
@@ -256,7 +256,7 @@ export class ButtonPreviewComponent {
       if (this.connected && !this.paused) {
         setTimeout(() => {
           this.sendGetAnalogSwitchState();
-        }, 4);
+        }, 5);
       } else {
         logger.info('Serial port is disconnected');
       }
@@ -264,14 +264,8 @@ export class ButtonPreviewComponent {
   }
 
   sendGetAnalogSwitchState() {
-    //logger.trace('send GetAnalogSwitchStateRequest: ', this.active_analog_switch_id);
     let request = new GetAnalogSwitchStateRequest();
     request.analog_switch_id = this.active_analog_switch_id;
     this.serial_service.SendBinary('get-analog-switch-state', request.serializeBinary());
   }
-
-  ngOnShow() {
-    logger.debug('ButtonPreviewComponent shown');
-  }
-
 };

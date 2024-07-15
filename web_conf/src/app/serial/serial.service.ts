@@ -91,7 +91,6 @@ export class SerialService extends SerialServiceInterface {
       }
       try {
         const writer = this.port.writable.getWriter();
-        //console.log('sending: <binary> size: ', payload.length);
         await writer.write(this.text_encoder.encode(cmd + '@' + payload.length + '#'));
         await writer.write(payload);
         writer.releaseLock();
@@ -175,6 +174,7 @@ class MessageParser {
           this.state_ = ParserState.ReadingJsonPayload;
         } else if (ch == '\n') {
           let ret = { done: true, cmd: this.cmd_, payload: new Uint8Array(0) };
+          console.log('cmd:', this.cmd_);
           this.reset();
           return ret;
         } else {
@@ -225,7 +225,7 @@ class MessageParser {
             return ret;
           } catch (e) {
             // Not json. It might be a debug log from the firmware.
-            console.info('from FW>>' + this.cmd_ + ':' + this.string_payload_);
+            console.info(this.cmd_ + ':' + this.string_payload_);
             this.reset();
             break;
           }

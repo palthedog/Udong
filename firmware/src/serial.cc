@@ -80,7 +80,6 @@ void SerialHandler::HandleGetAnalogSwitchStateRequest(
     Udong& context,
     const String& cmd,
     const GetAnalogSwitchStateRequest& request) {
-  Serial.println("GetAnalogSwitchStateRequest");
   GetAnalogSwitchStateResponse response =
       switch_state_history_.GetAnalogSwitchStateHistory(request);
   if (!SendProto(cmd.c_str(), response)) {
@@ -200,6 +199,7 @@ void SerialHandler::HandleBinaryCommand(
     HandleSaveConfig(context, config);
   } else if (command_ == "get-analog-switch-state") {
     CstrInputStream cis((const char*)binary, size);
+
     GetAnalogSwitchStateRequest req;
     DecodeMessage(cis, &req);
 
