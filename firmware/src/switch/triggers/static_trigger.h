@@ -28,7 +28,13 @@ class StaticTrigger : public Trigger {
     return current_state_;
   }
 
-  virtual void TelePrint(int switch_id) override {
+  virtual void FillTriggerState(AnalogSwitchState& state) const {
+    StaticTriggerState& trigger_state = *state.mutable_static_trigger();
+    trigger_state.set_actuation_point_mm(actuation_point_mm_);
+    trigger_state.set_release_point_mm(release_point_mm_);
+  }
+
+  virtual void TelePrint(int switch_id) const override {
 #if TELEPLOT
     Serial.printf(">act%02d:%lf\n", switch_id, actuation_point_mm_);
     Serial.printf(">rel%02d:%lf\n", switch_id, release_point_mm_);

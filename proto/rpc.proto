@@ -23,6 +23,7 @@ message AnalogSwitchState {
   uint32 analog_switch_id = 3;
 
   double pressed_mm = 2;
+  bool is_triggered = 6;
 
   oneof trigger {
     RapidTriggerState rapid_trigger = 4;

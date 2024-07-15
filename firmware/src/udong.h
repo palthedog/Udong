@@ -65,7 +65,7 @@ class Udong {
 
   bool MaybeSendReport() {
     if (!usb_hid.ready()) {
-      // delayMicroseconds(20);
+      delayMicroseconds(10);
       return false;
     }
 

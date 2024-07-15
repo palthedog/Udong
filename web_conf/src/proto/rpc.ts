@@ -257,6 +257,7 @@ export class AnalogSwitchState extends pb_1.Message {
         timestamp_us?: number;
         analog_switch_id?: number;
         pressed_mm?: number;
+        is_triggered?: boolean;
     } & (({
         rapid_trigger?: RapidTriggerState;
         static_trigger?: never;
@@ -275,6 +276,9 @@ export class AnalogSwitchState extends pb_1.Message {
             }
             if ("pressed_mm" in data && data.pressed_mm != undefined) {
                 this.pressed_mm = data.pressed_mm;
+            }
+            if ("is_triggered" in data && data.is_triggered != undefined) {
+                this.is_triggered = data.is_triggered;
             }
             if ("rapid_trigger" in data && data.rapid_trigger != undefined) {
                 this.rapid_trigger = data.rapid_trigger;
@@ -301,6 +305,12 @@ export class AnalogSwitchState extends pb_1.Message {
     }
     set pressed_mm(value: number) {
         pb_1.Message.setField(this, 2, value);
+    }
+    get is_triggered() {
+        return pb_1.Message.getFieldWithDefault(this, 6, false) as boolean;
+    }
+    set is_triggered(value: boolean) {
+        pb_1.Message.setField(this, 6, value);
     }
     get rapid_trigger() {
         return pb_1.Message.getWrapperField(this, RapidTriggerState, 4) as RapidTriggerState;
@@ -334,6 +344,7 @@ export class AnalogSwitchState extends pb_1.Message {
         timestamp_us?: number;
         analog_switch_id?: number;
         pressed_mm?: number;
+        is_triggered?: boolean;
         rapid_trigger?: ReturnType<typeof RapidTriggerState.prototype.toObject>;
         static_trigger?: ReturnType<typeof StaticTriggerState.prototype.toObject>;
     }): AnalogSwitchState {
@@ -346,6 +357,9 @@ export class AnalogSwitchState extends pb_1.Message {
         }
         if (data.pressed_mm != null) {
             message.pressed_mm = data.pressed_mm;
+        }
+        if (data.is_triggered != null) {
+            message.is_triggered = data.is_triggered;
         }
         if (data.rapid_trigger != null) {
             message.rapid_trigger = RapidTriggerState.fromObject(data.rapid_trigger);
@@ -360,6 +374,7 @@ export class AnalogSwitchState extends pb_1.Message {
             timestamp_us?: number;
             analog_switch_id?: number;
             pressed_mm?: number;
+            is_triggered?: boolean;
             rapid_trigger?: ReturnType<typeof RapidTriggerState.prototype.toObject>;
             static_trigger?: ReturnType<typeof StaticTriggerState.prototype.toObject>;
         } = {};
@@ -371,6 +386,9 @@ export class AnalogSwitchState extends pb_1.Message {
         }
         if (this.pressed_mm != null) {
             data.pressed_mm = this.pressed_mm;
+        }
+        if (this.is_triggered != null) {
+            data.is_triggered = this.is_triggered;
         }
         if (this.rapid_trigger != null) {
             data.rapid_trigger = this.rapid_trigger.toObject();
@@ -390,6 +408,8 @@ export class AnalogSwitchState extends pb_1.Message {
             writer.writeUint32(3, this.analog_switch_id);
         if (this.pressed_mm != 0)
             writer.writeDouble(2, this.pressed_mm);
+        if (this.is_triggered != false)
+            writer.writeBool(6, this.is_triggered);
         if (this.has_rapid_trigger)
             writer.writeMessage(4, this.rapid_trigger, () => this.rapid_trigger.serialize(writer));
         if (this.has_static_trigger)
@@ -411,6 +431,9 @@ export class AnalogSwitchState extends pb_1.Message {
                     break;
                 case 2:
                     message.pressed_mm = reader.readDouble();
+                    break;
+                case 6:
+                    message.is_triggered = reader.readBool();
                     break;
                 case 4:
                     reader.readMessage(message.rapid_trigger, () => message.rapid_trigger = RapidTriggerState.deserialize(reader));

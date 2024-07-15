@@ -85,6 +85,7 @@ class AnalogSwitch : public Switch {
   double last_mag_flux_;
   double last_press_mm_;
   uint16_t last_analog_;
+  bool last_triggered_;
 
   // array[0] : B @ far_mm + 0.0mm (bottom)
   // array[1] : B @ far_mm + 0.1mm
@@ -203,8 +204,16 @@ class AnalogSwitch : public Switch {
     }
 
     last_press_mm_ = LookupPressMmFromMagFlux(last_mag_flux_);
+    last_triggered_ = trigger_->Triggered(last_press_mm_);
 
-    return trigger_->Triggered(last_press_mm_);
+    return last_triggered_;
+  }
+
+  void FillAnalogSwitchState(AnalogSwitchState& state) {
+    state.set_analog_switch_id(id_);
+    state.set_pressed_mm(last_press_mm_);
+    state.set_is_triggered(last_triggered_);
+    trigger_->FillTriggerState(state);
   }
 
   void TelePrint() {

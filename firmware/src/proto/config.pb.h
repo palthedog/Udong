@@ -1,5 +1,6 @@
 #pragma once
 
+#include "decaproto/reflection.h"
 #include "decaproto/field.h"
 #include <memory>
 #include <stdint.h>
@@ -7,7 +8,6 @@
 #include <vector>
 #include "decaproto/message.h"
 #include "decaproto/descriptor.h"
-#include "decaproto/reflection.h"
 
 class AnalogSwitchConfig;
 class AnalogSwitchGroup;

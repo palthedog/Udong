@@ -1,13 +1,13 @@
 #pragma once
 
+#include <string>
+#include <vector>
 #include "decaproto/message.h"
 #include "decaproto/descriptor.h"
 #include "decaproto/reflection.h"
 #include "decaproto/field.h"
 #include <memory>
 #include <stdint.h>
-#include <string>
-#include <vector>
 
 class GetAnalogSwitchStateRequest;
 class RapidTriggerState;
@@ -134,6 +134,7 @@ public:
         : timestamp_us__(uint32_t())
         , analog_switch_id__(uint32_t())
         , pressed_mm__(double())
+        , is_triggered__(bool())
         , rapid_trigger__()
         , has_rapid_trigger__(false)
         , static_trigger__()
@@ -176,6 +177,18 @@ public:
 
 	inline void clear_pressed_mm() {
 	    pressed_mm__ = double();
+	}
+
+	inline bool is_triggered() const {
+	    return is_triggered__;
+	}
+
+	inline void set_is_triggered( bool value) {
+	    is_triggered__ = value;
+	}
+
+	inline void clear_is_triggered() {
+	    is_triggered__ = bool();
 	}
 
 	// Getter for rapid_trigger
@@ -242,6 +255,7 @@ private:
     uint32_t timestamp_us__;
     uint32_t analog_switch_id__;
     double pressed_mm__;
+    bool is_triggered__;
     mutable decaproto::SubMessagePtr<RapidTriggerState> rapid_trigger__;
     bool has_rapid_trigger__;
     mutable decaproto::SubMessagePtr<StaticTriggerState> static_trigger__;
@@ -367,6 +381,13 @@ message_type: {
         json_name: "pressedMm"
     }
     field: {
+        name: "is_triggered"
+        number: 6
+        label: LABEL_OPTIONAL
+        type: TYPE_BOOL
+        json_name: "isTriggered"
+    }
+    field: {
         name: "rapid_trigger"
         number: 4
         label: LABEL_OPTIONAL
@@ -403,7 +424,7 @@ source_code_info: {
     location: {
         span: 0
         span: 0
-        span: 34
+        span: 35
         span: 1
     }
     location: {
@@ -660,7 +681,7 @@ source_code_info: {
         path: 3
         span: 16
         span: 0
-        span: 30
+        span: 31
         span: 1
     }
     location: {
@@ -793,11 +814,50 @@ source_code_info: {
     location: {
         path: 4
         path: 3
+        path: 2
+        path: 3
+        span: 25
+        span: 2
+        span: 24
+    }
+    location: {
+        path: 4
+        path: 3
+        path: 2
+        path: 3
+        path: 5
+        span: 25
+        span: 2
+        span: 6
+    }
+    location: {
+        path: 4
+        path: 3
+        path: 2
+        path: 3
+        path: 1
+        span: 25
+        span: 7
+        span: 19
+    }
+    location: {
+        path: 4
+        path: 3
+        path: 2
+        path: 3
+        path: 3
+        span: 25
+        span: 22
+        span: 23
+    }
+    location: {
+        path: 4
+        path: 3
         path: 8
         path: 0
-        span: 26
+        span: 27
         span: 2
-        span: 29
+        span: 30
         span: 3
     }
     location: {
@@ -806,7 +866,7 @@ source_code_info: {
         path: 8
         path: 0
         path: 1
-        span: 26
+        span: 27
         span: 8
         span: 15
     }
@@ -814,8 +874,8 @@ source_code_info: {
         path: 4
         path: 3
         path: 2
-        path: 3
-        span: 27
+        path: 4
+        span: 28
         span: 4
         span: 40
     }
@@ -823,9 +883,9 @@ source_code_info: {
         path: 4
         path: 3
         path: 2
-        path: 3
+        path: 4
         path: 6
-        span: 27
+        span: 28
         span: 4
         span: 21
     }
@@ -833,9 +893,9 @@ source_code_info: {
         path: 4
         path: 3
         path: 2
-        path: 3
+        path: 4
         path: 1
-        span: 27
+        span: 28
         span: 22
         span: 35
     }
@@ -843,9 +903,9 @@ source_code_info: {
         path: 4
         path: 3
         path: 2
+        path: 4
         path: 3
-        path: 3
-        span: 27
+        span: 28
         span: 38
         span: 39
     }
@@ -853,8 +913,8 @@ source_code_info: {
         path: 4
         path: 3
         path: 2
-        path: 4
-        span: 28
+        path: 5
+        span: 29
         span: 4
         span: 42
     }
@@ -862,9 +922,9 @@ source_code_info: {
         path: 4
         path: 3
         path: 2
-        path: 4
+        path: 5
         path: 6
-        span: 28
+        span: 29
         span: 4
         span: 22
     }
@@ -872,9 +932,9 @@ source_code_info: {
         path: 4
         path: 3
         path: 2
-        path: 4
+        path: 5
         path: 1
-        span: 28
+        span: 29
         span: 23
         span: 37
     }
@@ -882,25 +942,25 @@ source_code_info: {
         path: 4
         path: 3
         path: 2
-        path: 4
+        path: 5
         path: 3
-        span: 28
+        span: 29
         span: 40
         span: 41
     }
     location: {
         path: 4
         path: 4
-        span: 32
+        span: 33
         span: 0
-        span: 34
+        span: 35
         span: 1
     }
     location: {
         path: 4
         path: 4
         path: 1
-        span: 32
+        span: 33
         span: 8
         span: 36
     }
@@ -909,7 +969,7 @@ source_code_info: {
         path: 4
         path: 2
         path: 0
-        span: 33
+        span: 34
         span: 2
         span: 40
     }
@@ -919,7 +979,7 @@ source_code_info: {
         path: 2
         path: 0
         path: 4
-        span: 33
+        span: 34
         span: 2
         span: 10
     }
@@ -929,7 +989,7 @@ source_code_info: {
         path: 2
         path: 0
         path: 6
-        span: 33
+        span: 34
         span: 11
         span: 28
     }
@@ -939,7 +999,7 @@ source_code_info: {
         path: 2
         path: 0
         path: 1
-        span: 33
+        span: 34
         span: 29
         span: 35
     }
@@ -949,7 +1009,7 @@ source_code_info: {
         path: 2
         path: 0
         path: 3
-        span: 33
+        span: 34
         span: 38
         span: 39
     }

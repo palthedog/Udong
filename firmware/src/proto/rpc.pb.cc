@@ -131,6 +131,7 @@ const decaproto::Descriptor* AnalogSwitchState::GetDescriptor() const {
     kAnalogSwitchState__Descriptor->RegisterField(decaproto::FieldDescriptor(1, decaproto::FieldType::kUint32));
     kAnalogSwitchState__Descriptor->RegisterField(decaproto::FieldDescriptor(3, decaproto::FieldType::kUint32));
     kAnalogSwitchState__Descriptor->RegisterField(decaproto::FieldDescriptor(2, decaproto::FieldType::kDouble));
+    kAnalogSwitchState__Descriptor->RegisterField(decaproto::FieldDescriptor(6, decaproto::FieldType::kBool));
     kAnalogSwitchState__Descriptor->RegisterField(decaproto::FieldDescriptor(4, decaproto::FieldType::kMessage));
     kAnalogSwitchState__Descriptor->RegisterField(decaproto::FieldDescriptor(5, decaproto::FieldType::kMessage));
     return kAnalogSwitchState__Descriptor;
@@ -171,6 +172,15 @@ const decaproto::Reflection* AnalogSwitchState::GetReflection() const {
     kAnalogSwitchState__Reflection->RegisterGetDouble(
         2,
 		decaproto::MsgCast(&AnalogSwitchState::pressed_mm));
+        
+    // Setter
+    kAnalogSwitchState__Reflection->RegisterSetBool(
+        6,
+		decaproto::MsgCast(&AnalogSwitchState::set_is_triggered));
+    // Getter
+    kAnalogSwitchState__Reflection->RegisterGetBool(
+        6,
+		decaproto::MsgCast(&AnalogSwitchState::is_triggered));
         
     // Mutable getter for rapid_trigger
     kAnalogSwitchState__Reflection->RegisterMutableMessage(

@@ -8,6 +8,14 @@ import { GetAnalogSwitchStateRequest, GetAnalogSwitchStateResponse } from '../..
 
 const kIndexPressMm = 0;
 const kIndexButtonState = 1;
+const kIndexActuationPoint = 2;
+const kIndexReleasePoint = 3;
+const kIndexPollingRate = 4;
+
+const xAxisID = 'xAxis';
+const yMmAxisID = 'yMmAxis';
+const yOnOffAxisID = 'yOnOffAxis';
+const yHzAxisID = 'yHzAxis';
 
 @Component({
   selector: 'app-button-preview',
@@ -37,40 +45,6 @@ export class ButtonPreviewComponent {
 
   data: ChartData<'line', number[], number> = {
     datasets: [
-      {
-        data: [],
-        label: 'Press(mm)',
-        xAxisID: 'xAxis',
-        yAxisID: 'yAxis',
-        normalized: true,
-        order: 0,
-        pointStyle: 'circle',
-
-        borderWidth: 1.0,
-        //showLine: false,
-        pointRadius: 2.0,
-        pointHitRadius: 4,
-      },
-      {
-        data: [],
-        xAxisID: 'xAxis',
-        yAxisID: 'state-y-axis',
-        stepped: 'before',
-        label: 'State(on/off)',
-        normalized: true,
-        order: 1,
-      },
-      {
-        data: [],
-        xAxisID: 'xAxis',
-        yAxisID: 'y-polling-rate',
-        label: 'Polling rate(Hz)',
-        order: 2,
-
-        borderWidth: 0.5,
-        pointRadius: 0,
-        pointHitRadius: 4,
-      }
     ],
     labels: []
   };
@@ -83,12 +57,13 @@ export class ButtonPreviewComponent {
         this.sendGetAnalogSwitchState();
       }
     },
+    aspectRatio: 4.0,
     layout: {
       autoPadding: false,
     },
     animation: false,
     scales: {
-      xAxis: {
+      [xAxisID]: {
         type: 'linear',
         position: 'bottom',
         clip: true,
@@ -109,14 +84,14 @@ export class ButtonPreviewComponent {
           }
         },
       },
-      yAxis: {
+      [yMmAxisID]: {
         type: 'linear',
         position: 'left',
         min: 0.0,
         max: 4.0,
         reverse: true,
       },
-      'state-y-axis': {
+      [yOnOffAxisID]: {
         type: 'linear',
         reverse: true,
         min: 0.0,
@@ -128,7 +103,7 @@ export class ButtonPreviewComponent {
           drawTicks: false,
         },
       },
-      'y-polling-rate': {
+      [yHzAxisID]: {
         type: 'linear',
         min: 0,
         max: 1000.0,
@@ -156,6 +131,72 @@ export class ButtonPreviewComponent {
   }
 
   constructor() {
+    let order = 0;
+    this.data.datasets[kIndexPressMm] = {
+      data: [],
+      label: 'Press(mm)',
+      xAxisID: xAxisID,
+      yAxisID: yMmAxisID,
+      normalized: true,
+      order: order++,
+      pointStyle: 'circle',
+
+      borderWidth: 1.0,
+      //showLine: false,
+      pointRadius: 2.0,
+      pointHitRadius: 4,
+    };
+
+    this.data.datasets[kIndexButtonState] = {
+      data: [],
+      xAxisID: xAxisID,
+      yAxisID: yOnOffAxisID,
+      stepped: 'before',
+      label: 'State(on/off)',
+      normalized: true,
+      order: order++,
+
+      borderWidth: 3,
+      pointRadius: 0,
+      pointHitRadius: 0,
+    };
+
+    this.data.datasets[kIndexActuationPoint] = {
+      data: [],
+      xAxisID: xAxisID,
+      yAxisID: yMmAxisID,
+      label: 'Actuation point(mm)',
+      order: order++,
+
+      borderWidth: 2,
+      pointRadius: 0,
+      pointHitRadius: 0,
+    };
+
+    this.data.datasets[kIndexReleasePoint] = {
+      data: [],
+      xAxisID: xAxisID,
+      yAxisID: yMmAxisID,
+      label: 'Release point(mm)',
+      order: order++,
+
+      borderWidth: 2,
+      pointRadius: 0,
+      pointHitRadius: 0,
+    };
+
+    this.data.datasets[kIndexPollingRate] = {
+      data: [],
+      xAxisID: xAxisID,
+      yAxisID: yHzAxisID,
+      label: 'Polling rate(Hz)',
+      order: order++,
+
+      borderWidth: 0.5,
+      pointRadius: 0,
+      pointHitRadius: 4,
+    };
+
   }
 
   ngOnInit() {
@@ -185,14 +226,25 @@ export class ButtonPreviewComponent {
         for (let i = 0; i < res.states.length; i++) {
           let state = res.states[i];
           this.data.labels!.push(state.timestamp_us);
-          this.data.datasets[0].data.push(state.pressed_mm);
-          this.data.datasets[2].data.push(this.polling_rate);
+          this.data.datasets[kIndexPressMm].data.push(state.pressed_mm);
+          this.data.datasets[kIndexPollingRate].data.push(this.polling_rate);
+
+          if (state.has_rapid_trigger) {
+            let trigger_state = state.rapid_trigger;
+            this.data.datasets[kIndexActuationPoint].data.push(trigger_state.actuation_point_mm);
+            this.data.datasets[kIndexReleasePoint].data.push(trigger_state.release_point_mm);
+          } else if (state.has_static_trigger) {
+            let trigger_state = state.static_trigger;
+            this.data.datasets[kIndexActuationPoint].data.push(trigger_state.actuation_point_mm);
+            this.data.datasets[kIndexReleasePoint].data.push(trigger_state.release_point_mm);
+          }
+          this.data.datasets[kIndexButtonState].data.push(state.is_triggered ? 1 : 0);
 
           this.press_mm = state.pressed_mm;
           latest_us = state.timestamp_us;
         }
 
-        let min_us = latest_us - 2000000;
+        let min_us = latest_us - 3000 * 1000;
         let max_us = latest_us;
 
         this.clipData(min_us);

@@ -24,8 +24,11 @@ class SwitchStateHistory {
   void PushAnalogSwitchState(Udong& udong) {
     AnalogSwitchState state;
     state.set_timestamp_us(time_us_32());
-    state.set_pressed_mm(
-        udong.GetAnalogSwitches()[active_analog_switch_id_]->GetLastPressMm());
+
+    AnalogSwitch* analog_switch =
+        udong.GetAnalogSwitches()[active_analog_switch_id_].get();
+    analog_switch->FillAnalogSwitchState(state);
+
     analog_switch_state_history_.PushBack(state);
   }
 

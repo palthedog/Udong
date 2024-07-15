@@ -83,7 +83,14 @@ class RapidTrigger : public Trigger {
     return current_state_;
   }
 
-  virtual void TelePrint(int switch_id) override {
+  virtual void FillTriggerState(AnalogSwitchState& state) const {
+    RapidTriggerState& trigger_state = *state.mutable_rapid_trigger();
+    trigger_state.set_actuation_point_mm(
+        shallow_point_mm_ + actuation_distance_mm_);
+    trigger_state.set_release_point_mm(deep_point_mm_ - release_distance_mm_);
+  }
+
+  virtual void TelePrint(int switch_id) const override {
 #if TELEPLOT
     Serial.printf(
         ">act%02d:%lf\n",
