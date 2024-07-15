@@ -4,12 +4,30 @@ message GetAnalogSwitchStateRequest {
   uint32 analog_switch_id = 1;
 }
 
+message RapidTriggerState {
+  double release_point_mm = 1;
+  double actuation_point_mm = 2;
+}
+
+message StaticTriggerState {
+  double release_point_mm = 1;
+  double actuation_point_mm = 2;
+}
+
 message AnalogSwitchState {
   // The timestamp in micro seconds.
   // Note that this value may wrap roughly every 1 hour 11 minutes.
   uint32 timestamp_us = 1;
 
+  // The analog switch_id associated with this state
+  uint32 analog_switch_id = 3;
+
   double pressed_mm = 2;
+
+  oneof trigger {
+    RapidTriggerState rapid_trigger = 4;
+    StaticTriggerState static_trigger = 5;
+  }
 }
 
 message GetAnalogSwitchStateResponse {

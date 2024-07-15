@@ -83,16 +83,6 @@ class RapidTrigger : public Trigger {
     return current_state_;
   }
 
-  virtual JsonDocument ToConfig() override {
-    JsonDocument var;
-    var["type"] = "rapid-trigger";
-    var["rel"] = release_distance_mm_;
-    var["act"] = actuation_distance_mm_;
-    var["f_act"] = force_activation_point_depth_mm_;
-    var["f_rel"] = force_release_point_depth_mm_;
-    return var;
-  }
-
   virtual void TelePrint(int switch_id) override {
 #if TELEPLOT
     Serial.printf(

@@ -71,20 +71,216 @@ export class GetAnalogSwitchStateRequest extends pb_1.Message {
         return GetAnalogSwitchStateRequest.deserialize(bytes);
     }
 }
-export class AnalogSwitchState extends pb_1.Message {
+export class RapidTriggerState extends pb_1.Message {
     #one_of_decls: number[][] = [];
     constructor(data?: any[] | {
-        timestamp_us?: number;
-        pressed_mm?: number;
+        release_point_mm?: number;
+        actuation_point_mm?: number;
     }) {
+        super();
+        pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
+        if (!Array.isArray(data) && typeof data == "object") {
+            if ("release_point_mm" in data && data.release_point_mm != undefined) {
+                this.release_point_mm = data.release_point_mm;
+            }
+            if ("actuation_point_mm" in data && data.actuation_point_mm != undefined) {
+                this.actuation_point_mm = data.actuation_point_mm;
+            }
+        }
+    }
+    get release_point_mm() {
+        return pb_1.Message.getFieldWithDefault(this, 1, 0) as number;
+    }
+    set release_point_mm(value: number) {
+        pb_1.Message.setField(this, 1, value);
+    }
+    get actuation_point_mm() {
+        return pb_1.Message.getFieldWithDefault(this, 2, 0) as number;
+    }
+    set actuation_point_mm(value: number) {
+        pb_1.Message.setField(this, 2, value);
+    }
+    static fromObject(data: {
+        release_point_mm?: number;
+        actuation_point_mm?: number;
+    }): RapidTriggerState {
+        const message = new RapidTriggerState({});
+        if (data.release_point_mm != null) {
+            message.release_point_mm = data.release_point_mm;
+        }
+        if (data.actuation_point_mm != null) {
+            message.actuation_point_mm = data.actuation_point_mm;
+        }
+        return message;
+    }
+    toObject() {
+        const data: {
+            release_point_mm?: number;
+            actuation_point_mm?: number;
+        } = {};
+        if (this.release_point_mm != null) {
+            data.release_point_mm = this.release_point_mm;
+        }
+        if (this.actuation_point_mm != null) {
+            data.actuation_point_mm = this.actuation_point_mm;
+        }
+        return data;
+    }
+    serialize(): Uint8Array;
+    serialize(w: pb_1.BinaryWriter): void;
+    serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+        const writer = w || new pb_1.BinaryWriter();
+        if (this.release_point_mm != 0)
+            writer.writeDouble(1, this.release_point_mm);
+        if (this.actuation_point_mm != 0)
+            writer.writeDouble(2, this.actuation_point_mm);
+        if (!w)
+            return writer.getResultBuffer();
+    }
+    static deserialize(bytes: Uint8Array | pb_1.BinaryReader): RapidTriggerState {
+        const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new RapidTriggerState();
+        while (reader.nextField()) {
+            if (reader.isEndGroup())
+                break;
+            switch (reader.getFieldNumber()) {
+                case 1:
+                    message.release_point_mm = reader.readDouble();
+                    break;
+                case 2:
+                    message.actuation_point_mm = reader.readDouble();
+                    break;
+                default: reader.skipField();
+            }
+        }
+        return message;
+    }
+    serializeBinary(): Uint8Array {
+        return this.serialize();
+    }
+    static override deserializeBinary(bytes: Uint8Array): RapidTriggerState {
+        return RapidTriggerState.deserialize(bytes);
+    }
+}
+export class StaticTriggerState extends pb_1.Message {
+    #one_of_decls: number[][] = [];
+    constructor(data?: any[] | {
+        release_point_mm?: number;
+        actuation_point_mm?: number;
+    }) {
+        super();
+        pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
+        if (!Array.isArray(data) && typeof data == "object") {
+            if ("release_point_mm" in data && data.release_point_mm != undefined) {
+                this.release_point_mm = data.release_point_mm;
+            }
+            if ("actuation_point_mm" in data && data.actuation_point_mm != undefined) {
+                this.actuation_point_mm = data.actuation_point_mm;
+            }
+        }
+    }
+    get release_point_mm() {
+        return pb_1.Message.getFieldWithDefault(this, 1, 0) as number;
+    }
+    set release_point_mm(value: number) {
+        pb_1.Message.setField(this, 1, value);
+    }
+    get actuation_point_mm() {
+        return pb_1.Message.getFieldWithDefault(this, 2, 0) as number;
+    }
+    set actuation_point_mm(value: number) {
+        pb_1.Message.setField(this, 2, value);
+    }
+    static fromObject(data: {
+        release_point_mm?: number;
+        actuation_point_mm?: number;
+    }): StaticTriggerState {
+        const message = new StaticTriggerState({});
+        if (data.release_point_mm != null) {
+            message.release_point_mm = data.release_point_mm;
+        }
+        if (data.actuation_point_mm != null) {
+            message.actuation_point_mm = data.actuation_point_mm;
+        }
+        return message;
+    }
+    toObject() {
+        const data: {
+            release_point_mm?: number;
+            actuation_point_mm?: number;
+        } = {};
+        if (this.release_point_mm != null) {
+            data.release_point_mm = this.release_point_mm;
+        }
+        if (this.actuation_point_mm != null) {
+            data.actuation_point_mm = this.actuation_point_mm;
+        }
+        return data;
+    }
+    serialize(): Uint8Array;
+    serialize(w: pb_1.BinaryWriter): void;
+    serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+        const writer = w || new pb_1.BinaryWriter();
+        if (this.release_point_mm != 0)
+            writer.writeDouble(1, this.release_point_mm);
+        if (this.actuation_point_mm != 0)
+            writer.writeDouble(2, this.actuation_point_mm);
+        if (!w)
+            return writer.getResultBuffer();
+    }
+    static deserialize(bytes: Uint8Array | pb_1.BinaryReader): StaticTriggerState {
+        const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new StaticTriggerState();
+        while (reader.nextField()) {
+            if (reader.isEndGroup())
+                break;
+            switch (reader.getFieldNumber()) {
+                case 1:
+                    message.release_point_mm = reader.readDouble();
+                    break;
+                case 2:
+                    message.actuation_point_mm = reader.readDouble();
+                    break;
+                default: reader.skipField();
+            }
+        }
+        return message;
+    }
+    serializeBinary(): Uint8Array {
+        return this.serialize();
+    }
+    static override deserializeBinary(bytes: Uint8Array): StaticTriggerState {
+        return StaticTriggerState.deserialize(bytes);
+    }
+}
+export class AnalogSwitchState extends pb_1.Message {
+    #one_of_decls: number[][] = [[4, 5]];
+    constructor(data?: any[] | ({
+        timestamp_us?: number;
+        analog_switch_id?: number;
+        pressed_mm?: number;
+    } & (({
+        rapid_trigger?: RapidTriggerState;
+        static_trigger?: never;
+    } | {
+        rapid_trigger?: never;
+        static_trigger?: StaticTriggerState;
+    })))) {
         super();
         pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
         if (!Array.isArray(data) && typeof data == "object") {
             if ("timestamp_us" in data && data.timestamp_us != undefined) {
                 this.timestamp_us = data.timestamp_us;
             }
+            if ("analog_switch_id" in data && data.analog_switch_id != undefined) {
+                this.analog_switch_id = data.analog_switch_id;
+            }
             if ("pressed_mm" in data && data.pressed_mm != undefined) {
                 this.pressed_mm = data.pressed_mm;
+            }
+            if ("rapid_trigger" in data && data.rapid_trigger != undefined) {
+                this.rapid_trigger = data.rapid_trigger;
+            }
+            if ("static_trigger" in data && data.static_trigger != undefined) {
+                this.static_trigger = data.static_trigger;
             }
         }
     }
@@ -94,35 +290,93 @@ export class AnalogSwitchState extends pb_1.Message {
     set timestamp_us(value: number) {
         pb_1.Message.setField(this, 1, value);
     }
+    get analog_switch_id() {
+        return pb_1.Message.getFieldWithDefault(this, 3, 0) as number;
+    }
+    set analog_switch_id(value: number) {
+        pb_1.Message.setField(this, 3, value);
+    }
     get pressed_mm() {
         return pb_1.Message.getFieldWithDefault(this, 2, 0) as number;
     }
     set pressed_mm(value: number) {
         pb_1.Message.setField(this, 2, value);
     }
+    get rapid_trigger() {
+        return pb_1.Message.getWrapperField(this, RapidTriggerState, 4) as RapidTriggerState;
+    }
+    set rapid_trigger(value: RapidTriggerState) {
+        pb_1.Message.setOneofWrapperField(this, 4, this.#one_of_decls[0], value);
+    }
+    get has_rapid_trigger() {
+        return pb_1.Message.getField(this, 4) != null;
+    }
+    get static_trigger() {
+        return pb_1.Message.getWrapperField(this, StaticTriggerState, 5) as StaticTriggerState;
+    }
+    set static_trigger(value: StaticTriggerState) {
+        pb_1.Message.setOneofWrapperField(this, 5, this.#one_of_decls[0], value);
+    }
+    get has_static_trigger() {
+        return pb_1.Message.getField(this, 5) != null;
+    }
+    get trigger() {
+        const cases: {
+            [index: number]: "none" | "rapid_trigger" | "static_trigger";
+        } = {
+            0: "none",
+            4: "rapid_trigger",
+            5: "static_trigger"
+        };
+        return cases[pb_1.Message.computeOneofCase(this, [4, 5])];
+    }
     static fromObject(data: {
         timestamp_us?: number;
+        analog_switch_id?: number;
         pressed_mm?: number;
+        rapid_trigger?: ReturnType<typeof RapidTriggerState.prototype.toObject>;
+        static_trigger?: ReturnType<typeof StaticTriggerState.prototype.toObject>;
     }): AnalogSwitchState {
         const message = new AnalogSwitchState({});
         if (data.timestamp_us != null) {
             message.timestamp_us = data.timestamp_us;
         }
+        if (data.analog_switch_id != null) {
+            message.analog_switch_id = data.analog_switch_id;
+        }
         if (data.pressed_mm != null) {
             message.pressed_mm = data.pressed_mm;
+        }
+        if (data.rapid_trigger != null) {
+            message.rapid_trigger = RapidTriggerState.fromObject(data.rapid_trigger);
+        }
+        if (data.static_trigger != null) {
+            message.static_trigger = StaticTriggerState.fromObject(data.static_trigger);
         }
         return message;
     }
     toObject() {
         const data: {
             timestamp_us?: number;
+            analog_switch_id?: number;
             pressed_mm?: number;
+            rapid_trigger?: ReturnType<typeof RapidTriggerState.prototype.toObject>;
+            static_trigger?: ReturnType<typeof StaticTriggerState.prototype.toObject>;
         } = {};
         if (this.timestamp_us != null) {
             data.timestamp_us = this.timestamp_us;
         }
+        if (this.analog_switch_id != null) {
+            data.analog_switch_id = this.analog_switch_id;
+        }
         if (this.pressed_mm != null) {
             data.pressed_mm = this.pressed_mm;
+        }
+        if (this.rapid_trigger != null) {
+            data.rapid_trigger = this.rapid_trigger.toObject();
+        }
+        if (this.static_trigger != null) {
+            data.static_trigger = this.static_trigger.toObject();
         }
         return data;
     }
@@ -132,8 +386,14 @@ export class AnalogSwitchState extends pb_1.Message {
         const writer = w || new pb_1.BinaryWriter();
         if (this.timestamp_us != 0)
             writer.writeUint32(1, this.timestamp_us);
+        if (this.analog_switch_id != 0)
+            writer.writeUint32(3, this.analog_switch_id);
         if (this.pressed_mm != 0)
             writer.writeDouble(2, this.pressed_mm);
+        if (this.has_rapid_trigger)
+            writer.writeMessage(4, this.rapid_trigger, () => this.rapid_trigger.serialize(writer));
+        if (this.has_static_trigger)
+            writer.writeMessage(5, this.static_trigger, () => this.static_trigger.serialize(writer));
         if (!w)
             return writer.getResultBuffer();
     }
@@ -146,8 +406,17 @@ export class AnalogSwitchState extends pb_1.Message {
                 case 1:
                     message.timestamp_us = reader.readUint32();
                     break;
+                case 3:
+                    message.analog_switch_id = reader.readUint32();
+                    break;
                 case 2:
                     message.pressed_mm = reader.readDouble();
+                    break;
+                case 4:
+                    reader.readMessage(message.rapid_trigger, () => message.rapid_trigger = RapidTriggerState.deserialize(reader));
+                    break;
+                case 5:
+                    reader.readMessage(message.static_trigger, () => message.static_trigger = StaticTriggerState.deserialize(reader));
                     break;
                 default: reader.skipField();
             }
