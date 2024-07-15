@@ -1,5 +1,5 @@
-#ifndef UDONG_PROTOTYPE1_H
-#define UDONG_PROTOTYPE1_H
+#ifndef UDONG_PROTOTYPE2_H
+#define UDONG_PROTOTYPE2_H
 
 #include <Arduino.h>
 
@@ -9,7 +9,7 @@
 #include "switch/analog_switch.h"
 #include "switch/digital_switch.h"
 
-class UdongPrototype1 : public Board {
+class UdongPrototype2 : public Board {
   Multiplexer8 mux0_;
   Multiplexer8 mux1_;
 
@@ -19,7 +19,7 @@ class UdongPrototype1 : public Board {
   std::vector<std::shared_ptr<DigitalInput>> digital_switch_ins_;
 
  public:
-  UdongPrototype1()
+  UdongPrototype2()
       : mux0_(
             std::make_shared<DigitalOutputPin>(D16),
             std::make_shared<DigitalOutputPin>(D17),
@@ -47,7 +47,7 @@ class UdongPrototype1 : public Board {
     //       All unused GPIOs are connected to the ground on Udong Board.
   }
 
-  virtual ~UdongPrototype1() = default;
+  virtual ~UdongPrototype2() = default;
 
   virtual std::vector<std::shared_ptr<AnalogInput>>& GetAnalogInputs() {
     return analog_switch_raw_ins_;

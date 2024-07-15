@@ -197,9 +197,6 @@ void SerialHandler::HandleBinaryCommand(
     UdongConfig config;
     DecodeMessage(cis, &config);
 
-    // Serial.println("Received UdongConfig:");
-    // printUdonConfig(config);
-
     HandleSaveConfig(context, config);
   } else if (command_ == "get-analog-switch-state") {
     CstrInputStream cis((const char*)binary, size);

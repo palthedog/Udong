@@ -21,7 +21,12 @@ class RingBufferUint16 {
     } else {
       buffer_[ins_pos_] = v;
     }
-    ins_pos_ = (ins_pos_ + 1) % BufferSize;
+
+    if (ins_pos_ == BufferSize - 1) {
+      ins_pos_ = 0;
+    } else {
+      ins_pos_ = ins_pos_ + 1;
+    }
   }
 
   inline size_t size() {
@@ -45,10 +50,14 @@ class MultiSampling : public AnalogInput {
 
  public:
   MultiSampling(std::shared_ptr<AnalogInput> source_input)
-      : source_input_(source_input) {
+      : source_input_(source_input), sorted_(BufferSize, 0) {
   }
 
   uint16_t Read() override {
+    if (BufferSize == 1) {
+      return source_input_->Read();
+    }
+
     if (buffer_.size() < BufferSize) {
       // warm up in a poor way...
       while (buffer_.size() < BufferSize) {
@@ -56,7 +65,6 @@ class MultiSampling : public AnalogInput {
         buffer_.push(latest_value);
         delay(1);
       }
-      sorted_.resize(buffer_.size());
     } else {
       uint16_t latest_value = source_input_->Read();
       buffer_.push(latest_value);
@@ -69,7 +77,6 @@ class MultiSampling : public AnalogInput {
     for (size_t i = DropMinNum; i < sorted_.size() - DropMaxNum; i++) {
       sum += sorted_[i];
     }
-
     return sum / (sorted_.size() - DropMaxNum - DropMinNum);
   }
 };

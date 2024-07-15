@@ -235,13 +235,16 @@ class AnalogSwitch : public Switch {
   // Calibrate the mag-flux value at the farest point.
   // It should be called when the switch is NOT pressed.
   void CalibrateZeroPoint() {
-    uint32_t sum = 0;
-    int count = 0;
-    uint32_t start_t = time_us_32();
     // TODO: Run all switchs' calibrations parallery so that we can collect
     // data that is spread out over longer time.
-    // 100 ms
-    while (time_us_32() - start_t < 100 * 1000) {
+
+    uint32_t sum = 0;
+    int count = 0;
+    uint64_t start_t = time_us_64();
+
+    // 50ms (50ms x 16 = 800ms for all analog switches)
+    const uint64_t kCalibrationDuration_us = 50 * 1000;
+    while (time_us_64() - start_t < kCalibrationDuration_us) {
       sum += input_->Read();
       count++;
     }

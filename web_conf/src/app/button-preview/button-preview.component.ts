@@ -46,9 +46,9 @@ export class ButtonPreviewComponent {
         order: 0,
         pointStyle: 'circle',
 
-        borderWidth: 2.0,
+        borderWidth: 1.0,
         //showLine: false,
-        pointRadius: 1,
+        pointRadius: 2.0,
         pointHitRadius: 4,
       },
       {
@@ -66,8 +66,6 @@ export class ButtonPreviewComponent {
         yAxisID: 'y-polling-rate',
         label: 'Polling rate(Hz)',
         order: 2,
-
-        hidden: true,
 
         borderWidth: 0.5,
         pointRadius: 0,
@@ -165,6 +163,10 @@ export class ButtonPreviewComponent {
 
     this.serial_service.ConnectionChanges().subscribe((value) => {
       this.connected = value;
+      console.log('connected', value);
+      if (this.connected) {
+        this.sendGetAnalogSwitchState();
+      }
     });
 
     this.serial_service.MessageReceiveFor('get-analog-switch-state').subscribe(([cmd, v]) => {
@@ -207,7 +209,6 @@ export class ButtonPreviewComponent {
         logger.info('Serial port is disconnected');
       }
     });
-    this.sendGetAnalogSwitchState();
   }
 
   sendGetAnalogSwitchState() {

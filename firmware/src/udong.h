@@ -7,8 +7,7 @@
 
 #include <memory>
 
-#include "boards/breadboard.h"
-#include "boards/udong_prototype1.h"
+#include "boards/boards.h"
 #include "config/config_util.h"
 #include "gamepad/button/button.h"
 #include "gamepad/button/d_pad.h"
@@ -30,6 +29,8 @@
 class Udong {
   UdongConfig config;
 
+  std::unique_ptr<Board> circuit;
+
   TriangleInput triangle_in_;
 
   bool usb_hids_setup_completed;
@@ -49,6 +50,9 @@ class Udong {
 
   std::function<void()> on_report_sent_;
 
+  Throttling update_led_;
+  Throttling calibration_runner_;
+
   void FillGamepadReport() {
     // Buttons
     gamepad_report.Clear();
@@ -60,15 +64,15 @@ class Udong {
   }
 
   bool MaybeSendReport() {
+    if (!usb_hid.ready()) {
+      // delayMicroseconds(20);
+      return false;
+    }
+
     // Fill the gamepad report even if the USB HID is not ready yet.
     // It improves the actual polling-rate a little because it takes time to
     // fill the report and it makes a time gap between "ready" and "sendReport".
     FillGamepadReport();
-
-    if (!usb_hid.ready()) {
-      delayMicroseconds(10);
-      return false;
-    }
 
     if (!usb_hid.sendReport(0, &gamepad_report, sizeof(gamepad_report))) {
       Serial.println("Failed to send report");
@@ -115,14 +119,10 @@ class Udong {
           std::move(trigger)));
     }
 
-    if (/*!dev_board*/ true) {
-      // Don't use D23 on the dev board since it's connected to the power
-      // supply...
-      for (auto digital_switch_in : circuit->GetDigitalInputs()) {
-        Serial.printf("digital-switch-\n");
-        digital_switches_.push_back(
-            std::make_shared<DigitalSwitch>(digital_switch_in));
-      }
+    for (auto digital_switch_in : circuit->GetDigitalInputs()) {
+      Serial.printf("digital-switch-\n");
+      digital_switches_.push_back(
+          std::make_shared<DigitalSwitch>(digital_switch_in));
     }
   }
 
@@ -155,7 +155,7 @@ class Udong {
     if (config.baked().board_name() == "Udong Board rev.1") {
       circuit = std::make_unique<UdongPrototype1>();
     } else if (config.baked().board_name() == "Udong Board rev.2") {
-      // circuit = std::make_unique<UdongPrototype2>();
+      circuit = std::make_unique<UdongPrototype2>();
     } else if (config.baked().board_name() == "Breadboard") {
       circuit = std::make_unique<Breadboard>();
     } else {
@@ -163,13 +163,11 @@ class Udong {
     }
     ConfigureSwitches();
 
-    // No need of calibration if reloading
-    if (!reloading) {
-      CalibrateAllZeroPoint();
-      for (auto& analog_switch : analog_switches_) {
-        analog_switch->Calibrate();
-        analog_switch->DumpLastState();
-      }
+    CalibrateAllZeroPoint();
+    for (auto& analog_switch : analog_switches_) {
+      // Calibration for updating the lookup table
+      analog_switch->Calibrate();
+      analog_switch->DumpLastState();
     }
 
     // Button assignment
@@ -222,13 +220,7 @@ class Udong {
     }
   }
 
-  Throttling update_led_;
-  Throttling calibration_runner_;
-
  public:
-  // TODO: Move it to private.
-  std::unique_ptr<Board> circuit;
-
   Udong(const std::function<void()>& on_report_sent)
       : on_report_sent_(on_report_sent),
         update_led_(
