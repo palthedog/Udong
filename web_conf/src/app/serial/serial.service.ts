@@ -3,6 +3,7 @@
 import { Injectable } from '@angular/core';
 
 import { BehaviorSubject, Observable, Subject, filter } from 'rxjs';
+import AsyncLock from 'async-lock';
 
 export abstract class SerialServiceInterface {
   abstract ConnectionChanges(): Observable<boolean>;
@@ -26,6 +27,7 @@ export abstract class SerialServiceInterface {
 })
 export class SerialService extends SerialServiceInterface {
 
+  private writer_lock: AsyncLock = new AsyncLock();
   private port?: SerialPort;
 
   private message_subject = new Subject<[string, any]>();
@@ -61,35 +63,42 @@ export class SerialService extends SerialServiceInterface {
   }
 
   override async Send(cmd: string, message?: string) {
-    if (!this.port) {
-      console.error("Serial port is not connected");
-      return;
-    }
-
-    const encoder = new TextEncoder();
-    try {
-      const writer = this.port.writable.getWriter();
-      if (message == undefined || message == '') {
-        await writer.write(encoder.encode(cmd + '\n'));
-      } else {
-        await writer.write(encoder.encode(cmd + ':' + message + '\n'));
+    this.writer_lock.acquire('send', async () => {
+      try {
+        if (!this.port) {
+          console.error("Serial port is not connected");
+          return;
+        }
+        const encoder = new TextEncoder();
+        const writer = this.port.writable.getWriter();
+        if (message == undefined || message == '') {
+          await writer.write(encoder.encode(cmd + '\n'));
+        } else {
+          await writer.write(encoder.encode(cmd + ':' + message + '\n'));
+        }
+        writer.releaseLock();
+      } catch (e) {
+        console.error("Error: ", e);
       }
-      writer.releaseLock();
-    } catch (e) {
-      console.error("Error: ", e);
-    }
+    });
   }
 
   override async SendBinary(cmd: string, payload: Uint8Array) {
-    if (!this.port) {
-      console.error("Serial port is not connected");
-      return;
-    }
-    const writer = this.port.writable.getWriter();
-    //console.log('sending: <binary> size: ', payload.length);
-    await writer.write(this.text_encoder.encode(cmd + '@' + payload.length + '#'));
-    await writer.write(payload);
-    writer.releaseLock();
+    this.writer_lock.acquire('send', async () => {
+      if (!this.port) {
+        console.error("Serial port is not connected");
+        return;
+      }
+      try {
+        const writer = this.port.writable.getWriter();
+        //console.log('sending: <binary> size: ', payload.length);
+        await writer.write(this.text_encoder.encode(cmd + '@' + payload.length + '#'));
+        await writer.write(payload);
+        writer.releaseLock();
+      } catch (e) {
+        console.error("Error: ", e);
+      }
+    });
   }
 
   async loopAsync(port: SerialPort) {

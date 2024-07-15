@@ -3,7 +3,6 @@ import { SerialServiceInterface } from '../serial/serial.service';
 import { logger } from '../logger';
 import { BaseChartDirective } from 'ng2-charts';
 import { ChartConfiguration, ChartData } from 'chart.js';
-import 'chartjs-adapter-luxon';
 import { AnalogSwitchGroup } from '../../proto/config';
 import { GetAnalogSwitchStateRequest, GetAnalogSwitchStateResponse } from '../../proto/rpc';
 
@@ -175,10 +174,9 @@ export class ButtonPreviewComponent {
       }
       let res = GetAnalogSwitchStateResponse.deserializeBinary(v);
       if (res.states.length > 0) {
-        let polling_rate = 0;
         if (res.states.length > 1) {
           let duration_us = res.states[res.states.length - 1].timestamp_us - res.states[0].timestamp_us;
-          this.polling_rate = res.states.length / (duration_us / 1000000);;
+          this.polling_rate = res.states.length / (duration_us / 1000000);
         }
 
         let latest_us = 0;
