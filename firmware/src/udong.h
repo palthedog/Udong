@@ -64,15 +64,14 @@ class Udong {
   }
 
   bool MaybeSendReport() {
-    if (!usb_hid.ready()) {
-      delayMicroseconds(10);
-      return false;
-    }
-
     // Fill the gamepad report even if the USB HID is not ready yet.
     // It improves the actual polling-rate a little because it takes time to
     // fill the report and it makes a time gap between "ready" and "sendReport".
     FillGamepadReport();
+
+    if (!usb_hid.ready()) {
+      return false;
+    }
 
     if (!usb_hid.sendReport(0, &gamepad_report, sizeof(gamepad_report))) {
       Serial.println("Failed to send report");

@@ -36,18 +36,17 @@ class SerialHandler {
   State state_ = kReadingCommand;
 
   // A string buffer currently being parsed.
-  std::vector<uint8_t> payload_buffer_;
-
+  std::vector<uint8_t> recv_buffer_;
   String command_;
-  size_t payload_size_;
+  size_t recv_payload_size_;
 
   SwitchStateHistory switch_state_history_;
 
   void Reset() {
     state_ = kReadingCommand;
-    payload_buffer_.clear();
+    recv_buffer_.clear();
     command_ = "";
-    payload_size_ = 0;
+    recv_payload_size_ = 0;
   }
 
   void HandleCmd(Udong& context, const String& cmd);

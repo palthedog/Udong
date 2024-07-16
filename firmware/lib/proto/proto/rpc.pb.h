@@ -1,13 +1,13 @@
 #pragma once
 
-#include <vector>
-#include "decaproto/message.h"
-#include "decaproto/descriptor.h"
-#include "decaproto/reflection.h"
 #include "decaproto/field.h"
 #include <memory>
 #include <stdint.h>
 #include <string>
+#include <vector>
+#include "decaproto/message.h"
+#include "decaproto/descriptor.h"
+#include "decaproto/reflection.h"
 
 class GetAnalogSwitchStateRequest;
 class RapidTriggerState;
@@ -37,6 +37,8 @@ public:
 	}
     const decaproto::Descriptor* GetDescriptor() const override;
     const decaproto::Reflection* GetReflection() const override;
+    size_t ComputeEncodedSize() const override;
+    bool EncodeImpl(decaproto::CodedOutputStream& stream) const override;
 
 private:
     uint32_t analog_switch_id__;
@@ -78,6 +80,8 @@ public:
 	}
     const decaproto::Descriptor* GetDescriptor() const override;
     const decaproto::Reflection* GetReflection() const override;
+    size_t ComputeEncodedSize() const override;
+    bool EncodeImpl(decaproto::CodedOutputStream& stream) const override;
 
 private:
     double release_point_mm__;
@@ -120,6 +124,8 @@ public:
 	}
     const decaproto::Descriptor* GetDescriptor() const override;
     const decaproto::Reflection* GetReflection() const override;
+    size_t ComputeEncodedSize() const override;
+    bool EncodeImpl(decaproto::CodedOutputStream& stream) const override;
 
 private:
     double release_point_mm__;
@@ -250,6 +256,8 @@ public:
 
     const decaproto::Descriptor* GetDescriptor() const override;
     const decaproto::Reflection* GetReflection() const override;
+    size_t ComputeEncodedSize() const override;
+    bool EncodeImpl(decaproto::CodedOutputStream& stream) const override;
 
 private:
     uint32_t timestamp_us__;
@@ -303,6 +311,8 @@ public:
 
     const decaproto::Descriptor* GetDescriptor() const override;
     const decaproto::Reflection* GetReflection() const override;
+    size_t ComputeEncodedSize() const override;
+    bool EncodeImpl(decaproto::CodedOutputStream& stream) const override;
 
 private:
     std::vector<AnalogSwitchState> states__;
@@ -312,707 +322,707 @@ private:
 
 
 /*
-name: "rpc.proto"
-message_type: {
-    name: "GetAnalogSwitchStateRequest"
-    field: {
-        name: "analog_switch_id"
-        number: 1
-        label: LABEL_OPTIONAL
-        type: TYPE_UINT32
-        json_name: "analogSwitchId"
+name:  "rpc.proto"
+message_type:  {
+    name:  "GetAnalogSwitchStateRequest"
+    field:  {
+        name:  "analog_switch_id"
+        number:  1
+        label:  LABEL_OPTIONAL
+        type:  TYPE_UINT32
+        json_name:  "analogSwitchId"
     }
 }
-message_type: {
-    name: "RapidTriggerState"
-    field: {
-        name: "release_point_mm"
-        number: 1
-        label: LABEL_OPTIONAL
-        type: TYPE_DOUBLE
-        json_name: "releasePointMm"
+message_type:  {
+    name:  "RapidTriggerState"
+    field:  {
+        name:  "release_point_mm"
+        number:  1
+        label:  LABEL_OPTIONAL
+        type:  TYPE_DOUBLE
+        json_name:  "releasePointMm"
     }
-    field: {
-        name: "actuation_point_mm"
-        number: 2
-        label: LABEL_OPTIONAL
-        type: TYPE_DOUBLE
-        json_name: "actuationPointMm"
-    }
-}
-message_type: {
-    name: "StaticTriggerState"
-    field: {
-        name: "release_point_mm"
-        number: 1
-        label: LABEL_OPTIONAL
-        type: TYPE_DOUBLE
-        json_name: "releasePointMm"
-    }
-    field: {
-        name: "actuation_point_mm"
-        number: 2
-        label: LABEL_OPTIONAL
-        type: TYPE_DOUBLE
-        json_name: "actuationPointMm"
+    field:  {
+        name:  "actuation_point_mm"
+        number:  2
+        label:  LABEL_OPTIONAL
+        type:  TYPE_DOUBLE
+        json_name:  "actuationPointMm"
     }
 }
-message_type: {
-    name: "AnalogSwitchState"
-    field: {
-        name: "timestamp_us"
-        number: 1
-        label: LABEL_OPTIONAL
-        type: TYPE_UINT32
-        json_name: "timestampUs"
+message_type:  {
+    name:  "StaticTriggerState"
+    field:  {
+        name:  "release_point_mm"
+        number:  1
+        label:  LABEL_OPTIONAL
+        type:  TYPE_DOUBLE
+        json_name:  "releasePointMm"
     }
-    field: {
-        name: "analog_switch_id"
-        number: 3
-        label: LABEL_OPTIONAL
-        type: TYPE_UINT32
-        json_name: "analogSwitchId"
-    }
-    field: {
-        name: "pressed_mm"
-        number: 2
-        label: LABEL_OPTIONAL
-        type: TYPE_DOUBLE
-        json_name: "pressedMm"
-    }
-    field: {
-        name: "is_triggered"
-        number: 6
-        label: LABEL_OPTIONAL
-        type: TYPE_BOOL
-        json_name: "isTriggered"
-    }
-    field: {
-        name: "rapid_trigger"
-        number: 4
-        label: LABEL_OPTIONAL
-        type: TYPE_MESSAGE
-        type_name: ".RapidTriggerState"
-        oneof_index: 0
-        json_name: "rapidTrigger"
-    }
-    field: {
-        name: "static_trigger"
-        number: 5
-        label: LABEL_OPTIONAL
-        type: TYPE_MESSAGE
-        type_name: ".StaticTriggerState"
-        oneof_index: 0
-        json_name: "staticTrigger"
-    }
-    oneof_decl: {
-        name: "trigger"
+    field:  {
+        name:  "actuation_point_mm"
+        number:  2
+        label:  LABEL_OPTIONAL
+        type:  TYPE_DOUBLE
+        json_name:  "actuationPointMm"
     }
 }
-message_type: {
-    name: "GetAnalogSwitchStateResponse"
-    field: {
-        name: "states"
-        number: 1
-        label: LABEL_REPEATED
-        type: TYPE_MESSAGE
-        type_name: ".AnalogSwitchState"
-        json_name: "states"
+message_type:  {
+    name:  "AnalogSwitchState"
+    field:  {
+        name:  "timestamp_us"
+        number:  1
+        label:  LABEL_OPTIONAL
+        type:  TYPE_UINT32
+        json_name:  "timestampUs"
+    }
+    field:  {
+        name:  "analog_switch_id"
+        number:  3
+        label:  LABEL_OPTIONAL
+        type:  TYPE_UINT32
+        json_name:  "analogSwitchId"
+    }
+    field:  {
+        name:  "pressed_mm"
+        number:  2
+        label:  LABEL_OPTIONAL
+        type:  TYPE_DOUBLE
+        json_name:  "pressedMm"
+    }
+    field:  {
+        name:  "is_triggered"
+        number:  6
+        label:  LABEL_OPTIONAL
+        type:  TYPE_BOOL
+        json_name:  "isTriggered"
+    }
+    field:  {
+        name:  "rapid_trigger"
+        number:  4
+        label:  LABEL_OPTIONAL
+        type:  TYPE_MESSAGE
+        type_name:  ".RapidTriggerState"
+        oneof_index:  0
+        json_name:  "rapidTrigger"
+    }
+    field:  {
+        name:  "static_trigger"
+        number:  5
+        label:  LABEL_OPTIONAL
+        type:  TYPE_MESSAGE
+        type_name:  ".StaticTriggerState"
+        oneof_index:  0
+        json_name:  "staticTrigger"
+    }
+    oneof_decl:  {
+        name:  "trigger"
     }
 }
-source_code_info: {
-    location: {
-        span: 0
-        span: 0
-        span: 35
-        span: 1
-    }
-    location: {
-        path: 12
-        span: 0
-        span: 0
-        span: 18
-    }
-    location: {
-        path: 4
-        path: 0
-        span: 2
-        span: 0
-        span: 4
-        span: 1
-    }
-    location: {
-        path: 4
-        path: 0
-        path: 1
-        span: 2
-        span: 8
-        span: 35
-    }
-    location: {
-        path: 4
-        path: 0
-        path: 2
-        path: 0
-        span: 3
-        span: 2
-        span: 30
-    }
-    location: {
-        path: 4
-        path: 0
-        path: 2
-        path: 0
-        path: 5
-        span: 3
-        span: 2
-        span: 8
-    }
-    location: {
-        path: 4
-        path: 0
-        path: 2
-        path: 0
-        path: 1
-        span: 3
-        span: 9
-        span: 25
-    }
-    location: {
-        path: 4
-        path: 0
-        path: 2
-        path: 0
-        path: 3
-        span: 3
-        span: 28
-        span: 29
-    }
-    location: {
-        path: 4
-        path: 1
-        span: 6
-        span: 0
-        span: 9
-        span: 1
-    }
-    location: {
-        path: 4
-        path: 1
-        path: 1
-        span: 6
-        span: 8
-        span: 25
-    }
-    location: {
-        path: 4
-        path: 1
-        path: 2
-        path: 0
-        span: 7
-        span: 2
-        span: 30
-    }
-    location: {
-        path: 4
-        path: 1
-        path: 2
-        path: 0
-        path: 5
-        span: 7
-        span: 2
-        span: 8
-    }
-    location: {
-        path: 4
-        path: 1
-        path: 2
-        path: 0
-        path: 1
-        span: 7
-        span: 9
-        span: 25
-    }
-    location: {
-        path: 4
-        path: 1
-        path: 2
-        path: 0
-        path: 3
-        span: 7
-        span: 28
-        span: 29
-    }
-    location: {
-        path: 4
-        path: 1
-        path: 2
-        path: 1
-        span: 8
-        span: 2
-        span: 32
-    }
-    location: {
-        path: 4
-        path: 1
-        path: 2
-        path: 1
-        path: 5
-        span: 8
-        span: 2
-        span: 8
-    }
-    location: {
-        path: 4
-        path: 1
-        path: 2
-        path: 1
-        path: 1
-        span: 8
-        span: 9
-        span: 27
-    }
-    location: {
-        path: 4
-        path: 1
-        path: 2
-        path: 1
-        path: 3
-        span: 8
-        span: 30
-        span: 31
-    }
-    location: {
-        path: 4
-        path: 2
-        span: 11
-        span: 0
-        span: 14
-        span: 1
-    }
-    location: {
-        path: 4
-        path: 2
-        path: 1
-        span: 11
-        span: 8
-        span: 26
-    }
-    location: {
-        path: 4
-        path: 2
-        path: 2
-        path: 0
-        span: 12
-        span: 2
-        span: 30
-    }
-    location: {
-        path: 4
-        path: 2
-        path: 2
-        path: 0
-        path: 5
-        span: 12
-        span: 2
-        span: 8
-    }
-    location: {
-        path: 4
-        path: 2
-        path: 2
-        path: 0
-        path: 1
-        span: 12
-        span: 9
-        span: 25
-    }
-    location: {
-        path: 4
-        path: 2
-        path: 2
-        path: 0
-        path: 3
-        span: 12
-        span: 28
-        span: 29
-    }
-    location: {
-        path: 4
-        path: 2
-        path: 2
-        path: 1
-        span: 13
-        span: 2
-        span: 32
-    }
-    location: {
-        path: 4
-        path: 2
-        path: 2
-        path: 1
-        path: 5
-        span: 13
-        span: 2
-        span: 8
-    }
-    location: {
-        path: 4
-        path: 2
-        path: 2
-        path: 1
-        path: 1
-        span: 13
-        span: 9
-        span: 27
-    }
-    location: {
-        path: 4
-        path: 2
-        path: 2
-        path: 1
-        path: 3
-        span: 13
-        span: 30
-        span: 31
-    }
-    location: {
-        path: 4
-        path: 3
-        span: 16
-        span: 0
-        span: 31
-        span: 1
-    }
-    location: {
-        path: 4
-        path: 3
-        path: 1
-        span: 16
-        span: 8
-        span: 25
-    }
-    location: {
-        path: 4
-        path: 3
-        path: 2
-        path: 0
-        span: 19
-        span: 2
-        span: 26
-        leading_comments: " The timestamp in micro seconds.\n Note that this value may wrap roughly every 1 hour 11 minutes.\n"
-    }
-    location: {
-        path: 4
-        path: 3
-        path: 2
-        path: 0
-        path: 5
-        span: 19
-        span: 2
-        span: 8
-    }
-    location: {
-        path: 4
-        path: 3
-        path: 2
-        path: 0
-        path: 1
-        span: 19
-        span: 9
-        span: 21
-    }
-    location: {
-        path: 4
-        path: 3
-        path: 2
-        path: 0
-        path: 3
-        span: 19
-        span: 24
-        span: 25
-    }
-    location: {
-        path: 4
-        path: 3
-        path: 2
-        path: 1
-        span: 22
-        span: 2
-        span: 30
-        leading_comments: " The analog switch_id associated with this state\n"
-    }
-    location: {
-        path: 4
-        path: 3
-        path: 2
-        path: 1
-        path: 5
-        span: 22
-        span: 2
-        span: 8
-    }
-    location: {
-        path: 4
-        path: 3
-        path: 2
-        path: 1
-        path: 1
-        span: 22
-        span: 9
-        span: 25
-    }
-    location: {
-        path: 4
-        path: 3
-        path: 2
-        path: 1
-        path: 3
-        span: 22
-        span: 28
-        span: 29
-    }
-    location: {
-        path: 4
-        path: 3
-        path: 2
-        path: 2
-        span: 24
-        span: 2
-        span: 24
-    }
-    location: {
-        path: 4
-        path: 3
-        path: 2
-        path: 2
-        path: 5
-        span: 24
-        span: 2
-        span: 8
-    }
-    location: {
-        path: 4
-        path: 3
-        path: 2
-        path: 2
-        path: 1
-        span: 24
-        span: 9
-        span: 19
-    }
-    location: {
-        path: 4
-        path: 3
-        path: 2
-        path: 2
-        path: 3
-        span: 24
-        span: 22
-        span: 23
-    }
-    location: {
-        path: 4
-        path: 3
-        path: 2
-        path: 3
-        span: 25
-        span: 2
-        span: 24
-    }
-    location: {
-        path: 4
-        path: 3
-        path: 2
-        path: 3
-        path: 5
-        span: 25
-        span: 2
-        span: 6
-    }
-    location: {
-        path: 4
-        path: 3
-        path: 2
-        path: 3
-        path: 1
-        span: 25
-        span: 7
-        span: 19
-    }
-    location: {
-        path: 4
-        path: 3
-        path: 2
-        path: 3
-        path: 3
-        span: 25
-        span: 22
-        span: 23
-    }
-    location: {
-        path: 4
-        path: 3
-        path: 8
-        path: 0
-        span: 27
-        span: 2
-        span: 30
-        span: 3
-    }
-    location: {
-        path: 4
-        path: 3
-        path: 8
-        path: 0
-        path: 1
-        span: 27
-        span: 8
-        span: 15
-    }
-    location: {
-        path: 4
-        path: 3
-        path: 2
-        path: 4
-        span: 28
-        span: 4
-        span: 40
-    }
-    location: {
-        path: 4
-        path: 3
-        path: 2
-        path: 4
-        path: 6
-        span: 28
-        span: 4
-        span: 21
-    }
-    location: {
-        path: 4
-        path: 3
-        path: 2
-        path: 4
-        path: 1
-        span: 28
-        span: 22
-        span: 35
-    }
-    location: {
-        path: 4
-        path: 3
-        path: 2
-        path: 4
-        path: 3
-        span: 28
-        span: 38
-        span: 39
-    }
-    location: {
-        path: 4
-        path: 3
-        path: 2
-        path: 5
-        span: 29
-        span: 4
-        span: 42
-    }
-    location: {
-        path: 4
-        path: 3
-        path: 2
-        path: 5
-        path: 6
-        span: 29
-        span: 4
-        span: 22
-    }
-    location: {
-        path: 4
-        path: 3
-        path: 2
-        path: 5
-        path: 1
-        span: 29
-        span: 23
-        span: 37
-    }
-    location: {
-        path: 4
-        path: 3
-        path: 2
-        path: 5
-        path: 3
-        span: 29
-        span: 40
-        span: 41
-    }
-    location: {
-        path: 4
-        path: 4
-        span: 33
-        span: 0
-        span: 35
-        span: 1
-    }
-    location: {
-        path: 4
-        path: 4
-        path: 1
-        span: 33
-        span: 8
-        span: 36
-    }
-    location: {
-        path: 4
-        path: 4
-        path: 2
-        path: 0
-        span: 34
-        span: 2
-        span: 40
-    }
-    location: {
-        path: 4
-        path: 4
-        path: 2
-        path: 0
-        path: 4
-        span: 34
-        span: 2
-        span: 10
-    }
-    location: {
-        path: 4
-        path: 4
-        path: 2
-        path: 0
-        path: 6
-        span: 34
-        span: 11
-        span: 28
-    }
-    location: {
-        path: 4
-        path: 4
-        path: 2
-        path: 0
-        path: 1
-        span: 34
-        span: 29
-        span: 35
-    }
-    location: {
-        path: 4
-        path: 4
-        path: 2
-        path: 0
-        path: 3
-        span: 34
-        span: 38
-        span: 39
+message_type:  {
+    name:  "GetAnalogSwitchStateResponse"
+    field:  {
+        name:  "states"
+        number:  1
+        label:  LABEL_REPEATED
+        type:  TYPE_MESSAGE
+        type_name:  ".AnalogSwitchState"
+        json_name:  "states"
     }
 }
-syntax: "proto3"
+source_code_info:  {
+    location:  {
+        span:  0
+        span:  0
+        span:  35
+        span:  1
+    }
+    location:  {
+        path:  12
+        span:  0
+        span:  0
+        span:  18
+    }
+    location:  {
+        path:  4
+        path:  0
+        span:  2
+        span:  0
+        span:  4
+        span:  1
+    }
+    location:  {
+        path:  4
+        path:  0
+        path:  1
+        span:  2
+        span:  8
+        span:  35
+    }
+    location:  {
+        path:  4
+        path:  0
+        path:  2
+        path:  0
+        span:  3
+        span:  2
+        span:  30
+    }
+    location:  {
+        path:  4
+        path:  0
+        path:  2
+        path:  0
+        path:  5
+        span:  3
+        span:  2
+        span:  8
+    }
+    location:  {
+        path:  4
+        path:  0
+        path:  2
+        path:  0
+        path:  1
+        span:  3
+        span:  9
+        span:  25
+    }
+    location:  {
+        path:  4
+        path:  0
+        path:  2
+        path:  0
+        path:  3
+        span:  3
+        span:  28
+        span:  29
+    }
+    location:  {
+        path:  4
+        path:  1
+        span:  6
+        span:  0
+        span:  9
+        span:  1
+    }
+    location:  {
+        path:  4
+        path:  1
+        path:  1
+        span:  6
+        span:  8
+        span:  25
+    }
+    location:  {
+        path:  4
+        path:  1
+        path:  2
+        path:  0
+        span:  7
+        span:  2
+        span:  30
+    }
+    location:  {
+        path:  4
+        path:  1
+        path:  2
+        path:  0
+        path:  5
+        span:  7
+        span:  2
+        span:  8
+    }
+    location:  {
+        path:  4
+        path:  1
+        path:  2
+        path:  0
+        path:  1
+        span:  7
+        span:  9
+        span:  25
+    }
+    location:  {
+        path:  4
+        path:  1
+        path:  2
+        path:  0
+        path:  3
+        span:  7
+        span:  28
+        span:  29
+    }
+    location:  {
+        path:  4
+        path:  1
+        path:  2
+        path:  1
+        span:  8
+        span:  2
+        span:  32
+    }
+    location:  {
+        path:  4
+        path:  1
+        path:  2
+        path:  1
+        path:  5
+        span:  8
+        span:  2
+        span:  8
+    }
+    location:  {
+        path:  4
+        path:  1
+        path:  2
+        path:  1
+        path:  1
+        span:  8
+        span:  9
+        span:  27
+    }
+    location:  {
+        path:  4
+        path:  1
+        path:  2
+        path:  1
+        path:  3
+        span:  8
+        span:  30
+        span:  31
+    }
+    location:  {
+        path:  4
+        path:  2
+        span:  11
+        span:  0
+        span:  14
+        span:  1
+    }
+    location:  {
+        path:  4
+        path:  2
+        path:  1
+        span:  11
+        span:  8
+        span:  26
+    }
+    location:  {
+        path:  4
+        path:  2
+        path:  2
+        path:  0
+        span:  12
+        span:  2
+        span:  30
+    }
+    location:  {
+        path:  4
+        path:  2
+        path:  2
+        path:  0
+        path:  5
+        span:  12
+        span:  2
+        span:  8
+    }
+    location:  {
+        path:  4
+        path:  2
+        path:  2
+        path:  0
+        path:  1
+        span:  12
+        span:  9
+        span:  25
+    }
+    location:  {
+        path:  4
+        path:  2
+        path:  2
+        path:  0
+        path:  3
+        span:  12
+        span:  28
+        span:  29
+    }
+    location:  {
+        path:  4
+        path:  2
+        path:  2
+        path:  1
+        span:  13
+        span:  2
+        span:  32
+    }
+    location:  {
+        path:  4
+        path:  2
+        path:  2
+        path:  1
+        path:  5
+        span:  13
+        span:  2
+        span:  8
+    }
+    location:  {
+        path:  4
+        path:  2
+        path:  2
+        path:  1
+        path:  1
+        span:  13
+        span:  9
+        span:  27
+    }
+    location:  {
+        path:  4
+        path:  2
+        path:  2
+        path:  1
+        path:  3
+        span:  13
+        span:  30
+        span:  31
+    }
+    location:  {
+        path:  4
+        path:  3
+        span:  16
+        span:  0
+        span:  31
+        span:  1
+    }
+    location:  {
+        path:  4
+        path:  3
+        path:  1
+        span:  16
+        span:  8
+        span:  25
+    }
+    location:  {
+        path:  4
+        path:  3
+        path:  2
+        path:  0
+        span:  19
+        span:  2
+        span:  26
+        leading_comments:  " The timestamp in micro seconds.\n Note that this value may wrap roughly every 1 hour 11 minutes.\n"
+    }
+    location:  {
+        path:  4
+        path:  3
+        path:  2
+        path:  0
+        path:  5
+        span:  19
+        span:  2
+        span:  8
+    }
+    location:  {
+        path:  4
+        path:  3
+        path:  2
+        path:  0
+        path:  1
+        span:  19
+        span:  9
+        span:  21
+    }
+    location:  {
+        path:  4
+        path:  3
+        path:  2
+        path:  0
+        path:  3
+        span:  19
+        span:  24
+        span:  25
+    }
+    location:  {
+        path:  4
+        path:  3
+        path:  2
+        path:  1
+        span:  22
+        span:  2
+        span:  30
+        leading_comments:  " The analog switch_id associated with this state\n"
+    }
+    location:  {
+        path:  4
+        path:  3
+        path:  2
+        path:  1
+        path:  5
+        span:  22
+        span:  2
+        span:  8
+    }
+    location:  {
+        path:  4
+        path:  3
+        path:  2
+        path:  1
+        path:  1
+        span:  22
+        span:  9
+        span:  25
+    }
+    location:  {
+        path:  4
+        path:  3
+        path:  2
+        path:  1
+        path:  3
+        span:  22
+        span:  28
+        span:  29
+    }
+    location:  {
+        path:  4
+        path:  3
+        path:  2
+        path:  2
+        span:  24
+        span:  2
+        span:  24
+    }
+    location:  {
+        path:  4
+        path:  3
+        path:  2
+        path:  2
+        path:  5
+        span:  24
+        span:  2
+        span:  8
+    }
+    location:  {
+        path:  4
+        path:  3
+        path:  2
+        path:  2
+        path:  1
+        span:  24
+        span:  9
+        span:  19
+    }
+    location:  {
+        path:  4
+        path:  3
+        path:  2
+        path:  2
+        path:  3
+        span:  24
+        span:  22
+        span:  23
+    }
+    location:  {
+        path:  4
+        path:  3
+        path:  2
+        path:  3
+        span:  25
+        span:  2
+        span:  24
+    }
+    location:  {
+        path:  4
+        path:  3
+        path:  2
+        path:  3
+        path:  5
+        span:  25
+        span:  2
+        span:  6
+    }
+    location:  {
+        path:  4
+        path:  3
+        path:  2
+        path:  3
+        path:  1
+        span:  25
+        span:  7
+        span:  19
+    }
+    location:  {
+        path:  4
+        path:  3
+        path:  2
+        path:  3
+        path:  3
+        span:  25
+        span:  22
+        span:  23
+    }
+    location:  {
+        path:  4
+        path:  3
+        path:  8
+        path:  0
+        span:  27
+        span:  2
+        span:  30
+        span:  3
+    }
+    location:  {
+        path:  4
+        path:  3
+        path:  8
+        path:  0
+        path:  1
+        span:  27
+        span:  8
+        span:  15
+    }
+    location:  {
+        path:  4
+        path:  3
+        path:  2
+        path:  4
+        span:  28
+        span:  4
+        span:  40
+    }
+    location:  {
+        path:  4
+        path:  3
+        path:  2
+        path:  4
+        path:  6
+        span:  28
+        span:  4
+        span:  21
+    }
+    location:  {
+        path:  4
+        path:  3
+        path:  2
+        path:  4
+        path:  1
+        span:  28
+        span:  22
+        span:  35
+    }
+    location:  {
+        path:  4
+        path:  3
+        path:  2
+        path:  4
+        path:  3
+        span:  28
+        span:  38
+        span:  39
+    }
+    location:  {
+        path:  4
+        path:  3
+        path:  2
+        path:  5
+        span:  29
+        span:  4
+        span:  42
+    }
+    location:  {
+        path:  4
+        path:  3
+        path:  2
+        path:  5
+        path:  6
+        span:  29
+        span:  4
+        span:  22
+    }
+    location:  {
+        path:  4
+        path:  3
+        path:  2
+        path:  5
+        path:  1
+        span:  29
+        span:  23
+        span:  37
+    }
+    location:  {
+        path:  4
+        path:  3
+        path:  2
+        path:  5
+        path:  3
+        span:  29
+        span:  40
+        span:  41
+    }
+    location:  {
+        path:  4
+        path:  4
+        span:  33
+        span:  0
+        span:  35
+        span:  1
+    }
+    location:  {
+        path:  4
+        path:  4
+        path:  1
+        span:  33
+        span:  8
+        span:  36
+    }
+    location:  {
+        path:  4
+        path:  4
+        path:  2
+        path:  0
+        span:  34
+        span:  2
+        span:  40
+    }
+    location:  {
+        path:  4
+        path:  4
+        path:  2
+        path:  0
+        path:  4
+        span:  34
+        span:  2
+        span:  10
+    }
+    location:  {
+        path:  4
+        path:  4
+        path:  2
+        path:  0
+        path:  6
+        span:  34
+        span:  11
+        span:  28
+    }
+    location:  {
+        path:  4
+        path:  4
+        path:  2
+        path:  0
+        path:  1
+        span:  34
+        span:  29
+        span:  35
+    }
+    location:  {
+        path:  4
+        path:  4
+        path:  2
+        path:  0
+        path:  3
+        span:  34
+        span:  38
+        span:  39
+    }
+}
+syntax:  "proto3"
 */

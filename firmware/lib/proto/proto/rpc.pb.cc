@@ -2,6 +2,8 @@
 
 #include <cassert>
 #include "decaproto/reflection_util.h"
+#include "decaproto/encoder.h"
+#include "decaproto/stream/coded_stream.h"
 
 
 // A singleton Descriptor for GetAnalogSwitchStateRequest
@@ -34,6 +36,25 @@ const decaproto::Reflection* GetAnalogSwitchStateRequest::GetReflection() const 
         1,
 		decaproto::MsgCast(&GetAnalogSwitchStateRequest::analog_switch_id));
         return kGetAnalogSwitchStateRequest__Reflection;
+}
+
+size_t GetAnalogSwitchStateRequest::ComputeEncodedSize() const {
+    size_t size = 0;
+
+		if ( analog_switch_id__ != uint32_t() ) {
+			size += 1;  // tag
+			size += decaproto::ComputeEncodedVarintSize(analog_switch_id__);
+		}
+				return size;
+}
+
+bool GetAnalogSwitchStateRequest::EncodeImpl(decaproto::CodedOutputStream& stream) const {
+
+					if (analog_switch_id__ != uint32_t()) {
+						stream.WriteTag(1, decaproto::WireType::kVarint);
+						stream.WriteVarint32(analog_switch_id__);
+					}
+							return true;
 }
 
 // A singleton Descriptor for RapidTriggerState
@@ -78,6 +99,35 @@ const decaproto::Reflection* RapidTriggerState::GetReflection() const {
         return kRapidTriggerState__Reflection;
 }
 
+size_t RapidTriggerState::ComputeEncodedSize() const {
+    size_t size = 0;
+
+		if ( release_point_mm__ != double() ) {
+			size += 1;  // tag
+			size += 8;
+		}
+		
+		if ( actuation_point_mm__ != double() ) {
+			size += 1;  // tag
+			size += 8;
+		}
+				return size;
+}
+
+bool RapidTriggerState::EncodeImpl(decaproto::CodedOutputStream& stream) const {
+
+					if (release_point_mm__ != double()) {
+						stream.WriteTag(1, decaproto::WireType::kI64);
+						stream.WriteFixedInt64(decaproto::MemcpyCast<double, uint64_t>(release_point_mm__));
+					}
+					
+					if (actuation_point_mm__ != double()) {
+						stream.WriteTag(2, decaproto::WireType::kI64);
+						stream.WriteFixedInt64(decaproto::MemcpyCast<double, uint64_t>(actuation_point_mm__));
+					}
+							return true;
+}
+
 // A singleton Descriptor for StaticTriggerState
 decaproto::Descriptor* kStaticTriggerState__Descriptor = nullptr;
 
@@ -118,6 +168,35 @@ const decaproto::Reflection* StaticTriggerState::GetReflection() const {
         2,
 		decaproto::MsgCast(&StaticTriggerState::actuation_point_mm));
         return kStaticTriggerState__Reflection;
+}
+
+size_t StaticTriggerState::ComputeEncodedSize() const {
+    size_t size = 0;
+
+		if ( release_point_mm__ != double() ) {
+			size += 1;  // tag
+			size += 8;
+		}
+		
+		if ( actuation_point_mm__ != double() ) {
+			size += 1;  // tag
+			size += 8;
+		}
+				return size;
+}
+
+bool StaticTriggerState::EncodeImpl(decaproto::CodedOutputStream& stream) const {
+
+					if (release_point_mm__ != double()) {
+						stream.WriteTag(1, decaproto::WireType::kI64);
+						stream.WriteFixedInt64(decaproto::MemcpyCast<double, uint64_t>(release_point_mm__));
+					}
+					
+					if (actuation_point_mm__ != double()) {
+						stream.WriteTag(2, decaproto::WireType::kI64);
+						stream.WriteFixedInt64(decaproto::MemcpyCast<double, uint64_t>(actuation_point_mm__));
+					}
+							return true;
 }
 
 // A singleton Descriptor for AnalogSwitchState
@@ -210,6 +289,89 @@ const decaproto::Reflection* AnalogSwitchState::GetReflection() const {
     return kAnalogSwitchState__Reflection;
 }
 
+size_t AnalogSwitchState::ComputeEncodedSize() const {
+    size_t size = 0;
+
+		if ( timestamp_us__ != uint32_t() ) {
+			size += 1;  // tag
+			size += decaproto::ComputeEncodedVarintSize(timestamp_us__);
+		}
+		
+		if ( analog_switch_id__ != uint32_t() ) {
+			size += 1;  // tag
+			size += decaproto::ComputeEncodedVarintSize(analog_switch_id__);
+		}
+		
+		if ( pressed_mm__ != double() ) {
+			size += 1;  // tag
+			size += 8;
+		}
+		
+		if ( is_triggered__ != bool() ) {
+			size += 1;  // tag
+			size += decaproto::ComputeEncodedVarintSize(is_triggered__);
+		}
+		
+		if ( has_rapid_trigger() ) {
+			size_t sub_msg_size = rapid_trigger__->ComputeEncodedSize();
+			// tag
+			size += 1;
+			// LEN
+			size += decaproto::ComputeEncodedVarintSize(sub_msg_size);
+			// value
+			size += sub_msg_size;
+		}
+		
+		if ( has_static_trigger() ) {
+			size_t sub_msg_size = static_trigger__->ComputeEncodedSize();
+			// tag
+			size += 1;
+			// LEN
+			size += decaproto::ComputeEncodedVarintSize(sub_msg_size);
+			// value
+			size += sub_msg_size;
+		}
+				return size;
+}
+
+bool AnalogSwitchState::EncodeImpl(decaproto::CodedOutputStream& stream) const {
+
+					if (timestamp_us__ != uint32_t()) {
+						stream.WriteTag(1, decaproto::WireType::kVarint);
+						stream.WriteVarint32(timestamp_us__);
+					}
+					
+					if (analog_switch_id__ != uint32_t()) {
+						stream.WriteTag(3, decaproto::WireType::kVarint);
+						stream.WriteVarint32(analog_switch_id__);
+					}
+					
+					if (pressed_mm__ != double()) {
+						stream.WriteTag(2, decaproto::WireType::kI64);
+						stream.WriteFixedInt64(decaproto::MemcpyCast<double, uint64_t>(pressed_mm__));
+					}
+					
+					if (is_triggered__ != bool()) {
+						stream.WriteTag(6, decaproto::WireType::kVarint);
+						stream.WriteVarint32(is_triggered__);
+					}
+					
+					if (has_rapid_trigger()) {
+						size_t sub_msg_size = rapid_trigger__->ComputeEncodedSize();
+						stream.WriteTag(4, decaproto::WireType::kLen);
+						stream.WriteVarint32(sub_msg_size);
+						rapid_trigger__->EncodeImpl(stream);
+					}
+					
+					if (has_static_trigger()) {
+						size_t sub_msg_size = static_trigger__->ComputeEncodedSize();
+						stream.WriteTag(5, decaproto::WireType::kLen);
+						stream.WriteVarint32(sub_msg_size);
+						static_trigger__->EncodeImpl(stream);
+					}
+							return true;
+}
+
 // A singleton Descriptor for GetAnalogSwitchStateResponse
 decaproto::Descriptor* kGetAnalogSwitchStateResponse__Descriptor = nullptr;
 
@@ -242,4 +404,30 @@ const decaproto::Reflection* GetAnalogSwitchStateResponse::GetReflection() const
 				1,
 				decaproto::MsgCast(&GetAnalogSwitchStateResponse::states_size));
 		    return kGetAnalogSwitchStateResponse__Reflection;
+}
+
+size_t GetAnalogSwitchStateResponse::ComputeEncodedSize() const {
+    size_t size = 0;
+
+		for (auto& item : states__) {
+			size_t sub_msg_size = item.ComputeEncodedSize();
+			// tag
+			size += 1;
+			// LEN
+			size += decaproto::ComputeEncodedVarintSize(sub_msg_size);
+			// value
+			size += sub_msg_size;
+		}
+				return size;
+}
+
+bool GetAnalogSwitchStateResponse::EncodeImpl(decaproto::CodedOutputStream& stream) const {
+
+					for (auto& item : states__) {
+						size_t sub_msg_size = item.ComputeEncodedSize();
+						stream.WriteTag(1, decaproto::WireType::kLen);
+						stream.WriteVarint32(sub_msg_size);
+						item.EncodeImpl(stream);
+					}
+							return true;
 }

@@ -7,6 +7,7 @@
 #include "decaproto/decoder.h"
 #include "decaproto/encoder.h"
 #include "decaproto/stream/stl.h"
+#include "decaproto/stream/string_stream.h"
 #include "proto/config.pb.h"
 #include "proto/rpc.pb.h"
 
@@ -22,19 +23,24 @@ void SendJsonResponse(const String& cmd, const JsonDocument& response) {
   Serial.print('\n');
 }
 
+std::string send_proto_buf;
 bool SendProto(const char* cmd, const decaproto::Message& msg) {
-  std::ostringstream oss;
-  decaproto::StlOutputStream sos(&oss);
+  send_proto_buf.clear();
+  send_proto_buf.reserve(512);
+
+  // For now, it's much faster (about 4x) to use StringOutputStream than
+  // ArduinoSerialOutputStream maybe because our poor Stream write data one byte
+  // at a time.
+  decaproto::StringOutputStream sos(&send_proto_buf);
   size_t written_size;
 
-  if (!EncodeMessage(sos, msg, written_size)) {
+  if (!msg.Encode(sos, written_size)) {
     Serial.println("Failed to encode a message");
     return false;
   }
 
-  std::string payload = oss.str();
   Serial.printf("%s@%u#", cmd, written_size);
-  Serial.write(payload.data(), payload.size());
+  Serial.write(send_proto_buf.data(), written_size);
   Serial.flush();
 
   return true;
@@ -85,7 +91,7 @@ void SerialHandler::ReadCommand(Udong& context) {
       return;
     } else if (ch == '@') {
       // Command with payload size.
-      payload_size_ = 0;
+      recv_payload_size_ = 0;
       state_ = State::kReadingPayloadSize;
       return;
     } else if (ch == '\n') {
@@ -113,11 +119,11 @@ void SerialHandler::ReadJsonPayload(Udong& context) {
     if (ch == '\n') {
       // End of the payload.
       JsonDocument arg;
-      deserializeJson(arg, payload_buffer_.data());
+      deserializeJson(arg, recv_buffer_.data());
       HandleJsonCmd(context, command_, arg);
       return;
     } else {
-      payload_buffer_.push_back(ch);
+      recv_buffer_.push_back(ch);
     }
   }
 }
@@ -129,14 +135,14 @@ void SerialHandler::ReadPayloadSize(Udong& context) {
       // End of the payload size.
       // Start reading the binary payload.
       state_ = State::kReadingBinaryPayload;
-      if (payload_size_ == 0) {
+      if (recv_payload_size_ == 0) {
         // Payload size is zero
-        HandleBinaryCommand(context, payload_buffer_.data(), 0);
+        HandleBinaryCommand(context, recv_buffer_.data(), 0);
         return;
       }
       return;
     } else {
-      payload_size_ = payload_size_ * 10 + (ch - '0');
+      recv_payload_size_ = recv_payload_size_ * 10 + (ch - '0');
     }
   }
 }
@@ -144,10 +150,10 @@ void SerialHandler::ReadPayloadSize(Udong& context) {
 void SerialHandler::ReadBinaryPayload(Udong& context) {
   while (Serial.available()) {
     uint8_t ch = Serial.read();
-    payload_buffer_.push_back(ch);
-    if (payload_buffer_.size() == payload_size_) {
+    recv_buffer_.push_back(ch);
+    if (recv_buffer_.size() == recv_payload_size_) {
       // End of the payload.
-      HandleBinaryCommand(context, payload_buffer_.data(), payload_size_);
+      HandleBinaryCommand(context, recv_buffer_.data(), recv_payload_size_);
       return;
     }
   }

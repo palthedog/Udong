@@ -53,7 +53,12 @@ class Multiplexer8 {
     selector_out_c_->Write(((channel >> 2) & 1) ? HIGH : LOW);
 
     // TC4051B would take 0.5 micro seconds to update output pin in worst case.
-    delayMicroseconds(1);
+    // Additionally RP2040's ADC have to collect samples for 10 micro seconds
+    // for acceptable accuracy.
+    // RP2040's datasheet says ADC works only 500k samples/second at most.
+    // It means that 2us sleep should be enough for 500kS/s. However, for
+    // unknown reason, even 5us sleep is not enough for nice result.
+    delayMicroseconds(10);
   }
 
   std::shared_ptr<AnalogInput> ComInput() const {

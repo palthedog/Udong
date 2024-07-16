@@ -2,6 +2,8 @@
 
 #include <cassert>
 #include "decaproto/reflection_util.h"
+#include "decaproto/encoder.h"
+#include "decaproto/stream/coded_stream.h"
 
 
 // A singleton Descriptor for AnalogSwitchConfig
@@ -44,6 +46,35 @@ const decaproto::Reflection* AnalogSwitchConfig::GetReflection() const {
         2,
 		decaproto::MsgCast(&AnalogSwitchConfig::analog_switch_group_id));
         return kAnalogSwitchConfig__Reflection;
+}
+
+size_t AnalogSwitchConfig::ComputeEncodedSize() const {
+    size_t size = 0;
+
+		if ( analog_switch_id__ != uint32_t() ) {
+			size += 1;  // tag
+			size += decaproto::ComputeEncodedVarintSize(analog_switch_id__);
+		}
+		
+		if ( analog_switch_group_id__ != uint32_t() ) {
+			size += 1;  // tag
+			size += decaproto::ComputeEncodedVarintSize(analog_switch_group_id__);
+		}
+				return size;
+}
+
+bool AnalogSwitchConfig::EncodeImpl(decaproto::CodedOutputStream& stream) const {
+
+					if (analog_switch_id__ != uint32_t()) {
+						stream.WriteTag(1, decaproto::WireType::kVarint);
+						stream.WriteVarint32(analog_switch_id__);
+					}
+					
+					if (analog_switch_group_id__ != uint32_t()) {
+						stream.WriteTag(2, decaproto::WireType::kVarint);
+						stream.WriteVarint32(analog_switch_group_id__);
+					}
+							return true;
 }
 
 // A singleton Descriptor for AnalogSwitchGroup
@@ -116,6 +147,69 @@ const decaproto::Reflection* AnalogSwitchGroup::GetReflection() const {
     return kAnalogSwitchGroup__Reflection;
 }
 
+size_t AnalogSwitchGroup::ComputeEncodedSize() const {
+    size_t size = 0;
+
+		if ( analog_switch_group_id__ != uint32_t() ) {
+			size += 1;  // tag
+			size += decaproto::ComputeEncodedVarintSize(analog_switch_group_id__);
+		}
+		
+		if ( trigger_type__ != TriggerType() ) {
+			size += 1;  // tag
+			size += decaproto::ComputeEncodedVarintSize(trigger_type__);
+		}
+		
+		if ( has_rapid_trigger() ) {
+			size_t sub_msg_size = rapid_trigger__->ComputeEncodedSize();
+			// tag
+			size += 1;
+			// LEN
+			size += decaproto::ComputeEncodedVarintSize(sub_msg_size);
+			// value
+			size += sub_msg_size;
+		}
+		
+		if ( has_static_trigger() ) {
+			size_t sub_msg_size = static_trigger__->ComputeEncodedSize();
+			// tag
+			size += 1;
+			// LEN
+			size += decaproto::ComputeEncodedVarintSize(sub_msg_size);
+			// value
+			size += sub_msg_size;
+		}
+				return size;
+}
+
+bool AnalogSwitchGroup::EncodeImpl(decaproto::CodedOutputStream& stream) const {
+
+					if (analog_switch_group_id__ != uint32_t()) {
+						stream.WriteTag(1, decaproto::WireType::kVarint);
+						stream.WriteVarint32(analog_switch_group_id__);
+					}
+					
+					if (trigger_type__ != TriggerType()) {
+						stream.WriteTag(2, decaproto::WireType::kVarint);
+						stream.WriteVarint32(trigger_type__);
+					}
+					
+					if (has_rapid_trigger()) {
+						size_t sub_msg_size = rapid_trigger__->ComputeEncodedSize();
+						stream.WriteTag(3, decaproto::WireType::kLen);
+						stream.WriteVarint32(sub_msg_size);
+						rapid_trigger__->EncodeImpl(stream);
+					}
+					
+					if (has_static_trigger()) {
+						size_t sub_msg_size = static_trigger__->ComputeEncodedSize();
+						stream.WriteTag(4, decaproto::WireType::kLen);
+						stream.WriteVarint32(sub_msg_size);
+						static_trigger__->EncodeImpl(stream);
+					}
+							return true;
+}
+
 // A singleton Descriptor for RapidTriggerConfig
 decaproto::Descriptor* kRapidTriggerConfig__Descriptor = nullptr;
 
@@ -178,6 +272,55 @@ const decaproto::Reflection* RapidTriggerConfig::GetReflection() const {
         return kRapidTriggerConfig__Reflection;
 }
 
+size_t RapidTriggerConfig::ComputeEncodedSize() const {
+    size_t size = 0;
+
+		if ( act__ != double() ) {
+			size += 1;  // tag
+			size += 8;
+		}
+		
+		if ( rel__ != double() ) {
+			size += 1;  // tag
+			size += 8;
+		}
+		
+		if ( f_act__ != double() ) {
+			size += 1;  // tag
+			size += 8;
+		}
+		
+		if ( f_rel__ != double() ) {
+			size += 1;  // tag
+			size += 8;
+		}
+				return size;
+}
+
+bool RapidTriggerConfig::EncodeImpl(decaproto::CodedOutputStream& stream) const {
+
+					if (act__ != double()) {
+						stream.WriteTag(1, decaproto::WireType::kI64);
+						stream.WriteFixedInt64(decaproto::MemcpyCast<double, uint64_t>(act__));
+					}
+					
+					if (rel__ != double()) {
+						stream.WriteTag(2, decaproto::WireType::kI64);
+						stream.WriteFixedInt64(decaproto::MemcpyCast<double, uint64_t>(rel__));
+					}
+					
+					if (f_act__ != double()) {
+						stream.WriteTag(3, decaproto::WireType::kI64);
+						stream.WriteFixedInt64(decaproto::MemcpyCast<double, uint64_t>(f_act__));
+					}
+					
+					if (f_rel__ != double()) {
+						stream.WriteTag(4, decaproto::WireType::kI64);
+						stream.WriteFixedInt64(decaproto::MemcpyCast<double, uint64_t>(f_rel__));
+					}
+							return true;
+}
+
 // A singleton Descriptor for StaticTriggerConfig
 decaproto::Descriptor* kStaticTriggerConfig__Descriptor = nullptr;
 
@@ -218,6 +361,35 @@ const decaproto::Reflection* StaticTriggerConfig::GetReflection() const {
         2,
 		decaproto::MsgCast(&StaticTriggerConfig::rel));
         return kStaticTriggerConfig__Reflection;
+}
+
+size_t StaticTriggerConfig::ComputeEncodedSize() const {
+    size_t size = 0;
+
+		if ( act__ != double() ) {
+			size += 1;  // tag
+			size += 8;
+		}
+		
+		if ( rel__ != double() ) {
+			size += 1;  // tag
+			size += 8;
+		}
+				return size;
+}
+
+bool StaticTriggerConfig::EncodeImpl(decaproto::CodedOutputStream& stream) const {
+
+					if (act__ != double()) {
+						stream.WriteTag(1, decaproto::WireType::kI64);
+						stream.WriteFixedInt64(decaproto::MemcpyCast<double, uint64_t>(act__));
+					}
+					
+					if (rel__ != double()) {
+						stream.WriteTag(2, decaproto::WireType::kI64);
+						stream.WriteFixedInt64(decaproto::MemcpyCast<double, uint64_t>(rel__));
+					}
+							return true;
 }
 
 // A singleton Descriptor for ButtonId
@@ -280,6 +452,59 @@ const decaproto::Reflection* ButtonId::GetReflection() const {
     return kButtonId__Reflection;
 }
 
+size_t ButtonId::ComputeEncodedSize() const {
+    size_t size = 0;
+
+		if ( type__ != ButtonType() ) {
+			size += 1;  // tag
+			size += decaproto::ComputeEncodedVarintSize(type__);
+		}
+		
+		if ( has_push_button() ) {
+			size_t sub_msg_size = push_button__->ComputeEncodedSize();
+			// tag
+			size += 1;
+			// LEN
+			size += decaproto::ComputeEncodedVarintSize(sub_msg_size);
+			// value
+			size += sub_msg_size;
+		}
+		
+		if ( has_d_pad() ) {
+			size_t sub_msg_size = d_pad__->ComputeEncodedSize();
+			// tag
+			size += 1;
+			// LEN
+			size += decaproto::ComputeEncodedVarintSize(sub_msg_size);
+			// value
+			size += sub_msg_size;
+		}
+				return size;
+}
+
+bool ButtonId::EncodeImpl(decaproto::CodedOutputStream& stream) const {
+
+					if (type__ != ButtonType()) {
+						stream.WriteTag(1, decaproto::WireType::kVarint);
+						stream.WriteVarint32(type__);
+					}
+					
+					if (has_push_button()) {
+						size_t sub_msg_size = push_button__->ComputeEncodedSize();
+						stream.WriteTag(2, decaproto::WireType::kLen);
+						stream.WriteVarint32(sub_msg_size);
+						push_button__->EncodeImpl(stream);
+					}
+					
+					if (has_d_pad()) {
+						size_t sub_msg_size = d_pad__->ComputeEncodedSize();
+						stream.WriteTag(3, decaproto::WireType::kLen);
+						stream.WriteVarint32(sub_msg_size);
+						d_pad__->EncodeImpl(stream);
+					}
+							return true;
+}
+
 // A singleton Descriptor for SwitchId
 decaproto::Descriptor* kSwitchId__Descriptor = nullptr;
 
@@ -322,6 +547,35 @@ const decaproto::Reflection* SwitchId::GetReflection() const {
         return kSwitchId__Reflection;
 }
 
+size_t SwitchId::ComputeEncodedSize() const {
+    size_t size = 0;
+
+		if ( type__ != SwitchType() ) {
+			size += 1;  // tag
+			size += decaproto::ComputeEncodedVarintSize(type__);
+		}
+		
+		if ( id__ != uint32_t() ) {
+			size += 1;  // tag
+			size += decaproto::ComputeEncodedVarintSize(id__);
+		}
+				return size;
+}
+
+bool SwitchId::EncodeImpl(decaproto::CodedOutputStream& stream) const {
+
+					if (type__ != SwitchType()) {
+						stream.WriteTag(1, decaproto::WireType::kVarint);
+						stream.WriteVarint32(type__);
+					}
+					
+					if (id__ != uint32_t()) {
+						stream.WriteTag(2, decaproto::WireType::kVarint);
+						stream.WriteVarint32(id__);
+					}
+							return true;
+}
+
 // A singleton Descriptor for PushButtonSelector
 decaproto::Descriptor* kPushButtonSelector__Descriptor = nullptr;
 
@@ -354,6 +608,25 @@ const decaproto::Reflection* PushButtonSelector::GetReflection() const {
         return kPushButtonSelector__Reflection;
 }
 
+size_t PushButtonSelector::ComputeEncodedSize() const {
+    size_t size = 0;
+
+		if ( push_button_id__ != uint32_t() ) {
+			size += 1;  // tag
+			size += decaproto::ComputeEncodedVarintSize(push_button_id__);
+		}
+				return size;
+}
+
+bool PushButtonSelector::EncodeImpl(decaproto::CodedOutputStream& stream) const {
+
+					if (push_button_id__ != uint32_t()) {
+						stream.WriteTag(1, decaproto::WireType::kVarint);
+						stream.WriteVarint32(push_button_id__);
+					}
+							return true;
+}
+
 // A singleton Descriptor for DPadButtonSelector
 decaproto::Descriptor* kDPadButtonSelector__Descriptor = nullptr;
 
@@ -384,6 +657,25 @@ const decaproto::Reflection* DPadButtonSelector::GetReflection() const {
         1,
 		decaproto::CastForGetEnumValue(&DPadButtonSelector::direction));
     return kDPadButtonSelector__Reflection;
+}
+
+size_t DPadButtonSelector::ComputeEncodedSize() const {
+    size_t size = 0;
+
+		if ( direction__ != DPadButtonSelector_Direction() ) {
+			size += 1;  // tag
+			size += decaproto::ComputeEncodedVarintSize(direction__);
+		}
+				return size;
+}
+
+bool DPadButtonSelector::EncodeImpl(decaproto::CodedOutputStream& stream) const {
+
+					if (direction__ != DPadButtonSelector_Direction()) {
+						stream.WriteTag(1, decaproto::WireType::kVarint);
+						stream.WriteVarint32(direction__);
+					}
+							return true;
 }
 
 // A singleton Descriptor for ButtonAssignment
@@ -436,6 +728,49 @@ const decaproto::Reflection* ButtonAssignment::GetReflection() const {
     return kButtonAssignment__Reflection;
 }
 
+size_t ButtonAssignment::ComputeEncodedSize() const {
+    size_t size = 0;
+
+		if ( has_switch_id() ) {
+			size_t sub_msg_size = switch_id__->ComputeEncodedSize();
+			// tag
+			size += 1;
+			// LEN
+			size += decaproto::ComputeEncodedVarintSize(sub_msg_size);
+			// value
+			size += sub_msg_size;
+		}
+		
+		if ( has_button_id() ) {
+			size_t sub_msg_size = button_id__->ComputeEncodedSize();
+			// tag
+			size += 1;
+			// LEN
+			size += decaproto::ComputeEncodedVarintSize(sub_msg_size);
+			// value
+			size += sub_msg_size;
+		}
+				return size;
+}
+
+bool ButtonAssignment::EncodeImpl(decaproto::CodedOutputStream& stream) const {
+
+					if (has_switch_id()) {
+						size_t sub_msg_size = switch_id__->ComputeEncodedSize();
+						stream.WriteTag(1, decaproto::WireType::kLen);
+						stream.WriteVarint32(sub_msg_size);
+						switch_id__->EncodeImpl(stream);
+					}
+					
+					if (has_button_id()) {
+						size_t sub_msg_size = button_id__->ComputeEncodedSize();
+						stream.WriteTag(2, decaproto::WireType::kLen);
+						stream.WriteVarint32(sub_msg_size);
+						button_id__->EncodeImpl(stream);
+					}
+							return true;
+}
+
 // A singleton Descriptor for BakedData
 decaproto::Descriptor* kBakedData__Descriptor = nullptr;
 
@@ -466,6 +801,30 @@ const decaproto::Reflection* BakedData::GetReflection() const {
         1,
 		decaproto::MsgCast(&BakedData::board_name));
     return kBakedData__Reflection;
+}
+
+size_t BakedData::ComputeEncodedSize() const {
+    size_t size = 0;
+
+		if ( !board_name__.empty() ) {
+			// tag
+			size += 1;
+			// LEN
+			size += decaproto::ComputeEncodedVarintSize(board_name__.size());
+			// value
+			size += board_name__.size();
+		}
+				return size;
+}
+
+bool BakedData::EncodeImpl(decaproto::CodedOutputStream& stream) const {
+
+					if (!board_name__.empty()) {
+						stream.WriteTag(1, decaproto::WireType::kLen);
+						stream.WriteVarint32(board_name__.size());
+						stream.WriteString(board_name__);
+					}
+							return true;
 }
 
 // A singleton Descriptor for UdongConfig
@@ -538,4 +897,81 @@ const decaproto::Reflection* UdongConfig::GetReflection() const {
 				3,
 				decaproto::MsgCast(&UdongConfig::button_assignments_size));
 		    return kUdongConfig__Reflection;
+}
+
+size_t UdongConfig::ComputeEncodedSize() const {
+    size_t size = 0;
+
+		if ( has_baked() ) {
+			size_t sub_msg_size = baked__->ComputeEncodedSize();
+			// tag
+			size += 1;
+			// LEN
+			size += decaproto::ComputeEncodedVarintSize(sub_msg_size);
+			// value
+			size += sub_msg_size;
+		}
+		
+		for (auto& item : analog_switch_configs__) {
+			size_t sub_msg_size = item.ComputeEncodedSize();
+			// tag
+			size += 1;
+			// LEN
+			size += decaproto::ComputeEncodedVarintSize(sub_msg_size);
+			// value
+			size += sub_msg_size;
+		}
+		
+		for (auto& item : analog_switch_groups__) {
+			size_t sub_msg_size = item.ComputeEncodedSize();
+			// tag
+			size += 1;
+			// LEN
+			size += decaproto::ComputeEncodedVarintSize(sub_msg_size);
+			// value
+			size += sub_msg_size;
+		}
+		
+		for (auto& item : button_assignments__) {
+			size_t sub_msg_size = item.ComputeEncodedSize();
+			// tag
+			size += 1;
+			// LEN
+			size += decaproto::ComputeEncodedVarintSize(sub_msg_size);
+			// value
+			size += sub_msg_size;
+		}
+				return size;
+}
+
+bool UdongConfig::EncodeImpl(decaproto::CodedOutputStream& stream) const {
+
+					if (has_baked()) {
+						size_t sub_msg_size = baked__->ComputeEncodedSize();
+						stream.WriteTag(4, decaproto::WireType::kLen);
+						stream.WriteVarint32(sub_msg_size);
+						baked__->EncodeImpl(stream);
+					}
+					
+					for (auto& item : analog_switch_configs__) {
+						size_t sub_msg_size = item.ComputeEncodedSize();
+						stream.WriteTag(1, decaproto::WireType::kLen);
+						stream.WriteVarint32(sub_msg_size);
+						item.EncodeImpl(stream);
+					}
+					
+					for (auto& item : analog_switch_groups__) {
+						size_t sub_msg_size = item.ComputeEncodedSize();
+						stream.WriteTag(2, decaproto::WireType::kLen);
+						stream.WriteVarint32(sub_msg_size);
+						item.EncodeImpl(stream);
+					}
+					
+					for (auto& item : button_assignments__) {
+						size_t sub_msg_size = item.ComputeEncodedSize();
+						stream.WriteTag(3, decaproto::WireType::kLen);
+						stream.WriteVarint32(sub_msg_size);
+						item.EncodeImpl(stream);
+					}
+							return true;
 }

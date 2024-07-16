@@ -204,7 +204,7 @@ inline bool SaveProtoBin(
 
   ArduinoSerialOutputStream asos(&file);
   size_t written_size;
-  return EncodeMessage(asos, message, written_size);
+  return message.Encode(asos, written_size);
 }
 
 inline bool LoadProtoBin(const String& path, decaproto::Message* dst) {
