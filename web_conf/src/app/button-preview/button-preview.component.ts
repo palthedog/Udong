@@ -2,7 +2,7 @@ import { Component, Directive, ElementRef, HostListener, inject, Injectable, Inp
 import { SerialServiceInterface } from '../serial/serial.service';
 import { logger } from '../logger';
 import { BaseChartDirective } from 'ng2-charts';
-import { ChartConfiguration, ChartData, ChartOptions } from 'chart.js';
+import { ChartConfiguration, ChartData, ChartOptions, TooltipItem } from 'chart.js';
 import { AnalogSwitchGroup } from '../../proto/config';
 import { GetAnalogSwitchStateRequest, GetAnalogSwitchStateResponse } from '../../proto/rpc';
 import { max, Subject, Subscription } from 'rxjs';
@@ -103,7 +103,6 @@ export class ButtonPreviewComponent {
   paused: boolean = false;
 
   private zoom_level: number = 1;
-  private zoomed_center_percent: number = 0.5;
 
   @Input()
   set active_analog_switch_id(v: number) {
@@ -159,10 +158,26 @@ export class ButtonPreviewComponent {
     event.preventDefault();
   }
 
+  ResetZoomLevel() {
+    this.zoom_level = 1;
+  }
+
   data: ChartData<'line', (number | null)[], number> = {
     datasets: [],
     labels: []
   };
+
+  TimestampToXAxisLabel(timestamp_us: number, digit: number = 2) {
+    let timestamp_ms = timestamp_us / 1000;
+    // wraps around every 10 seconds.
+    let v_ms = timestamp_ms % 10000;
+    let v_s = v_ms / 1000;
+
+    // Instead of using toFixed, use the following code to get floored values.
+    // It's because we want to avoid showing '10.0' for 9.9 for consistent string length.
+    let mul = Math.pow(10, digit);
+    return (Math.floor(v_s * mul) / mul).toFixed(digit);
+  }
 
   // Option value used only when the chart is created.
   // Updating this value after the chart is created will not have any effect.
@@ -177,6 +192,19 @@ export class ButtonPreviewComponent {
       autoPadding: false,
     },
     animation: false,
+    plugins: {
+      tooltip: {
+        callbacks: {
+          title: (items: TooltipItem<"line">[]) => {
+            if (items.length == 0) {
+              return '';
+            }
+            let item = items[0];
+            return 'timestamp: ' + this.TimestampToXAxisLabel(item.parsed.x, 3) + 's';
+          }
+        }
+      },
+    },
     scales: {
       [xAxisID]: {
         type: 'linear',
@@ -193,9 +221,7 @@ export class ButtonPreviewComponent {
             if (typeof timestamp_us != 'number') {
               return '';
             }
-            let timestamp_ms = timestamp_us / 1000;
-            let v = timestamp_ms % 10000;
-            return (Math.floor(v / 100) / 10).toFixed(1);
+            return this.TimestampToXAxisLabel(timestamp_us, 1);
           }
         },
       },
@@ -251,6 +277,7 @@ export class ButtonPreviewComponent {
       this.analog_switch_state_service.Stop();
     } else {
       this.analog_switch_state_service.Run();
+      this.ResetZoomLevel();
     }
   }
 
