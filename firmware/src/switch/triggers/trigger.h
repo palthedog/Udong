@@ -1,7 +1,7 @@
 #ifndef TRIGGER_H
 #define TRIGGER_H
 
-#include "../../proto/rpc.pb.h"
+#include "proto/rpc.pb.h"
 
 class Trigger {
  public:

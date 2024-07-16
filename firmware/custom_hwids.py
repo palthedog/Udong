@@ -1,7 +1,9 @@
 Import("env")
 
-board_config = env.BoardConfig()
+if "test" in env.GetBuildType():
+  exit(0)
 
+board_config = env.BoardConfig()
 USB_VID = "0x16c0"
 USB_PID = "0x27dc"
 

@@ -4,11 +4,11 @@
 #include <Arduino.h>
 #include <LittleFS.h>
 
-#include "../proto/config.pb.h"
 #include "decaproto/decoder.h"
 #include "decaproto/encoder.h"
 #include "decaproto/message.h"
 #include "decaproto/stream/stream.h"
+#include "proto/config.pb.h"
 
 const String kUdongConfigPath = "/user/config.binpb";
 
