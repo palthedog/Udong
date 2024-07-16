@@ -16,6 +16,7 @@ import { SerialServiceInterface } from '../serial/serial.service';
 import { logger, Logger } from '../logger';
 import { SwitchIdToGroupId, compareButtonIds } from '../config_util';
 import { ButtonPreviewComponent } from "../button-preview/button-preview.component";
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-configurator',
@@ -44,15 +45,18 @@ export class ConfiguratorComponent {
 
   group_ids: Array<number> = [];
 
-  constructor() {
-    this.serial_service.ConnectionChanges().subscribe((connected) => {
+  subscriptions: Subscription = new Subscription();
+
+  ngOnInit() {
+    console.log('Configurator Component constructed');
+    this.subscriptions.add(this.serial_service.ConnectionChanges().subscribe((connected) => {
       logger.info('connected', connected);
       if (connected) {
         this.serial_service.Send('get-config');
       }
-    });
+    }));
 
-    this.serial_service.MessageReceiveFor('get-config').subscribe((v) => {
+    this.subscriptions.add(this.serial_service.MessageReceiveFor('get-config').subscribe((v) => {
       logger.info('get-config size: ', v.length);
       this.config = UdongConfig.deserializeBinary(v[1]);
       logger.info('Config received');
@@ -64,7 +68,11 @@ export class ConfiguratorComponent {
       } else {
         this.group_ids = [];
       }
-    });
+    }));
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.unsubscribe();
   }
 
   setActiveSwitchId(switch_id: SwitchId) {

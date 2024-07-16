@@ -11,7 +11,7 @@ import { ConfiguratorComponent } from "./configurator/configurator.component";
 import { SerialConnectorComponent } from './serial-connector/serial-connector.component';
 import { TextCommanderComponent } from './text-commander/text-commander.component';
 import { logger } from './logger';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -28,15 +28,21 @@ export class AppComponent {
   title: string = '';
   connected?: Observable<boolean>;
 
+  subscriptions: Subscription = new Subscription();
+
   constructor() {
-    logger.debug('AppComponent initialized', this.serial_service);
+    logger.debug('AppComponent constructor', this.serial_service);
     this.connected = this.serial_service.ConnectionChanges();
   }
 
   ngOnInit() {
     logger.debug('AppComponent initialized', this.serial_service);
-    this.serial_service.ConnectionChanges().subscribe(connected => {
+    this.subscriptions.add(this.serial_service.ConnectionChanges().subscribe(connected => {
       this.title = connected ? 'Udong is Connected' : 'Udong is Not Connected';
-    });
+    }));
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.unsubscribe();
   }
 }

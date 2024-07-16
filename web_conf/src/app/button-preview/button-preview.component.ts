@@ -1,10 +1,70 @@
-import { Component, inject, Input, ViewChild } from '@angular/core';
+import { Component, inject, Injectable, Input, ViewChild } from '@angular/core';
 import { SerialServiceInterface } from '../serial/serial.service';
 import { logger } from '../logger';
 import { BaseChartDirective } from 'ng2-charts';
 import { ChartConfiguration, ChartData } from 'chart.js';
 import { AnalogSwitchGroup } from '../../proto/config';
 import { GetAnalogSwitchStateRequest, GetAnalogSwitchStateResponse } from '../../proto/rpc';
+import { Subject, Subscription } from 'rxjs';
+
+
+@Injectable({ providedIn: 'root' })
+export class GetAnalogSwitchStateService {
+  serial_service = inject(SerialServiceInterface);
+
+  running: boolean = false;
+
+  private analog_switch_state_subject: Subject<GetAnalogSwitchStateResponse> = new Subject();
+
+  get analog_switch_state_received() {
+    return this.analog_switch_state_subject.asObservable();
+  }
+
+  active_analog_switch_id: number = 0;
+
+  constructor() {
+    console.log('GetAnalogSwitchStateService constructed');
+    this.serial_service.ConnectionChanges().subscribe((connected) => {
+      if (connected) {
+        this.Run();
+      } else {
+        this.Stop();
+      }
+    });
+
+    this.serial_service.MessageReceiveFor('get-analog-switch-state').subscribe(([cmd, v]) => {
+      if (!this.running) {
+        return;
+      }
+      let res = GetAnalogSwitchStateResponse.deserializeBinary(v);
+      this.analog_switch_state_subject.next(res);
+      this.SendGetAnalogSwitchState();
+    });
+  }
+
+  Run() {
+    if (this.running) {
+      return;
+    }
+    this.running = true;
+    this.SendGetAnalogSwitchState();
+  }
+
+  Stop() {
+    this.running = false;
+  }
+
+  SetActiveAnalogSwitchId(id: number) {
+    this.active_analog_switch_id = id;
+    this.Run();
+  }
+
+  private SendGetAnalogSwitchState() {
+    let request = new GetAnalogSwitchStateRequest();
+    request.analog_switch_id = this.active_analog_switch_id;
+    this.serial_service.SendBinary('get-analog-switch-state', request.serializeBinary());
+  }
+}
 
 const kIndexPressMm = 0;
 const kIndexButtonState = 1;
@@ -27,6 +87,9 @@ const yHzAxisID = 'yHzAxis';
 export class ButtonPreviewComponent {
 
   serial_service = inject(SerialServiceInterface);
+  analog_switch_state_service = inject(GetAnalogSwitchStateService);
+
+  subscriptions: Subscription = new Subscription();
 
   press_mm: number = 0;
   polling_rate: number = 0;
@@ -35,7 +98,10 @@ export class ButtonPreviewComponent {
   paused: boolean = false;
 
   @Input()
-  active_analog_switch_id: number = 0;
+  set active_analog_switch_id(v: number) {
+    this.ClearData();
+    this.analog_switch_state_service.SetActiveAnalogSwitchId(v);
+  }
 
   @Input()
   analog_switch_group_config: AnalogSwitchGroup | null = null;
@@ -44,8 +110,7 @@ export class ButtonPreviewComponent {
   chart!: BaseChartDirective;
 
   data: ChartData<'line', (number | null)[], number> = {
-    datasets: [
-    ],
+    datasets: [],
     labels: []
   };
 
@@ -53,8 +118,10 @@ export class ButtonPreviewComponent {
     onClick: (e) => {
       logger.debug('onClick', e);
       this.paused = !this.paused;
-      if (!this.paused) {
-        this.sendGetAnalogSwitchState();
+      if (this.paused) {
+        this.analog_switch_state_service.Stop();
+      } else {
+        this.analog_switch_state_service.Run();
       }
     },
     aspectRatio: 4.0,
@@ -117,7 +184,7 @@ export class ButtonPreviewComponent {
     }
   };
 
-  clipData(min_ms: number) {
+  ClipData(min_ms: number) {
     if (this.data.labels === undefined || this.data.labels.length == 0) {
       return;
     }
@@ -131,6 +198,15 @@ export class ButtonPreviewComponent {
   }
 
   constructor() {
+    this.ClearData();
+  }
+
+  ClearData() {
+    this.data = {
+      datasets: [],
+      labels: []
+    };
+
     let order = 0;
     this.data.datasets[kIndexPressMm] = {
       data: [],
@@ -202,20 +278,11 @@ export class ButtonPreviewComponent {
   ngOnInit() {
     logger.debug('ButtonPreviewComponent initialized');
 
-    this.serial_service.ConnectionChanges().subscribe((value) => {
-      this.connected = value;
-      console.log('connected', value);
-      if (this.connected) {
-        this.sendGetAnalogSwitchState();
-      }
-    });
+    this.subscriptions.add(this.serial_service.ConnectionChanges().subscribe((connected) => {
+      this.ClearData();
+    }));
 
-    this.serial_service.MessageReceiveFor('get-analog-switch-state').subscribe(([cmd, v]) => {
-      if (!this.chart || !this.chart.chart) {
-        // The component is already destroyed
-        return;
-      }
-      let res = GetAnalogSwitchStateResponse.deserializeBinary(v);
+    this.subscriptions.add(this.analog_switch_state_service.analog_switch_state_received.subscribe((res) => {
       if (res.states.length > 0) {
         // Calculate polling rate
         if (res.states.length > 1) {
@@ -254,25 +321,18 @@ export class ButtonPreviewComponent {
         let min_us = latest_us - 3000 * 1000;
         let max_us = latest_us;
 
-        this.clipData(min_us);
+        this.ClipData(min_us);
         this.chart.chart!.options!.scales!['xAxis']!.min = min_us;
         this.chart.chart!.options!.scales!['xAxis']!.max = max_us;
         this.chart.update();
       }
-
-      if (this.connected && !this.paused) {
-        setTimeout(() => {
-          this.sendGetAnalogSwitchState();
-        }, 1);
-      } else {
-        logger.info('Serial port is disconnected');
-      }
-    });
+    }));
   }
 
-  sendGetAnalogSwitchState() {
-    let request = new GetAnalogSwitchStateRequest();
-    request.analog_switch_id = this.active_analog_switch_id;
-    this.serial_service.SendBinary('get-analog-switch-state', request.serializeBinary());
+  ngOnDestroy() {
+    console.log('ButtonPreview ngOnDestroy');
+    this.ClearData();
+    this.analog_switch_state_service.Stop();
+    this.subscriptions.unsubscribe();
   }
 };

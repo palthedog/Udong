@@ -41,11 +41,11 @@ export class BoardButtonsComponent {
     return this.board_info_provider.get(board_names[0])!;
   }
 
-  getBoardViewBox(board_info: BoardInfo): string {
+  GetBoardViewBox(board_info: BoardInfo): string {
     return `${board_info.left} ${board_info.top} ${board_info.width} ${board_info.height}`;
   }
 
-  getButtonColor(switch_id: SwitchId): string {
+  GetButtonColor(switch_id: SwitchId): string {
     if (switch_id.type === SwitchType.DIGITAL_SWITCH) {
       return '#ccc';
     } else if (switch_id.type === SwitchType.ANALOG_SWITCH) {
@@ -57,12 +57,12 @@ export class BoardButtonsComponent {
     return '#fff';
   }
 
-  getButtonName(switch_id: SwitchId): string {
+  GetButtonName(switch_id: SwitchId): string {
     let button_id = SwitchIdToButtonId(this.config, switch_id);
     return this.app_consts.buttonName(button_id);
   }
 
-  onClickButton(switch_id: SwitchId) {
+  OnClickButton(switch_id: SwitchId) {
     logger.debug('button clicked', switch_id);
     this.activeSwitchIdChanged.next(switch_id);
   }

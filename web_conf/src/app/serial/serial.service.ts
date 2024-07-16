@@ -2,8 +2,10 @@
 
 import { Injectable } from '@angular/core';
 
-import { BehaviorSubject, Observable, Subject, filter } from 'rxjs';
+import { BehaviorSubject, Observable, Subject, delay, filter } from 'rxjs';
 import AsyncLock from 'async-lock';
+import { WritableStreamDefaultWriter } from 'stream/web';
+import { CdkMonitorFocus } from '@angular/cdk/a11y';
 
 export abstract class SerialServiceInterface {
   abstract ConnectionChanges(): Observable<boolean>;
@@ -38,20 +40,24 @@ export class SerialService extends SerialServiceInterface {
 
   public constructor() {
     super();
+    console.log('SerialService created');
   }
 
   public ConnectionChanges(): Observable<boolean> {
-    return this.connection_subject;
+    return this.connection_subject.asObservable();
   }
 
   public MessageArrives(): Observable<[string, Uint8Array | object]> {
-    return this.message_subject;
+    return this.message_subject.asObservable();
   }
 
   public async Connect() {
     const usbVendorId = 0x16c0;
     const usbProductId = 0x27dc;
 
+    this.parser = new MessageParser();
+    this.text_encoder = new TextEncoder();
+    this.writer_lock = new AsyncLock();
     this.port = await navigator.serial.requestPort({
       filters: [
         { usbVendorId, usbProductId }
@@ -59,48 +65,72 @@ export class SerialService extends SerialServiceInterface {
     });
     await this.port.open({ baudRate: 921600 });
     this.connection_subject.next(true);
-    this.loopAsync(this.port);
+    this.LoopAsync(this.port);
+  }
+
+  private async OnClosed() {
+    console.log('OnClosed');
+    this.connection_subject.next(false);
+    if (this.port) {
+      while (this.writer_lock.isBusy('send')) {
+        console.log('writer is still busy...');
+        await new Promise(f => setTimeout(f, 100));
+      }
+      console.log('close the port');
+      this.port.close();
+      this.port = undefined;
+    }
   }
 
   override async Send(cmd: string, message?: string) {
-    this.writer_lock.acquire('send', async () => {
+    //console.log('Send:', cmd, message);
+    this.writer_lock.acquire('send', async (done) => {
+      let writer: WritableStreamDefaultWriter<any> |
+        undefined = undefined;
       try {
         if (!this.port) {
           console.error("Serial port is not connected");
           return;
         }
+        writer = this.port.writable.getWriter();
         const encoder = new TextEncoder();
-        const writer = this.port.writable.getWriter();
         if (message == undefined || message == '') {
           await writer.write(encoder.encode(cmd + '\n'));
         } else {
           await writer.write(encoder.encode(cmd + ':' + message + '\n'));
         }
-        writer.releaseLock();
       } catch (e) {
         console.error("Error: ", e);
+      } finally {
+        writer?.releaseLock();
+        done();
       }
     });
   }
 
   override async SendBinary(cmd: string, payload: Uint8Array) {
-    this.writer_lock.acquire('send', async () => {
-      if (!this.port) {
-        console.error("Serial port is not connected");
-        return;
-      }
+    //console.log('SendBinary:', cmd, payload.length);
+    this.writer_lock.acquire('send', async (done) => {
+      let writer: WritableStreamDefaultWriter<any> |
+        undefined = undefined;
       try {
-        const writer = this.port.writable.getWriter();
+        if (!this.port) {
+          console.error("Serial port is not connected");
+          return;
+        }
+        writer = this.port.writable.getWriter();
         await writer.write(this.text_encoder.encode(cmd + '@' + payload.length + '#'));
         await writer.write(payload);
-        writer.releaseLock();
       } catch (e) {
         console.error("Error: ", e);
+      } finally {
+        writer?.releaseLock();
+        done();
       }
     });
   }
 
-  async loopAsync(port: SerialPort) {
+  async LoopAsync(port: SerialPort) {
     if (this.port == undefined) {
       return;
     }
@@ -120,18 +150,19 @@ export class SerialService extends SerialServiceInterface {
           }
 
           result.value.forEach((byte: number) => {
-            let ret = this.parser.push(byte);
+            let ret = this.parser.PushByte(byte);
             if (ret.done) {
               this.message_subject.next([ret.cmd!, ret.payload!]);
             }
           });
         }
       } catch (error) {
-        console.error("Error: Read" + error + "\n");
+        console.error("Error: Read " + error + "\n");
       } finally {
-        console.log('release lock');
+        console.log('Release reader lock');
         reader.releaseLock();
-        this.connection_subject.next(false);
+        this.OnClosed();
+        return;
       }
     }
   }
@@ -164,7 +195,7 @@ class MessageParser {
     console.log('MessageParser created');
   }
 
-  push(byte: number): ParseResult {
+  PushByte(byte: number): ParseResult {
     switch (this.state_) {
       case ParserState.ReadingCommand: {
         let ch = String.fromCharCode(byte);
@@ -175,7 +206,7 @@ class MessageParser {
         } else if (ch == '\n') {
           let ret = { done: true, cmd: this.cmd_, payload: new Uint8Array(0) };
           console.log('cmd:', this.cmd_);
-          this.reset();
+          this.Reset();
           return ret;
         } else {
           this.cmd_ += ch;
@@ -187,7 +218,7 @@ class MessageParser {
         if (ch == '#') {
           if (this.payload_size_ == 0) {
             let ret = { done: true, cmd: this.cmd_, payload: new Uint8Array(0) };
-            this.reset();
+            this.Reset();
             return ret;
           }
           this.state_ = ParserState.ReadingBinaryPayload;
@@ -198,7 +229,7 @@ class MessageParser {
             this.payload_size_ = this.payload_size_ * 10 + parseInt(ch);
           } else {
             //logger.error('Error: ReadingSize: Invalid character: ', ch);
-            this.reset();
+            this.Reset();
             return { done: false };
           }
         }
@@ -209,7 +240,7 @@ class MessageParser {
         this.payload_offset_ += 1;
         if (this.payload_offset_ == this.payload_size_) {
           let ret = { done: true, cmd: this.cmd_, payload: this.payload_ };
-          this.reset();
+          this.Reset();
           return ret;
         }
         break;
@@ -221,12 +252,12 @@ class MessageParser {
           try {
             let payload = JSON.parse(this.string_payload_);
             let ret = { done: true, cmd: this.cmd_, payload: payload };
-            this.reset();
+            this.Reset();
             return ret;
           } catch (e) {
             // Not json. It might be a debug log from the firmware.
             console.info(this.cmd_ + ':' + this.string_payload_);
-            this.reset();
+            this.Reset();
             break;
           }
         }
@@ -236,7 +267,7 @@ class MessageParser {
     return { done: false };
   }
 
-  reset() {
+  private Reset() {
     this.cmd_ = '';
     this.string_payload_ = '';
     this.payload_size_ = 0;
