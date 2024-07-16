@@ -38,7 +38,10 @@ export class GetAnalogSwitchStateService {
       }
       let res = GetAnalogSwitchStateResponse.deserializeBinary(v);
       this.analog_switch_state_subject.next(res);
-      this.SendGetAnalogSwitchState();
+
+      setTimeout(() => {
+        this.SendGetAnalogSwitchState();
+      }, 5);
     });
   }
 
@@ -124,7 +127,9 @@ export class ButtonPreviewComponent {
         this.analog_switch_state_service.Run();
       }
     },
-    aspectRatio: 4.0,
+    //aspectRatio: 4.0,
+    maintainAspectRatio: false,
+    responsive: true,
     layout: {
       autoPadding: false,
     },
@@ -146,7 +151,7 @@ export class ButtonPreviewComponent {
               return '';
             }
             let timestamp_ms = timestamp_us / 1000;
-            let v = timestamp_ms % 10000;  // 10s
+            let v = timestamp_ms % 10000;
             return (Math.floor(v / 100) / 10).toFixed(1);
           }
         },
