@@ -22,19 +22,6 @@ void SendJsonResponse(const String& cmd, const JsonDocument& response) {
   Serial.print('\n');
 }
 
-void HandleGet(Udong& context, const String& cmd) {
-  JsonDocument json_response;
-
-  JsonArray analog_switches = json_response["analog_switches"].to<JsonArray>();
-  for (auto& analog_switch : context.GetAnalogSwitches()) {
-    JsonVariant var = analog_switches.add<JsonVariant>();
-    var["id"] = analog_switch->GetId();
-    var["press_mm"] = analog_switch->GetLastPressMm();
-  }
-
-  SendJsonResponse(cmd, json_response);
-}
-
 bool SendProto(const char* cmd, const decaproto::Message& msg) {
   std::ostringstream oss;
   decaproto::StlOutputStream sos(&oss);
@@ -82,6 +69,7 @@ void SerialHandler::HandleGetAnalogSwitchStateRequest(
     const GetAnalogSwitchStateRequest& request) {
   GetAnalogSwitchStateResponse response =
       switch_state_history_.GetAnalogSwitchStateHistory(request);
+
   if (!SendProto(cmd.c_str(), response)) {
     Serial.println("Faild to send get-analog-switch-state response");
     return;
@@ -248,8 +236,6 @@ void SerialHandler::HandleCmd(Udong& context, const String& cmd) {
     LittleFS.remove(kCalibrationFilePath);
 
     context.ReloadConfig();
-  } else if (cmd == "get") {
-    HandleGet(context, cmd);
   } else if (cmd == "get-config") {
     HandleGetConfig(context, cmd);
   } else {
