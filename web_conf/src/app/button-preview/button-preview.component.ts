@@ -168,10 +168,9 @@ export class ButtonPreviewComponent {
   };
 
   TimestampToXAxisLabel(timestamp_us: number, digit: number = 2) {
-    let timestamp_ms = timestamp_us / 1000;
     // wraps around every 10 seconds.
-    let v_ms = timestamp_ms % 10000;
-    let v_s = v_ms / 1000;
+    let wrapped_timestamp_us = timestamp_us % (10 * 1000 * 1000);
+    let v_s = wrapped_timestamp_us / (1000 * 1000);
 
     // Instead of using toFixed, use the following code to get floored values.
     // It's because we want to avoid showing '10.0' for 9.9 for consistent string length.
@@ -200,7 +199,7 @@ export class ButtonPreviewComponent {
               return '';
             }
             let item = items[0];
-            return 'timestamp: ' + this.TimestampToXAxisLabel(item.parsed.x, 3) + 's';
+            return 'timestamp: ' + this.TimestampToXAxisLabel(item.parsed.x, 4) + 's';
           }
         }
       },
