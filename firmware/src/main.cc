@@ -29,10 +29,10 @@ void OnReportSent() {
   serial_handler.PushAnalogSwitchState(udong);
 
   uint32_t now = time_us_32();
-  uint32_t dt = now - sent_time;
-  if (dt > 5000) {
+  uint32_t dt_ms = (now - sent_time) / 1000;
+  if (dt_ms > 10) {
     Serial.printf(
-        "Low polling rate detected: %lu Hz, dt: %lu us\n", 1000000 / dt, dt);
+        "Low polling rate detected: %lu Hz, dt: %lu ms\n", 1000 / dt_ms, dt_ms);
   }
 
   sent_time = now;

@@ -1,11 +1,11 @@
-import { Component, inject, Injectable, Input, ViewChild } from '@angular/core';
+import { Component, Directive, ElementRef, HostListener, inject, Injectable, Input, ViewChild } from '@angular/core';
 import { SerialServiceInterface } from '../serial/serial.service';
 import { logger } from '../logger';
 import { BaseChartDirective } from 'ng2-charts';
-import { ChartConfiguration, ChartData } from 'chart.js';
+import { ChartConfiguration, ChartData, ChartOptions } from 'chart.js';
 import { AnalogSwitchGroup } from '../../proto/config';
 import { GetAnalogSwitchStateRequest, GetAnalogSwitchStateResponse } from '../../proto/rpc';
-import { Subject, Subscription } from 'rxjs';
+import { max, Subject, Subscription } from 'rxjs';
 
 
 @Injectable({ providedIn: 'root' })
@@ -75,6 +75,8 @@ const kIndexActuationPoint = 2;
 const kIndexReleasePoint = 3;
 const kIndexPollingRate = 4;
 
+const kDataWindowMs = 3000;
+
 const xAxisID = 'xAxis';
 const yMmAxisID = 'yMmAxis';
 const yOnOffAxisID = 'yOnOffAxis';
@@ -100,6 +102,9 @@ export class ButtonPreviewComponent {
   connected: boolean = false;
   paused: boolean = false;
 
+  private zoom_level: number = 1;
+  private zoomed_center_percent: number = 0.5;
+
   @Input()
   set active_analog_switch_id(v: number) {
     this.ClearData();
@@ -112,22 +117,60 @@ export class ButtonPreviewComponent {
   @ViewChild(BaseChartDirective)
   chart!: BaseChartDirective;
 
+  @HostListener('wheel', ['$event'])
+  onMousewheel(event: any) {
+    let chart = this.chart.chart;
+    if (!chart) {
+      logger.warn('Wheel event detected but the chart is not available');
+      return;
+    }
+    let x_min = chart.options?.scales?.[xAxisID]?.min;
+    let x_max = chart.options?.scales?.[xAxisID]?.max;
+    if (typeof x_min != 'number' || typeof x_max != 'number') {
+      logger.warn('Wheel event detected but the chart has no data');
+      return;
+    }
+    // Pause the chart update while zooming.
+    this.SetPause(true);
+
+    let new_zoom_level = this.zoom_level * (1 - event.deltaY / 1000);
+    new_zoom_level = Math.min(200, Math.max(1.0, new_zoom_level));
+
+    let chart_width = chart.chartArea.right - chart.chartArea.left;
+    // x_percent is the position of the mouse cursor in the chart area.
+    // 0 means the left edge of the chart area, 1 means the right edge.
+    let x_percent = (event.offsetX - chart.chartArea.left) / chart_width;
+
+    let width_us = (x_max - x_min) * this.zoom_level;
+    let new_width_us = width_us / new_zoom_level;
+
+    // x_us is the position of the mouse cursor in the time axis.
+    let x_us = x_min + x_percent * (x_max - x_min);
+    let max_us = x_us + new_width_us * (1 - x_percent);
+    let min_us = x_us - new_width_us * x_percent;
+
+    this.SetXAxisRange(min_us, max_us);
+
+    this.zoom_level = new_zoom_level;
+    this.chart.chart!.update();
+
+    // Prevent the page from scrolling.
+    event.stopPropagation();
+    event.preventDefault();
+  }
+
   data: ChartData<'line', (number | null)[], number> = {
     datasets: [],
     labels: []
   };
 
-  options: ChartConfiguration['options'] = {
+  // Option value used only when the chart is created.
+  // Updating this value after the chart is created will not have any effect.
+  readonly default_options: ChartOptions<'line'> = {
     onClick: (e) => {
-      logger.debug('onClick', e);
-      this.paused = !this.paused;
-      if (this.paused) {
-        this.analog_switch_state_service.Stop();
-      } else {
-        this.analog_switch_state_service.Run();
-      }
+      this.SetPause(!this.paused);
     },
-    //aspectRatio: 4.0,
+
     maintainAspectRatio: false,
     responsive: true,
     layout: {
@@ -200,6 +243,20 @@ export class ButtonPreviewComponent {
         this.data.datasets[i].data.shift();
       }
     }
+  }
+
+  SetPause(pause: boolean) {
+    this.paused = pause;
+    if (pause) {
+      this.analog_switch_state_service.Stop();
+    } else {
+      this.analog_switch_state_service.Run();
+    }
+  }
+
+  SetXAxisRange(min_us: number, max_us: number) {
+    this.chart.chart!.options!.scales![xAxisID]!.min = min_us;
+    this.chart.chart!.options!.scales![xAxisID]!.max = max_us;
   }
 
   constructor() {
@@ -277,60 +334,64 @@ export class ButtonPreviewComponent {
       pointRadius: 0,
       pointHitRadius: 4,
     };
+  }
 
+  HandleRpcResponse(res: GetAnalogSwitchStateResponse) {
+    if (res.states.length > 0) {
+      // Calculate polling rate
+      if (res.states.length > 1) {
+        let duration_us = res.states[res.states.length - 1].timestamp_us - res.states[0].timestamp_us;
+        this.polling_rate = (res.states.length - 1) / (duration_us / 1000000);
+      }
+
+      for (let i = 0; i < res.states.length; i++) {
+        let state = res.states[i];
+        this.data.labels!.push(state.timestamp_us);
+        this.data.datasets[kIndexPressMm].data.push(state.pressed_mm);
+        this.data.datasets[kIndexPollingRate].data.push(this.polling_rate);
+        this.data.datasets[kIndexButtonState].data.push(state.is_triggered ? 1 : 0);
+
+        if (state.has_rapid_trigger) {
+          let trigger_state = state.rapid_trigger;
+          let rel = null;
+          let act = null;
+          if (state.is_triggered) {
+            rel = trigger_state.release_point_mm;
+          } else {
+            act = trigger_state.actuation_point_mm;
+          }
+          this.data.datasets[kIndexReleasePoint].data.push(rel);
+          this.data.datasets[kIndexActuationPoint].data.push(act);
+        } else if (state.has_static_trigger) {
+          let trigger_state = state.static_trigger;
+          this.data.datasets[kIndexActuationPoint].data.push(trigger_state.actuation_point_mm);
+          this.data.datasets[kIndexReleasePoint].data.push(trigger_state.release_point_mm);
+        }
+
+        this.press_mm = state.pressed_mm;
+      }
+
+      let latest_us = res.states[res.states.length - 1].timestamp_us;
+      let min_us = latest_us - kDataWindowMs * 1000;
+      let max_us = latest_us;
+
+      this.ClipData(min_us);
+      this.SetXAxisRange(min_us, max_us);
+      this.chart.update();
+    }
   }
 
   ngOnInit() {
     logger.debug('ButtonPreviewComponent initialized');
+
+    //this.chart.ev
 
     this.subscriptions.add(this.serial_service.ConnectionChanges().subscribe((connected) => {
       this.ClearData();
     }));
 
     this.subscriptions.add(this.analog_switch_state_service.analog_switch_state_received.subscribe((res) => {
-      if (res.states.length > 0) {
-        // Calculate polling rate
-        if (res.states.length > 1) {
-          let duration_us = res.states[res.states.length - 1].timestamp_us - res.states[0].timestamp_us;
-          this.polling_rate = (res.states.length - 1) / (duration_us / 1000000);
-        }
-
-        for (let i = 0; i < res.states.length; i++) {
-          let state = res.states[i];
-          this.data.labels!.push(state.timestamp_us);
-          this.data.datasets[kIndexPressMm].data.push(state.pressed_mm);
-          this.data.datasets[kIndexPollingRate].data.push(this.polling_rate);
-          this.data.datasets[kIndexButtonState].data.push(state.is_triggered ? 1 : 0);
-
-          if (state.has_rapid_trigger) {
-            let trigger_state = state.rapid_trigger;
-            let rel = null;
-            let act = null;
-            if (state.is_triggered) {
-              rel = trigger_state.release_point_mm;
-            } else {
-              act = trigger_state.actuation_point_mm;
-            }
-            this.data.datasets[kIndexReleasePoint].data.push(rel);
-            this.data.datasets[kIndexActuationPoint].data.push(act);
-          } else if (state.has_static_trigger) {
-            let trigger_state = state.static_trigger;
-            this.data.datasets[kIndexActuationPoint].data.push(trigger_state.actuation_point_mm);
-            this.data.datasets[kIndexReleasePoint].data.push(trigger_state.release_point_mm);
-          }
-
-          this.press_mm = state.pressed_mm;
-        }
-
-        let latest_us = res.states[res.states.length - 1].timestamp_us;
-        let min_us = latest_us - 3000 * 1000;
-        let max_us = latest_us;
-
-        this.ClipData(min_us);
-        this.chart.chart!.options!.scales!['xAxis']!.min = min_us;
-        this.chart.chart!.options!.scales!['xAxis']!.max = max_us;
-        this.chart.update();
-      }
+      this.HandleRpcResponse(res);
     }));
   }
 
