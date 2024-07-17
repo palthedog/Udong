@@ -64,20 +64,42 @@ class Udong {
   }
 
   bool MaybeSendReport() {
+    uint32_t start = time_us_32();
+
     // Fill the gamepad report even if the USB HID is not ready yet.
     // It improves the actual polling-rate a little because it takes time to
     // fill the report and it makes a time gap between "ready" and "sendReport".
     FillGamepadReport();
 
+    uint32_t fill_end = time_us_32();
+
     if (!usb_hid.ready()) {
       return false;
     }
+
+    uint32_t ready_check_end = time_us_32();
 
     if (!usb_hid.sendReport(0, &gamepad_report, sizeof(gamepad_report))) {
       Serial.println("Failed to send report");
       return false;
     }
+
+    uint32_t send_end = time_us_32();
+
     this->on_report_sent_();
+
+    if (send_end - start > 10000) {
+      // As far as I tested, it happens only when Serial is used heavily (e.g.
+      // WebConf). We don't need to fix this for now but worth to keep in mind.
+      // Note that sendReport waits for 10 ms in the function to take a mutex
+      // lock. (10 ms is a timeout value, so possibly, it simply failed to take
+      // mutex)
+      Serial.printf(
+          "Long SendReport: fill: %lu, send: %lu\n",
+          fill_end - start,
+          send_end - ready_check_end);
+    }
+
     return true;
   }
 
@@ -245,7 +267,6 @@ class Udong {
     uint32_t now = time_us_32();
     update_led_.MaybeRun(now);
     calibration_runner_.MaybeRun(now);
-
     MaybeSendReport();
   }
 

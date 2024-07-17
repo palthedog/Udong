@@ -58,11 +58,10 @@ void setup() {
   TinyUSBDevice.setProductDescriptor("Udong");
   // TODO: We may need to append a unique serial number after colon.
   TinyUSBDevice.setSerialDescriptor("f13g.com:");
-  TinyUSBDevice.addInterface(Serial);
 
-  Serial.begin(921600);
-  Serial.setTimeout(100);
+  Serial.begin(921600);  // Well, baud rate doesn't matter for USB CDC.
   Serial.setStringDescriptor("Udong");
+  TinyUSBDevice.addInterface(Serial);
 
   if (!udong.SetupHidDevices()) {
     Serial.println("Failed to setup HID devices");
@@ -94,7 +93,6 @@ Throttling teleplot_runner(10, []() {
 #endif
 });
 
-// uint32_t last_report_t = 1000;
 void loop() {
   serial_handler.HandleSerial(udong);
 

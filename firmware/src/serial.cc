@@ -38,11 +38,8 @@ bool SendProto(const char* cmd, const decaproto::Message& msg) {
     Serial.println("Failed to encode a message");
     return false;
   }
-
   Serial.printf("%s@%u#", cmd, written_size);
   Serial.write(send_proto_buf.data(), written_size);
-  Serial.flush();
-
   return true;
 }
 
@@ -73,12 +70,11 @@ void SerialHandler::HandleGetAnalogSwitchStateRequest(
     Udong& context,
     const String& cmd,
     const GetAnalogSwitchStateRequest& request) {
-  GetAnalogSwitchStateResponse response =
-      switch_state_history_.GetAnalogSwitchStateHistory(request);
+  GetAnalogSwitchStateResponse response;
+  switch_state_history_.GetAnalogSwitchStateHistory(request, response);
 
   if (!SendProto(cmd.c_str(), response)) {
     Serial.println("Faild to send get-analog-switch-state response");
-    return;
   }
 }
 
@@ -154,7 +150,7 @@ void SerialHandler::ReadBinaryPayload(Udong& context) {
     if (recv_buffer_.size() == recv_payload_size_) {
       // End of the payload.
       HandleBinaryCommand(context, recv_buffer_.data(), recv_payload_size_);
-      return;
+      break;
     }
   }
 }

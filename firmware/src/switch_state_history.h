@@ -14,7 +14,7 @@ class SwitchStateHistory {
 
  public:
   SwitchStateHistory()
-      : active_analog_switch_id_(0), analog_switch_state_history_((size_t)128) {
+      : active_analog_switch_id_(0), analog_switch_state_history_((size_t)32) {
   }
 
   uint32_t GetActiveAnalogSwitchId() const {
@@ -32,20 +32,18 @@ class SwitchStateHistory {
     analog_switch_state_history_.PushBack(state);
   }
 
-  GetAnalogSwitchStateResponse GetAnalogSwitchStateHistory(
-      const GetAnalogSwitchStateRequest& request) {
-    GetAnalogSwitchStateResponse response;
+  void GetAnalogSwitchStateHistory(
+      const GetAnalogSwitchStateRequest& request,
+      GetAnalogSwitchStateResponse& response) {
     if (this->active_analog_switch_id_ != request.analog_switch_id()) {
       this->active_analog_switch_id_ = request.analog_switch_id();
       analog_switch_state_history_.Clear();
-      return response;
     }
 
     while (analog_switch_state_history_.Size() > 0) {
       AnalogSwitchState* state = response.add_states();
       analog_switch_state_history_.PopFront(*state);
     }
-    return response;
   }
 };
 

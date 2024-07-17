@@ -80,6 +80,8 @@
         "thread": "cpp",
         "typeindex": "cpp",
         "valarray": "cpp",
-        "variant": "cpp"
+        "variant": "cpp",
+        "tusb_config.h": "c",
+        "tusb_config_rp2040.h": "c"
     },
 }

@@ -58,7 +58,7 @@ class Multiplexer8 {
     // RP2040's datasheet says ADC works only 500k samples/second at most.
     // It means that 2us sleep should be enough for 500kS/s. However, for
     // unknown reason, even 5us sleep is not enough for nice result.
-    delayMicroseconds(10);
+    delayMicroseconds(8);
   }
 
   std::shared_ptr<AnalogInput> ComInput() const {
