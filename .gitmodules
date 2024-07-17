@@ -1,3 +1,6 @@
 [submodule "firmware/lib/decaproto"]
 	path = firmware/lib/decaproto
 	url = git@github.com:palthedog/decaproto.git
+[submodule "firmware/lib/Adafruit_TinyUSB_Arduino"]
+	path = firmware/lib/Adafruit_TinyUSB_Arduino
+	url = https://github.com/palthedog/Adafruit_TinyUSB_Arduino
