@@ -87,8 +87,6 @@ Throttling teleplot_runner(10, []() {
 #if TELEPLOT
   for (size_t i = 0; i < 2; i++) {
     udong.GetAnalogSwitches()[i]->TelePrint();
-    Serial.flush();
-    delay(1);
   }
 #endif
 });
