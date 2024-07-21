@@ -3,6 +3,7 @@
 
 #include <Arduino.h>
 #include <LittleFS.h>
+#include <decaproto/descriptor.h>
 
 #include "decaproto/decoder.h"
 #include "decaproto/encoder.h"
@@ -116,6 +117,11 @@ inline UdongConfig defaultUdongConfig() {
   for (int i = 0; i < 8; i++) {
     AnalogSwitchGroup& group = *config.add_analog_switch_groups();
     group.set_analog_switch_group_id(i);
+
+    // KS-20
+    // https://www.gateron.com/products/gateron-ks-20-magnetic-white-switch-set
+    group.set_total_travel_distance(4.1);
+
     group.set_trigger_type(
         i < 4 ? TriggerType::RAPID_TRIGGER : TriggerType::STATIC_TRIGGER);
     group.mutable_static_trigger()->set_act(1.2);
@@ -128,7 +134,7 @@ inline UdongConfig defaultUdongConfig() {
   }
 
   // TODO: Assign human friendly button like assigning Down button to Switch-12
-  const int kDigitalBase = 1000;
+  const int kDigitalMask = 0x100;
   std::map<int, uint32_t> hwid_to_button_id = {
       {5, 0},
       {7, 1},
@@ -142,22 +148,23 @@ inline UdongConfig defaultUdongConfig() {
       {4, 7},  // R2
 
       {10, 8},                // Select, Share
-      {kDigitalBase + 0, 9},  // Start, Option
+      {kDigitalMask | 0, 9},  // Start, Option
 
       {8, 10},  // L3
       {9, 11},  // R3
 
-      {kDigitalBase + 1, 12},  // Mode
+      {kDigitalMask | 1, 12},  // Mode
   };
 
   for (auto& it : hwid_to_button_id) {
     ButtonAssignment& assign = *config.add_button_assignments();
-    if (it.first < kDigitalBase) {
+    bool is_digital = (it.first & kDigitalMask) != 0;
+    if (!is_digital) {
       assign.mutable_switch_id()->set_type(SwitchType::ANALOG_SWITCH);
       assign.mutable_switch_id()->set_id(it.first);
     } else {
       assign.mutable_switch_id()->set_type(SwitchType::DIGITAL_SWITCH);
-      assign.mutable_switch_id()->set_id(it.first - kDigitalBase);
+      assign.mutable_switch_id()->set_id(it.first ^ kDigitalMask);
     }
     *assign.mutable_button_id() = PushButton(it.second);
   }
@@ -219,29 +226,12 @@ inline bool LoadProtoBin(const String& path, decaproto::Message* dst) {
   return decaproto::DecodeMessage(asis, dst);
 }
 
-template <typename T>
-inline void complementArray(const std::vector<T>& src, std::vector<T>& dst) {
-  if (src.size() <= dst.size()) {
-    return;
-  }
+void ComplementMessage(const decaproto::Message& src, decaproto::Message& dst);
 
-  size_t i = dst.size();
-  dst.resize(src.size());
-  while (i < src.size()) {
-    dst[i] = src[i];
-    i++;
-  }
-}
-
-// TODO: Implement decaproto::Message::MergeFrom and use it here
 inline void complementWithDefaultValues(UdongConfig& config) {
   UdongConfig def = defaultUdongConfig();
-  complementArray(
-      def.analog_switch_configs(), *config.mutable_analog_switch_configs());
-  complementArray(
-      def.analog_switch_groups(), *config.mutable_analog_switch_groups());
-  complementArray(
-      def.button_assignments(), *config.mutable_button_assignments());
+  // TODO: Add unit test
+  ComplementMessage(def, config);
 }
 
 // TODO: Implement DebugString in decaproto::Message and use it here
@@ -300,13 +290,13 @@ inline UdongConfig loadUdonConfig() {
     return defaultUdongConfig();
   }
 
-  // Serial.println("config from file");
-  // printUdonConfig(config);
+  Serial.println("config from file");
+  printUdonConfig(config);
 
   complementWithDefaultValues(config);
 
-  // Serial.println("merged one");
-  // printUdonConfig(config);
+  Serial.println("merged one");
+  printUdonConfig(config);
 
   return config;
 }

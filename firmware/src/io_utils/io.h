@@ -2,6 +2,7 @@
 #define PIN_H
 
 #include <Arduino.h>
+#include <hardware/adc.h>
 
 #include <cstdint>
 
@@ -18,19 +19,21 @@ typedef Input<uint16_t> AnalogInput;
 typedef Input<bool> DigitalInput;
 
 class AnalogInputPin : public AnalogInput {
-  uint8_t pin_id_;
+  uint8_t analog_pin_id_;
 
  public:
-  AnalogInputPin(uint8_t pin_id) : pin_id_(pin_id) {
-    pinMode(pin_id_, INPUT);
+  AnalogInputPin(uint8_t gpio_pin_id) {
+    adc_gpio_init(gpio_pin_id);
+    analog_pin_id_ = gpio_pin_id - A0;
   }
 
   virtual ~AnalogInputPin() override {
   }
 
   virtual uint16_t Read() override {
+    adc_select_input(analog_pin_id_);
     // convert 12bits analog input into uint16_t
-    return ((uint16_t)analogRead(pin_id_)) << 4;
+    return adc_read() << 4;
   };
 };
 

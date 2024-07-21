@@ -86,6 +86,7 @@ const decaproto::Descriptor* AnalogSwitchGroup::GetDescriptor() const {
     }
     kAnalogSwitchGroup__Descriptor = new decaproto::Descriptor();
     kAnalogSwitchGroup__Descriptor->RegisterField(decaproto::FieldDescriptor(1, decaproto::FieldType::kUint32));
+    kAnalogSwitchGroup__Descriptor->RegisterField(decaproto::FieldDescriptor(5, decaproto::FieldType::kDouble));
     kAnalogSwitchGroup__Descriptor->RegisterField(decaproto::FieldDescriptor(2, decaproto::FieldType::kEnum));
     kAnalogSwitchGroup__Descriptor->RegisterField(decaproto::FieldDescriptor(3, decaproto::FieldType::kMessage));
     kAnalogSwitchGroup__Descriptor->RegisterField(decaproto::FieldDescriptor(4, decaproto::FieldType::kMessage));
@@ -109,6 +110,15 @@ const decaproto::Reflection* AnalogSwitchGroup::GetReflection() const {
     kAnalogSwitchGroup__Reflection->RegisterGetUint32(
         1,
 		decaproto::MsgCast(&AnalogSwitchGroup::analog_switch_group_id));
+        
+    // Setter
+    kAnalogSwitchGroup__Reflection->RegisterSetDouble(
+        5,
+		decaproto::MsgCast(&AnalogSwitchGroup::set_total_travel_distance));
+    // Getter
+    kAnalogSwitchGroup__Reflection->RegisterGetDouble(
+        5,
+		decaproto::MsgCast(&AnalogSwitchGroup::total_travel_distance));
         
     // EnumValue setter for trigger_type
      kAnalogSwitchGroup__Reflection->RegisterSetEnumValue(
@@ -155,6 +165,11 @@ size_t AnalogSwitchGroup::ComputeEncodedSize() const {
 			size += decaproto::ComputeEncodedVarintSize(analog_switch_group_id__);
 		}
 		
+		if ( total_travel_distance__ != double() ) {
+			size += 1;  // tag
+			size += 8;
+		}
+		
 		if ( trigger_type__ != TriggerType() ) {
 			size += 1;  // tag
 			size += decaproto::ComputeEncodedVarintSize(trigger_type__);
@@ -187,6 +202,11 @@ bool AnalogSwitchGroup::EncodeImpl(decaproto::CodedOutputStream& stream) const {
 					if (analog_switch_group_id__ != uint32_t()) {
 						stream.WriteTag(1, decaproto::WireType::kVarint);
 						stream.WriteVarint32(analog_switch_group_id__);
+					}
+					
+					if (total_travel_distance__ != double()) {
+						stream.WriteTag(5, decaproto::WireType::kI64);
+						stream.WriteFixedInt64(decaproto::MemcpyCast<double, uint64_t>(total_travel_distance__));
 					}
 					
 					if (trigger_type__ != TriggerType()) {

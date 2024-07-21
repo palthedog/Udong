@@ -6,6 +6,8 @@
 
 #define TELEPLOT 0
 
+#include <hardware/adc.h>
+
 #include "io_utils/io.h"
 #include "io_utils/multi_sampling.h"
 #include "io_utils/multiplexer.h"
@@ -40,6 +42,7 @@ void OnReportSent() {
 
 void setup() {
   analogReadResolution(kAdcBits);
+  adc_init();
 
 #if defined(ARDUINO_ARCH_MBED) && defined(ARDUINO_ARCH_RP2040)
   // Manual begin() is required on core without built-in support for TinyUSB
@@ -67,12 +70,10 @@ void setup() {
     Serial.println("Failed to setup HID devices");
   }
 
-  // wait for 5 seconds so that we can connect to the serial console before
-  // boot.
+  // Wait for Serial
   /*
-  for (int i = 0; i < 5; i++) {
-    delay(1000);
-    Serial.println("**** Starting ****");
+  while (!Serial) {
+    sleep_ms(100);
   }
   //*/
 
@@ -85,7 +86,7 @@ inline int16_t map_u16_s16(uint16_t v) {
 
 Throttling teleplot_runner(10, []() {
 #if TELEPLOT
-  for (size_t i = 0; i < 2; i++) {
+  for (size_t i = 0; i < 8; i++) {
     udong.GetAnalogSwitches()[i]->TelePrint();
   }
 #endif

@@ -1,13 +1,13 @@
 #pragma once
 
+#include <stdint.h>
+#include <string>
 #include <vector>
 #include "decaproto/message.h"
 #include "decaproto/descriptor.h"
 #include "decaproto/reflection.h"
 #include "decaproto/field.h"
 #include <memory>
-#include <stdint.h>
-#include <string>
 
 class AnalogSwitchConfig;
 class AnalogSwitchGroup;
@@ -96,6 +96,7 @@ class AnalogSwitchGroup final : public decaproto::Message {
 public:
     AnalogSwitchGroup()
         : analog_switch_group_id__(uint32_t())
+        , total_travel_distance__(double())
         , trigger_type__(TriggerType())
         , rapid_trigger__()
         , has_rapid_trigger__(false)
@@ -115,6 +116,18 @@ public:
 
 	inline void clear_analog_switch_group_id() {
 	    analog_switch_group_id__ = uint32_t();
+	}
+
+	inline double total_travel_distance() const {
+	    return total_travel_distance__;
+	}
+
+	inline void set_total_travel_distance( double value) {
+	    total_travel_distance__ = value;
+	}
+
+	inline void clear_total_travel_distance() {
+	    total_travel_distance__ = double();
 	}
 
 	inline TriggerType trigger_type() const {
@@ -193,6 +206,7 @@ public:
 
 private:
     uint32_t analog_switch_group_id__;
+    double total_travel_distance__;
     TriggerType trigger_type__;
     mutable decaproto::SubMessagePtr<RapidTriggerConfig> rapid_trigger__;
     bool has_rapid_trigger__;
@@ -811,6 +825,13 @@ message_type:  {
         json_name:  "analogSwitchGroupId"
     }
     field:  {
+        name:  "total_travel_distance"
+        number:  5
+        label:  LABEL_OPTIONAL
+        type:  TYPE_DOUBLE
+        json_name:  "totalTravelDistance"
+    }
+    field:  {
         name:  "trigger_type"
         number:  2
         label:  LABEL_OPTIONAL
@@ -1090,7 +1111,7 @@ source_code_info:  {
     location:  {
         span:  0
         span:  0
-        span:  108
+        span:  113
         span:  1
     }
     location:  {
@@ -1302,7 +1323,7 @@ source_code_info:  {
         path:  1
         span:  16
         span:  0
-        span:  25
+        span:  30
         span:  1
         leading_comments:  " Configurations for a group of analog switches\n"
     }
@@ -1358,19 +1379,20 @@ source_code_info:  {
         path:  1
         path:  2
         path:  1
-        span:  20
+        span:  22
         span:  2
-        span:  31
+        span:  35
+        leading_comments:  " The distance between the key's resting position, and its position when\n fully depressed.\n"
     }
     location:  {
         path:  4
         path:  1
         path:  2
         path:  1
-        path:  6
-        span:  20
+        path:  5
+        span:  22
         span:  2
-        span:  13
+        span:  8
     }
     location:  {
         path:  4
@@ -1378,9 +1400,9 @@ source_code_info:  {
         path:  2
         path:  1
         path:  1
-        span:  20
-        span:  14
-        span:  26
+        span:  22
+        span:  9
+        span:  30
     }
     location:  {
         path:  4
@@ -1388,38 +1410,8 @@ source_code_info:  {
         path:  2
         path:  1
         path:  3
-        span:  20
-        span:  29
-        span:  30
-    }
-    location:  {
-        path:  4
-        path:  1
-        path:  2
-        path:  2
-        span:  23
-        span:  2
-        span:  39
-        leading_comments:  " Do NOT use oneof here so that we can keep the configuration for both trigger types\n"
-    }
-    location:  {
-        path:  4
-        path:  1
-        path:  2
-        path:  2
-        path:  6
-        span:  23
-        span:  2
-        span:  20
-    }
-    location:  {
-        path:  4
-        path:  1
-        path:  2
-        path:  2
-        path:  1
-        span:  23
-        span:  21
+        span:  22
+        span:  33
         span:  34
     }
     location:  {
@@ -1427,19 +1419,49 @@ source_code_info:  {
         path:  1
         path:  2
         path:  2
+        span:  24
+        span:  2
+        span:  31
+    }
+    location:  {
+        path:  4
+        path:  1
+        path:  2
+        path:  2
+        path:  6
+        span:  24
+        span:  2
+        span:  13
+    }
+    location:  {
+        path:  4
+        path:  1
+        path:  2
+        path:  2
+        path:  1
+        span:  24
+        span:  14
+        span:  26
+    }
+    location:  {
+        path:  4
+        path:  1
+        path:  2
+        path:  2
         path:  3
-        span:  23
-        span:  37
-        span:  38
+        span:  24
+        span:  29
+        span:  30
     }
     location:  {
         path:  4
         path:  1
         path:  2
         path:  3
-        span:  24
+        span:  28
         span:  2
-        span:  41
+        span:  39
+        leading_comments:  " Do NOT use oneof here so that we can keep the configuration for both\n trigger types\n"
     }
     location:  {
         path:  4
@@ -1447,7 +1469,46 @@ source_code_info:  {
         path:  2
         path:  3
         path:  6
-        span:  24
+        span:  28
+        span:  2
+        span:  20
+    }
+    location:  {
+        path:  4
+        path:  1
+        path:  2
+        path:  3
+        path:  1
+        span:  28
+        span:  21
+        span:  34
+    }
+    location:  {
+        path:  4
+        path:  1
+        path:  2
+        path:  3
+        path:  3
+        span:  28
+        span:  37
+        span:  38
+    }
+    location:  {
+        path:  4
+        path:  1
+        path:  2
+        path:  4
+        span:  29
+        span:  2
+        span:  41
+    }
+    location:  {
+        path:  4
+        path:  1
+        path:  2
+        path:  4
+        path:  6
+        span:  29
         span:  2
         span:  21
     }
@@ -1455,9 +1516,9 @@ source_code_info:  {
         path:  4
         path:  1
         path:  2
-        path:  3
+        path:  4
         path:  1
-        span:  24
+        span:  29
         span:  22
         span:  36
     }
@@ -1465,18 +1526,18 @@ source_code_info:  {
         path:  4
         path:  1
         path:  2
+        path:  4
         path:  3
-        path:  3
-        span:  24
+        span:  29
         span:  39
         span:  40
     }
     location:  {
         path:  4
         path:  2
-        span:  28
-        span:  0
         span:  33
+        span:  0
+        span:  38
         span:  1
         leading_comments:  " Represents a rapid trigger configuration\n"
     }
@@ -1484,7 +1545,7 @@ source_code_info:  {
         path:  4
         path:  2
         path:  1
-        span:  28
+        span:  33
         span:  8
         span:  26
     }
@@ -1493,7 +1554,7 @@ source_code_info:  {
         path:  2
         path:  2
         path:  0
-        span:  29
+        span:  34
         span:  2
         span:  17
     }
@@ -1503,7 +1564,7 @@ source_code_info:  {
         path:  2
         path:  0
         path:  5
-        span:  29
+        span:  34
         span:  2
         span:  8
     }
@@ -1513,7 +1574,7 @@ source_code_info:  {
         path:  2
         path:  0
         path:  1
-        span:  29
+        span:  34
         span:  9
         span:  12
     }
@@ -1523,7 +1584,7 @@ source_code_info:  {
         path:  2
         path:  0
         path:  3
-        span:  29
+        span:  34
         span:  15
         span:  16
     }
@@ -1532,7 +1593,7 @@ source_code_info:  {
         path:  2
         path:  2
         path:  1
-        span:  30
+        span:  35
         span:  2
         span:  17
     }
@@ -1542,7 +1603,7 @@ source_code_info:  {
         path:  2
         path:  1
         path:  5
-        span:  30
+        span:  35
         span:  2
         span:  8
     }
@@ -1552,7 +1613,7 @@ source_code_info:  {
         path:  2
         path:  1
         path:  1
-        span:  30
+        span:  35
         span:  9
         span:  12
     }
@@ -1562,7 +1623,7 @@ source_code_info:  {
         path:  2
         path:  1
         path:  3
-        span:  30
+        span:  35
         span:  15
         span:  16
     }
@@ -1571,7 +1632,7 @@ source_code_info:  {
         path:  2
         path:  2
         path:  2
-        span:  31
+        span:  36
         span:  2
         span:  19
     }
@@ -1581,7 +1642,7 @@ source_code_info:  {
         path:  2
         path:  2
         path:  5
-        span:  31
+        span:  36
         span:  2
         span:  8
     }
@@ -1591,7 +1652,7 @@ source_code_info:  {
         path:  2
         path:  2
         path:  1
-        span:  31
+        span:  36
         span:  9
         span:  14
     }
@@ -1600,56 +1661,56 @@ source_code_info:  {
         path:  2
         path:  2
         path:  2
-        path:  3
-        span:  31
-        span:  17
-        span:  18
-    }
-    location:  {
-        path:  4
-        path:  2
-        path:  2
-        path:  3
-        span:  32
-        span:  2
-        span:  19
-    }
-    location:  {
-        path:  4
-        path:  2
-        path:  2
-        path:  3
-        path:  5
-        span:  32
-        span:  2
-        span:  8
-    }
-    location:  {
-        path:  4
-        path:  2
-        path:  2
-        path:  3
-        path:  1
-        span:  32
-        span:  9
-        span:  14
-    }
-    location:  {
-        path:  4
-        path:  2
-        path:  2
-        path:  3
-        path:  3
-        span:  32
-        span:  17
-        span:  18
-    }
-    location:  {
-        path:  4
         path:  3
         span:  36
+        span:  17
+        span:  18
+    }
+    location:  {
+        path:  4
+        path:  2
+        path:  2
+        path:  3
+        span:  37
+        span:  2
+        span:  19
+    }
+    location:  {
+        path:  4
+        path:  2
+        path:  2
+        path:  3
+        path:  5
+        span:  37
+        span:  2
+        span:  8
+    }
+    location:  {
+        path:  4
+        path:  2
+        path:  2
+        path:  3
+        path:  1
+        span:  37
+        span:  9
+        span:  14
+    }
+    location:  {
+        path:  4
+        path:  2
+        path:  2
+        path:  3
+        path:  3
+        span:  37
+        span:  17
+        span:  18
+    }
+    location:  {
+        path:  4
+        path:  3
+        span:  41
         span:  0
-        span:  39
+        span:  44
         span:  1
         leading_comments:  " Represents a static trigger configuration\n"
     }
@@ -1657,7 +1718,7 @@ source_code_info:  {
         path:  4
         path:  3
         path:  1
-        span:  36
+        span:  41
         span:  8
         span:  27
     }
@@ -1666,7 +1727,7 @@ source_code_info:  {
         path:  3
         path:  2
         path:  0
-        span:  37
+        span:  42
         span:  2
         span:  17
     }
@@ -1676,7 +1737,7 @@ source_code_info:  {
         path:  2
         path:  0
         path:  5
-        span:  37
+        span:  42
         span:  2
         span:  8
     }
@@ -1686,7 +1747,7 @@ source_code_info:  {
         path:  2
         path:  0
         path:  1
-        span:  37
+        span:  42
         span:  9
         span:  12
     }
@@ -1696,7 +1757,7 @@ source_code_info:  {
         path:  2
         path:  0
         path:  3
-        span:  37
+        span:  42
         span:  15
         span:  16
     }
@@ -1705,7 +1766,7 @@ source_code_info:  {
         path:  3
         path:  2
         path:  1
-        span:  38
+        span:  43
         span:  2
         span:  17
     }
@@ -1715,7 +1776,7 @@ source_code_info:  {
         path:  2
         path:  1
         path:  5
-        span:  38
+        span:  43
         span:  2
         span:  8
     }
@@ -1725,7 +1786,7 @@ source_code_info:  {
         path:  2
         path:  1
         path:  1
-        span:  38
+        span:  43
         span:  9
         span:  12
     }
@@ -1735,23 +1796,23 @@ source_code_info:  {
         path:  2
         path:  1
         path:  3
-        span:  38
+        span:  43
         span:  15
         span:  16
     }
     location:  {
         path:  5
         path:  1
-        span:  41
+        span:  46
         span:  0
-        span:  45
+        span:  50
         span:  1
     }
     location:  {
         path:  5
         path:  1
         path:  1
-        span:  41
+        span:  46
         span:  5
         span:  15
     }
@@ -1760,7 +1821,7 @@ source_code_info:  {
         path:  1
         path:  2
         path:  0
-        span:  42
+        span:  47
         span:  2
         span:  30
     }
@@ -1770,7 +1831,7 @@ source_code_info:  {
         path:  2
         path:  0
         path:  1
-        span:  42
+        span:  47
         span:  2
         span:  25
     }
@@ -1780,7 +1841,7 @@ source_code_info:  {
         path:  2
         path:  0
         path:  2
-        span:  42
+        span:  47
         span:  28
         span:  29
     }
@@ -1789,7 +1850,7 @@ source_code_info:  {
         path:  1
         path:  2
         path:  1
-        span:  43
+        span:  48
         span:  2
         span:  11
     }
@@ -1799,7 +1860,7 @@ source_code_info:  {
         path:  2
         path:  1
         path:  1
-        span:  43
+        span:  48
         span:  2
         span:  6
     }
@@ -1809,7 +1870,7 @@ source_code_info:  {
         path:  2
         path:  1
         path:  2
-        span:  43
+        span:  48
         span:  9
         span:  10
     }
@@ -1818,7 +1879,7 @@ source_code_info:  {
         path:  1
         path:  2
         path:  2
-        span:  44
+        span:  49
         span:  2
         span:  12
     }
@@ -1828,7 +1889,7 @@ source_code_info:  {
         path:  2
         path:  2
         path:  1
-        span:  44
+        span:  49
         span:  2
         span:  7
     }
@@ -1838,16 +1899,16 @@ source_code_info:  {
         path:  2
         path:  2
         path:  2
-        span:  44
+        span:  49
         span:  10
         span:  11
     }
     location:  {
         path:  4
         path:  4
-        span:  48
+        span:  53
         span:  0
-        span:  56
+        span:  61
         span:  1
         leading_comments:  " A button ID used to identify a button on the USB gamepad\n"
     }
@@ -1855,7 +1916,7 @@ source_code_info:  {
         path:  4
         path:  4
         path:  1
-        span:  48
+        span:  53
         span:  8
         span:  16
     }
@@ -1864,7 +1925,7 @@ source_code_info:  {
         path:  4
         path:  2
         path:  0
-        span:  50
+        span:  55
         span:  2
         span:  22
     }
@@ -1874,7 +1935,7 @@ source_code_info:  {
         path:  2
         path:  0
         path:  6
-        span:  50
+        span:  55
         span:  2
         span:  12
     }
@@ -1884,7 +1945,7 @@ source_code_info:  {
         path:  2
         path:  0
         path:  1
-        span:  50
+        span:  55
         span:  13
         span:  17
     }
@@ -1894,7 +1955,7 @@ source_code_info:  {
         path:  2
         path:  0
         path:  3
-        span:  50
+        span:  55
         span:  20
         span:  21
     }
@@ -1903,9 +1964,9 @@ source_code_info:  {
         path:  4
         path:  8
         path:  0
-        span:  52
+        span:  57
         span:  2
-        span:  55
+        span:  60
         span:  3
     }
     location:  {
@@ -1914,7 +1975,7 @@ source_code_info:  {
         path:  8
         path:  0
         path:  1
-        span:  52
+        span:  57
         span:  8
         span:  16
     }
@@ -1923,7 +1984,7 @@ source_code_info:  {
         path:  4
         path:  2
         path:  1
-        span:  53
+        span:  58
         span:  4
         span:  39
     }
@@ -1933,7 +1994,7 @@ source_code_info:  {
         path:  2
         path:  1
         path:  6
-        span:  53
+        span:  58
         span:  4
         span:  22
     }
@@ -1943,7 +2004,7 @@ source_code_info:  {
         path:  2
         path:  1
         path:  1
-        span:  53
+        span:  58
         span:  23
         span:  34
     }
@@ -1953,7 +2014,7 @@ source_code_info:  {
         path:  2
         path:  1
         path:  3
-        span:  53
+        span:  58
         span:  37
         span:  38
     }
@@ -1962,7 +2023,7 @@ source_code_info:  {
         path:  4
         path:  2
         path:  2
-        span:  54
+        span:  59
         span:  4
         span:  33
     }
@@ -1972,7 +2033,7 @@ source_code_info:  {
         path:  2
         path:  2
         path:  6
-        span:  54
+        span:  59
         span:  4
         span:  22
     }
@@ -1982,7 +2043,7 @@ source_code_info:  {
         path:  2
         path:  2
         path:  1
-        span:  54
+        span:  59
         span:  23
         span:  28
     }
@@ -1992,23 +2053,23 @@ source_code_info:  {
         path:  2
         path:  2
         path:  3
-        span:  54
+        span:  59
         span:  31
         span:  32
     }
     location:  {
         path:  5
         path:  2
-        span:  59
+        span:  64
         span:  0
-        span:  63
+        span:  68
         span:  1
     }
     location:  {
         path:  5
         path:  2
         path:  1
-        span:  59
+        span:  64
         span:  5
         span:  15
     }
@@ -2017,7 +2078,7 @@ source_code_info:  {
         path:  2
         path:  2
         path:  0
-        span:  60
+        span:  65
         span:  2
         span:  21
     }
@@ -2027,7 +2088,7 @@ source_code_info:  {
         path:  2
         path:  0
         path:  1
-        span:  60
+        span:  65
         span:  2
         span:  16
     }
@@ -2037,7 +2098,7 @@ source_code_info:  {
         path:  2
         path:  0
         path:  2
-        span:  60
+        span:  65
         span:  19
         span:  20
     }
@@ -2046,7 +2107,7 @@ source_code_info:  {
         path:  2
         path:  2
         path:  1
-        span:  61
+        span:  66
         span:  2
         span:  20
     }
@@ -2056,7 +2117,7 @@ source_code_info:  {
         path:  2
         path:  1
         path:  1
-        span:  61
+        span:  66
         span:  2
         span:  15
     }
@@ -2066,7 +2127,7 @@ source_code_info:  {
         path:  2
         path:  1
         path:  2
-        span:  61
+        span:  66
         span:  18
         span:  19
     }
@@ -2075,7 +2136,7 @@ source_code_info:  {
         path:  2
         path:  2
         path:  2
-        span:  62
+        span:  67
         span:  2
         span:  21
     }
@@ -2085,7 +2146,7 @@ source_code_info:  {
         path:  2
         path:  2
         path:  1
-        span:  62
+        span:  67
         span:  2
         span:  16
     }
@@ -2095,23 +2156,23 @@ source_code_info:  {
         path:  2
         path:  2
         path:  2
-        span:  62
+        span:  67
         span:  19
         span:  20
     }
     location:  {
         path:  4
         path:  5
-        span:  65
+        span:  70
         span:  0
-        span:  68
+        span:  73
         span:  1
     }
     location:  {
         path:  4
         path:  5
         path:  1
-        span:  65
+        span:  70
         span:  8
         span:  16
     }
@@ -2120,7 +2181,7 @@ source_code_info:  {
         path:  5
         path:  2
         path:  0
-        span:  66
+        span:  71
         span:  2
         span:  21
     }
@@ -2130,7 +2191,7 @@ source_code_info:  {
         path:  2
         path:  0
         path:  6
-        span:  66
+        span:  71
         span:  2
         span:  12
     }
@@ -2140,7 +2201,7 @@ source_code_info:  {
         path:  2
         path:  0
         path:  1
-        span:  66
+        span:  71
         span:  13
         span:  17
     }
@@ -2150,7 +2211,7 @@ source_code_info:  {
         path:  2
         path:  0
         path:  3
-        span:  66
+        span:  71
         span:  19
         span:  20
     }
@@ -2159,7 +2220,7 @@ source_code_info:  {
         path:  5
         path:  2
         path:  1
-        span:  67
+        span:  72
         span:  2
         span:  16
     }
@@ -2169,7 +2230,7 @@ source_code_info:  {
         path:  2
         path:  1
         path:  5
-        span:  67
+        span:  72
         span:  2
         span:  8
     }
@@ -2179,7 +2240,7 @@ source_code_info:  {
         path:  2
         path:  1
         path:  1
-        span:  67
+        span:  72
         span:  9
         span:  11
     }
@@ -2189,16 +2250,16 @@ source_code_info:  {
         path:  2
         path:  1
         path:  3
-        span:  67
+        span:  72
         span:  14
         span:  15
     }
     location:  {
         path:  4
         path:  6
-        span:  72
+        span:  77
         span:  0
-        span:  74
+        span:  79
         span:  1
         leading_comments:  " An ID for push buttons\n"
     }
@@ -2206,7 +2267,7 @@ source_code_info:  {
         path:  4
         path:  6
         path:  1
-        span:  72
+        span:  77
         span:  8
         span:  26
     }
@@ -2215,7 +2276,7 @@ source_code_info:  {
         path:  6
         path:  2
         path:  0
-        span:  73
+        span:  78
         span:  2
         span:  28
     }
@@ -2225,7 +2286,7 @@ source_code_info:  {
         path:  2
         path:  0
         path:  5
-        span:  73
+        span:  78
         span:  2
         span:  8
     }
@@ -2235,7 +2296,7 @@ source_code_info:  {
         path:  2
         path:  0
         path:  1
-        span:  73
+        span:  78
         span:  9
         span:  23
     }
@@ -2245,16 +2306,16 @@ source_code_info:  {
         path:  2
         path:  0
         path:  3
-        span:  73
+        span:  78
         span:  26
         span:  27
     }
     location:  {
         path:  4
         path:  7
-        span:  77
+        span:  82
         span:  0
-        span:  87
+        span:  92
         span:  1
         leading_comments:  " An ID for D-pad buttons\n"
     }
@@ -2262,7 +2323,7 @@ source_code_info:  {
         path:  4
         path:  7
         path:  1
-        span:  77
+        span:  82
         span:  8
         span:  26
     }
@@ -2271,9 +2332,9 @@ source_code_info:  {
         path:  7
         path:  4
         path:  0
-        span:  78
+        span:  83
         span:  2
-        span:  84
+        span:  89
         span:  3
     }
     location:  {
@@ -2282,7 +2343,7 @@ source_code_info:  {
         path:  4
         path:  0
         path:  1
-        span:  78
+        span:  83
         span:  7
         span:  16
     }
@@ -2293,7 +2354,7 @@ source_code_info:  {
         path:  0
         path:  2
         path:  0
-        span:  79
+        span:  84
         span:  4
         span:  30
     }
@@ -2305,7 +2366,7 @@ source_code_info:  {
         path:  2
         path:  0
         path:  1
-        span:  79
+        span:  84
         span:  4
         span:  25
     }
@@ -2317,7 +2378,7 @@ source_code_info:  {
         path:  2
         path:  0
         path:  2
-        span:  79
+        span:  84
         span:  28
         span:  29
     }
@@ -2328,7 +2389,7 @@ source_code_info:  {
         path:  0
         path:  2
         path:  1
-        span:  80
+        span:  85
         span:  4
         span:  11
     }
@@ -2340,7 +2401,7 @@ source_code_info:  {
         path:  2
         path:  1
         path:  1
-        span:  80
+        span:  85
         span:  4
         span:  6
     }
@@ -2352,7 +2413,7 @@ source_code_info:  {
         path:  2
         path:  1
         path:  2
-        span:  80
+        span:  85
         span:  9
         span:  10
     }
@@ -2363,7 +2424,7 @@ source_code_info:  {
         path:  0
         path:  2
         path:  2
-        span:  81
+        span:  86
         span:  4
         span:  13
     }
@@ -2375,7 +2436,7 @@ source_code_info:  {
         path:  2
         path:  2
         path:  1
-        span:  81
+        span:  86
         span:  4
         span:  8
     }
@@ -2387,7 +2448,7 @@ source_code_info:  {
         path:  2
         path:  2
         path:  2
-        span:  81
+        span:  86
         span:  11
         span:  12
     }
@@ -2398,7 +2459,7 @@ source_code_info:  {
         path:  0
         path:  2
         path:  3
-        span:  82
+        span:  87
         span:  4
         span:  13
     }
@@ -2410,7 +2471,7 @@ source_code_info:  {
         path:  2
         path:  3
         path:  1
-        span:  82
+        span:  87
         span:  4
         span:  8
     }
@@ -2422,7 +2483,7 @@ source_code_info:  {
         path:  2
         path:  3
         path:  2
-        span:  82
+        span:  87
         span:  11
         span:  12
     }
@@ -2433,7 +2494,7 @@ source_code_info:  {
         path:  0
         path:  2
         path:  4
-        span:  83
+        span:  88
         span:  4
         span:  14
     }
@@ -2445,7 +2506,7 @@ source_code_info:  {
         path:  2
         path:  4
         path:  1
-        span:  83
+        span:  88
         span:  4
         span:  9
     }
@@ -2457,7 +2518,7 @@ source_code_info:  {
         path:  2
         path:  4
         path:  2
-        span:  83
+        span:  88
         span:  12
         span:  13
     }
@@ -2466,7 +2527,7 @@ source_code_info:  {
         path:  7
         path:  2
         path:  0
-        span:  86
+        span:  91
         span:  2
         span:  26
     }
@@ -2476,7 +2537,7 @@ source_code_info:  {
         path:  2
         path:  0
         path:  6
-        span:  86
+        span:  91
         span:  2
         span:  11
     }
@@ -2486,7 +2547,7 @@ source_code_info:  {
         path:  2
         path:  0
         path:  1
-        span:  86
+        span:  91
         span:  12
         span:  21
     }
@@ -2496,16 +2557,16 @@ source_code_info:  {
         path:  2
         path:  0
         path:  3
-        span:  86
+        span:  91
         span:  24
         span:  25
     }
     location:  {
         path:  4
         path:  8
-        span:  90
+        span:  95
         span:  0
-        span:  93
+        span:  98
         span:  1
         leading_comments:  " Maps a switch to a button\n"
     }
@@ -2513,7 +2574,7 @@ source_code_info:  {
         path:  4
         path:  8
         path:  1
-        span:  90
+        span:  95
         span:  8
         span:  24
     }
@@ -2522,7 +2583,7 @@ source_code_info:  {
         path:  8
         path:  2
         path:  0
-        span:  91
+        span:  96
         span:  2
         span:  25
     }
@@ -2532,7 +2593,7 @@ source_code_info:  {
         path:  2
         path:  0
         path:  6
-        span:  91
+        span:  96
         span:  2
         span:  10
     }
@@ -2542,7 +2603,7 @@ source_code_info:  {
         path:  2
         path:  0
         path:  1
-        span:  91
+        span:  96
         span:  11
         span:  20
     }
@@ -2552,7 +2613,7 @@ source_code_info:  {
         path:  2
         path:  0
         path:  3
-        span:  91
+        span:  96
         span:  23
         span:  24
     }
@@ -2561,7 +2622,7 @@ source_code_info:  {
         path:  8
         path:  2
         path:  1
-        span:  92
+        span:  97
         span:  2
         span:  25
     }
@@ -2571,7 +2632,7 @@ source_code_info:  {
         path:  2
         path:  1
         path:  6
-        span:  92
+        span:  97
         span:  2
         span:  10
     }
@@ -2581,7 +2642,7 @@ source_code_info:  {
         path:  2
         path:  1
         path:  1
-        span:  92
+        span:  97
         span:  11
         span:  20
     }
@@ -2591,23 +2652,23 @@ source_code_info:  {
         path:  2
         path:  1
         path:  3
-        span:  92
+        span:  97
         span:  23
         span:  24
     }
     location:  {
         path:  4
         path:  9
-        span:  95
+        span:  100
         span:  0
-        span:  97
+        span:  102
         span:  1
     }
     location:  {
         path:  4
         path:  9
         path:  1
-        span:  95
+        span:  100
         span:  8
         span:  17
     }
@@ -2616,7 +2677,7 @@ source_code_info:  {
         path:  9
         path:  2
         path:  0
-        span:  96
+        span:  101
         span:  2
         span:  24
     }
@@ -2626,7 +2687,7 @@ source_code_info:  {
         path:  2
         path:  0
         path:  5
-        span:  96
+        span:  101
         span:  2
         span:  8
     }
@@ -2636,7 +2697,7 @@ source_code_info:  {
         path:  2
         path:  0
         path:  1
-        span:  96
+        span:  101
         span:  9
         span:  19
     }
@@ -2646,16 +2707,16 @@ source_code_info:  {
         path:  2
         path:  0
         path:  3
-        span:  96
+        span:  101
         span:  22
         span:  23
     }
     location:  {
         path:  4
         path:  10
-        span:  100
+        span:  105
         span:  0
-        span:  108
+        span:  113
         span:  1
         leading_comments:  " Represents the overall configuration for Udong\n"
     }
@@ -2663,7 +2724,7 @@ source_code_info:  {
         path:  4
         path:  10
         path:  1
-        span:  100
+        span:  105
         span:  8
         span:  19
     }
@@ -2672,7 +2733,7 @@ source_code_info:  {
         path:  10
         path:  2
         path:  0
-        span:  103
+        span:  108
         span:  2
         span:  22
         leading_comments:  " Readonly baked data\n The data is baked into the flash when the board is shipped.\n"
@@ -2683,7 +2744,7 @@ source_code_info:  {
         path:  2
         path:  0
         path:  6
-        span:  103
+        span:  108
         span:  2
         span:  11
     }
@@ -2693,7 +2754,7 @@ source_code_info:  {
         path:  2
         path:  0
         path:  1
-        span:  103
+        span:  108
         span:  12
         span:  17
     }
@@ -2703,7 +2764,7 @@ source_code_info:  {
         path:  2
         path:  0
         path:  3
-        span:  103
+        span:  108
         span:  20
         span:  21
     }
@@ -2712,7 +2773,7 @@ source_code_info:  {
         path:  10
         path:  2
         path:  1
-        span:  105
+        span:  110
         span:  2
         span:  56
     }
@@ -2722,7 +2783,7 @@ source_code_info:  {
         path:  2
         path:  1
         path:  4
-        span:  105
+        span:  110
         span:  2
         span:  10
     }
@@ -2732,7 +2793,7 @@ source_code_info:  {
         path:  2
         path:  1
         path:  6
-        span:  105
+        span:  110
         span:  11
         span:  29
     }
@@ -2742,7 +2803,7 @@ source_code_info:  {
         path:  2
         path:  1
         path:  1
-        span:  105
+        span:  110
         span:  30
         span:  51
     }
@@ -2752,7 +2813,7 @@ source_code_info:  {
         path:  2
         path:  1
         path:  3
-        span:  105
+        span:  110
         span:  54
         span:  55
     }
@@ -2761,7 +2822,7 @@ source_code_info:  {
         path:  10
         path:  2
         path:  2
-        span:  106
+        span:  111
         span:  2
         span:  54
     }
@@ -2771,7 +2832,7 @@ source_code_info:  {
         path:  2
         path:  2
         path:  4
-        span:  106
+        span:  111
         span:  2
         span:  10
     }
@@ -2781,7 +2842,7 @@ source_code_info:  {
         path:  2
         path:  2
         path:  6
-        span:  106
+        span:  111
         span:  11
         span:  28
     }
@@ -2791,7 +2852,7 @@ source_code_info:  {
         path:  2
         path:  2
         path:  1
-        span:  106
+        span:  111
         span:  29
         span:  49
     }
@@ -2801,7 +2862,7 @@ source_code_info:  {
         path:  2
         path:  2
         path:  3
-        span:  106
+        span:  111
         span:  52
         span:  53
     }
@@ -2810,7 +2871,7 @@ source_code_info:  {
         path:  10
         path:  2
         path:  3
-        span:  107
+        span:  112
         span:  2
         span:  51
     }
@@ -2820,7 +2881,7 @@ source_code_info:  {
         path:  2
         path:  3
         path:  4
-        span:  107
+        span:  112
         span:  2
         span:  10
     }
@@ -2830,7 +2891,7 @@ source_code_info:  {
         path:  2
         path:  3
         path:  6
-        span:  107
+        span:  112
         span:  11
         span:  27
     }
@@ -2840,7 +2901,7 @@ source_code_info:  {
         path:  2
         path:  3
         path:  1
-        span:  107
+        span:  112
         span:  28
         span:  46
     }
@@ -2850,7 +2911,7 @@ source_code_info:  {
         path:  2
         path:  3
         path:  3
-        span:  107
+        span:  112
         span:  49
         span:  50
     }

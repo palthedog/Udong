@@ -18,9 +18,14 @@ message AnalogSwitchGroup {
 
   uint32 analog_switch_group_id = 1;
 
+  // The distance between the key's resting position, and its position when
+  // fully depressed.
+  double total_travel_distance = 5;
+
   TriggerType trigger_type = 2;
 
-  // Do NOT use oneof here so that we can keep the configuration for both trigger types
+  // Do NOT use oneof here so that we can keep the configuration for both
+  // trigger types
   RapidTriggerConfig rapid_trigger = 3;
   StaticTriggerConfig static_trigger = 4;
 }

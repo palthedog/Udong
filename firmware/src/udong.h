@@ -64,6 +64,15 @@ class Udong {
   }
 
   bool MaybeSendReport() {
+    // TODO: Consider; if we can estimate the time to fill the report, we can
+    // fill the report by just before the USB_HID is ready. Like:
+    //    wait_until(usb_hid_ready_time - time_to_fill_report);
+    //    FillGameReport();  // may consume time_to_fill_report us
+    //    while (!usb_hid.ready()) {
+    //       // we can expect that usb_hid will be ready immediately.
+    //       sleep_us(1);
+    //    }
+
     // Fill the gamepad report even if the USB HID is not ready yet.
     // It improves the actual polling-rate a little because it takes time to
     // fill the report and it makes a time gap between "ready" and "sendReport".
@@ -120,11 +129,16 @@ class Udong {
 
         trigger.reset(new StaticTrigger(st_conf.act(), st_conf.rel()));
       }
+      Serial.printf(
+          "%d total travel distance: %lf\n",
+          switch_id,
+          switch_config.total_travel_distance());
       analog_switches_.push_back(std::make_shared<AnalogSwitch>(
           switch_id,
           analog_switch_multi_sampled_ins[switch_id],
           calibration_store_.GetSwitchRef(switch_id),
-          std::move(trigger)));
+          std::move(trigger),
+          switch_config.total_travel_distance()));
     }
 
     for (auto digital_switch_in : circuit->GetDigitalInputs()) {

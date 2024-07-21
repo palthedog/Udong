@@ -113,6 +113,7 @@ export class AnalogSwitchGroup extends pb_1.Message {
     #one_of_decls: number[][] = [];
     constructor(data?: any[] | {
         analog_switch_group_id?: number;
+        total_travel_distance?: number;
         trigger_type?: TriggerType;
         rapid_trigger?: RapidTriggerConfig;
         static_trigger?: StaticTriggerConfig;
@@ -122,6 +123,9 @@ export class AnalogSwitchGroup extends pb_1.Message {
         if (!Array.isArray(data) && typeof data == "object") {
             if ("analog_switch_group_id" in data && data.analog_switch_group_id != undefined) {
                 this.analog_switch_group_id = data.analog_switch_group_id;
+            }
+            if ("total_travel_distance" in data && data.total_travel_distance != undefined) {
+                this.total_travel_distance = data.total_travel_distance;
             }
             if ("trigger_type" in data && data.trigger_type != undefined) {
                 this.trigger_type = data.trigger_type;
@@ -139,6 +143,12 @@ export class AnalogSwitchGroup extends pb_1.Message {
     }
     set analog_switch_group_id(value: number) {
         pb_1.Message.setField(this, 1, value);
+    }
+    get total_travel_distance() {
+        return pb_1.Message.getFieldWithDefault(this, 5, 0) as number;
+    }
+    set total_travel_distance(value: number) {
+        pb_1.Message.setField(this, 5, value);
     }
     get trigger_type() {
         return pb_1.Message.getFieldWithDefault(this, 2, TriggerType.UNSPECIFIED_TRIGGER) as TriggerType;
@@ -166,6 +176,7 @@ export class AnalogSwitchGroup extends pb_1.Message {
     }
     static fromObject(data: {
         analog_switch_group_id?: number;
+        total_travel_distance?: number;
         trigger_type?: TriggerType;
         rapid_trigger?: ReturnType<typeof RapidTriggerConfig.prototype.toObject>;
         static_trigger?: ReturnType<typeof StaticTriggerConfig.prototype.toObject>;
@@ -173,6 +184,9 @@ export class AnalogSwitchGroup extends pb_1.Message {
         const message = new AnalogSwitchGroup({});
         if (data.analog_switch_group_id != null) {
             message.analog_switch_group_id = data.analog_switch_group_id;
+        }
+        if (data.total_travel_distance != null) {
+            message.total_travel_distance = data.total_travel_distance;
         }
         if (data.trigger_type != null) {
             message.trigger_type = data.trigger_type;
@@ -188,12 +202,16 @@ export class AnalogSwitchGroup extends pb_1.Message {
     toObject() {
         const data: {
             analog_switch_group_id?: number;
+            total_travel_distance?: number;
             trigger_type?: TriggerType;
             rapid_trigger?: ReturnType<typeof RapidTriggerConfig.prototype.toObject>;
             static_trigger?: ReturnType<typeof StaticTriggerConfig.prototype.toObject>;
         } = {};
         if (this.analog_switch_group_id != null) {
             data.analog_switch_group_id = this.analog_switch_group_id;
+        }
+        if (this.total_travel_distance != null) {
+            data.total_travel_distance = this.total_travel_distance;
         }
         if (this.trigger_type != null) {
             data.trigger_type = this.trigger_type;
@@ -212,6 +230,8 @@ export class AnalogSwitchGroup extends pb_1.Message {
         const writer = w || new pb_1.BinaryWriter();
         if (this.analog_switch_group_id != 0)
             writer.writeUint32(1, this.analog_switch_group_id);
+        if (this.total_travel_distance != 0)
+            writer.writeDouble(5, this.total_travel_distance);
         if (this.trigger_type != TriggerType.UNSPECIFIED_TRIGGER)
             writer.writeEnum(2, this.trigger_type);
         if (this.has_rapid_trigger)
@@ -229,6 +249,9 @@ export class AnalogSwitchGroup extends pb_1.Message {
             switch (reader.getFieldNumber()) {
                 case 1:
                     message.analog_switch_group_id = reader.readUint32();
+                    break;
+                case 5:
+                    message.total_travel_distance = reader.readDouble();
                     break;
                 case 2:
                     message.trigger_type = reader.readEnum();

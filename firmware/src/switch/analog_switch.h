@@ -87,6 +87,8 @@ class AnalogSwitch : public Switch {
   uint16_t last_analog_;
   bool last_triggered_;
 
+  double max_travel_distance_mm_ = 4.1;  // Gateron KS-20
+
   // array[0] : B @ far_mm + 0.0mm (bottom)
   // array[1] : B @ far_mm + 0.1mm
   // array[2] : B @ far_mm + 0.2mm
@@ -171,12 +173,14 @@ class AnalogSwitch : public Switch {
       int id,
       std::shared_ptr<AnalogInput> input,
       AnalogSwitchCalibrationStore* calibration,
-      std::unique_ptr<Trigger> trigger)
+      std::unique_ptr<Trigger> trigger,
+      double max_travel_distance_mm)
       : id_(id),
         input_(input),
         calibration_(calibration),
         sensitivity_mV_per_mT_(kSensitivity_mV_per_mT),
-        trigger_(std::move(trigger)) {
+        trigger_(std::move(trigger)),
+        max_travel_distance_mm_(max_travel_distance_mm) {
     last_press_mm_ = 0.0;
     mag_flux_table_.resize(41);
   }
@@ -268,7 +272,6 @@ class AnalogSwitch : public Switch {
     calibration_->ClearUpdatedFlag();
 
     // known constants
-    const double kKeyStroke_mm = 4.1;  // Gateron KS-20
     const double kMagnetRadius_mm = 2.9 / 2.0;
     const double kR_2 = kMagnetRadius_mm * kMagnetRadius_mm;
     const double kMagnetThickness_mm = 3.4;
@@ -283,7 +286,7 @@ class AnalogSwitch : public Switch {
 
     BSearch<double> bsearch([=](double x) {
       double d_near = x;
-      double d_far = d_near + kKeyStroke_mm;
+      double d_far = d_near + max_travel_distance_mm_;
 
       double mag_flux_near =
           CalcRemanence_2(d_near, mag_flux_nearest, kR_2, kMagnetThickness_mm);
@@ -306,7 +309,7 @@ class AnalogSwitch : public Switch {
     double mag_remanence = CalcRemanence(
         solved_d_near_mm, mag_flux_nearest, kR_2, kMagnetThickness_mm);
     UpdateMagFluxTable(
-        solved_d_near_mm + kKeyStroke_mm,
+        solved_d_near_mm + max_travel_distance_mm_,
         mag_remanence,
         kR_2,
         kMagnetThickness_mm);
