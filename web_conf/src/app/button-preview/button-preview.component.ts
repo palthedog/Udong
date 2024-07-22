@@ -1,11 +1,11 @@
-import { Component, Directive, ElementRef, HostListener, inject, Injectable, Input, ViewChild } from '@angular/core';
+import { Component, HostListener, inject, Injectable, Input, ViewChild } from '@angular/core';
 import { SerialServiceInterface } from '../serial/serial.service';
 import { logger } from '../logger';
 import { BaseChartDirective } from 'ng2-charts';
-import { ChartConfiguration, ChartData, ChartOptions, TooltipItem } from 'chart.js';
+import { ChartData, ChartOptions, TooltipItem } from 'chart.js';
 import { AnalogSwitchGroup } from '../../proto/config';
 import { GetAnalogSwitchStateRequest, GetAnalogSwitchStateResponse } from '../../proto/rpc';
-import { max, Subject, Subscription } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
 
 
 @Injectable({ providedIn: 'root' })

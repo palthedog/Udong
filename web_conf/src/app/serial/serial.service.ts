@@ -2,10 +2,9 @@
 
 import { Injectable } from '@angular/core';
 
-import { BehaviorSubject, Observable, Subject, delay, filter } from 'rxjs';
+import { BehaviorSubject, Observable, Subject, filter } from 'rxjs';
 import AsyncLock from 'async-lock';
 import { WritableStreamDefaultWriter } from 'stream/web';
-import { CdkMonitorFocus } from '@angular/cdk/a11y';
 
 export abstract class SerialServiceInterface {
   abstract ConnectionChanges(): Observable<boolean>;
