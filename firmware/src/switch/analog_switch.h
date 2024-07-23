@@ -73,6 +73,7 @@ inline double CalcMagFlux(double d, double Br, double R_2, double T) {
 class AnalogSwitch : public Switch {
   const double kQuiescentVoltage_mV = 0.6 * 1000;
   const double kSensitivity_mV_per_mT = 30;
+  const int kLookupTableSize = 41;
 
   int id_;
   std::shared_ptr<AnalogInput> input_;
@@ -87,24 +88,25 @@ class AnalogSwitch : public Switch {
   uint16_t last_analog_;
   bool last_triggered_;
 
-  double max_travel_distance_mm_ = 4.1;  // Gateron KS-20
-
   // array[0] : B @ far_mm + 0.0mm (bottom)
-  // array[1] : B @ far_mm + 0.1mm
-  // array[2] : B @ far_mm + 0.2mm
+  // array[1] : B @ far_mm + 1 * mm_per_step_
+  // array[2] : B @ far_mm + 2 * mm_per_step_
   //  ...
-  // array[39]: B @ far_mm + 3.9mm
-  // array[40]: B @ far_mm + 4.0mm
+  // array[39]: B @ max_travel_distance_mm_ - mm_per_step_
+  // array[40]: B @ max_travel_distance_mm_
   std::vector<double> mag_flux_table_;
+  double max_travel_distance_mm_;
+  double press_mm_per_index_;
 
   std::unique_ptr<Trigger> trigger_;
 
   void UpdateMagFluxTable(double d_far_mm, double Br, double R_2, double T) {
-    for (int i = 0; i <= 40; i++) {
-      double press_mm = i * 0.1;
+    double press_mm = 0.0;
+    for (int i = 0; i < kLookupTableSize; i++) {
       double d = d_far_mm - press_mm;
       double mag_flux = CalcMagFlux(d, Br, R_2, T);
       mag_flux_table_[i] = mag_flux;
+      press_mm += press_mm_per_index_;
     }
   }
 
@@ -116,7 +118,7 @@ class AnalogSwitch : public Switch {
       return 0.0;
     }
     if (mag_flux >= mag_flux_table_.back()) {
-      return 4.0;
+      return max_travel_distance_mm_;
     }
 
     auto it = std::lower_bound(
@@ -143,9 +145,8 @@ class AnalogSwitch : public Switch {
 
     double diff = upper - lower;
     double rate = (mag_flux - lower) / diff;
-    double lower_mm = lower_index / 10.0;
-    const double diff_mm = 0.1;
-    return lower_mm + diff_mm * rate;
+    double lower_mm = lower_index * press_mm_per_index_;
+    return lower_mm + press_mm_per_index_ * rate;
   }
 
   // analog: [0, 65536)
@@ -179,10 +180,11 @@ class AnalogSwitch : public Switch {
         input_(input),
         calibration_(calibration),
         sensitivity_mV_per_mT_(kSensitivity_mV_per_mT),
-        trigger_(std::move(trigger)),
-        max_travel_distance_mm_(max_travel_distance_mm) {
+        max_travel_distance_mm_(max_travel_distance_mm),
+        press_mm_per_index_(max_travel_distance_mm / (kLookupTableSize - 1)),
+        trigger_(std::move(trigger)) {
     last_press_mm_ = 0.0;
-    mag_flux_table_.resize(41);
+    mag_flux_table_.resize(kLookupTableSize);
   }
 
   virtual ~AnalogSwitch() {
