@@ -410,8 +410,6 @@ export class ButtonPreviewComponent {
   ngOnInit() {
     logger.debug('ButtonPreviewComponent initialized');
 
-    //this.chart.ev
-
     this.subscriptions.add(this.serial_service.ConnectionChanges().subscribe((connected) => {
       this.ClearData();
     }));

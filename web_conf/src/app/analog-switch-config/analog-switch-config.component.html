@@ -58,5 +58,16 @@
                 [(value)]="config.static_trigger!.rel"
             ></app-depth-slider>
         </ng-container>
+
+        <mat-divider></mat-divider>
+
+        <!-- detailed config -->
+        <h4>Detailed Configuration</h4>
+        <app-depth-slider
+            label="Total Travel Distance"
+            [max]="4.5"
+            [min]="1.0"
+            [(value)]="config.total_travel_distance"
+        ></app-depth-slider>
     </mat-card-content>
 </mat-card>
