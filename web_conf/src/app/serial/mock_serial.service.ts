@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, Subject, defer, filter } from 'rxjs';
 import { SerialServiceInterface } from './serial.service';
 
-import { AnalogSwitchConfig, AnalogSwitchGroup, ButtonAssignment, ButtonId, ButtonType, DPadButtonSelector, PushButtonSelector, RapidTriggerConfig, StaticTriggerConfig, SwitchId, SwitchType, TriggerType, UdongConfig } from '../../proto/config';
+import { AnalogSwitchConfig, AnalogSwitchGroup, ButtonAssignment, ButtonId, ButtonType, DPadButtonSelector, DPadConfig, PushButtonSelector, RapidTriggerConfig, StaticTriggerConfig, SwitchId, SwitchType, TriggerType, UdongConfig } from '../../proto/config';
 
 @Injectable()
 export class MockSerialService extends SerialServiceInterface {
@@ -139,10 +139,17 @@ export class MockSerialService extends SerialServiceInterface {
             }));
         }
 
+        // d-pad config
+        let d_pad_config = new DPadConfig({
+            lr_socd_mode: DPadConfig.LRSocdCleanerMode.LR_NEUTRAL,
+            ud_socd_mode: DPadConfig.UDSocdCleanerMode.UP_PRIORITY,
+        });
+
         let udong_config: UdongConfig = new UdongConfig({
             analog_switch_configs: configs,
             analog_switch_groups: groups,
-            button_assignments: button_assignments
+            button_assignments: button_assignments,
+            d_pad_config: d_pad_config,
         });
 
         // Mock response

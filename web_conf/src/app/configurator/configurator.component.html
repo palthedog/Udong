@@ -51,7 +51,8 @@
                 </mat-form-field>
 
                 <!-- D-PAD config -->
-                <ng-container *ngIf="activeButtonIsLR()">
+                <!-- socd mode == undefined means the firmware does not support it -->
+                <ng-container *ngIf="activeButtonIsLR() && lr_socd_cleaner_mode != undefined">
                     <mat-form-field>
                         <mat-label>← → SOCD mode</mat-label>
                         <mat-select [(value)]="lr_socd_cleaner_mode">
@@ -63,7 +64,7 @@
                         </mat-select>
                     </mat-form-field>
                 </ng-container>
-                <ng-container *ngIf="activeButtonIsUD()">
+                <ng-container *ngIf="activeButtonIsUD() && ud_socd_cleaner_mode != undefined">
                     <mat-form-field>
                         <mat-label>↑↓ SOCD mode</mat-label>
                         <mat-select [(value)]="ud_socd_cleaner_mode">
