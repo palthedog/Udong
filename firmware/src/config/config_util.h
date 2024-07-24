@@ -99,6 +99,12 @@ inline const AnalogSwitchGroup& getConfigFromSwitchId(
 // TODO: Move it to the board config?
 inline UdongConfig defaultUdongConfig() {
   UdongConfig config;
+
+  config.mutable_d_pad_config()->set_lr_socd_mode(
+      DPadConfig::LRSocdCleanerMode::LR_LAST_PRIORITY);
+  config.mutable_d_pad_config()->set_ud_socd_mode(
+      DPadConfig::UDSocdCleanerMode::UP_PRIORITY);
+
   const uint32_t kDPadGroup = 0;
   const uint32_t kElseGroup = 1;
   for (int i = 0; i < 16; i++) {
@@ -229,7 +235,6 @@ inline bool LoadProtoBin(const String& path, decaproto::Message* dst) {
 
 inline void complementWithDefaultValues(UdongConfig& config) {
   UdongConfig def = defaultUdongConfig();
-  // TODO: Add unit test
   ComplementMessage(def, config);
 }
 

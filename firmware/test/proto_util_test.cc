@@ -11,7 +11,12 @@ void tearDown(void) {
 
 void testComplementField_repeated_field(void) {
   UdongConfig default_config;
-  UdongConfig dst;
+
+  default_config.mutable_d_pad_config()->set_lr_socd_mode(
+      DPadConfig::LRSocdCleanerMode::LR_LAST_PRIORITY);
+  default_config.mutable_d_pad_config()->set_ud_socd_mode(
+      DPadConfig::UDSocdCleanerMode::UP_PRIORITY);
+
   AnalogSwitchGroup *def_group0 = default_config.add_analog_switch_groups();
   def_group0->set_analog_switch_group_id(0);
   def_group0->set_total_travel_distance(3.5);
@@ -25,11 +30,19 @@ void testComplementField_repeated_field(void) {
   def_group2->set_total_travel_distance(4.5);
   def_group2->mutable_rapid_trigger()->set_act(0.3);
 
+  UdongConfig dst;
   AnalogSwitchGroup *dst_group0 = dst.add_analog_switch_groups();
   dst_group0->set_analog_switch_group_id(0);
   dst_group0->mutable_rapid_trigger()->set_act(1.0);
 
   ComplementMessage(default_config, dst);
+
+  TEST_ASSERT_EQUAL(
+      DPadConfig::LRSocdCleanerMode::LR_LAST_PRIORITY,
+      dst.d_pad_config().lr_socd_mode());
+  TEST_ASSERT_EQUAL(
+      DPadConfig::UDSocdCleanerMode::UP_PRIORITY,
+      dst.d_pad_config().ud_socd_mode());
 
   TEST_ASSERT_EQUAL(3, dst.analog_switch_groups_size());
 

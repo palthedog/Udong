@@ -193,6 +193,9 @@ class Udong {
       analog_switch->DumpLastState();
     }
 
+    // Set D-Pad configuration
+    d_pad_.SetConfig(config.d_pad_config());
+
     // Button assignment
     for (const ButtonAssignment& b : config.button_assignments()) {
       std::shared_ptr<Switch> switch_ptr;
@@ -253,8 +256,8 @@ class Udong {
             if (analog_switch->NeedRecalibration()) {
               Serial.printf("Calibrate switch-%d\n", analog_switch->GetId());
               analog_switch->Calibrate();
-              // Do NOT calibrate multiple switches at once since it is a bit
-              // heavy routine.
+              // Do NOT calibrate multiple switches at once since it is a
+              // bit heavy routine.
               break;
             }
           }

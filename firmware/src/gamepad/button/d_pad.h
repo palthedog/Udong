@@ -7,6 +7,7 @@
 
 #include "../../switch/switch.h"
 #include "button.h"
+#include "proto/config.pb.h"
 
 enum DPadLRState {
   LRNeutral,      // Nothing is presssed
@@ -25,6 +26,8 @@ enum DPadUDState {
 };
 
 class DPad {
+  DPadConfig d_pad_config_;
+
   std::vector<std::shared_ptr<Switch>> left_switches_;
   std::vector<std::shared_ptr<Switch>> right_switches_;
   std::vector<std::shared_ptr<Switch>> up_switches_;
@@ -40,50 +43,110 @@ class DPad {
   DPad() {
   }
 
+  void SetConfig(const DPadConfig& config) {
+    d_pad_config_ = config;
+  }
+
+  int LRIndex() {
+    const int kLeft = 0;
+    const int kCenter = 1;
+    const int kRight = 2;
+    int x = kCenter;
+    switch (lr_state_) {
+      case DPadLRState::LRNeutral:
+        x = kCenter;
+        break;
+      case DPadLRState::OnlyLeft:
+        x = kLeft;
+        break;
+      case DPadLRState::OnlyRight:
+        x = kRight;
+        break;
+      case DPadLRState::LeftThenRight:
+        switch (d_pad_config_.lr_socd_mode()) {
+          case DPadConfig::LRSocdCleanerMode::LR_UNSPECIFIED:
+          case DPadConfig::LRSocdCleanerMode::LR_NEUTRAL:
+            x = kCenter;
+            break;
+          case DPadConfig::LRSocdCleanerMode::LR_LAST_PRIORITY:
+            x = kRight;
+            break;
+        }
+        break;
+      case DPadLRState::RightThenLeft:
+        switch (d_pad_config_.lr_socd_mode()) {
+          case DPadConfig::LRSocdCleanerMode::LR_UNSPECIFIED:
+          case DPadConfig::LRSocdCleanerMode::LR_NEUTRAL:
+            x = kCenter;
+            break;
+          case DPadConfig::LRSocdCleanerMode::LR_LAST_PRIORITY:
+            x = kLeft;
+            break;
+        }
+        break;
+    }
+    return x;
+  }
+
+  int UDIndex() {
+    const int kUp = 0;
+    const int kCenter = 1;
+    const int kDown = 2;
+    int y = kCenter;
+    switch (ud_state_) {
+      case DPadUDState::UDNeutral:
+        y = kCenter;
+        break;
+      case DPadUDState::OnlyUp:
+        y = kUp;
+        break;
+      case DPadUDState::OnlyDown:
+        y = kDown;
+        break;
+      case DPadUDState::UpThenDown:
+        switch (d_pad_config_.ud_socd_mode()) {
+          case DPadConfig::UDSocdCleanerMode::UD_UNSPECIFIED:
+          case DPadConfig::UDSocdCleanerMode::UD_NEUTRAL:
+            y = kCenter;
+            break;
+          case DPadConfig::UDSocdCleanerMode::UD_LAST_PRIORITY:
+            y = kDown;
+            break;
+          case DPadConfig::UDSocdCleanerMode::UP_PRIORITY:
+            y = kUp;
+            break;
+          case DPadConfig::UDSocdCleanerMode::DOWN_PRIORITY:
+            y = kDown;
+            break;
+        }
+        break;
+      case DPadUDState::DownThenUp:
+        switch (d_pad_config_.ud_socd_mode()) {
+          case DPadConfig::UDSocdCleanerMode::UD_UNSPECIFIED:
+          case DPadConfig::UDSocdCleanerMode::UD_NEUTRAL:
+            y = kCenter;
+            break;
+          case DPadConfig::UDSocdCleanerMode::UD_LAST_PRIORITY:
+            y = kUp;
+            break;
+          case DPadConfig::UDSocdCleanerMode::UP_PRIORITY:
+            y = kUp;
+            break;
+          case DPadConfig::UDSocdCleanerMode::DOWN_PRIORITY:
+            y = kDown;
+            break;
+        }
+        break;
+    }
+    return y;
+  }
+
   void UpdateGamepadReport(GamepadReport& gamepad_report) {
     UpdateLRStates();
     UpdateUDStates();
 
-    int x = 1;
-    switch (lr_state_) {
-      case DPadLRState::LRNeutral:
-        x = 1;
-        break;
-      case DPadLRState::OnlyLeft:
-        x = 0;
-        break;
-      case DPadLRState::OnlyRight:
-        x = 2;
-        break;
-      case DPadLRState::LeftThenRight:
-        // TODO: Make it configurabale.
-        x = 2;
-        break;
-      case DPadLRState::RightThenLeft:
-        // TODO: Make it configurabale.
-        x = 0;
-        break;
-    }
-
-    int y = 1;
-    switch (ud_state_) {
-      case DPadUDState::UDNeutral:
-        y = 1;
-        break;
-      case DPadUDState::OnlyUp:
-        y = 0;
-        break;
-      case DPadUDState::OnlyDown:
-        y = 2;
-        break;
-      case DPadUDState::UpThenDown:
-        // TODO: Make it configurabale.
-        y = 2;
-      case DPadUDState::DownThenUp:
-        // TODO: Make it configurabale.
-        y = 0;
-        break;
-    }
+    int x = LRIndex();
+    int y = UDIndex();
 
     const uint8_t kCenter = 0;
     const uint8_t kUp = 1;
@@ -125,6 +188,7 @@ class DPad {
     right_switches_.clear();
     up_switches_.clear();
     down_switches_.clear();
+    d_pad_config_ = DPadConfig();
   }
 
  private:

@@ -13,7 +13,7 @@ import { AnalogSwitchConfig, AnalogSwitchGroup, ButtonAssignment, ButtonId, Butt
 import { AppConsts } from '../consts';
 import { GroupSelectorComponent } from '../group-selector/group-selector.component';
 import { SerialServiceInterface } from '../serial/serial.service';
-import { logger, Logger } from '../logger';
+import { logger } from '../logger';
 import { SwitchIdToGroupId, compareButtonIds } from '../config_util';
 import { ButtonPreviewComponent } from "../button-preview/button-preview.component";
 import { Subscription } from 'rxjs';
@@ -140,7 +140,7 @@ export class ConfiguratorComponent {
   lrConfigs(): [string, DPadConfig.LRSocdCleanerMode][] {
     return [
       ['Neutral', DPadConfig.LRSocdCleanerMode.LR_NEUTRAL],
-      ['Last Priority', DPadConfig.LRSocdCleanerMode.LR_LAST_PRIORITY],
+      ['Last One Priority', DPadConfig.LRSocdCleanerMode.LR_LAST_PRIORITY],
     ];
   }
 
@@ -175,7 +175,7 @@ export class ConfiguratorComponent {
   udConfigs(): [string, DPadConfig.UDSocdCleanerMode][] {
     return [
       ['Neutral', DPadConfig.UDSocdCleanerMode.UD_NEUTRAL],
-      ['Last Priority', DPadConfig.UDSocdCleanerMode.UD_LAST_PRIORITY],
+      ['Last One Priority', DPadConfig.UDSocdCleanerMode.UD_LAST_PRIORITY],
       ['Up Priority', DPadConfig.UDSocdCleanerMode.UP_PRIORITY],
       ['Down Priority', DPadConfig.UDSocdCleanerMode.DOWN_PRIORITY],
     ];
