@@ -3,8 +3,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, Subject, defer, filter } from 'rxjs';
 import { SerialServiceInterface } from './serial.service';
 
-import { AnalogSwitchConfig, AnalogSwitchGroup, ButtonAssignment, ButtonId, ButtonType, PushButtonSelector, RapidTriggerConfig, StaticTriggerConfig, SwitchId, SwitchType, TriggerType, UdongConfig } from '../../proto/config';
-import { logger } from '../logger';
+import { AnalogSwitchConfig, AnalogSwitchGroup, ButtonAssignment, ButtonId, ButtonType, DPadButtonSelector, PushButtonSelector, RapidTriggerConfig, StaticTriggerConfig, SwitchId, SwitchType, TriggerType, UdongConfig } from '../../proto/config';
 
 @Injectable()
 export class MockSerialService extends SerialServiceInterface {
@@ -24,9 +23,9 @@ export class MockSerialService extends SerialServiceInterface {
     }
 
     override async Send(cmd: string, message?: string) {
-        logger.info('Sending via MockSerialService');
-        logger.info('cmd: ', cmd);
-        logger.info('payload: ', message);
+        console.info('Sending via MockSerialService');
+        console.info('cmd: ', cmd);
+        console.info('payload: ', message);
         if (cmd == 'get-config') {
             this.HandleGetConfig();
         } else {
@@ -37,9 +36,9 @@ export class MockSerialService extends SerialServiceInterface {
     }
 
     override async SendBinary(cmd: string, payload: Uint8Array) {
-        logger.info('Sending Binary via MockSerialService');
-        logger.info('cmd: ', cmd);
-        logger.info('payload-size: ', payload.length);
+        console.info('Sending Binary via MockSerialService');
+        console.info('cmd: ', cmd);
+        console.info('payload-size: ', payload.length);
     }
 
     private MockResponse(type: string, bin_payload: Uint8Array) {
@@ -50,7 +49,7 @@ export class MockSerialService extends SerialServiceInterface {
         let configs: AnalogSwitchConfig[] = [];
         for (let i = 0; i < 16; i++) {
             let group_id;
-            if (i >= 12 && i <= 15) {
+            if (i >= 11 && i <= 15) {
                 // D-pad
                 group_id = 0;
             } else if (i == 2 || i == 4) {
@@ -70,6 +69,7 @@ export class MockSerialService extends SerialServiceInterface {
 
             let group: AnalogSwitchGroup = new AnalogSwitchGroup({
                 analog_switch_group_id: i,
+                total_travel_distance: 4.1,
                 trigger_type: trigger_type,
                 rapid_trigger: new RapidTriggerConfig({
                     act: 0.6, rel: 0.4,
@@ -82,10 +82,9 @@ export class MockSerialService extends SerialServiceInterface {
             groups.push(group);
         };
 
-        // TODO: Choose human friendly button assignments(e.g. D-pad for left hand)
         let button_assignments: ButtonAssignment[] = [];
         // analog switches
-        for (let i = 0; i < 16; i++) {
+        for (let i = 0; i < 11; i++) {
             button_assignments.push(new ButtonAssignment({
                 button_id: new ButtonId({
                     type: ButtonType.PUSH,
@@ -99,6 +98,31 @@ export class MockSerialService extends SerialServiceInterface {
                 })
             }));
         }
+
+        let directions = [
+            DPadButtonSelector.Direction.UP,
+            DPadButtonSelector.Direction.UP,
+            DPadButtonSelector.Direction.LEFT,
+            DPadButtonSelector.Direction.RIGHT,
+            DPadButtonSelector.Direction.DOWN,
+        ];
+        for (let i = 11; i < 16; i++) {
+            button_assignments.push(new ButtonAssignment({
+                button_id: new ButtonId({
+                    type: ButtonType.D_PAD,
+                    d_pad: new DPadButtonSelector({
+                        direction: directions[i - 11]
+                    })
+                }),
+                switch_id: new SwitchId({
+                    type: SwitchType.ANALOG_SWITCH,
+                    id: i,
+                })
+            }));
+        }
+
+
+
         // digital switches
         for (let i = 0; i < 2; i++) {
             button_assignments.push(new ButtonAssignment({
