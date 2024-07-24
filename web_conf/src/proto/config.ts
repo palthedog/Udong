@@ -866,6 +866,110 @@ export namespace DPadButtonSelector {
         RIGHT = 4
     }
 }
+export class DPadConfig extends pb_1.Message {
+    #one_of_decls: number[][] = [];
+    constructor(data?: any[] | {
+        lr_socd_mode?: DPadConfig.LRSocdCleanerMode;
+        ud_socd_mode?: DPadConfig.UDSocdCleanerMode;
+    }) {
+        super();
+        pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
+        if (!Array.isArray(data) && typeof data == "object") {
+            if ("lr_socd_mode" in data && data.lr_socd_mode != undefined) {
+                this.lr_socd_mode = data.lr_socd_mode;
+            }
+            if ("ud_socd_mode" in data && data.ud_socd_mode != undefined) {
+                this.ud_socd_mode = data.ud_socd_mode;
+            }
+        }
+    }
+    get lr_socd_mode() {
+        return pb_1.Message.getFieldWithDefault(this, 1, DPadConfig.LRSocdCleanerMode.LR_UNSPECIFIED) as DPadConfig.LRSocdCleanerMode;
+    }
+    set lr_socd_mode(value: DPadConfig.LRSocdCleanerMode) {
+        pb_1.Message.setField(this, 1, value);
+    }
+    get ud_socd_mode() {
+        return pb_1.Message.getFieldWithDefault(this, 2, DPadConfig.UDSocdCleanerMode.UD_UNSPECIFIED) as DPadConfig.UDSocdCleanerMode;
+    }
+    set ud_socd_mode(value: DPadConfig.UDSocdCleanerMode) {
+        pb_1.Message.setField(this, 2, value);
+    }
+    static fromObject(data: {
+        lr_socd_mode?: DPadConfig.LRSocdCleanerMode;
+        ud_socd_mode?: DPadConfig.UDSocdCleanerMode;
+    }): DPadConfig {
+        const message = new DPadConfig({});
+        if (data.lr_socd_mode != null) {
+            message.lr_socd_mode = data.lr_socd_mode;
+        }
+        if (data.ud_socd_mode != null) {
+            message.ud_socd_mode = data.ud_socd_mode;
+        }
+        return message;
+    }
+    toObject() {
+        const data: {
+            lr_socd_mode?: DPadConfig.LRSocdCleanerMode;
+            ud_socd_mode?: DPadConfig.UDSocdCleanerMode;
+        } = {};
+        if (this.lr_socd_mode != null) {
+            data.lr_socd_mode = this.lr_socd_mode;
+        }
+        if (this.ud_socd_mode != null) {
+            data.ud_socd_mode = this.ud_socd_mode;
+        }
+        return data;
+    }
+    serialize(): Uint8Array;
+    serialize(w: pb_1.BinaryWriter): void;
+    serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+        const writer = w || new pb_1.BinaryWriter();
+        if (this.lr_socd_mode != DPadConfig.LRSocdCleanerMode.LR_UNSPECIFIED)
+            writer.writeEnum(1, this.lr_socd_mode);
+        if (this.ud_socd_mode != DPadConfig.UDSocdCleanerMode.UD_UNSPECIFIED)
+            writer.writeEnum(2, this.ud_socd_mode);
+        if (!w)
+            return writer.getResultBuffer();
+    }
+    static deserialize(bytes: Uint8Array | pb_1.BinaryReader): DPadConfig {
+        const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new DPadConfig();
+        while (reader.nextField()) {
+            if (reader.isEndGroup())
+                break;
+            switch (reader.getFieldNumber()) {
+                case 1:
+                    message.lr_socd_mode = reader.readEnum();
+                    break;
+                case 2:
+                    message.ud_socd_mode = reader.readEnum();
+                    break;
+                default: reader.skipField();
+            }
+        }
+        return message;
+    }
+    serializeBinary(): Uint8Array {
+        return this.serialize();
+    }
+    static override deserializeBinary(bytes: Uint8Array): DPadConfig {
+        return DPadConfig.deserialize(bytes);
+    }
+}
+export namespace DPadConfig {
+    export enum LRSocdCleanerMode {
+        LR_UNSPECIFIED = 0,
+        LR_NEUTRAL = 1,
+        LR_LAST_PRIORITY = 2
+    }
+    export enum UDSocdCleanerMode {
+        UD_UNSPECIFIED = 0,
+        UD_NEUTRAL = 1,
+        UD_LAST_PRIORITY = 2,
+        UP_PRIORITY = 3,
+        DOWN_PRIORITY = 4
+    }
+}
 export class ButtonAssignment extends pb_1.Message {
     #one_of_decls: number[][] = [];
     constructor(data?: any[] | {
@@ -1036,6 +1140,7 @@ export class UdongConfig extends pb_1.Message {
         analog_switch_configs?: AnalogSwitchConfig[];
         analog_switch_groups?: AnalogSwitchGroup[];
         button_assignments?: ButtonAssignment[];
+        d_pad_config?: DPadConfig;
     }) {
         super();
         pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [1, 2, 3], this.#one_of_decls);
@@ -1051,6 +1156,9 @@ export class UdongConfig extends pb_1.Message {
             }
             if ("button_assignments" in data && data.button_assignments != undefined) {
                 this.button_assignments = data.button_assignments;
+            }
+            if ("d_pad_config" in data && data.d_pad_config != undefined) {
+                this.d_pad_config = data.d_pad_config;
             }
         }
     }
@@ -1081,11 +1189,21 @@ export class UdongConfig extends pb_1.Message {
     set button_assignments(value: ButtonAssignment[]) {
         pb_1.Message.setRepeatedWrapperField(this, 3, value);
     }
+    get d_pad_config() {
+        return pb_1.Message.getWrapperField(this, DPadConfig, 5) as DPadConfig;
+    }
+    set d_pad_config(value: DPadConfig) {
+        pb_1.Message.setWrapperField(this, 5, value);
+    }
+    get has_d_pad_config() {
+        return pb_1.Message.getField(this, 5) != null;
+    }
     static fromObject(data: {
         baked?: ReturnType<typeof BakedData.prototype.toObject>;
         analog_switch_configs?: ReturnType<typeof AnalogSwitchConfig.prototype.toObject>[];
         analog_switch_groups?: ReturnType<typeof AnalogSwitchGroup.prototype.toObject>[];
         button_assignments?: ReturnType<typeof ButtonAssignment.prototype.toObject>[];
+        d_pad_config?: ReturnType<typeof DPadConfig.prototype.toObject>;
     }): UdongConfig {
         const message = new UdongConfig({});
         if (data.baked != null) {
@@ -1100,6 +1218,9 @@ export class UdongConfig extends pb_1.Message {
         if (data.button_assignments != null) {
             message.button_assignments = data.button_assignments.map(item => ButtonAssignment.fromObject(item));
         }
+        if (data.d_pad_config != null) {
+            message.d_pad_config = DPadConfig.fromObject(data.d_pad_config);
+        }
         return message;
     }
     toObject() {
@@ -1108,6 +1229,7 @@ export class UdongConfig extends pb_1.Message {
             analog_switch_configs?: ReturnType<typeof AnalogSwitchConfig.prototype.toObject>[];
             analog_switch_groups?: ReturnType<typeof AnalogSwitchGroup.prototype.toObject>[];
             button_assignments?: ReturnType<typeof ButtonAssignment.prototype.toObject>[];
+            d_pad_config?: ReturnType<typeof DPadConfig.prototype.toObject>;
         } = {};
         if (this.baked != null) {
             data.baked = this.baked.toObject();
@@ -1120,6 +1242,9 @@ export class UdongConfig extends pb_1.Message {
         }
         if (this.button_assignments != null) {
             data.button_assignments = this.button_assignments.map((item: ButtonAssignment) => item.toObject());
+        }
+        if (this.d_pad_config != null) {
+            data.d_pad_config = this.d_pad_config.toObject();
         }
         return data;
     }
@@ -1135,6 +1260,8 @@ export class UdongConfig extends pb_1.Message {
             writer.writeRepeatedMessage(2, this.analog_switch_groups, (item: AnalogSwitchGroup) => item.serialize(writer));
         if (this.button_assignments.length)
             writer.writeRepeatedMessage(3, this.button_assignments, (item: ButtonAssignment) => item.serialize(writer));
+        if (this.has_d_pad_config)
+            writer.writeMessage(5, this.d_pad_config, () => this.d_pad_config.serialize(writer));
         if (!w)
             return writer.getResultBuffer();
     }
@@ -1155,6 +1282,9 @@ export class UdongConfig extends pb_1.Message {
                     break;
                 case 3:
                     reader.readMessage(message.button_assignments, () => pb_1.Message.addToRepeatedWrapperField(message, 3, ButtonAssignment.deserialize(reader), ButtonAssignment));
+                    break;
+                case 5:
+                    reader.readMessage(message.d_pad_config, () => message.d_pad_config = DPadConfig.deserialize(reader));
                     break;
                 default: reader.skipField();
             }

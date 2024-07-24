@@ -50,9 +50,38 @@
                     </mat-select>
                 </mat-form-field>
 
+                <!-- D-PAD config -->
+                <ng-container *ngIf="activeButtonIsLR()">
+                    <mat-form-field>
+                        <mat-label>← → SOCD mode</mat-label>
+                        <mat-select [(value)]="lr_socd_cleaner_mode">
+                            @for (lr_conf of lrConfigs(); track lr_conf[1]) {
+                            <mat-option [value]="lr_conf[1]">
+                                {{lr_conf[0]}}
+                            </mat-option>
+                            }
+                        </mat-select>
+                    </mat-form-field>
+                </ng-container>
+                <ng-container *ngIf="activeButtonIsUD()">
+                    <mat-form-field>
+                        <mat-label>↑↓ SOCD mode</mat-label>
+                        <mat-select [(value)]="ud_socd_cleaner_mode">
+                            @for (ud_conf of udConfigs(); track ud_conf[1]) {
+                            <mat-option [value]="ud_conf[1]">
+                                {{ud_conf[0]}}
+                            </mat-option>
+                            }
+                        </mat-select>
+                    </mat-form-field>
+                </ng-container>
+
                 <!-- Config Group -->
                 <app-group-selector
-                    *ngIf="activeAnalogSwitchConfig() as aconf"
+                    *ngIf="
+                    activeAnalogSwitchConfig()
+                    as
+                    aconf"
                     [assignment]="aconf"
                     [group_ids]="group_ids"
                     (selectorClosed)="onGroupSelected()"

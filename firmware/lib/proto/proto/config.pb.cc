@@ -698,6 +698,77 @@ bool DPadButtonSelector::EncodeImpl(decaproto::CodedOutputStream& stream) const 
 							return true;
 }
 
+// A singleton Descriptor for DPadConfig
+decaproto::Descriptor* kDPadConfig__Descriptor = nullptr;
+
+const decaproto::Descriptor* DPadConfig::GetDescriptor() const {
+    if (kDPadConfig__Descriptor != nullptr) {
+        return kDPadConfig__Descriptor;
+    }
+    kDPadConfig__Descriptor = new decaproto::Descriptor();
+    kDPadConfig__Descriptor->RegisterField(decaproto::FieldDescriptor(1, decaproto::FieldType::kEnum));
+    kDPadConfig__Descriptor->RegisterField(decaproto::FieldDescriptor(2, decaproto::FieldType::kEnum));
+    return kDPadConfig__Descriptor;
+}
+
+// A singleton Reflection object for DPadConfig
+decaproto::Reflection* kDPadConfig__Reflection = nullptr;
+
+const decaproto::Reflection* DPadConfig::GetReflection() const {
+    if (kDPadConfig__Reflection != nullptr) {
+        return kDPadConfig__Reflection;
+    }
+    kDPadConfig__Reflection = new decaproto::Reflection();
+    
+    // EnumValue setter for lr_socd_mode
+     kDPadConfig__Reflection->RegisterSetEnumValue(
+        1,
+		decaproto::CastForSetEnumValue(&DPadConfig::set_lr_socd_mode));
+     // EnumValue getter for lr_socd_mode
+     kDPadConfig__Reflection->RegisterGetEnumValue(
+        1,
+		decaproto::CastForGetEnumValue(&DPadConfig::lr_socd_mode));
+    
+    // EnumValue setter for ud_socd_mode
+     kDPadConfig__Reflection->RegisterSetEnumValue(
+        2,
+		decaproto::CastForSetEnumValue(&DPadConfig::set_ud_socd_mode));
+     // EnumValue getter for ud_socd_mode
+     kDPadConfig__Reflection->RegisterGetEnumValue(
+        2,
+		decaproto::CastForGetEnumValue(&DPadConfig::ud_socd_mode));
+    return kDPadConfig__Reflection;
+}
+
+size_t DPadConfig::ComputeEncodedSize() const {
+    size_t size = 0;
+
+		if ( lr_socd_mode__ != DPadConfig_LRSocdCleanerMode() ) {
+			size += 1;  // tag
+			size += decaproto::ComputeEncodedVarintSize(lr_socd_mode__);
+		}
+		
+		if ( ud_socd_mode__ != DPadConfig_UDSocdCleanerMode() ) {
+			size += 1;  // tag
+			size += decaproto::ComputeEncodedVarintSize(ud_socd_mode__);
+		}
+				return size;
+}
+
+bool DPadConfig::EncodeImpl(decaproto::CodedOutputStream& stream) const {
+
+					if (lr_socd_mode__ != DPadConfig_LRSocdCleanerMode()) {
+						stream.WriteTag(1, decaproto::WireType::kVarint);
+						stream.WriteVarint32(lr_socd_mode__);
+					}
+					
+					if (ud_socd_mode__ != DPadConfig_UDSocdCleanerMode()) {
+						stream.WriteTag(2, decaproto::WireType::kVarint);
+						stream.WriteVarint32(ud_socd_mode__);
+					}
+							return true;
+}
+
 // A singleton Descriptor for ButtonAssignment
 decaproto::Descriptor* kButtonAssignment__Descriptor = nullptr;
 
@@ -859,6 +930,7 @@ const decaproto::Descriptor* UdongConfig::GetDescriptor() const {
     kUdongConfig__Descriptor->RegisterField(decaproto::FieldDescriptor(1, decaproto::FieldType::kMessage, true));
     kUdongConfig__Descriptor->RegisterField(decaproto::FieldDescriptor(2, decaproto::FieldType::kMessage, true));
     kUdongConfig__Descriptor->RegisterField(decaproto::FieldDescriptor(3, decaproto::FieldType::kMessage, true));
+    kUdongConfig__Descriptor->RegisterField(decaproto::FieldDescriptor(5, decaproto::FieldType::kMessage));
     return kUdongConfig__Descriptor;
 }
 
@@ -916,7 +988,20 @@ const decaproto::Reflection* UdongConfig::GetReflection() const {
 			kUdongConfig__Reflection->RegisterFieldSize(
 				3,
 				decaproto::MsgCast(&UdongConfig::button_assignments_size));
-		    return kUdongConfig__Reflection;
+		    
+    // Mutable getter for d_pad_config
+    kUdongConfig__Reflection->RegisterMutableMessage(
+        5,
+		decaproto::MsgCast(&UdongConfig::mutable_d_pad_config));
+    // Getter for d_pad_config
+    kUdongConfig__Reflection->RegisterGetMessage(
+        5,
+		decaproto::MsgCast(&UdongConfig::d_pad_config));
+    // Hazzer for d_pad_config
+    kUdongConfig__Reflection->RegisterHasField(
+        5,
+		decaproto::MsgCast(&UdongConfig::has_d_pad_config));
+    return kUdongConfig__Reflection;
 }
 
 size_t UdongConfig::ComputeEncodedSize() const {
@@ -961,6 +1046,16 @@ size_t UdongConfig::ComputeEncodedSize() const {
 			// value
 			size += sub_msg_size;
 		}
+		
+		if ( has_d_pad_config() ) {
+			size_t sub_msg_size = d_pad_config__->ComputeEncodedSize();
+			// tag
+			size += 1;
+			// LEN
+			size += decaproto::ComputeEncodedVarintSize(sub_msg_size);
+			// value
+			size += sub_msg_size;
+		}
 				return size;
 }
 
@@ -992,6 +1087,13 @@ bool UdongConfig::EncodeImpl(decaproto::CodedOutputStream& stream) const {
 						stream.WriteTag(3, decaproto::WireType::kLen);
 						stream.WriteVarint32(sub_msg_size);
 						item.EncodeImpl(stream);
+					}
+					
+					if (has_d_pad_config()) {
+						size_t sub_msg_size = d_pad_config__->ComputeEncodedSize();
+						stream.WriteTag(5, decaproto::WireType::kLen);
+						stream.WriteVarint32(sub_msg_size);
+						d_pad_config__->EncodeImpl(stream);
 					}
 							return true;
 }

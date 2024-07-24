@@ -9,7 +9,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { AnalogSwitchConfigComponent } from '../analog-switch-config/analog-switch-config.component';
 import { BoardButtonsComponent } from '../board-buttons/board-buttons.component';
-import { AnalogSwitchConfig, AnalogSwitchGroup, ButtonAssignment, ButtonId, SwitchId, SwitchType, UdongConfig } from '../../proto/config';
+import { AnalogSwitchConfig, AnalogSwitchGroup, ButtonAssignment, ButtonId, ButtonType, DPadButtonSelector, DPadConfig, SwitchId, SwitchType, UdongConfig } from '../../proto/config';
 import { AppConsts } from '../consts';
 import { GroupSelectorComponent } from '../group-selector/group-selector.component';
 import { SerialServiceInterface } from '../serial/serial.service';
@@ -117,6 +117,68 @@ export class ConfiguratorComponent {
       return button_assignment.switch_id.type == this.active_switch_id.type &&
         button_assignment.switch_id.id == this.active_switch_id.id;
     })!;
+  }
+
+  activeButtonIsLR(): boolean {
+    let button = this.activeButtonAssignment();
+    if (button.button_id.type != ButtonType.D_PAD) {
+      return false;
+    }
+    return button.button_id.d_pad.direction == DPadButtonSelector.Direction.LEFT ||
+      button.button_id.d_pad.direction == DPadButtonSelector.Direction.RIGHT;
+  }
+
+  activeButtonIsUD(): boolean {
+    let button = this.activeButtonAssignment();
+    if (button.button_id.type != ButtonType.D_PAD) {
+      return false;
+    }
+    return button.button_id.d_pad.direction == DPadButtonSelector.Direction.UP ||
+      button.button_id.d_pad.direction == DPadButtonSelector.Direction.DOWN;
+  }
+
+  lrConfigs(): [string, DPadConfig.LRSocdCleanerMode][] {
+    return [
+      ['Neutral', DPadConfig.LRSocdCleanerMode.LR_NEUTRAL],
+      ['Last Priority', DPadConfig.LRSocdCleanerMode.LR_LAST_PRIORITY],
+    ];
+  }
+
+  get lr_socd_cleaner_mode(): DPadConfig.LRSocdCleanerMode | undefined {
+    return this.config!.d_pad_config?.lr_socd_mode;
+  }
+
+  set lr_socd_cleaner_mode(value: DPadConfig.LRSocdCleanerMode | undefined) {
+    if (!value) {
+      return;
+    }
+    if (this.config!.d_pad_config == undefined) {
+      this.config!.d_pad_config = new DPadConfig();
+    }
+    this.config!.d_pad_config.lr_socd_mode = value;
+  }
+
+  get ud_socd_cleaner_mode(): DPadConfig.UDSocdCleanerMode | undefined {
+    return this.config!.d_pad_config?.ud_socd_mode;
+  }
+
+  set ud_socd_cleaner_mode(value: DPadConfig.UDSocdCleanerMode | undefined) {
+    if (!value) {
+      return;
+    }
+    if (this.config!.d_pad_config == undefined) {
+      this.config!.d_pad_config = new DPadConfig();
+    }
+    this.config!.d_pad_config.ud_socd_mode = value;
+  }
+
+  udConfigs(): [string, DPadConfig.UDSocdCleanerMode][] {
+    return [
+      ['Neutral', DPadConfig.UDSocdCleanerMode.UD_NEUTRAL],
+      ['Last Priority', DPadConfig.UDSocdCleanerMode.UD_LAST_PRIORITY],
+      ['Up Priority', DPadConfig.UDSocdCleanerMode.UP_PRIORITY],
+      ['Down Priority', DPadConfig.UDSocdCleanerMode.DOWN_PRIORITY],
+    ];
   }
 
   compareValue(a: ButtonId, b: ButtonId): boolean {

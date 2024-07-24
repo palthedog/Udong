@@ -92,6 +92,25 @@ message DPadButtonSelector {
   Direction direction = 1;
 }
 
+message DPadConfig {
+  enum LRSocdCleanerMode {
+    LR_UNSPECIFIED = 0;
+    LR_NEUTRAL = 1;
+    LR_LAST_PRIORITY = 2;
+  }
+
+  enum UDSocdCleanerMode {
+    UD_UNSPECIFIED = 0;
+    UD_NEUTRAL = 1;
+    UD_LAST_PRIORITY = 2;
+    UP_PRIORITY = 3;
+    DOWN_PRIORITY = 4;
+  }
+
+  LRSocdCleanerMode lr_socd_mode = 1;
+  UDSocdCleanerMode ud_socd_mode = 2;
+}
+
 // Maps a switch to a button
 message ButtonAssignment {
   SwitchId switch_id = 1;
@@ -111,4 +130,6 @@ message UdongConfig {
   repeated AnalogSwitchConfig analog_switch_configs = 1;
   repeated AnalogSwitchGroup analog_switch_groups = 2;
   repeated ButtonAssignment button_assignments = 3;
+
+  DPadConfig d_pad_config = 5;
 }

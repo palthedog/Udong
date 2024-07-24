@@ -1,13 +1,13 @@
 #pragma once
 
-#include <stdint.h>
-#include <string>
 #include <vector>
 #include "decaproto/message.h"
 #include "decaproto/descriptor.h"
 #include "decaproto/reflection.h"
 #include "decaproto/field.h"
 #include <memory>
+#include <stdint.h>
+#include <string>
 
 class AnalogSwitchConfig;
 class AnalogSwitchGroup;
@@ -17,6 +17,7 @@ class ButtonId;
 class SwitchId;
 class PushButtonSelector;
 class DPadButtonSelector;
+class DPadConfig;
 class ButtonAssignment;
 class BakedData;
 class UdongConfig;
@@ -45,6 +46,20 @@ enum DPadButtonSelector_Direction : int {
     DOWN = 2,
     LEFT = 3,
     RIGHT = 4,
+};
+
+enum DPadConfig_LRSocdCleanerMode : int {
+    LR_UNSPECIFIED = 0,
+    LR_NEUTRAL = 1,
+    LR_LAST_PRIORITY = 2,
+};
+
+enum DPadConfig_UDSocdCleanerMode : int {
+    UD_UNSPECIFIED = 0,
+    UD_NEUTRAL = 1,
+    UD_LAST_PRIORITY = 2,
+    UP_PRIORITY = 3,
+    DOWN_PRIORITY = 4,
 };
 
 
@@ -533,6 +548,52 @@ private:
 
 };
 
+class DPadConfig final : public decaproto::Message {
+public:
+    DPadConfig()
+        : lr_socd_mode__(DPadConfig_LRSocdCleanerMode())
+        , ud_socd_mode__(DPadConfig_UDSocdCleanerMode()) {}
+
+    ~DPadConfig() {}
+
+    typedef DPadConfig_LRSocdCleanerMode LRSocdCleanerMode;
+    typedef DPadConfig_UDSocdCleanerMode UDSocdCleanerMode;
+
+	inline DPadConfig_LRSocdCleanerMode lr_socd_mode() const {
+	    return lr_socd_mode__;
+	}
+
+	inline void set_lr_socd_mode( DPadConfig_LRSocdCleanerMode value) {
+	    lr_socd_mode__ = value;
+	}
+
+	inline void clear_lr_socd_mode() {
+	    lr_socd_mode__ = DPadConfig_LRSocdCleanerMode();
+	}
+
+	inline DPadConfig_UDSocdCleanerMode ud_socd_mode() const {
+	    return ud_socd_mode__;
+	}
+
+	inline void set_ud_socd_mode( DPadConfig_UDSocdCleanerMode value) {
+	    ud_socd_mode__ = value;
+	}
+
+	inline void clear_ud_socd_mode() {
+	    ud_socd_mode__ = DPadConfig_UDSocdCleanerMode();
+	}
+    const decaproto::Descriptor* GetDescriptor() const override;
+    const decaproto::Reflection* GetReflection() const override;
+    size_t ComputeEncodedSize() const override;
+    bool EncodeImpl(decaproto::CodedOutputStream& stream) const override;
+
+private:
+    DPadConfig_LRSocdCleanerMode lr_socd_mode__;
+    DPadConfig_UDSocdCleanerMode ud_socd_mode__;
+
+
+};
+
 class ButtonAssignment final : public decaproto::Message {
 public:
     ButtonAssignment()
@@ -657,7 +718,9 @@ public:
         , has_baked__(false)
         , analog_switch_configs__()
         , analog_switch_groups__()
-        , button_assignments__() {}
+        , button_assignments__()
+        , d_pad_config__()
+        , has_d_pad_config__(false) {}
 
     ~UdongConfig() {}
 
@@ -780,6 +843,35 @@ public:
 	    button_assignments__.clear();
 	}
 
+
+	// Getter for d_pad_config
+	const DPadConfig& d_pad_config() const {
+		if (!d_pad_config__) {
+			d_pad_config__.resetDefault();
+        }
+	    return *d_pad_config__;
+	}
+
+	// Mutable Getter for d_pad_config
+	DPadConfig* mutable_d_pad_config() {
+	    if (!d_pad_config__) {
+			d_pad_config__.resetDefault();
+        }
+        has_d_pad_config__ = true;
+	    return d_pad_config__.get();
+	}
+
+	// Hazzer for d_pad_config
+	bool has_d_pad_config() const {
+	    return has_d_pad_config__;
+	}
+
+	// Clearer for d_pad_config
+	void clear_d_pad_config() {
+	    d_pad_config__.reset();
+		has_d_pad_config__ = false;
+	}
+
     const decaproto::Descriptor* GetDescriptor() const override;
     const decaproto::Reflection* GetReflection() const override;
     size_t ComputeEncodedSize() const override;
@@ -791,6 +883,8 @@ private:
     std::vector<AnalogSwitchConfig> analog_switch_configs__;
     std::vector<AnalogSwitchGroup> analog_switch_groups__;
     std::vector<ButtonAssignment> button_assignments__;
+    mutable decaproto::SubMessagePtr<DPadConfig> d_pad_config__;
+    bool has_d_pad_config__;
 
 
 };
@@ -999,6 +1093,63 @@ message_type:  {
     }
 }
 message_type:  {
+    name:  "DPadConfig"
+    field:  {
+        name:  "lr_socd_mode"
+        number:  1
+        label:  LABEL_OPTIONAL
+        type:  TYPE_ENUM
+        type_name:  ".DPadConfig.LRSocdCleanerMode"
+        json_name:  "lrSocdMode"
+    }
+    field:  {
+        name:  "ud_socd_mode"
+        number:  2
+        label:  LABEL_OPTIONAL
+        type:  TYPE_ENUM
+        type_name:  ".DPadConfig.UDSocdCleanerMode"
+        json_name:  "udSocdMode"
+    }
+    enum_type:  {
+        name:  "LRSocdCleanerMode"
+        value:  {
+            name:  "LR_UNSPECIFIED"
+            number:  0
+        }
+        value:  {
+            name:  "LR_NEUTRAL"
+            number:  1
+        }
+        value:  {
+            name:  "LR_LAST_PRIORITY"
+            number:  2
+        }
+    }
+    enum_type:  {
+        name:  "UDSocdCleanerMode"
+        value:  {
+            name:  "UD_UNSPECIFIED"
+            number:  0
+        }
+        value:  {
+            name:  "UD_NEUTRAL"
+            number:  1
+        }
+        value:  {
+            name:  "UD_LAST_PRIORITY"
+            number:  2
+        }
+        value:  {
+            name:  "UP_PRIORITY"
+            number:  3
+        }
+        value:  {
+            name:  "DOWN_PRIORITY"
+            number:  4
+        }
+    }
+}
+message_type:  {
     name:  "ButtonAssignment"
     field:  {
         name:  "switch_id"
@@ -1061,6 +1212,14 @@ message_type:  {
         type_name:  ".ButtonAssignment"
         json_name:  "buttonAssignments"
     }
+    field:  {
+        name:  "d_pad_config"
+        number:  5
+        label:  LABEL_OPTIONAL
+        type:  TYPE_MESSAGE
+        type_name:  ".DPadConfig"
+        json_name:  "dPadConfig"
+    }
 }
 enum_type:  {
     name:  "TriggerType"
@@ -1111,7 +1270,7 @@ source_code_info:  {
     location:  {
         span:  0
         span:  0
-        span:  113
+        span:  134
         span:  1
     }
     location:  {
@@ -2564,356 +2723,809 @@ source_code_info:  {
     location:  {
         path:  4
         path:  8
-        span:  95
+        span:  94
         span:  0
+        span:  111
+        span:  1
+    }
+    location:  {
+        path:  4
+        path:  8
+        path:  1
+        span:  94
+        span:  8
+        span:  18
+    }
+    location:  {
+        path:  4
+        path:  8
+        path:  4
+        path:  0
+        span:  95
+        span:  2
+        span:  99
+        span:  3
+    }
+    location:  {
+        path:  4
+        path:  8
+        path:  4
+        path:  0
+        path:  1
+        span:  95
+        span:  7
+        span:  24
+    }
+    location:  {
+        path:  4
+        path:  8
+        path:  4
+        path:  0
+        path:  2
+        path:  0
+        span:  96
+        span:  4
+        span:  23
+    }
+    location:  {
+        path:  4
+        path:  8
+        path:  4
+        path:  0
+        path:  2
+        path:  0
+        path:  1
+        span:  96
+        span:  4
+        span:  18
+    }
+    location:  {
+        path:  4
+        path:  8
+        path:  4
+        path:  0
+        path:  2
+        path:  0
+        path:  2
+        span:  96
+        span:  21
+        span:  22
+    }
+    location:  {
+        path:  4
+        path:  8
+        path:  4
+        path:  0
+        path:  2
+        path:  1
+        span:  97
+        span:  4
+        span:  19
+    }
+    location:  {
+        path:  4
+        path:  8
+        path:  4
+        path:  0
+        path:  2
+        path:  1
+        path:  1
+        span:  97
+        span:  4
+        span:  14
+    }
+    location:  {
+        path:  4
+        path:  8
+        path:  4
+        path:  0
+        path:  2
+        path:  1
+        path:  2
+        span:  97
+        span:  17
+        span:  18
+    }
+    location:  {
+        path:  4
+        path:  8
+        path:  4
+        path:  0
+        path:  2
+        path:  2
         span:  98
+        span:  4
+        span:  25
+    }
+    location:  {
+        path:  4
+        path:  8
+        path:  4
+        path:  0
+        path:  2
+        path:  2
+        path:  1
+        span:  98
+        span:  4
+        span:  20
+    }
+    location:  {
+        path:  4
+        path:  8
+        path:  4
+        path:  0
+        path:  2
+        path:  2
+        path:  2
+        span:  98
+        span:  23
+        span:  24
+    }
+    location:  {
+        path:  4
+        path:  8
+        path:  4
+        path:  1
+        span:  101
+        span:  2
+        span:  107
+        span:  3
+    }
+    location:  {
+        path:  4
+        path:  8
+        path:  4
+        path:  1
+        path:  1
+        span:  101
+        span:  7
+        span:  24
+    }
+    location:  {
+        path:  4
+        path:  8
+        path:  4
+        path:  1
+        path:  2
+        path:  0
+        span:  102
+        span:  4
+        span:  23
+    }
+    location:  {
+        path:  4
+        path:  8
+        path:  4
+        path:  1
+        path:  2
+        path:  0
+        path:  1
+        span:  102
+        span:  4
+        span:  18
+    }
+    location:  {
+        path:  4
+        path:  8
+        path:  4
+        path:  1
+        path:  2
+        path:  0
+        path:  2
+        span:  102
+        span:  21
+        span:  22
+    }
+    location:  {
+        path:  4
+        path:  8
+        path:  4
+        path:  1
+        path:  2
+        path:  1
+        span:  103
+        span:  4
+        span:  19
+    }
+    location:  {
+        path:  4
+        path:  8
+        path:  4
+        path:  1
+        path:  2
+        path:  1
+        path:  1
+        span:  103
+        span:  4
+        span:  14
+    }
+    location:  {
+        path:  4
+        path:  8
+        path:  4
+        path:  1
+        path:  2
+        path:  1
+        path:  2
+        span:  103
+        span:  17
+        span:  18
+    }
+    location:  {
+        path:  4
+        path:  8
+        path:  4
+        path:  1
+        path:  2
+        path:  2
+        span:  104
+        span:  4
+        span:  25
+    }
+    location:  {
+        path:  4
+        path:  8
+        path:  4
+        path:  1
+        path:  2
+        path:  2
+        path:  1
+        span:  104
+        span:  4
+        span:  20
+    }
+    location:  {
+        path:  4
+        path:  8
+        path:  4
+        path:  1
+        path:  2
+        path:  2
+        path:  2
+        span:  104
+        span:  23
+        span:  24
+    }
+    location:  {
+        path:  4
+        path:  8
+        path:  4
+        path:  1
+        path:  2
+        path:  3
+        span:  105
+        span:  4
+        span:  20
+    }
+    location:  {
+        path:  4
+        path:  8
+        path:  4
+        path:  1
+        path:  2
+        path:  3
+        path:  1
+        span:  105
+        span:  4
+        span:  15
+    }
+    location:  {
+        path:  4
+        path:  8
+        path:  4
+        path:  1
+        path:  2
+        path:  3
+        path:  2
+        span:  105
+        span:  18
+        span:  19
+    }
+    location:  {
+        path:  4
+        path:  8
+        path:  4
+        path:  1
+        path:  2
+        path:  4
+        span:  106
+        span:  4
+        span:  22
+    }
+    location:  {
+        path:  4
+        path:  8
+        path:  4
+        path:  1
+        path:  2
+        path:  4
+        path:  1
+        span:  106
+        span:  4
+        span:  17
+    }
+    location:  {
+        path:  4
+        path:  8
+        path:  4
+        path:  1
+        path:  2
+        path:  4
+        path:  2
+        span:  106
+        span:  20
+        span:  21
+    }
+    location:  {
+        path:  4
+        path:  8
+        path:  2
+        path:  0
+        span:  109
+        span:  2
+        span:  37
+    }
+    location:  {
+        path:  4
+        path:  8
+        path:  2
+        path:  0
+        path:  6
+        span:  109
+        span:  2
+        span:  19
+    }
+    location:  {
+        path:  4
+        path:  8
+        path:  2
+        path:  0
+        path:  1
+        span:  109
+        span:  20
+        span:  32
+    }
+    location:  {
+        path:  4
+        path:  8
+        path:  2
+        path:  0
+        path:  3
+        span:  109
+        span:  35
+        span:  36
+    }
+    location:  {
+        path:  4
+        path:  8
+        path:  2
+        path:  1
+        span:  110
+        span:  2
+        span:  37
+    }
+    location:  {
+        path:  4
+        path:  8
+        path:  2
+        path:  1
+        path:  6
+        span:  110
+        span:  2
+        span:  19
+    }
+    location:  {
+        path:  4
+        path:  8
+        path:  2
+        path:  1
+        path:  1
+        span:  110
+        span:  20
+        span:  32
+    }
+    location:  {
+        path:  4
+        path:  8
+        path:  2
+        path:  1
+        path:  3
+        span:  110
+        span:  35
+        span:  36
+    }
+    location:  {
+        path:  4
+        path:  9
+        span:  114
+        span:  0
+        span:  117
         span:  1
         leading_comments:  " Maps a switch to a button\n"
     }
     location:  {
         path:  4
-        path:  8
+        path:  9
         path:  1
-        span:  95
+        span:  114
         span:  8
         span:  24
     }
     location:  {
         path:  4
-        path:  8
+        path:  9
         path:  2
         path:  0
-        span:  96
+        span:  115
         span:  2
         span:  25
     }
     location:  {
         path:  4
-        path:  8
+        path:  9
         path:  2
         path:  0
         path:  6
-        span:  96
+        span:  115
         span:  2
         span:  10
     }
     location:  {
         path:  4
-        path:  8
+        path:  9
         path:  2
         path:  0
         path:  1
-        span:  96
+        span:  115
         span:  11
         span:  20
     }
     location:  {
         path:  4
-        path:  8
+        path:  9
         path:  2
         path:  0
         path:  3
-        span:  96
-        span:  23
-        span:  24
-    }
-    location:  {
-        path:  4
-        path:  8
-        path:  2
-        path:  1
-        span:  97
-        span:  2
-        span:  25
-    }
-    location:  {
-        path:  4
-        path:  8
-        path:  2
-        path:  1
-        path:  6
-        span:  97
-        span:  2
-        span:  10
-    }
-    location:  {
-        path:  4
-        path:  8
-        path:  2
-        path:  1
-        path:  1
-        span:  97
-        span:  11
-        span:  20
-    }
-    location:  {
-        path:  4
-        path:  8
-        path:  2
-        path:  1
-        path:  3
-        span:  97
+        span:  115
         span:  23
         span:  24
     }
     location:  {
         path:  4
         path:  9
-        span:  100
+        path:  2
+        path:  1
+        span:  116
+        span:  2
+        span:  25
+    }
+    location:  {
+        path:  4
+        path:  9
+        path:  2
+        path:  1
+        path:  6
+        span:  116
+        span:  2
+        span:  10
+    }
+    location:  {
+        path:  4
+        path:  9
+        path:  2
+        path:  1
+        path:  1
+        span:  116
+        span:  11
+        span:  20
+    }
+    location:  {
+        path:  4
+        path:  9
+        path:  2
+        path:  1
+        path:  3
+        span:  116
+        span:  23
+        span:  24
+    }
+    location:  {
+        path:  4
+        path:  10
+        span:  119
         span:  0
-        span:  102
+        span:  121
         span:  1
     }
     location:  {
         path:  4
-        path:  9
+        path:  10
         path:  1
-        span:  100
+        span:  119
         span:  8
         span:  17
     }
     location:  {
         path:  4
-        path:  9
+        path:  10
         path:  2
         path:  0
-        span:  101
+        span:  120
         span:  2
         span:  24
     }
     location:  {
         path:  4
-        path:  9
+        path:  10
         path:  2
         path:  0
         path:  5
-        span:  101
+        span:  120
         span:  2
         span:  8
     }
     location:  {
         path:  4
-        path:  9
+        path:  10
         path:  2
         path:  0
         path:  1
-        span:  101
+        span:  120
         span:  9
         span:  19
     }
     location:  {
         path:  4
-        path:  9
+        path:  10
         path:  2
         path:  0
         path:  3
-        span:  101
+        span:  120
         span:  22
         span:  23
     }
     location:  {
         path:  4
-        path:  10
-        span:  105
+        path:  11
+        span:  124
         span:  0
-        span:  113
+        span:  134
         span:  1
         leading_comments:  " Represents the overall configuration for Udong\n"
     }
     location:  {
         path:  4
-        path:  10
+        path:  11
         path:  1
-        span:  105
+        span:  124
         span:  8
         span:  19
     }
     location:  {
         path:  4
-        path:  10
+        path:  11
         path:  2
         path:  0
-        span:  108
+        span:  127
         span:  2
         span:  22
         leading_comments:  " Readonly baked data\n The data is baked into the flash when the board is shipped.\n"
     }
     location:  {
         path:  4
-        path:  10
+        path:  11
         path:  2
         path:  0
         path:  6
-        span:  108
+        span:  127
         span:  2
         span:  11
     }
     location:  {
         path:  4
-        path:  10
+        path:  11
         path:  2
         path:  0
         path:  1
-        span:  108
+        span:  127
         span:  12
         span:  17
     }
     location:  {
         path:  4
-        path:  10
+        path:  11
         path:  2
         path:  0
         path:  3
-        span:  108
+        span:  127
         span:  20
         span:  21
     }
     location:  {
         path:  4
-        path:  10
+        path:  11
         path:  2
         path:  1
-        span:  110
+        span:  129
         span:  2
         span:  56
     }
     location:  {
         path:  4
-        path:  10
+        path:  11
         path:  2
         path:  1
         path:  4
-        span:  110
+        span:  129
         span:  2
         span:  10
     }
     location:  {
         path:  4
-        path:  10
+        path:  11
         path:  2
         path:  1
         path:  6
-        span:  110
+        span:  129
         span:  11
         span:  29
     }
     location:  {
         path:  4
-        path:  10
+        path:  11
         path:  2
         path:  1
         path:  1
-        span:  110
+        span:  129
         span:  30
         span:  51
     }
     location:  {
         path:  4
-        path:  10
+        path:  11
         path:  2
         path:  1
         path:  3
-        span:  110
+        span:  129
         span:  54
         span:  55
     }
     location:  {
         path:  4
-        path:  10
+        path:  11
         path:  2
         path:  2
-        span:  111
+        span:  130
         span:  2
         span:  54
     }
     location:  {
         path:  4
-        path:  10
+        path:  11
         path:  2
         path:  2
         path:  4
-        span:  111
+        span:  130
         span:  2
         span:  10
     }
     location:  {
         path:  4
-        path:  10
+        path:  11
         path:  2
         path:  2
         path:  6
-        span:  111
+        span:  130
         span:  11
         span:  28
     }
     location:  {
         path:  4
-        path:  10
+        path:  11
         path:  2
         path:  2
         path:  1
-        span:  111
+        span:  130
         span:  29
         span:  49
     }
     location:  {
         path:  4
-        path:  10
+        path:  11
         path:  2
         path:  2
         path:  3
-        span:  111
+        span:  130
         span:  52
         span:  53
     }
     location:  {
         path:  4
-        path:  10
+        path:  11
         path:  2
         path:  3
-        span:  112
+        span:  131
         span:  2
         span:  51
     }
     location:  {
         path:  4
-        path:  10
+        path:  11
         path:  2
         path:  3
         path:  4
-        span:  112
+        span:  131
         span:  2
         span:  10
     }
     location:  {
         path:  4
-        path:  10
+        path:  11
         path:  2
         path:  3
         path:  6
-        span:  112
+        span:  131
         span:  11
         span:  27
     }
     location:  {
         path:  4
-        path:  10
+        path:  11
         path:  2
         path:  3
         path:  1
-        span:  112
+        span:  131
         span:  28
         span:  46
     }
     location:  {
         path:  4
-        path:  10
+        path:  11
         path:  2
         path:  3
         path:  3
-        span:  112
+        span:  131
         span:  49
         span:  50
+    }
+    location:  {
+        path:  4
+        path:  11
+        path:  2
+        path:  4
+        span:  133
+        span:  2
+        span:  30
+    }
+    location:  {
+        path:  4
+        path:  11
+        path:  2
+        path:  4
+        path:  6
+        span:  133
+        span:  2
+        span:  12
+    }
+    location:  {
+        path:  4
+        path:  11
+        path:  2
+        path:  4
+        path:  1
+        span:  133
+        span:  13
+        span:  25
+    }
+    location:  {
+        path:  4
+        path:  11
+        path:  2
+        path:  4
+        path:  3
+        span:  133
+        span:  28
+        span:  29
     }
 }
 syntax:  "proto3"
