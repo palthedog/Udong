@@ -19,6 +19,7 @@
 #include "io_utils/soft/triangle.h"
 #include "proto/config.pb.h"
 #include "proto/rpc.pb.h"
+#include "proto_util.h"
 #include "switch/analog_switch.h"
 #include "switch/digital_switch.h"
 #include "switch/triggers/rapid_trigger.h"

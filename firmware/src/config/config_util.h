@@ -10,6 +10,7 @@
 #include "decaproto/message.h"
 #include "decaproto/stream/stream.h"
 #include "proto/config.pb.h"
+#include "proto_util.h"
 
 const String kUdongConfigPath = "/user/config.binpb";
 
@@ -225,8 +226,6 @@ inline bool LoadProtoBin(const String& path, decaproto::Message* dst) {
   ArduinoSerialInputStream asis(&file);
   return decaproto::DecodeMessage(asis, dst);
 }
-
-void ComplementMessage(const decaproto::Message& src, decaproto::Message& dst);
 
 inline void complementWithDefaultValues(UdongConfig& config) {
   UdongConfig def = defaultUdongConfig();

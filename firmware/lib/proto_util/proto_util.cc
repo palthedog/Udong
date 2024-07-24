@@ -1,6 +1,8 @@
-#include "config_util.h"
+#include "proto_util.h"
 
-#include "proto/config.pb.h"
+#if ARDUINO
+#include <Arduino.h>
+#endif
 
 #define CASE_OVERRIDE_DEFAULT_IMPL(PROTO_T, ACC_NAME, CPP_T)                 \
   case decaproto::FieldType::k##PROTO_T:                                     \
@@ -79,10 +81,13 @@ void ComplementField(
       break;
     }
     default:
+#if ARDUINO
       Serial.printf(
           "ERROR: ComplementField: Unsupported field type. FieldType "
           "%d\n",
           field.GetType());
+#endif
+      break;
   }
 }
 
