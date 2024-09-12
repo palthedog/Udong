@@ -252,7 +252,7 @@
   },
   "pcbnew": {
     "last_paths": {
-      "gencad": "",
+      "gencad": "udong_acrylic_ceil.cad",
       "idf": "",
       "netlist": "",
       "plot": "gerber/",

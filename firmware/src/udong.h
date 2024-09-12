@@ -179,10 +179,13 @@ class Udong {
       circuit = std::make_unique<UdongPrototype1>();
     } else if (config.baked().board_name() == "Udong Board rev.2") {
       circuit = std::make_unique<UdongPrototype2>();
+    } else if (config.baked().board_name() == "Udong Board ver.1.0") {
+      circuit = std::make_unique<UdongPrototype2>();
     } else if (config.baked().board_name() == "Breadboard") {
       circuit = std::make_unique<Breadboard>();
     } else {
       // TODO
+      // circuit = std::make_unique<UdongPrototype2>();
     }
     ConfigureSwitches();
 

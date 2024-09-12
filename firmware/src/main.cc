@@ -59,8 +59,7 @@ void setup() {
   TinyUSBDevice.setVersion(0x0200);             // USB2.0
   TinyUSBDevice.setLanguageDescriptor(0x0409);  // English/US
   TinyUSBDevice.setProductDescriptor("Udong");
-  // TODO: We may need to append a unique serial number after colon.
-  TinyUSBDevice.setSerialDescriptor("f13g.com:");
+  TinyUSBDevice.setSerialDescriptor("f13g.com:1");
 
   Serial.begin(921600);  // Well, baud rate doesn't matter for USB CDC.
   Serial.setStringDescriptor("Udong");
